@@ -38,7 +38,14 @@ class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
   }
 
   Widget? getFloatingActionButton() {
-    if (widget.navbarActiveIndex == 0) {}
+    if (widget.navbarActiveIndex == 0) {
+      return FloatingActionButton.extended(
+        onPressed: () {},
+        tooltip: 'Paste',
+        icon: const Icon(Icons.paste_rounded),
+        label: const Text("Paste"),
+      );
+    }
     return null;
   }
 
@@ -52,7 +59,7 @@ class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
       child: Scaffold(
         body: widget.child,
         floatingActionButton: getFloatingActionButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: BottomNavigationBar(
           useLegacyColorScheme: false,
           currentIndex: widget.navbarActiveIndex,
