@@ -1,8 +1,8 @@
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
 import "package:clipboard/di/di.dart";
-import "package:clipboard/pages/bottom_navbar/bottom_navbar_page.dart";
 import "package:clipboard/pages/home/page.dart";
+import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/splash_page.dart";
@@ -38,7 +38,7 @@ final router = GoRouter(
           _ => 0,
         };
 
-        return BottomNavigationBarPage(
+        return NavBarPage(
           navbarActiveIndex: activeIndex,
           child: child,
         );

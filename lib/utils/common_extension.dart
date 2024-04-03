@@ -1,17 +1,19 @@
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 extension MaterialStateExtension<T> on T {
   /// Convert into material state property
   MaterialStateProperty<T> get msp => MaterialStateProperty.all(this);
 }
 
-extension ThemeExtension on BuildContext {
+extension BuildContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
   ColorScheme get colors => theme.colorScheme;
   TextTheme get textTheme => theme.textTheme;
   bool get isDarkMode => theme.brightness == Brightness.dark;
+  ResponsiveBreakpointsData get breakpoints => ResponsiveBreakpoints.of(this);
 }
 
 extension SnackbarExtension on BuildContext {
