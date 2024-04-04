@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/di/di.dart';
@@ -23,52 +24,60 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.robotoTextTheme();
-    return MaterialApp.router(
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
-      routerDelegate: router.routerDelegate,
-      backButtonDispatcher: router.backButtonDispatcher,
-      themeMode: ThemeMode.system,
-      theme: ThemeData(
-        useMaterial3: true,
-        textTheme: textTheme.apply(
-          bodyColor: lightColorScheme.onSurface,
-          displayColor: lightColorScheme.onSurface,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ClipboardCubit>(
+          create: (context) => sl()..fetch(),
+          lazy: false,
         ),
-        colorScheme: lightColorScheme,
-        brightness: Brightness.light,
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+      ],
+      child: MaterialApp.router(
+        scaffoldMessengerKey: scaffoldMessengerKey,
+        routeInformationParser: router.routeInformationParser,
+        routeInformationProvider: router.routeInformationProvider,
+        routerDelegate: router.routerDelegate,
+        backButtonDispatcher: router.backButtonDispatcher,
+        themeMode: ThemeMode.system,
+        theme: ThemeData(
+          useMaterial3: true,
+          textTheme: textTheme.apply(
+            bodyColor: lightColorScheme.onSurface,
+            displayColor: lightColorScheme.onSurface,
+          ),
+          colorScheme: lightColorScheme,
+          brightness: Brightness.light,
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            ),
           ),
         ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        textTheme: textTheme.apply(
-          bodyColor: darkColorScheme.onSurface,
-          displayColor: darkColorScheme.onSurface,
-        ),
-        colorScheme: darkColorScheme,
-        brightness: Brightness.dark,
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          textTheme: textTheme.apply(
+            bodyColor: darkColorScheme.onSurface,
+            displayColor: darkColorScheme.onSurface,
+          ),
+          colorScheme: darkColorScheme,
+          brightness: Brightness.dark,
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            ),
           ),
         ),
-      ),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      builder: (context, child) => ResponsiveBreakpoints.builder(
-        child: child!,
-        breakpoints: [
-          const Breakpoint(start: 0, end: 450, name: MOBILE),
-          const Breakpoint(start: 451, end: 800, name: TABLET),
-          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-        ],
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        builder: (context, child) => ResponsiveBreakpoints.builder(
+          child: child!,
+          breakpoints: [
+            const Breakpoint(start: 0, end: 450, name: MOBILE),
+            const Breakpoint(start: 451, end: 800, name: TABLET),
+            const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+            const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+          ],
+        ),
       ),
     );
   }

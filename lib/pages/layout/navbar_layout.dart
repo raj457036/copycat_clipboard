@@ -54,6 +54,7 @@ class _NavBarPageState extends State<NavBarPage> {
         return FloatingActionButton(
           onPressed: () {},
           tooltip: 'Paste',
+          heroTag: "paste-fab",
           child: const Icon(Icons.paste_rounded),
         );
       } else {
@@ -63,12 +64,14 @@ class _NavBarPageState extends State<NavBarPage> {
             FloatingActionButton(
               onPressed: () {},
               tooltip: 'Search',
+              heroTag: "search-fab",
               child: const Icon(Icons.search),
             ),
             height16,
             FloatingActionButton.small(
               onPressed: () {},
               tooltip: 'Paste',
+              heroTag: "paste-fab",
               child: const Icon(Icons.paste_rounded),
             ),
           ],

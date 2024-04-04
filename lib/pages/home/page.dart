@@ -1,7 +1,10 @@
+import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class HomePage extends StatelessWidget {
@@ -34,18 +37,26 @@ class HomePage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ResponsiveGridView.builder(
-              padding: const EdgeInsets.all(padding16),
-              gridDelegate: const ResponsiveGridDelegate(
-                minCrossAxisExtent: 180,
-                maxCrossAxisExtent: 240,
-                crossAxisSpacing: padding6,
-                mainAxisSpacing: padding6,
-                childAspectRatio: 5 / 6,
-              ),
-              itemCount: 30,
-              itemBuilder: (context, index) {
-                return const ClipCard();
+            BlocSelector<ClipboardCubit, ClipboardState, List<ClipboardItem>>(
+              selector: (state) {
+                return state.items;
+              },
+              builder: (context, state) {
+                return ResponsiveGridView.builder(
+                  padding: const EdgeInsets.all(padding16),
+                  gridDelegate: const ResponsiveGridDelegate(
+                    minCrossAxisExtent: 180,
+                    maxCrossAxisExtent: 240,
+                    crossAxisSpacing: padding12,
+                    mainAxisSpacing: padding12,
+                    childAspectRatio: 5 / 6,
+                  ),
+                  itemCount: state.length,
+                  itemBuilder: (context, index) {
+                    final item = state[index];
+                    return ClipCard(item: item);
+                  },
+                );
               },
             ),
             ResponsiveGridView.builder(
@@ -66,7 +77,7 @@ class HomePage extends StatelessWidget {
               ),
               itemCount: 30,
               itemBuilder: (context, index) {
-                return const ClipCard();
+                return const Card();
               },
             ),
           ],

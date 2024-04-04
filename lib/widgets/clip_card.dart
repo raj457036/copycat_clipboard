@@ -1,9 +1,16 @@
+import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClipCard extends StatelessWidget {
-  const ClipCard({super.key});
+  final ClipboardItem item;
+  const ClipCard({
+    super.key,
+    required this.item,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +23,14 @@ class ClipCard extends StatelessWidget {
                 top: Radius.circular(12),
               ),
               onTap: () {},
-              child: const SizedBox.expand(
+              child: SizedBox.expand(
                 child: Padding(
-                  padding: EdgeInsets.all(padding8),
-                  child: Text("Hello World"),
+                  padding: const EdgeInsets.all(padding8),
+                  child: Text(
+                    item.value!,
+                    overflow: TextOverflow.fade,
+                    maxLines: 10,
+                  ),
                 ),
               ),
             ),
@@ -42,11 +53,11 @@ class ClipCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Link",
+                          item.type.name.toUpperCase(),
                           style: context.textTheme.titleSmall,
                         ),
                         Text(
-                          "4 days ago",
+                          item.modified.ago,
                           style: context.textTheme.labelSmall,
                         ),
                       ],
@@ -65,7 +76,11 @@ class ClipCard extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.copy),
                       tooltip: "Copy",
-                      onPressed: () {},
+                      onPressed: () async {
+                        context
+                          ..read<ClipboardCubit>().copyToClipboard(item)
+                          ..showTextSnackbar("Copied to clipboard");
+                      },
                     ),
                   ],
                 ),
