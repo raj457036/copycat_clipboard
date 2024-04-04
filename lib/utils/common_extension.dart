@@ -2,6 +2,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 extension MaterialStateExtension<T> on T {
   /// Convert into material state property
@@ -20,14 +21,27 @@ extension SnackbarExtension on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackbar(
-          SnackBar snackBar) =>
-      scaffoldMessenger.showSnackBar(snackBar);
+      SnackBar snackBar) {
+    scaffoldMessenger.hideCurrentSnackBar();
+    return scaffoldMessenger.showSnackBar(snackBar);
+  }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showFailureSnackbar(
           Failure failure) =>
       showSnackbar(
         SnackBar(
           content: Text(failure.message),
+        ),
+      );
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showTextSnackbar(
+          String text) =>
+      showSnackbar(
+        SnackBar(
+          content: Text(text),
+          showCloseIcon: true,
+          behavior: SnackBarBehavior.floating,
+          width: 400,
         ),
       );
 }
@@ -93,4 +107,6 @@ extension DateTimeExtension on DateTime {
     if (other == null) return trueIfNull;
     return other.year == year && other.month == month && other.day == day;
   }
+
+  String get ago => timeago.format(this);
 }

@@ -7,7 +7,9 @@
 #include "generated_plugin_registrant.h"
 
 #include <awesome_notifications/awesome_notifications_plugin_c_api.h>
+#include <clipboard_watcher/clipboard_watcher_plugin.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
+#include <isar_flutter_libs/isar_flutter_libs_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
 #include <super_native_extensions/super_native_extensions_plugin_c_api.h>
 #include <url_launcher_windows/url_launcher_windows.h>
@@ -17,8 +19,12 @@
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   AwesomeNotificationsPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("AwesomeNotificationsPluginCApi"));
+  ClipboardWatcherPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ClipboardWatcherPlugin"));
   IrondashEngineContextPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IrondashEngineContextPluginCApi"));
+  IsarFlutterLibsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("IsarFlutterLibsPlugin"));
   ScreenRetrieverPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ScreenRetrieverPlugin"));
   SuperNativeExtensionsPluginCApiRegisterWithRegistrar(
