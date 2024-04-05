@@ -29,6 +29,7 @@ class ClipboardItem with _$ClipboardItem {
     required DateTime created,
     required DateTime modified,
     required String title,
+    String? localPath,
 
     /// text, path, url
     String? value,

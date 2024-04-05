@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(padding16),
                   gridDelegate: const ResponsiveGridDelegate(
                     minCrossAxisExtent: 180,
-                    maxCrossAxisExtent: 240,
+                    maxCrossAxisExtent: 300,
                     crossAxisSpacing: padding12,
                     mainAxisSpacing: padding12,
                     childAspectRatio: 5 / 6,

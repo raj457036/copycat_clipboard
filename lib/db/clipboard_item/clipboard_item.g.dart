@@ -27,29 +27,34 @@ const ClipboardItemSchema = CollectionSchema(
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
-    r'modified': PropertySchema(
+    r'localPath': PropertySchema(
       id: 2,
+      name: r'localPath',
+      type: IsarType.string,
+    ),
+    r'modified': PropertySchema(
+      id: 3,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'serverId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
     r'value': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'value',
       type: IsarType.string,
     )
@@ -75,6 +80,12 @@ int _clipboardItemEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.localPath;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.serverId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -99,11 +110,12 @@ void _clipboardItemSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.created);
   writer.writeDateTime(offsets[1], object.lastSynced);
-  writer.writeDateTime(offsets[2], object.modified);
-  writer.writeString(offsets[3], object.serverId);
-  writer.writeString(offsets[4], object.title);
-  writer.writeString(offsets[5], object.type.name);
-  writer.writeString(offsets[6], object.value);
+  writer.writeString(offsets[2], object.localPath);
+  writer.writeDateTime(offsets[3], object.modified);
+  writer.writeString(offsets[4], object.serverId);
+  writer.writeString(offsets[5], object.title);
+  writer.writeString(offsets[6], object.type.name);
+  writer.writeString(offsets[7], object.value);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -115,12 +127,13 @@ ClipboardItem _clipboardItemDeserialize(
   final object = ClipboardItem(
     created: reader.readDateTime(offsets[0]),
     lastSynced: reader.readDateTimeOrNull(offsets[1]),
-    modified: reader.readDateTime(offsets[2]),
-    serverId: reader.readStringOrNull(offsets[3]),
-    title: reader.readString(offsets[4]),
-    type: _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[5])] ??
+    localPath: reader.readStringOrNull(offsets[2]),
+    modified: reader.readDateTime(offsets[3]),
+    serverId: reader.readStringOrNull(offsets[4]),
+    title: reader.readString(offsets[5]),
+    type: _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[6])] ??
         ClipItemType.text,
-    value: reader.readStringOrNull(offsets[6]),
+    value: reader.readStringOrNull(offsets[7]),
   );
   return object;
 }
@@ -137,15 +150,17 @@ P _clipboardItemDeserializeProp<P>(
     case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
-      return (reader.readDateTime(offset)) as P;
-    case 3:
       return (reader.readStringOrNull(offset)) as P;
+    case 3:
+      return (reader.readDateTime(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
       return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
           ClipItemType.text) as P;
-    case 6:
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -439,6 +454,160 @@ extension ClipboardItemQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'localPath',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'localPath',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'localPath',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'localPath',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'localPath',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'localPath',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'localPath',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'localPath',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'localPath',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'localPath',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'localPath',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localPathIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'localPath',
+        value: '',
       ));
     });
   }
@@ -1112,6 +1281,19 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByLocalPath() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localPath', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByLocalPathDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localPath', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'modified', Sort.asc);
@@ -1214,6 +1396,19 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByLocalPath() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localPath', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByLocalPathDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localPath', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'modified', Sort.asc);
@@ -1291,6 +1486,13 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByLocalPath(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'localPath', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'modified');
@@ -1347,6 +1549,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> localPathProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'localPath');
+    });
+  }
+
   QueryBuilder<ClipboardItem, DateTime, QQueryOperations> modifiedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'modified');
@@ -1391,6 +1599,7 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       created: DateTime.parse(json['created'] as String),
       modified: DateTime.parse(json['modified'] as String),
       title: json['title'] as String,
+      localPath: json['localPath'] as String?,
       value: json['value'] as String?,
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
     );
@@ -1402,6 +1611,7 @@ Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
       'created': instance.created.toIso8601String(),
       'modified': instance.modified.toIso8601String(),
       'title': instance.title,
+      'localPath': instance.localPath,
       'value': instance.value,
       'type': _$ClipItemTypeEnumMap[instance.type]!,
     };
