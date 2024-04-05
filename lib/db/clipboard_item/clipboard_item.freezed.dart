@@ -26,6 +26,7 @@ mixin _$ClipboardItem {
   DateTime get created => throw _privateConstructorUsedError;
   DateTime get modified => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String? get localPath => throw _privateConstructorUsedError;
 
   /// text, path, url
   String? get value => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $ClipboardItemCopyWith<$Res> {
       DateTime created,
       DateTime modified,
       String title,
+      String? localPath,
       String? value,
       @Enumerated(EnumType.name) ClipItemType type});
 }
@@ -72,6 +74,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? created = null,
     Object? modified = null,
     Object? title = null,
+    Object? localPath = freezed,
     Object? value = freezed,
     Object? type = null,
   }) {
@@ -96,6 +99,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      localPath: freezed == localPath
+          ? _value.localPath
+          : localPath // ignore: cast_nullable_to_non_nullable
+              as String?,
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -122,6 +129,7 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       DateTime created,
       DateTime modified,
       String title,
+      String? localPath,
       String? value,
       @Enumerated(EnumType.name) ClipItemType type});
 }
@@ -142,6 +150,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? created = null,
     Object? modified = null,
     Object? title = null,
+    Object? localPath = freezed,
     Object? value = freezed,
     Object? type = null,
   }) {
@@ -166,6 +175,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      localPath: freezed == localPath
+          ? _value.localPath
+          : localPath // ignore: cast_nullable_to_non_nullable
+              as String?,
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -187,6 +200,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       required this.created,
       required this.modified,
       required this.title,
+      this.localPath,
       this.value,
       @Enumerated(EnumType.name) required this.type})
       : super._();
@@ -205,6 +219,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   final DateTime modified;
   @override
   final String title;
+  @override
+  final String? localPath;
 
   /// text, path, url
   @override
@@ -215,7 +231,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, created: $created, modified: $modified, title: $title, value: $value, type: $type)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, created: $created, modified: $modified, title: $title, localPath: $localPath, value: $value, type: $type)';
   }
 
   @override
@@ -231,14 +247,16 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.modified, modified) ||
                 other.modified == modified) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.localPath, localPath) ||
+                other.localPath == localPath) &&
             (identical(other.value, value) || other.value == value) &&
             (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, serverId, lastSynced, created, modified, title, value, type);
+  int get hashCode => Object.hash(runtimeType, serverId, lastSynced, created,
+      modified, title, localPath, value, type);
 
   @JsonKey(ignore: true)
   @override
@@ -261,6 +279,7 @@ abstract class _ClipboardItem extends ClipboardItem {
           required final DateTime created,
           required final DateTime modified,
           required final String title,
+          final String? localPath,
           final String? value,
           @Enumerated(EnumType.name) required final ClipItemType type}) =
       _$ClipboardItemImpl;
@@ -281,6 +300,8 @@ abstract class _ClipboardItem extends ClipboardItem {
   DateTime get modified;
   @override
   String get title;
+  @override
+  String? get localPath;
   @override
 
   /// text, path, url
