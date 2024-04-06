@@ -37,7 +37,7 @@ class MainApp extends StatelessWidget {
         routeInformationProvider: router.routeInformationProvider,
         routerDelegate: router.routerDelegate,
         backButtonDispatcher: router.backButtonDispatcher,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         theme: ThemeData(
           useMaterial3: true,
           textTheme: textTheme.apply(

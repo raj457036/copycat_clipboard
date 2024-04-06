@@ -41,11 +41,12 @@ class HomePage extends StatelessWidget {
           return ResponsiveGridView.builder(
             padding: const EdgeInsets.all(padding16),
             gridDelegate: const ResponsiveGridDelegate(
-              minCrossAxisExtent: 180,
-              maxCrossAxisExtent: 240,
+              minCrossAxisExtent: 200,
+              maxCrossAxisExtent: 280,
               crossAxisSpacing: padding12,
               mainAxisSpacing: padding12,
               childAspectRatio: 4 / 3,
+              // childAspectRatio: 3 / 4,
             ),
             itemCount: state.length,
             itemBuilder: (context, index) {

@@ -9,6 +9,10 @@ import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+const _borderRadius = BorderRadius.vertical(
+  top: Radius.circular(12),
+);
+
 class TextPreview extends StatelessWidget {
   final ClipboardItem item;
 
@@ -16,12 +20,12 @@ class TextPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Material(
-      color: Colors.white,
+      borderRadius: _borderRadius,
+      color: colors.surfaceVariant,
       child: InkWell(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(12),
-        ),
+        borderRadius: _borderRadius,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
@@ -45,16 +49,15 @@ class ImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const radius = BorderRadius.vertical(
-      top: Radius.circular(12),
-    );
+    final colors = context.colors;
     return Material(
-      color: Colors.white,
+      borderRadius: _borderRadius,
+      color: colors.surfaceVariant,
       child: InkWell(
-        borderRadius: radius,
+        borderRadius: _borderRadius,
         onTap: () {},
         child: ClipRRect(
-          borderRadius: radius,
+          borderRadius: _borderRadius,
           child: SizedBox.expand(
             child: Image(
               image: FileImage(File(item.localPath!)),
@@ -75,12 +78,12 @@ class UrlPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Material(
-      color: Colors.white,
+      borderRadius: _borderRadius,
+      color: colors.surfaceVariant,
       child: InkWell(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(12),
-        ),
+        borderRadius: _borderRadius,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
@@ -104,18 +107,18 @@ class FilePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Material(
-      color: Colors.white,
+      borderRadius: _borderRadius,
+      color: colors.surfaceVariant,
       child: InkWell(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(12),
-        ),
+        borderRadius: _borderRadius,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
             padding: const EdgeInsets.all(padding8),
             child: Text(
-              item.value!,
+              item.title,
               overflow: TextOverflow.fade,
               maxLines: 10,
             ),

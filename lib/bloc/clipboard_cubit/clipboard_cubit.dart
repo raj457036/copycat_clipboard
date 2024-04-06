@@ -90,15 +90,12 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
       }
     }
 
-    if (res.contains(Formats.plainText) && res.contains(Formats.uri)) {
-      // To prevent duplicate entry for both text and uri.
-      res.remove(Formats.plainText);
-    }
-
     final items = await Future.wait(
         res.map((format) => getClipboardItemForFormat(format, reader)));
 
-    items.where((element) => element != null).forEach((e) => addItem(e!));
+    for (var item in items.where((element) => element != null)) {
+      await addItem(item!);
+    }
   }
 
   @override

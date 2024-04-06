@@ -86,7 +86,7 @@ Future<String?> writeImageFile(
 }
 
 Future<String?> writeFile(Uri uri) async {
-  final file = File(uri.path);
+  final file = File(Uri.decodeFull(uri.path));
   if (!await file.exists()) {
     logger.warning("File not found!");
     return null;
