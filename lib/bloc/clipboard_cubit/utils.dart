@@ -113,6 +113,7 @@ Future<String?> writeFile(Uri uri) async {
 }
 
 Future<ClipboardItem?> getClipboardItemForFormat(
+  String userId,
   DataFormat format,
   ClipboardDataReader reader,
 ) async {
@@ -125,7 +126,7 @@ Future<ClipboardItem?> getClipboardItemForFormat(
       } else {
         // Sometimes macOS uses CR for line break;
         final sanitized = text.replaceAll(RegExp('\r[\n]?'), '\n');
-        return ClipboardItem.fromText(sanitized);
+        return ClipboardItem.fromText(userId, sanitized);
       }
     case Formats.plainTextFile:
       final appDir = await getApplicationDocumentsDirectory();
@@ -136,13 +137,14 @@ Future<ClipboardItem?> getClipboardItemForFormat(
         final text = utf8.decode(contents, allowMalformed: true);
 
         if (text.length <= 255) {
-          return ClipboardItem.fromText(text);
+          return ClipboardItem.fromText(userId, text);
         }
         final directory = p.join(appDir.path, "texts");
         await createDirectoryIfNotExists(directory);
         final path = p.join(directory, "${getId()}.txt");
         await File(path).writeAsString(text);
-        return ClipboardItem.fromFile(path, preview: text.substring(0, 50));
+        return ClipboardItem.fromFile(userId, path,
+            preview: text.substring(0, 50));
       }
     case Formats.htmlText:
       //? Unsupported format
@@ -170,7 +172,7 @@ Future<ClipboardItem?> getClipboardItemForFormat(
       if (path == null) {
         return null;
       } else {
-        return ClipboardItem.fromFile(path, isImage: true);
+        return ClipboardItem.fromFile(userId, path, isImage: true);
       }
     case Formats.uri:
     case Formats.fileUri:
@@ -186,28 +188,15 @@ Future<ClipboardItem?> getClipboardItemForFormat(
           if (path == null) return null;
 
           logger.info("FileUri: $fileUri");
-          return ClipboardItem.fromFile(path);
+          return ClipboardItem.fromFile(userId, path);
         }
       }
       final uri = await uriFuture;
       if (uri != null) {
         logger.info("Uri: ${uri.uri} Name: ${uri.name}");
-        return ClipboardItem.fromUri(uri.uri);
+        return ClipboardItem.fromUri(userId, uri.uri);
       }
       return null;
-    // case formatCustom:
-    //   final data = await reader.readValue(formatCustom);
-    //   if (data == null) {
-    //     return null;
-    //   } else {
-    //     return _RepresentationWidget(
-    //       format: format,
-    //       name: 'Custom Data',
-    //       synthesized: reader.isSynthesized(formatCustom),
-    //       virtual: reader.isVirtual(formatCustom),
-    //       content: Text(data.toString()),
-    //     );
-    //   }
     default:
       return null;
   }

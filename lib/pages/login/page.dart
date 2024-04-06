@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
@@ -21,6 +22,7 @@ class LoginPage extends StatelessWidget {
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthenticatedAuthState) {
+                context.read<ClipboardCubit>().fetch();
                 context.goNamed(RouteConstants.home);
               }
             },
