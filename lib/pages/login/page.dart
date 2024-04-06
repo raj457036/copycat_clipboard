@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,8 @@ class LoginPage extends StatelessWidget {
                 email: "rs457036@gmail.com",
                 password: "Pass12345",
               );
+
+              logger.info("Session: $session");
             },
             child: const Text("Login"),
           ),

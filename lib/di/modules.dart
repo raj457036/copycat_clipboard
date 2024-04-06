@@ -18,12 +18,20 @@ abstract class RegisterModule {
   Account account(Client client) => Account(client);
 
   @preResolve
-  @lazySingleton
+  @LazySingleton(dispose: closeIsarDb)
   Future<Isar> get db async {
     final dir = await getApplicationDocumentsDirectory();
-    return await Isar.open(
+    final isar = await Isar.open(
       [ClipboardItemSchema],
       directory: dir.path,
+      relaxedDurability: true,
+      inspector: true,
+      name: "Clipboard-Cache2",
     );
+    return isar;
   }
+}
+
+Future<void> closeIsarDb(Isar db) async {
+  await db.close();
 }

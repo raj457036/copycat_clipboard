@@ -24,6 +24,7 @@ class ConfirmDialog extends StatelessWidget {
       ),
       TextButton(
         onPressed: () => context.pop(true),
+        autofocus: true,
         child: const Text("Confirm"),
       ),
     ];
