@@ -48,27 +48,35 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     DateTime? lastSynced,
     String? value,
     String? localPath,
+    String? serverPath,
+    required String userId,
     required DateTime created,
     required DateTime modified,
     required String title,
+    String? description,
     @Enumerated(EnumType.name) required ClipItemType type,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
       _$ClipboardItemFromJson(json);
 
-  factory ClipboardItem.fromText(String text) {
+  factory ClipboardItem.fromText(String userId, String text) {
     return ClipboardItem(
       value: text,
       created: DateTime.now(),
       modified: DateTime.now(),
       title: "Text",
       type: ClipItemType.text,
+      userId: userId,
     );
   }
 
-  factory ClipboardItem.fromFile(String filePath,
-      {bool isImage = false, String? preview}) {
+  factory ClipboardItem.fromFile(
+    String userId,
+    String filePath, {
+    bool isImage = false,
+    String? preview,
+  }) {
     return ClipboardItem(
       value: preview ?? filePath,
       created: DateTime.now(),
@@ -76,12 +84,13 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       title: p.basename(filePath),
       type: isImage ? ClipItemType.image : ClipItemType.file,
       localPath: filePath,
+      userId: userId,
     );
   }
 
-  factory ClipboardItem.fromUri(Uri uri) {
+  factory ClipboardItem.fromUri(String userId, Uri uri) {
     if (!_supportedUriSchemas.contains(uri.scheme)) {
-      return ClipboardItem.fromText(uri.toString());
+      return ClipboardItem.fromText(userId, uri.toString());
     }
 
     return ClipboardItem(
@@ -90,11 +99,12 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       modified: DateTime.now(),
       title: uri.host,
       type: ClipItemType.url,
+      userId: userId,
     );
   }
 
   /// Removes the associated file.
-  Future<void> cleanup() async {
+  Future<void> cleanUp() async {
     try {
       if (localPath != null && type == ClipItemType.file ||
           type == ClipItemType.image) {

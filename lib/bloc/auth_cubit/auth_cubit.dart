@@ -8,15 +8,17 @@ import 'package:injectable/injectable.dart';
 part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
-@injectable
+@singleton
 class AuthCubit extends Cubit<AuthState> {
   final Account account;
 
   AuthCubit(this.account) : super(const AuthState.unknown());
 
+  String? get userId =>
+      state.whenOrNull(authenticated: (session) => session.userId);
+
   Future<void> fetchSession() async {
     emit(const AuthState.authenticating());
-
     try {
       final session = await account.getSession(sessionId: "current");
       emit(AuthState.authenticated(session: session));

@@ -24,9 +24,12 @@ mixin _$ClipboardItem {
   DateTime? get lastSynced => throw _privateConstructorUsedError;
   String? get value => throw _privateConstructorUsedError;
   String? get localPath => throw _privateConstructorUsedError;
+  String? get serverPath => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   DateTime get created => throw _privateConstructorUsedError;
   DateTime get modified => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   ClipItemType get type => throw _privateConstructorUsedError;
 
@@ -47,9 +50,12 @@ abstract class $ClipboardItemCopyWith<$Res> {
       DateTime? lastSynced,
       String? value,
       String? localPath,
+      String? serverPath,
+      String userId,
       DateTime created,
       DateTime modified,
       String title,
+      String? description,
       @Enumerated(EnumType.name) ClipItemType type});
 }
 
@@ -70,9 +76,12 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? lastSynced = freezed,
     Object? value = freezed,
     Object? localPath = freezed,
+    Object? serverPath = freezed,
+    Object? userId = null,
     Object? created = null,
     Object? modified = null,
     Object? title = null,
+    Object? description = freezed,
     Object? type = null,
   }) {
     return _then(_value.copyWith(
@@ -92,6 +101,14 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.localPath
           : localPath // ignore: cast_nullable_to_non_nullable
               as String?,
+      serverPath: freezed == serverPath
+          ? _value.serverPath
+          : serverPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -104,6 +121,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -125,9 +146,12 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       DateTime? lastSynced,
       String? value,
       String? localPath,
+      String? serverPath,
+      String userId,
       DateTime created,
       DateTime modified,
       String title,
+      String? description,
       @Enumerated(EnumType.name) ClipItemType type});
 }
 
@@ -146,9 +170,12 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? lastSynced = freezed,
     Object? value = freezed,
     Object? localPath = freezed,
+    Object? serverPath = freezed,
+    Object? userId = null,
     Object? created = null,
     Object? modified = null,
     Object? title = null,
+    Object? description = freezed,
     Object? type = null,
   }) {
     return _then(_$ClipboardItemImpl(
@@ -168,6 +195,14 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.localPath
           : localPath // ignore: cast_nullable_to_non_nullable
               as String?,
+      serverPath: freezed == serverPath
+          ? _value.serverPath
+          : serverPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -180,6 +215,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -196,9 +235,12 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.lastSynced,
       this.value,
       this.localPath,
+      this.serverPath,
+      required this.userId,
       required this.created,
       required this.modified,
       required this.title,
+      this.description,
       @Enumerated(EnumType.name) required this.type})
       : super._();
 
@@ -214,18 +256,24 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   final String? localPath;
   @override
+  final String? serverPath;
+  @override
+  final String userId;
+  @override
   final DateTime created;
   @override
   final DateTime modified;
   @override
   final String title;
   @override
+  final String? description;
+  @override
   @Enumerated(EnumType.name)
   final ClipItemType type;
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, value: $value, localPath: $localPath, created: $created, modified: $modified, title: $title, type: $type)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, value: $value, localPath: $localPath, serverPath: $serverPath, userId: $userId, created: $created, modified: $modified, title: $title, description: $description, type: $type)';
   }
 
   @override
@@ -240,17 +288,33 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.value, value) || other.value == value) &&
             (identical(other.localPath, localPath) ||
                 other.localPath == localPath) &&
+            (identical(other.serverPath, serverPath) ||
+                other.serverPath == serverPath) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.created, created) || other.created == created) &&
             (identical(other.modified, modified) ||
                 other.modified == modified) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, serverId, lastSynced, value,
-      localPath, created, modified, title, type);
+  int get hashCode => Object.hash(
+      runtimeType,
+      serverId,
+      lastSynced,
+      value,
+      localPath,
+      serverPath,
+      userId,
+      created,
+      modified,
+      title,
+      description,
+      type);
 
   @JsonKey(ignore: true)
   @override
@@ -272,9 +336,12 @@ abstract class _ClipboardItem extends ClipboardItem {
           final DateTime? lastSynced,
           final String? value,
           final String? localPath,
+          final String? serverPath,
+          required final String userId,
           required final DateTime created,
           required final DateTime modified,
           required final String title,
+          final String? description,
           @Enumerated(EnumType.name) required final ClipItemType type}) =
       _$ClipboardItemImpl;
   _ClipboardItem._() : super._();
@@ -291,11 +358,17 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   String? get localPath;
   @override
+  String? get serverPath;
+  @override
+  String get userId;
+  @override
   DateTime get created;
   @override
   DateTime get modified;
   @override
   String get title;
+  @override
+  String? get description;
   @override
   @Enumerated(EnumType.name)
   ClipItemType get type;

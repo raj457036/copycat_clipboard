@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/utils.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
@@ -16,11 +19,12 @@ part 'clipboard_state.dart';
 @injectable
 class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
   final Isar db;
-
+  final AuthCubit authCubit;
   bool _writing = false;
 
   ClipboardCubit(
     this.db,
+    this.authCubit,
   ) : super(const ClipboardState.loaded(items: [])) {
     clipboardWatcher.addListener(this);
     clipboardWatcher.start();
@@ -67,11 +71,12 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
 
   Future<void> deleteItem(ClipboardItem item) async {
     emit(state.copyWith(items: state.items.where((it) => it != item).toList()));
-    await item.cleanup();
+    await item.cleanUp();
     await db.writeTxn(() async => await db.clipboardItems.delete(item.id));
   }
 
   Future<void> _readClipboard() async {
+    if (authCubit.userId == null) return;
     final clipboard = SystemClipboard.instance;
     if (clipboard == null) {
       logger.severe("Clipboard is not available.");
@@ -90,8 +95,8 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
       }
     }
 
-    final items = await Future.wait(
-        res.map((format) => getClipboardItemForFormat(format, reader)));
+    final items = await Future.wait(res.map((format) =>
+        getClipboardItemForFormat(authCubit.userId!, format, reader)));
 
     for (var item in items.where((element) => element != null)) {
       await addItem(item!);
