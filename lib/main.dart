@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
@@ -26,9 +27,11 @@ class MainApp extends StatelessWidget {
     final textTheme = GoogleFonts.robotoTextTheme();
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => sl()..fetchSession(),
+        ),
         BlocProvider<ClipboardCubit>(
-          create: (context) => sl()..fetch(),
-          lazy: false,
+          create: (context) => sl(),
         ),
       ],
       child: MaterialApp.router(
