@@ -15,7 +15,7 @@ class SplashPage extends StatelessWidget {
     // context.goNamed(RouteConstants.mood);
 
     try {
-      await account.get();
+      final user = await account.get();
       // ignore: use_build_context_synchronously
       context.goNamed(RouteConstants.home);
     } catch (e) {

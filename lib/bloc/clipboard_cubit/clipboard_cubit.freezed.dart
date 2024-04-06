@@ -18,26 +18,26 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ClipboardState {
   List<ClipboardItem> get items => throw _privateConstructorUsedError;
   bool get loading => throw _privateConstructorUsedError;
-  Failure? get failure => throw _privateConstructorUsedError;
   bool get syncing => throw _privateConstructorUsedError;
+  Failure? get failure => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(List<ClipboardItem> items, bool loading,
-            Failure? failure, bool syncing)
+            bool syncing, Failure? failure)
         loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<ClipboardItem> items, bool loading, Failure? failure,
-            bool syncing)?
+    TResult? Function(List<ClipboardItem> items, bool loading, bool syncing,
+            Failure? failure)?
         loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<ClipboardItem> items, bool loading, Failure? failure,
-            bool syncing)?
+    TResult Function(List<ClipboardItem> items, bool loading, bool syncing,
+            Failure? failure)?
         loaded,
     required TResult orElse(),
   }) =>
@@ -73,8 +73,8 @@ abstract class $ClipboardStateCopyWith<$Res> {
   $Res call(
       {List<ClipboardItem> items,
       bool loading,
-      Failure? failure,
-      bool syncing});
+      bool syncing,
+      Failure? failure});
 }
 
 /// @nodoc
@@ -92,8 +92,8 @@ class _$ClipboardStateCopyWithImpl<$Res, $Val extends ClipboardState>
   $Res call({
     Object? items = null,
     Object? loading = null,
-    Object? failure = freezed,
     Object? syncing = null,
+    Object? failure = freezed,
   }) {
     return _then(_value.copyWith(
       items: null == items
@@ -104,14 +104,14 @@ class _$ClipboardStateCopyWithImpl<$Res, $Val extends ClipboardState>
           ? _value.loading
           : loading // ignore: cast_nullable_to_non_nullable
               as bool,
-      failure: freezed == failure
-          ? _value.failure
-          : failure // ignore: cast_nullable_to_non_nullable
-              as Failure?,
       syncing: null == syncing
           ? _value.syncing
           : syncing // ignore: cast_nullable_to_non_nullable
               as bool,
+      failure: freezed == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure?,
     ) as $Val);
   }
 }
@@ -127,8 +127,8 @@ abstract class _$$ClipboardLoadedStateImplCopyWith<$Res>
   $Res call(
       {List<ClipboardItem> items,
       bool loading,
-      Failure? failure,
-      bool syncing});
+      bool syncing,
+      Failure? failure});
 }
 
 /// @nodoc
@@ -144,8 +144,8 @@ class __$$ClipboardLoadedStateImplCopyWithImpl<$Res>
   $Res call({
     Object? items = null,
     Object? loading = null,
-    Object? failure = freezed,
     Object? syncing = null,
+    Object? failure = freezed,
   }) {
     return _then(_$ClipboardLoadedStateImpl(
       items: null == items
@@ -156,14 +156,14 @@ class __$$ClipboardLoadedStateImplCopyWithImpl<$Res>
           ? _value.loading
           : loading // ignore: cast_nullable_to_non_nullable
               as bool,
-      failure: freezed == failure
-          ? _value.failure
-          : failure // ignore: cast_nullable_to_non_nullable
-              as Failure?,
       syncing: null == syncing
           ? _value.syncing
           : syncing // ignore: cast_nullable_to_non_nullable
               as bool,
+      failure: freezed == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure?,
     ));
   }
 }
@@ -174,8 +174,8 @@ class _$ClipboardLoadedStateImpl implements ClipboardLoadedState {
   const _$ClipboardLoadedStateImpl(
       {required final List<ClipboardItem> items,
       this.loading = true,
-      this.failure,
-      this.syncing = false})
+      this.syncing = false,
+      this.failure})
       : _items = items;
 
   final List<ClipboardItem> _items;
@@ -190,14 +190,14 @@ class _$ClipboardLoadedStateImpl implements ClipboardLoadedState {
   @JsonKey()
   final bool loading;
   @override
-  final Failure? failure;
-  @override
   @JsonKey()
   final bool syncing;
+  @override
+  final Failure? failure;
 
   @override
   String toString() {
-    return 'ClipboardState.loaded(items: $items, loading: $loading, failure: $failure, syncing: $syncing)';
+    return 'ClipboardState.loaded(items: $items, loading: $loading, syncing: $syncing, failure: $failure)';
   }
 
   @override
@@ -207,13 +207,13 @@ class _$ClipboardLoadedStateImpl implements ClipboardLoadedState {
             other is _$ClipboardLoadedStateImpl &&
             const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.loading, loading) || other.loading == loading) &&
-            (identical(other.failure, failure) || other.failure == failure) &&
-            (identical(other.syncing, syncing) || other.syncing == syncing));
+            (identical(other.syncing, syncing) || other.syncing == syncing) &&
+            (identical(other.failure, failure) || other.failure == failure));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_items), loading, failure, syncing);
+      const DeepCollectionEquality().hash(_items), loading, syncing, failure);
 
   @JsonKey(ignore: true)
   @override
@@ -227,32 +227,32 @@ class _$ClipboardLoadedStateImpl implements ClipboardLoadedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(List<ClipboardItem> items, bool loading,
-            Failure? failure, bool syncing)
+            bool syncing, Failure? failure)
         loaded,
   }) {
-    return loaded(items, loading, failure, syncing);
+    return loaded(items, loading, syncing, failure);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<ClipboardItem> items, bool loading, Failure? failure,
-            bool syncing)?
+    TResult? Function(List<ClipboardItem> items, bool loading, bool syncing,
+            Failure? failure)?
         loaded,
   }) {
-    return loaded?.call(items, loading, failure, syncing);
+    return loaded?.call(items, loading, syncing, failure);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<ClipboardItem> items, bool loading, Failure? failure,
-            bool syncing)?
+    TResult Function(List<ClipboardItem> items, bool loading, bool syncing,
+            Failure? failure)?
         loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(items, loading, failure, syncing);
+      return loaded(items, loading, syncing, failure);
     }
     return orElse();
   }
@@ -290,17 +290,17 @@ abstract class ClipboardLoadedState implements ClipboardState {
   const factory ClipboardLoadedState(
       {required final List<ClipboardItem> items,
       final bool loading,
-      final Failure? failure,
-      final bool syncing}) = _$ClipboardLoadedStateImpl;
+      final bool syncing,
+      final Failure? failure}) = _$ClipboardLoadedStateImpl;
 
   @override
   List<ClipboardItem> get items;
   @override
   bool get loading;
   @override
-  Failure? get failure;
-  @override
   bool get syncing;
+  @override
+  Failure? get failure;
   @override
   @JsonKey(ignore: true)
   _$$ClipboardLoadedStateImplCopyWith<_$ClipboardLoadedStateImpl>

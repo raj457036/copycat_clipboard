@@ -13,8 +13,8 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:isar/isar.dart' as _i4;
 
-import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i5;
-import 'modules.dart' as _i6;
+import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i6;
+import 'modules.dart' as _i5;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -32,12 +32,13 @@ extension GetItInjectableX on _i1.GetIt {
     await gh.lazySingletonAsync<_i4.Isar>(
       () => registerModule.db,
       preResolve: true,
+      dispose: _i5.closeIsarDb,
     );
-    gh.factory<_i5.ClipboardCubit>(() => _i5.ClipboardCubit(gh<_i4.Isar>()));
+    gh.factory<_i6.ClipboardCubit>(() => _i6.ClipboardCubit(gh<_i4.Isar>()));
     gh.lazySingleton<_i3.Account>(
         () => registerModule.account(gh<_i3.Client>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i6.RegisterModule {}
+class _$RegisterModule extends _i5.RegisterModule {}

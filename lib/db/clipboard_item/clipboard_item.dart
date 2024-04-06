@@ -1,8 +1,31 @@
+import 'dart:io';
+
+import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/db/base.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
+import 'package:path/path.dart' as p;
 
 part 'clipboard_item.freezed.dart';
 part 'clipboard_item.g.dart';
+
+const _supportedUriSchemas = {
+  "http",
+  "https",
+  "ftp",
+  "file",
+  "mailto",
+  "tel",
+  "data",
+  "ws",
+  "wss",
+  "ldap",
+  "urn",
+  "git",
+  "ssh",
+  "irc",
+  "news"
+};
 
 enum ClipItemType {
   @JsonValue("text")
@@ -17,22 +40,17 @@ enum ClipItemType {
 
 @freezed
 @Collection(ignore: {'copyWith'})
-class ClipboardItem with _$ClipboardItem {
-  const ClipboardItem._();
+class ClipboardItem with _$ClipboardItem, IsarIdMixin {
+  ClipboardItem._();
 
-  Id get id => Isar.autoIncrement;
-
-  const factory ClipboardItem({
-    /// common properties
+  factory ClipboardItem({
     String? serverId,
     DateTime? lastSynced,
+    String? value,
+    String? localPath,
     required DateTime created,
     required DateTime modified,
     required String title,
-    String? localPath,
-
-    /// text, path, url
-    String? value,
     @Enumerated(EnumType.name) required ClipItemType type,
   }) = _ClipboardItem;
 
@@ -48,4 +66,50 @@ class ClipboardItem with _$ClipboardItem {
       type: ClipItemType.text,
     );
   }
+
+  factory ClipboardItem.fromFile(String filePath,
+      {bool isImage = false, String? preview}) {
+    return ClipboardItem(
+      value: preview ?? filePath,
+      created: DateTime.now(),
+      modified: DateTime.now(),
+      title: p.basename(filePath),
+      type: isImage ? ClipItemType.image : ClipItemType.file,
+      localPath: filePath,
+    );
+  }
+
+  factory ClipboardItem.fromUri(Uri uri) {
+    if (!_supportedUriSchemas.contains(uri.scheme)) {
+      return ClipboardItem.fromText(uri.toString());
+    }
+
+    return ClipboardItem(
+      value: uri.toString(),
+      created: DateTime.now(),
+      modified: DateTime.now(),
+      title: uri.host,
+      type: ClipItemType.url,
+    );
+  }
+
+  /// Removes the associated file.
+  Future<void> cleanup() async {
+    try {
+      if (localPath != null && type == ClipItemType.file ||
+          type == ClipItemType.image) {
+        final file = File(localPath!);
+        if (await file.exists()) {
+          await file.delete();
+        }
+      }
+    } catch (e) {
+      logger.warning("Couldn't delete file! $e");
+    }
+  }
+
+  String? get fileExtension =>
+      localPath != null ? p.extension(localPath!) : null;
+
+  File? getFile() => localPath != null ? File(localPath!) : null;
 }
