@@ -39,6 +39,7 @@ dependencies:
   uuid: ^4.3.3
   lazy_g_drive: ^2.1.1
   rxdart: ^0.27.7
+  internet_connection_checker_plus: ^2.3.0
 
 
 dev_dependencies:
