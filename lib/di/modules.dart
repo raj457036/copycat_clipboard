@@ -1,4 +1,5 @@
 import "package:appwrite/appwrite.dart";
+import "package:clipboard/db/app_config/appconfig.dart";
 import "package:clipboard/db/clipboard_item/clipboard_item.dart";
 import "package:injectable/injectable.dart";
 import "package:isar/isar.dart";
@@ -22,7 +23,10 @@ abstract class RegisterModule {
   Future<Isar> get db async {
     final dir = await getApplicationDocumentsDirectory();
     final isar = await Isar.open(
-      [ClipboardItemSchema],
+      [
+        ClipboardItemSchema,
+        AppConfigSchema,
+      ],
       directory: dir.path,
       relaxedDurability: true,
       inspector: true,

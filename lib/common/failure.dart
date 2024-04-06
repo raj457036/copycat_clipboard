@@ -8,6 +8,13 @@ class Failure {
     required this.message,
     required this.code,
   });
+
+  factory Failure.fromException(Object e) {
+    return Failure(
+      message: e.toString(),
+      code: e.runtimeType.toString(),
+    );
+  }
 }
 
 typedef FailureOr<T> = Future<Either<Failure, T>>;

@@ -6,11 +6,11 @@ import 'package:clipboard/bloc/clipboard_cubit/utils.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/repositories/clipboard.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:isar/isar.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
 part 'clipboard_cubit.freezed.dart';
@@ -18,12 +18,13 @@ part 'clipboard_state.dart';
 
 @injectable
 class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
-  final Isar db;
+  final ClipboardRepository repo;
   final AuthCubit authCubit;
+
   bool _writing = false;
 
   ClipboardCubit(
-    this.db,
+    this.repo,
     this.authCubit,
   ) : super(const ClipboardState.loaded(items: [])) {
     clipboardWatcher.addListener(this);
@@ -32,9 +33,26 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
 
   Future<void> fetch() async {
     emit(state.copyWith(loading: true));
-    final result =
-        await db.clipboardItems.where().sortByCreatedDesc().findAll();
-    emit(state.copyWith(loading: false, items: result));
+    final items = await repo.getList(
+      limit: state.limit,
+      offset: state.offset,
+    );
+
+    emit(
+      items.fold(
+        (l) => state.copyWith(
+          failure: l,
+          loading: false,
+        ),
+        (r) => state.copyWith(
+          loading: false,
+          items: [...state.items, ...r],
+          offset: state.offset + r.length,
+          limit: state.limit,
+          hasMore: state.limit == r.length,
+        ),
+      ),
+    );
   }
 
   Future<bool> copyToClipboard(ClipboardItem item) async {
@@ -60,19 +78,24 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
         state.items.first.value == item.value;
   }
 
-  Future<void> addItem(ClipboardItem item) async {
+  Future<(Failure?, ClipboardItem?)> addItem(ClipboardItem item) async {
     if (isSameAsLastItem(item)) {
       logger.info("Ignored Duplicate item");
-      return;
+      return (null, null);
     }
     emit(state.copyWith(items: [item, ...state.items]));
-    await db.writeTxn(() async => await db.clipboardItems.put(item));
+
+    final result = await repo.create(item);
+
+    return result.fold((l) => (l, null), (r) => (null, r));
   }
 
-  Future<void> deleteItem(ClipboardItem item) async {
+  Future<Failure?> deleteItem(ClipboardItem item) async {
     emit(state.copyWith(items: state.items.where((it) => it != item).toList()));
     await item.cleanUp();
-    await db.writeTxn(() async => await db.clipboardItems.delete(item.id));
+
+    final result = await repo.delete(item);
+    return result.fold((l) => l, (r) => null);
   }
 
   Future<void> _readClipboard() async {

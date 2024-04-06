@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
   clipboard_watcher
+  connectivity_plus
   irondash_engine_context
   isar_flutter_libs
   screen_retriever
