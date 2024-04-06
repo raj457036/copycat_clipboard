@@ -1,7 +1,12 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
+import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   final Account account;
@@ -13,16 +18,36 @@ class LoginPage extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(padding16),
-          child: TextButton(
-            onPressed: () async {
-              final session = await account.createEmailSession(
-                email: "rs457036@gmail.com",
-                password: "Pass12345",
-              );
-
-              logger.info("Session: $session");
+          child: BlocConsumer<AuthCubit, AuthState>(
+            listener: (context, state) {
+              if (state is AuthenticatedAuthState) {
+                context.goNamed(RouteConstants.home);
+              }
             },
-            child: const Text("Login"),
+            builder: (context, state) {
+              final isLoading = switch (state) {
+                UnauthenticatedAuthState() => false,
+                _ => true,
+              };
+              return ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(183, 40),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: const EdgeInsets.all(padding4),
+                ),
+                onPressed: isLoading
+                    ? null
+                    : context.read<AuthCubit>().createNewSession,
+                label: isLoading
+                    ? const CircularProgressIndicator.adaptive()
+                    : Text("Continue with Google",
+                        style: context.textTheme.titleSmall),
+                icon: Image.asset(
+                  AssetConstants.googleLogo,
+                  width: 24,
+                ),
+              );
+            },
           ),
         ),
       ),

@@ -13,6 +13,7 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:isar/isar.dart' as _i4;
 
+import '../bloc/auth_cubit/auth_cubit.dart' as _i7;
 import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i6;
 import 'modules.dart' as _i5;
 
@@ -37,6 +38,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i6.ClipboardCubit>(() => _i6.ClipboardCubit(gh<_i4.Isar>()));
     gh.lazySingleton<_i3.Account>(
         () => registerModule.account(gh<_i3.Client>()));
+    gh.factory<_i7.AuthCubit>(() => _i7.AuthCubit(gh<_i3.Account>()));
     return this;
   }
 }
