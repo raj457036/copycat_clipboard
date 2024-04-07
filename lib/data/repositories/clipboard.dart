@@ -38,8 +38,7 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
     int offset = 0,
   }) async {
     try {
-      final items = await local.getList(
-          limit: limit, offset: offset, afterDate: DateTime.now());
+      final items = await local.getList(limit: limit, offset: offset);
 
       return Right(items);
     } catch (e) {
