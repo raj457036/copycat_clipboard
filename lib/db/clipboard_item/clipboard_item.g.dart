@@ -2405,16 +2405,12 @@ extension ClipboardItemQueryProperty
 
 _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
     _$ClipboardItemImpl(
-      serverId: json['serverId'] as String?,
-      lastSynced: json['lastSynced'] == null
-          ? null
-          : DateTime.parse(json['lastSynced'] as String),
+      serverId: json[r'$id'] as String?,
       value: json['value'] as String?,
-      localPath: json['localPath'] as String?,
       serverPath: json['serverPath'] as String?,
       userId: json['userId'] as String,
-      created: DateTime.parse(json['created'] as String),
-      modified: DateTime.parse(json['modified'] as String),
+      created: DateTime.parse(json[r'$createdAt'] as String),
+      modified: DateTime.parse(json[r'$updatedAt'] as String),
       title: json['title'] as String,
       description: json['description'] as String?,
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
@@ -2423,14 +2419,9 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'serverId': instance.serverId,
-      'lastSynced': instance.lastSynced?.toIso8601String(),
       'value': instance.value,
-      'localPath': instance.localPath,
       'serverPath': instance.serverPath,
       'userId': instance.userId,
-      'created': instance.created.toIso8601String(),
-      'modified': instance.modified.toIso8601String(),
       'title': instance.title,
       'description': instance.description,
       'type': _$ClipItemTypeEnumMap[instance.type]!,

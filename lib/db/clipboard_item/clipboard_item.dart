@@ -44,13 +44,15 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   ClipboardItem._();
 
   factory ClipboardItem({
-    String? serverId,
-    DateTime? lastSynced,
+    @JsonKey(name: "\$id", includeToJson: false) String? serverId,
+    @JsonKey(includeFromJson: false, includeToJson: false) DateTime? lastSynced,
     String? value,
-    String? localPath,
+    @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
     String? serverPath,
     required String userId,
+    @JsonKey(name: "\$createdAt", includeToJson: false)
     required DateTime created,
+    @JsonKey(name: "\$updatedAt", includeToJson: false)
     required DateTime modified,
     required String title,
     String? description,

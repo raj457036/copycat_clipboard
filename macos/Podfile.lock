@@ -3,6 +3,10 @@ PODS:
     - FlutterMacOS
   - clipboard_watcher (0.0.1):
     - FlutterMacOS
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - ReachabilitySwift
   - device_info_plus (0.0.1):
     - FlutterMacOS
   - flutter_web_auth_2 (1.1.1):
@@ -17,6 +21,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - ReachabilitySwift (5.0.0)
   - screen_retriever (0.0.1):
     - FlutterMacOS
   - super_native_extensions (0.0.1):
@@ -31,6 +36,7 @@ PODS:
 DEPENDENCIES:
   - awesome_notifications (from `Flutter/ephemeral/.symlinks/plugins/awesome_notifications/macos`)
   - clipboard_watcher (from `Flutter/ephemeral/.symlinks/plugins/clipboard_watcher/macos`)
+  - connectivity_plus (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin`)
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
   - flutter_web_auth_2 (from `Flutter/ephemeral/.symlinks/plugins/flutter_web_auth_2/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -44,11 +50,17 @@ DEPENDENCIES:
   - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
   - window_to_front (from `Flutter/ephemeral/.symlinks/plugins/window_to_front/macos`)
 
+SPEC REPOS:
+  trunk:
+    - ReachabilitySwift
+
 EXTERNAL SOURCES:
   awesome_notifications:
     :path: Flutter/ephemeral/.symlinks/plugins/awesome_notifications/macos
   clipboard_watcher:
     :path: Flutter/ephemeral/.symlinks/plugins/clipboard_watcher/macos
+  connectivity_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin
   device_info_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
   flutter_web_auth_2:
@@ -77,6 +89,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   awesome_notifications: 428f5c15a700b117418aed09e29c21c5806fcf69
   clipboard_watcher: a71da520051c24c1b969a411b3e152d4dcc93ca5
+  connectivity_plus: e2dad488011aeb593e219360e804c43cc1af5770
   device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
   flutter_web_auth_2: 6695649132b6c71ea17700703761c0d18fdb8cf6
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
@@ -84,6 +97,7 @@ SPEC CHECKSUMS:
   isar_flutter_libs: 43385c99864c168fadba7c9adeddc5d38838ca6a
   package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
   super_native_extensions: 85efee3a7495b46b04befcfc86ed12069264ebf3
   url_launcher_macos: d2691c7dd33ed713bf3544850a623080ec693d95

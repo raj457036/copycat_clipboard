@@ -18,6 +18,9 @@ abstract class RegisterModule {
   @lazySingleton
   Account account(Client client) => Account(client);
 
+  @lazySingleton
+  Databases database(Client client) => Databases(client);
+
   @preResolve
   @LazySingleton(dispose: closeIsarDb)
   Future<Isar> get db async {

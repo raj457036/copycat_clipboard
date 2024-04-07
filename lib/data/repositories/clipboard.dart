@@ -1,8 +1,8 @@
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:isar/isar.dart';
 
 abstract class ClipboardRepository {
   FailureOr<ClipboardItem> create(ClipboardItem item);
@@ -16,16 +16,16 @@ abstract class ClipboardRepository {
 
 @LazySingleton(as: ClipboardRepository)
 class ClipboardRepositoryImpl implements ClipboardRepository {
-  final Isar db;
+  final ClipboardSource local, remote;
 
-  ClipboardRepositoryImpl(this.db);
+  ClipboardRepositoryImpl(
+      @Named("local") this.local, @Named("remote") this.remote);
 
   @override
   FailureOr<ClipboardItem> create(ClipboardItem item) async {
     try {
-      final id = await db.writeTxn(() => db.clipboardItems.put(item));
-      item.id = id;
-      return Right(item);
+      final result = await local.create(item);
+      return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));
     }
@@ -37,12 +37,7 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
     int offset = 0,
   }) async {
     try {
-      final items = await db.clipboardItems
-          .where()
-          .sortByCreatedDesc()
-          .offset(offset)
-          .limit(limit)
-          .findAll();
+      final items = await local.getList(limit: limit, offset: offset);
 
       return Right(items);
     } catch (e) {
@@ -53,14 +48,8 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
-      await db.writeTxn(
-        () => db.clipboardItems.put(
-          item.copyWith(
-            modified: DateTime.now(),
-          ),
-        ),
-      );
-      return Right(item);
+      final result = await local.update(item);
+      return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));
     }
@@ -69,8 +58,8 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
   @override
   FailureOr<bool> delete(ClipboardItem item) async {
     try {
-      final result = await db.writeTxn(() => db.clipboardItems.delete(item.id));
-      return Right(result);
+      await local.delete(item);
+      return const Right(true);
     } catch (e) {
       return Left(Failure.fromException(e));
     }
