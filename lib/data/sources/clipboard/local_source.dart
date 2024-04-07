@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:injectable/injectable.dart';
@@ -21,15 +23,26 @@ class LocalClipboardSource implements ClipboardSource {
   Future<List<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    DateTime? afterDate,
   }) async {
-    final items = await db.clipboardItems
-        .where()
-        .sortByModifiedDesc()
-        .offset(offset)
-        .limit(limit)
-        .findAll();
+    var query = db.clipboardItems.where();
 
-    return items;
+    if (afterDate != null) {
+      query = QueryBuilder.apply(
+        query,
+        (query) => query.addFilterCondition(
+          FilterCondition.lessThan(
+            property: "created",
+            value: afterDate,
+          ),
+        ),
+      );
+    }
+
+    final results =
+        await query.sortByModifiedDesc().offset(offset).limit(limit).findAll();
+
+    return results;
   }
 
   @override

@@ -13,12 +13,12 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:isar/isar.dart' as _i4;
 
-import '../bloc/app_config_cubit/app_config_cubit.dart' as _i12;
+import '../bloc/app_config_cubit/app_config_cubit.dart' as _i13;
 import '../bloc/auth_cubit/auth_cubit.dart' as _i11;
 import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i14;
 import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i7;
 import '../data/repositories/app_config.dart' as _i6;
-import '../data/repositories/clipboard.dart' as _i13;
+import '../data/repositories/clipboard.dart' as _i12;
 import '../data/sources/clipboard/clipboard.dart' as _i8;
 import '../data/sources/clipboard/local_source.dart' as _i9;
 import '../data/sources/clipboard/remote_source.dart' as _i10;
@@ -73,15 +73,13 @@ extension GetItInjectableX on _i1.GetIt {
       instanceName: 'remote',
     );
     gh.singleton<_i11.AuthCubit>(() => _i11.AuthCubit(gh<_i3.Account>()));
-    gh.singleton<_i12.AppConfigCubit>(
-        () => _i12.AppConfigCubit(gh<_i6.AppConfigRepository>()));
-    gh.lazySingleton<_i13.ClipboardRepository>(
-        () => _i13.ClipboardRepositoryImpl(
-              gh<_i8.ClipboardSource>(instanceName: 'local'),
-              gh<_i8.ClipboardSource>(instanceName: 'remote'),
-            ));
+    gh.lazySingleton<_i12.ClipboardRepository>(() =>
+        _i12.ClipboardRepositoryImpl(
+            gh<_i8.ClipboardSource>(instanceName: 'local')));
+    gh.singleton<_i13.AppConfigCubit>(
+        () => _i13.AppConfigCubit(gh<_i6.AppConfigRepository>()));
     gh.factory<_i14.ClipboardCubit>(() => _i14.ClipboardCubit(
-          gh<_i13.ClipboardRepository>(),
+          gh<_i12.ClipboardRepository>(),
           gh<_i11.AuthCubit>(),
         ));
     return this;

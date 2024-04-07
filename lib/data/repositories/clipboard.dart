@@ -16,10 +16,11 @@ abstract class ClipboardRepository {
 
 @LazySingleton(as: ClipboardRepository)
 class ClipboardRepositoryImpl implements ClipboardRepository {
-  final ClipboardSource local, remote;
+  final ClipboardSource local;
 
   ClipboardRepositoryImpl(
-      @Named("local") this.local, @Named("remote") this.remote);
+    @Named("local") this.local,
+  );
 
   @override
   FailureOr<ClipboardItem> create(ClipboardItem item) async {
@@ -37,7 +38,8 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
     int offset = 0,
   }) async {
     try {
-      final items = await local.getList(limit: limit, offset: offset);
+      final items = await local.getList(
+          limit: limit, offset: offset, afterDate: DateTime.now());
 
       return Right(items);
     } catch (e) {

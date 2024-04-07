@@ -20,7 +20,6 @@ AppConfig _$AppConfigFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AppConfig {
-  DateTime? get lastSync => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   ThemeMode get themeMode => throw _privateConstructorUsedError;
 
@@ -35,8 +34,7 @@ abstract class $AppConfigCopyWith<$Res> {
   factory $AppConfigCopyWith(AppConfig value, $Res Function(AppConfig) then) =
       _$AppConfigCopyWithImpl<$Res, AppConfig>;
   @useResult
-  $Res call(
-      {DateTime? lastSync, @Enumerated(EnumType.name) ThemeMode themeMode});
+  $Res call({@Enumerated(EnumType.name) ThemeMode themeMode});
 }
 
 /// @nodoc
@@ -52,14 +50,9 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? lastSync = freezed,
     Object? themeMode = null,
   }) {
     return _then(_value.copyWith(
-      lastSync: freezed == lastSync
-          ? _value.lastSync
-          : lastSync // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
@@ -76,8 +69,7 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       __$$AppConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {DateTime? lastSync, @Enumerated(EnumType.name) ThemeMode themeMode});
+  $Res call({@Enumerated(EnumType.name) ThemeMode themeMode});
 }
 
 /// @nodoc
@@ -91,14 +83,9 @@ class __$$AppConfigImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? lastSync = freezed,
     Object? themeMode = null,
   }) {
     return _then(_$AppConfigImpl(
-      lastSync: freezed == lastSync
-          ? _value.lastSync
-          : lastSync // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
@@ -111,15 +98,12 @@ class __$$AppConfigImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AppConfigImpl extends _AppConfig {
   _$AppConfigImpl(
-      {this.lastSync,
-      @Enumerated(EnumType.name) this.themeMode = ThemeMode.system})
+      {@Enumerated(EnumType.name) this.themeMode = ThemeMode.system})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppConfigImplFromJson(json);
 
-  @override
-  final DateTime? lastSync;
   @override
   @JsonKey()
   @Enumerated(EnumType.name)
@@ -127,7 +111,7 @@ class _$AppConfigImpl extends _AppConfig {
 
   @override
   String toString() {
-    return 'AppConfig(lastSync: $lastSync, themeMode: $themeMode)';
+    return 'AppConfig(themeMode: $themeMode)';
   }
 
   @override
@@ -135,15 +119,13 @@ class _$AppConfigImpl extends _AppConfig {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AppConfigImpl &&
-            (identical(other.lastSync, lastSync) ||
-                other.lastSync == lastSync) &&
             (identical(other.themeMode, themeMode) ||
                 other.themeMode == themeMode));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, lastSync, themeMode);
+  int get hashCode => Object.hash(runtimeType, themeMode);
 
   @JsonKey(ignore: true)
   @override
@@ -160,16 +142,13 @@ class _$AppConfigImpl extends _AppConfig {
 }
 
 abstract class _AppConfig extends AppConfig {
-  factory _AppConfig(
-      {final DateTime? lastSync,
-      @Enumerated(EnumType.name) final ThemeMode themeMode}) = _$AppConfigImpl;
+  factory _AppConfig({@Enumerated(EnumType.name) final ThemeMode themeMode}) =
+      _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
       _$AppConfigImpl.fromJson;
 
-  @override
-  DateTime? get lastSync;
   @override
   @Enumerated(EnumType.name)
   ThemeMode get themeMode;

@@ -15,8 +15,12 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
   late StreamSubscription<void> subscription;
 
-  SyncManagerCubit(this.db) : super(const SyncManagerState.initial()) {
+  SyncManagerCubit(this.db) : super(const SyncManagerState.unknown()) {
     subscription = db.clipboardItems.watchLazy().listen((event) {});
+  }
+
+  Future<void> checkAndSync() async {
+    emit(const SyncManagerState.checking());
   }
 
   @override
