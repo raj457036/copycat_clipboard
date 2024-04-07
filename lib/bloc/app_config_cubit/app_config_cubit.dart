@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/data/repositories/app_config.dart';
 import 'package:clipboard/db/app_config/appconfig.dart';
-import 'package:clipboard/repositories/app_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
