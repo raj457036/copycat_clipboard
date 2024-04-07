@@ -17,13 +17,8 @@ const AppConfigSchema = CollectionSchema(
   name: r'AppConfig',
   id: -7085420701237142207,
   properties: {
-    r'lastSync': PropertySchema(
-      id: 0,
-      name: r'lastSync',
-      type: IsarType.dateTime,
-    ),
     r'themeMode': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
@@ -59,8 +54,7 @@ void _appConfigSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.lastSync);
-  writer.writeString(offsets[1], object.themeMode.name);
+  writer.writeString(offsets[0], object.themeMode.name);
 }
 
 AppConfig _appConfigDeserialize(
@@ -70,9 +64,8 @@ AppConfig _appConfigDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AppConfig(
-    lastSync: reader.readDateTimeOrNull(offsets[0]),
     themeMode:
-        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[1])] ??
+        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[0])] ??
             ThemeMode.system,
   );
   object.id = id;
@@ -87,8 +80,6 @@ P _appConfigDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 1:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
@@ -252,76 +243,6 @@ extension AppConfigQueryFilter
     });
   }
 
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> lastSyncIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lastSync',
-      ));
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
-      lastSyncIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lastSync',
-      ));
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> lastSyncEqualTo(
-      DateTime? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastSync',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> lastSyncGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'lastSync',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> lastSyncLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'lastSync',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> lastSyncBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'lastSync',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> themeModeEqualTo(
     ThemeMode value, {
     bool caseSensitive = true,
@@ -462,18 +383,6 @@ extension AppConfigQueryLinks
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {}
 
 extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByLastSync() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastSync', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByLastSyncDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastSync', Sort.desc);
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByThemeMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.asc);
@@ -501,18 +410,6 @@ extension AppConfigQuerySortThenBy
     });
   }
 
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByLastSync() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastSync', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByLastSyncDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastSync', Sort.desc);
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByThemeMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.asc);
@@ -528,12 +425,6 @@ extension AppConfigQuerySortThenBy
 
 extension AppConfigQueryWhereDistinct
     on QueryBuilder<AppConfig, AppConfig, QDistinct> {
-  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByLastSync() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lastSync');
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByThemeMode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -550,12 +441,6 @@ extension AppConfigQueryProperty
     });
   }
 
-  QueryBuilder<AppConfig, DateTime?, QQueryOperations> lastSyncProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lastSync');
-    });
-  }
-
   QueryBuilder<AppConfig, ThemeMode, QQueryOperations> themeModeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'themeMode');
@@ -569,17 +454,12 @@ extension AppConfigQueryProperty
 
 _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
     _$AppConfigImpl(
-      lastSync: json['lastSync'] == null
-          ? null
-          : DateTime.parse(json['lastSync'] as String),
       themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
           ThemeMode.system,
     )..id = json['id'] as int;
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'lastSync': instance.lastSync?.toIso8601String(),
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
     };
 

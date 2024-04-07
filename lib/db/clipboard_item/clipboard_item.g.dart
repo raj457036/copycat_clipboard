@@ -2418,7 +2418,6 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'value': instance.value,
       'serverPath': instance.serverPath,
       'userId': instance.userId,

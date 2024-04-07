@@ -38,6 +38,7 @@ class RemoteClipboardSource implements ClipboardSource {
   Future<List<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    DateTime? afterDate,
   }) async {
     final items = await db.listDocuments(
       databaseId: databaseId,

@@ -1,6 +1,7 @@
 import "package:appwrite/appwrite.dart";
 import "package:clipboard/db/app_config/appconfig.dart";
 import "package:clipboard/db/clipboard_item/clipboard_item.dart";
+import "package:clipboard/db/sync_status/syncstatus.dart";
 import "package:injectable/injectable.dart";
 import "package:isar/isar.dart";
 import "package:path_provider/path_provider.dart";
@@ -29,6 +30,7 @@ abstract class RegisterModule {
       [
         ClipboardItemSchema,
         AppConfigSchema,
+        SyncStatusSchema,
       ],
       directory: dir.path,
       relaxedDurability: true,

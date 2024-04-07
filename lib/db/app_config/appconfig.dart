@@ -12,7 +12,6 @@ class AppConfig with _$AppConfig, IsarIdMixin {
   AppConfig._();
 
   factory AppConfig({
-    DateTime? lastSync,
     @Default(ThemeMode.system) @Enumerated(EnumType.name) ThemeMode themeMode,
   }) = _AppConfig;
 
