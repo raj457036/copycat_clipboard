@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const _borderRadius = BorderRadius.vertical(
-  top: Radius.circular(12),
+  bottom: Radius.circular(12),
 );
 
 class TextPreview extends StatelessWidget {
@@ -23,10 +23,10 @@ class TextPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      // borderRadius: _borderRadius,
       color: colors.surfaceVariant,
+      borderRadius: item.isSynced ? _borderRadius : null,
       child: InkWell(
-        // borderRadius: _borderRadius,
+        borderRadius: item.isSynced ? _borderRadius : null,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
@@ -52,13 +52,13 @@ class ImagePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      borderRadius: _borderRadius,
       color: colors.surfaceVariant,
+      borderRadius: item.isSynced ? _borderRadius : null,
       child: InkWell(
-        borderRadius: _borderRadius,
+        borderRadius: item.isSynced ? _borderRadius : null,
         onTap: () {},
         child: ClipRRect(
-          borderRadius: _borderRadius,
+          borderRadius: item.isSynced ? _borderRadius : BorderRadius.zero,
           child: SizedBox.expand(
             child: Image(
               image: FileImage(File(item.localPath!)),
@@ -81,10 +81,10 @@ class UrlPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      borderRadius: _borderRadius,
       color: colors.surfaceVariant,
+      borderRadius: item.isSynced ? _borderRadius : null,
       child: InkWell(
-        borderRadius: _borderRadius,
+        borderRadius: item.isSynced ? _borderRadius : null,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
@@ -110,10 +110,10 @@ class FilePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      borderRadius: _borderRadius,
       color: colors.surfaceVariant,
+      borderRadius: item.isSynced ? _borderRadius : null,
       child: InkWell(
-        borderRadius: _borderRadius,
+        borderRadius: item.isSynced ? _borderRadius : null,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
@@ -138,7 +138,7 @@ Future<void> _copyToClipboard(
 
   if (result) {
     // ignore: use_build_context_synchronously
-    context.showTextSnackbar("👍 Copied to clipboard");
+    context.showTextSnackbar("📝 Copied to clipboard");
   } else {
     // ignore: use_build_context_synchronously
     context.showTextSnackbar("❌ Failed to copy to clipboard");
@@ -170,6 +170,7 @@ class ClipOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = context.breakpoints.isMobile;
     return DecoratedBox(
       decoration: const BoxDecoration(),
       child: Padding(
@@ -186,11 +187,19 @@ class ClipOptions extends StatelessWidget {
                 ),
                 Text(
                   item.modified.ago(context.locale.localeName),
-                  style: context.textTheme.labelSmall,
+                  style: context.textTheme.labelMedium,
                 ),
               ],
             ),
             const Spacer(),
+            if (!isMobile && item.type == ClipItemType.url)
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.open_in_new,
+                ),
+                tooltip: "Open in browser",
+              ),
             IconButton(
               icon: const Icon(Icons.copy),
               tooltip: "Copy to clipboard",
@@ -203,47 +212,52 @@ class ClipOptions extends StatelessWidget {
   }
 }
 
-class ClipCardFooter extends StatelessWidget {
+class ClipSyncStatus extends StatelessWidget {
   final ClipboardItem item;
 
-  const ClipCardFooter({
+  const ClipSyncStatus({
     super.key,
     required this.item,
   });
 
-  String getType() {
-    switch (item.type) {
-      case ClipItemType.text:
-        return 'Text';
-      case ClipItemType.image:
-        return 'Image ( ${item.fileExtension} )';
-      case ClipItemType.url:
-        return 'URL';
-      case ClipItemType.file:
-        return 'File ( ${item.fileExtension} )';
-      default:
-        return '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(),
-      child: Padding(
-        padding: const EdgeInsets.all(padding8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              getType(),
-              style: context.textTheme.titleSmall,
-            ),
-            Text(
-              item.modified.ago(context.locale.localeName),
-              style: context.textTheme.labelSmall,
-            ),
-          ],
+    if (item.lastSynced != null) {
+      return const SizedBox.shrink();
+    }
+    final colors = context.colors;
+    return SizedBox.fromSize(
+      size: const Size.fromHeight(35),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.errorContainer,
+          borderRadius: _borderRadius,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(padding8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.sync_problem_rounded,
+                size: 18,
+              ),
+              width6,
+              Text(
+                "Local",
+                style: context.textTheme.labelMedium,
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "Sync Now",
+                  style: context.textTheme.labelMedium
+                      ?.copyWith(color: colors.error),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -279,7 +293,7 @@ class ClipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card.outlined(
+    return Card(
       child: Column(
         children: [
           SizedBox.fromSize(
@@ -295,21 +309,19 @@ class ClipCard extends StatelessWidget {
                   text: 'Copy to clipboard',
                   onPressed: () => _copyToClipboard(context, item),
                 ),
-                MenuItem(
-                  icon: Icons.visibility_outlined,
-                  text: 'Preview',
-                  onPressed: () {},
-                ),
-                MenuItem(
-                  icon: Icons.share_outlined,
-                  text: 'Share',
-                  onPressed: () {},
-                ),
-                MenuItem(
-                  icon: Icons.link_outlined,
-                  text: 'Get link',
-                  onPressed: () {},
-                ),
+                if (item.type == ClipItemType.url)
+                  MenuItem(
+                    icon: Icons.open_in_new,
+                    text: 'Open in browser',
+                    onPressed: () {},
+                  ),
+                if (item.type == ClipItemType.file ||
+                    item.type == ClipItemType.image)
+                  MenuItem(
+                    icon: Icons.save_as_outlined,
+                    text: 'Save to files',
+                    onPressed: () {},
+                  ),
                 const MenuItem(type: MenuItemType.divider),
                 MenuItem(
                   icon: Icons.delete_outline,
@@ -320,11 +332,8 @@ class ClipCard extends StatelessWidget {
               child: getPreview(),
             ),
           ),
-          const Divider(height: 0),
-          SizedBox.fromSize(
-            size: const Size.fromHeight(35),
-            child: ClipCardFooter(item: item),
-          )
+          if (item.lastSynced == null) const Divider(height: 0),
+          ClipSyncStatus(item: item),
         ],
       ),
     );

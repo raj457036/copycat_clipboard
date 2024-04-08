@@ -122,5 +122,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   String? get fileExtension =>
       localPath != null ? p.extension(localPath!) : null;
 
+  bool get isSynced => lastSynced != null;
+
   File? getFile() => localPath != null ? File(localPath!) : null;
 }

@@ -5,6 +5,7 @@ import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
+import "package:clipboard/pages/search/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:go_router/go_router.dart";
 
@@ -35,6 +36,7 @@ final router = GoRouter(
       builder: (context, state, child) {
         final activeIndex = switch (state.fullPath) {
           "/home" => 0,
+          "/search" => 1,
           _ => 0,
         };
 
@@ -53,6 +55,14 @@ final router = GoRouter(
               child: const HomePage(),
             );
           },
+        ),
+        GoRoute(
+          name: RouteConstants.search,
+          path: '/search',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const SearchPage(),
+          ),
         ),
       ],
     )

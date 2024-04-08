@@ -63,7 +63,10 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
           if (result == null) {
             items[i] = item.copyWith(lastSynced: DateTime.now());
           } else {
-            items[i] = item.copyWith(lastSynced: result.lastSynced);
+            items[i] = item.copyWith(
+              lastSynced: result.lastSynced,
+              localPath: result.localPath,
+            );
             items[i].id = result.id;
           }
         }
@@ -83,8 +86,9 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   Future<void> updateSyncTime([SyncStatus? lastSync]) async {
     final lastSync0 = lastSync ?? await db.syncStatus.where().findFirst();
     final syncTime = DateTime.now();
-    final updatedSyncStatus =
-        (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
+    final updatedSyncStatus = (lastSync0 ?? SyncStatus()
+          ..id = 1)
+        .copyWith(lastSync: syncTime);
     await db.writeTxn(() async => await db.syncStatus.put(updatedSyncStatus));
     emit(SyncManagerState.synced(lastSynced: syncTime));
   }

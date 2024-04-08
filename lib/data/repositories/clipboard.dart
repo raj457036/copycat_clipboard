@@ -67,6 +67,7 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
   FailureOr<bool> delete(ClipboardItem item) async {
     try {
       await local.delete(item);
+      await remote.delete(item);
       return const Right(true);
     } catch (e) {
       return Left(Failure.fromException(e));

@@ -72,7 +72,7 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
 
     final items = DataWriterItem()..add(data);
     await clipboard.write([items]);
-    await Future.delayed(Durations.extralong1, () => _writing = false);
+    await Future.delayed(Durations.short1, () => _writing = false);
     return true;
   }
 
