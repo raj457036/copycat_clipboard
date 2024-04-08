@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:injectable/injectable.dart';
@@ -20,29 +21,22 @@ class LocalClipboardSource implements ClipboardSource {
   }
 
   @override
-  Future<List<ClipboardItem>> getList({
+  Future<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
-    DateTime? afterDate,
   }) async {
-    var query = db.clipboardItems.where();
+    var results = await db.clipboardItems
+        .filter()
+        .deletedAtIsNull()
+        .sortByModifiedDesc()
+        .offset(offset)
+        .limit(limit)
+        .findAll();
 
-    if (afterDate != null) {
-      query = QueryBuilder.apply(
-        query,
-        (query) => query.addFilterCondition(
-          FilterCondition.lessThan(
-            property: "created",
-            value: afterDate,
-          ),
-        ),
-      );
-    }
-
-    final results =
-        await query.sortByModifiedDesc().offset(offset).limit(limit).findAll();
-
-    return results;
+    return PaginatedResult(
+      results: results,
+      hasMore: results.length == limit,
+    );
   }
 
   @override

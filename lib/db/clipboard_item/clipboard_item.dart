@@ -50,13 +50,12 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
     String? serverPath,
     required String userId,
-    @JsonKey(name: "\$createdAt", includeToJson: false)
-    required DateTime created,
-    @JsonKey(name: "\$updatedAt", includeToJson: false)
-    required DateTime modified,
+    @JsonKey(name: "\$createdAt") required DateTime created,
+    @JsonKey(name: "\$updatedAt") required DateTime modified,
     required String title,
     String? description,
     @Enumerated(EnumType.name) required ClipItemType type,
+    DateTime? deletedAt,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>

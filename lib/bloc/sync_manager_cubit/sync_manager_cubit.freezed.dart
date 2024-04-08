@@ -20,6 +20,7 @@ mixin _$SyncManagerState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(DateTime lastSynced) synced,
   }) =>
@@ -28,6 +29,7 @@ mixin _$SyncManagerState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(DateTime lastSynced)? synced,
   }) =>
@@ -36,6 +38,7 @@ mixin _$SyncManagerState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(DateTime lastSynced)? synced,
     required TResult orElse(),
@@ -45,6 +48,7 @@ mixin _$SyncManagerState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownSyncState value) unknown,
     required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
     required TResult Function(SyncedState value) synced,
   }) =>
@@ -53,6 +57,7 @@ mixin _$SyncManagerState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownSyncState value)? unknown,
     TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
     TResult? Function(SyncedState value)? synced,
   }) =>
@@ -61,6 +66,7 @@ mixin _$SyncManagerState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownSyncState value)? unknown,
     TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
@@ -126,6 +132,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(DateTime lastSynced) synced,
   }) {
@@ -137,6 +144,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(DateTime lastSynced)? synced,
   }) {
@@ -148,6 +156,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(DateTime lastSynced)? synced,
     required TResult orElse(),
@@ -163,6 +172,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownSyncState value) unknown,
     required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
     required TResult Function(SyncedState value) synced,
   }) {
@@ -174,6 +184,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownSyncState value)? unknown,
     TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
     TResult? Function(SyncedState value)? synced,
   }) {
@@ -185,6 +196,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownSyncState value)? unknown,
     TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
@@ -240,6 +252,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(DateTime lastSynced) synced,
   }) {
@@ -251,6 +264,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(DateTime lastSynced)? synced,
   }) {
@@ -262,6 +276,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(DateTime lastSynced)? synced,
     required TResult orElse(),
@@ -277,6 +292,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownSyncState value) unknown,
     required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
     required TResult Function(SyncedState value) synced,
   }) {
@@ -288,6 +304,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownSyncState value)? unknown,
     TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
     TResult? Function(SyncedState value)? synced,
   }) {
@@ -299,6 +316,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownSyncState value)? unknown,
     TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
@@ -312,6 +330,160 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
 
 abstract class CheckingSyncState implements SyncManagerState {
   const factory CheckingSyncState() = _$CheckingSyncStateImpl;
+}
+
+/// @nodoc
+abstract class _$$SyncCheckFailedStateImplCopyWith<$Res> {
+  factory _$$SyncCheckFailedStateImplCopyWith(_$SyncCheckFailedStateImpl value,
+          $Res Function(_$SyncCheckFailedStateImpl) then) =
+      __$$SyncCheckFailedStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Failure failure});
+}
+
+/// @nodoc
+class __$$SyncCheckFailedStateImplCopyWithImpl<$Res>
+    extends _$SyncManagerStateCopyWithImpl<$Res, _$SyncCheckFailedStateImpl>
+    implements _$$SyncCheckFailedStateImplCopyWith<$Res> {
+  __$$SyncCheckFailedStateImplCopyWithImpl(_$SyncCheckFailedStateImpl _value,
+      $Res Function(_$SyncCheckFailedStateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? failure = null,
+  }) {
+    return _then(_$SyncCheckFailedStateImpl(
+      null == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
+  const _$SyncCheckFailedStateImpl(this.failure);
+
+  @override
+  final Failure failure;
+
+  @override
+  String toString() {
+    return 'SyncManagerState.failed(failure: $failure)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SyncCheckFailedStateImpl &&
+            (identical(other.failure, failure) || other.failure == failure));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, failure);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SyncCheckFailedStateImplCopyWith<_$SyncCheckFailedStateImpl>
+      get copyWith =>
+          __$$SyncCheckFailedStateImplCopyWithImpl<_$SyncCheckFailedStateImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() unknown,
+    required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
+    required TResult Function(int progress, int total) syncing,
+    required TResult Function(DateTime lastSynced) synced,
+  }) {
+    return failed(failure);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unknown,
+    TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
+    TResult? Function(int progress, int total)? syncing,
+    TResult? Function(DateTime lastSynced)? synced,
+  }) {
+    return failed?.call(failure);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unknown,
+    TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
+    TResult Function(int progress, int total)? syncing,
+    TResult Function(DateTime lastSynced)? synced,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(failure);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UnknownSyncState value) unknown,
+    required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
+    required TResult Function(SyncingState value) syncing,
+    required TResult Function(SyncedState value) synced,
+  }) {
+    return failed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UnknownSyncState value)? unknown,
+    TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
+    TResult? Function(SyncingState value)? syncing,
+    TResult? Function(SyncedState value)? synced,
+  }) {
+    return failed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UnknownSyncState value)? unknown,
+    TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
+    TResult Function(SyncingState value)? syncing,
+    TResult Function(SyncedState value)? synced,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SyncCheckFailedState implements SyncManagerState {
+  const factory SyncCheckFailedState(final Failure failure) =
+      _$SyncCheckFailedStateImpl;
+
+  Failure get failure;
+  @JsonKey(ignore: true)
+  _$$SyncCheckFailedStateImplCopyWith<_$SyncCheckFailedStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -389,6 +561,7 @@ class _$SyncingStateImpl implements SyncingState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(DateTime lastSynced) synced,
   }) {
@@ -400,6 +573,7 @@ class _$SyncingStateImpl implements SyncingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(DateTime lastSynced)? synced,
   }) {
@@ -411,6 +585,7 @@ class _$SyncingStateImpl implements SyncingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(DateTime lastSynced)? synced,
     required TResult orElse(),
@@ -426,6 +601,7 @@ class _$SyncingStateImpl implements SyncingState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownSyncState value) unknown,
     required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
     required TResult Function(SyncedState value) synced,
   }) {
@@ -437,6 +613,7 @@ class _$SyncingStateImpl implements SyncingState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownSyncState value)? unknown,
     TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
     TResult? Function(SyncedState value)? synced,
   }) {
@@ -448,6 +625,7 @@ class _$SyncingStateImpl implements SyncingState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownSyncState value)? unknown,
     TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
@@ -538,6 +716,7 @@ class _$SyncedStateImpl implements SyncedState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(DateTime lastSynced) synced,
   }) {
@@ -549,6 +728,7 @@ class _$SyncedStateImpl implements SyncedState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(DateTime lastSynced)? synced,
   }) {
@@ -560,6 +740,7 @@ class _$SyncedStateImpl implements SyncedState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(DateTime lastSynced)? synced,
     required TResult orElse(),
@@ -575,6 +756,7 @@ class _$SyncedStateImpl implements SyncedState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownSyncState value) unknown,
     required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
     required TResult Function(SyncedState value) synced,
   }) {
@@ -586,6 +768,7 @@ class _$SyncedStateImpl implements SyncedState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownSyncState value)? unknown,
     TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
     TResult? Function(SyncedState value)? synced,
   }) {
@@ -597,6 +780,7 @@ class _$SyncedStateImpl implements SyncedState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownSyncState value)? unknown,
     TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),

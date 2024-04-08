@@ -10,6 +10,10 @@ import 'package:responsive_framework/responsive_framework.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  Future<void> _loadMore(BuildContext context) async {
+    await context.read<ClipboardCubit>().fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = context.breakpoints.isMobile;
@@ -33,11 +37,14 @@ class HomePage extends StatelessWidget {
         //   ],
         // ),
       ),
-      body: BlocSelector<ClipboardCubit, ClipboardState, List<ClipboardItem>>(
+      body: BlocSelector<ClipboardCubit, ClipboardState,
+          (List<ClipboardItem>, bool)>(
         selector: (state) {
-          return state.items;
+          return (state.items, state.hasMore);
         },
         builder: (context, state) {
+          final items = state.$1;
+          final hasMore = state.$2 ? 1 : 0;
           return ResponsiveGridView.builder(
             padding: const EdgeInsets.all(padding16),
             gridDelegate: const ResponsiveGridDelegate(
@@ -45,12 +52,21 @@ class HomePage extends StatelessWidget {
               maxCrossAxisExtent: 280,
               crossAxisSpacing: padding12,
               mainAxisSpacing: padding12,
-              childAspectRatio: 4 / 3,
+              childAspectRatio: 3 / 4,
               // childAspectRatio: 3 / 4,
             ),
-            itemCount: state.length,
+            itemCount: items.length + hasMore,
             itemBuilder: (context, index) {
-              final item = state[index];
+              if (index == items.length) {
+                return Center(
+                  child: TextButton(
+                    onPressed: () => _loadMore(context),
+                    child: const Text("Load More"),
+                  ),
+                );
+              }
+
+              final item = state.$1[index];
               return ClipCard(item: item);
             },
           );

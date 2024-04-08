@@ -108,5 +108,5 @@ extension DateTimeExtension on DateTime {
     return other.year == year && other.month == month && other.day == day;
   }
 
-  String get ago => timeago.format(this);
+  String ago([String? locale]) => timeago.format(this, locale: locale);
 }

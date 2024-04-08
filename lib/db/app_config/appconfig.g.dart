@@ -456,7 +456,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
     _$AppConfigImpl(
       themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
           ThemeMode.system,
-    )..id = json['id'] as int;
+    );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
     <String, dynamic>{

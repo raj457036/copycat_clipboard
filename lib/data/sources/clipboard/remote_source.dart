@@ -1,23 +1,28 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/network_status.dart';
 import 'package:injectable/injectable.dart';
 
 @Named("remote")
 @LazySingleton(as: ClipboardSource)
 class RemoteClipboardSource implements ClipboardSource {
   final Databases db;
+  final NetworkStatus network;
   final String databaseId;
   final String collectionId;
 
   RemoteClipboardSource(
     this.db,
+    this.network,
     @Named("databaseId") this.databaseId,
     @Named("clipboardCollectionId") this.collectionId,
   );
 
   @override
   Future<ClipboardItem> create(ClipboardItem item) async {
+    if (!network.isConnected) return item;
     final doc = await db.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -35,11 +40,14 @@ class RemoteClipboardSource implements ClipboardSource {
   }
 
   @override
-  Future<List<ClipboardItem>> getList({
+  Future<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
     DateTime? afterDate,
   }) async {
+    if (!network.isConnected) {
+      return PaginatedResult(results: [], hasMore: false);
+    }
     final items = await db.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -53,11 +61,13 @@ class RemoteClipboardSource implements ClipboardSource {
     final clips =
         items.documents.map((e) => ClipboardItem.fromJson(e.data)).toList();
 
-    return clips;
+    return PaginatedResult(results: clips, hasMore: clips.length == limit);
   }
 
   @override
   Future<ClipboardItem> update(ClipboardItem item) async {
+    if (!network.isConnected) return item;
+
     if (item.serverId == null) {
       return await create(item);
     }
@@ -76,6 +86,8 @@ class RemoteClipboardSource implements ClipboardSource {
 
   @override
   Future<bool> delete(ClipboardItem item) async {
+    if (!network.isConnected) return false;
+
     if (item.serverId == null) {
       return true;
     }

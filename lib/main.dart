@@ -37,69 +37,76 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider<SyncManagerCubit>(
           create: (context) => sl(),
-          lazy: false,
         ),
         BlocProvider<ClipboardCubit>(
           create: (context) => sl(),
         ),
       ],
-      child: BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
-        selector: (state) {
-          return state.maybeWhen(
-            orElse: () => ThemeMode.system,
-            loaded: (config) => config.themeMode,
-          );
+      child: BlocListener<SyncManagerCubit, SyncManagerState>(
+        listener: (context, state) {
+          if (state is SyncedState) {
+            context.read<ClipboardCubit>().fetch(fromTop: true);
+          }
         },
-        builder: (context, state) {
-          return MaterialApp.router(
-            scaffoldMessengerKey: scaffoldMessengerKey,
-            routeInformationParser: router.routeInformationParser,
-            routeInformationProvider: router.routeInformationProvider,
-            routerDelegate: router.routerDelegate,
-            backButtonDispatcher: router.backButtonDispatcher,
-            themeMode: state,
-            theme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: lightColorScheme.onSurface,
-                displayColor: lightColorScheme.onSurface,
-              ),
-              colorScheme: lightColorScheme,
-              brightness: Brightness.light,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+        child: BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
+          selector: (state) {
+            return state.maybeWhen(
+              orElse: () => ThemeMode.system,
+              loaded: (config) => config.themeMode,
+            );
+          },
+          builder: (context, state) {
+            return MaterialApp.router(
+              scaffoldMessengerKey: scaffoldMessengerKey,
+              routeInformationParser: router.routeInformationParser,
+              routeInformationProvider: router.routeInformationProvider,
+              routerDelegate: router.routerDelegate,
+              backButtonDispatcher: router.backButtonDispatcher,
+              themeMode: state,
+              theme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: lightColorScheme.onSurface,
+                  displayColor: lightColorScheme.onSurface,
+                ),
+                colorScheme: lightColorScheme,
+                brightness: Brightness.light,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
                 ),
               ),
-            ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: darkColorScheme.onSurface,
-                displayColor: darkColorScheme.onSurface,
-              ),
-              colorScheme: darkColorScheme,
-              brightness: Brightness.dark,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: darkColorScheme.onSurface,
+                  displayColor: darkColorScheme.onSurface,
+                ),
+                colorScheme: darkColorScheme,
+                brightness: Brightness.dark,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
                 ),
               ),
-            ),
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            builder: (context, child) => ResponsiveBreakpoints.builder(
-              child: child!,
-              breakpoints: [
-                const Breakpoint(start: 0, end: 450, name: MOBILE),
-                const Breakpoint(start: 451, end: 800, name: TABLET),
-                const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-              ],
-            ),
-          );
-        },
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              builder: (context, child) => ResponsiveBreakpoints.builder(
+                child: child!,
+                breakpoints: [
+                  const Breakpoint(start: 0, end: 450, name: MOBILE),
+                  const Breakpoint(start: 451, end: 800, name: TABLET),
+                  const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                  const Breakpoint(
+                      start: 1921, end: double.infinity, name: '4K'),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
