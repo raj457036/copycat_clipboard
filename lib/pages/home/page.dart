@@ -20,22 +20,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Clipboard"),
-        actions: [
-          if (isMobile)
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.search),
-            ),
-          width16,
-        ],
-        // bottom: const TabBar(
-        //   isScrollable: true,
-        //   tabAlignment: TabAlignment.start,
-        //   tabs: [
-        //     Tab(text: "All"),
-        //     Tab(text: "Sync"),
-        //   ],
-        // ),
       ),
       body: BlocSelector<ClipboardCubit, ClipboardState,
           (List<ClipboardItem>, bool)>(
@@ -48,8 +32,8 @@ class HomePage extends StatelessWidget {
           return ResponsiveGridView.builder(
             padding: const EdgeInsets.all(padding16),
             gridDelegate: const ResponsiveGridDelegate(
-              minCrossAxisExtent: 200,
-              maxCrossAxisExtent: 280,
+              minCrossAxisExtent: 300,
+              maxCrossAxisExtent: 300,
               crossAxisSpacing: padding12,
               mainAxisSpacing: padding12,
               childAspectRatio: 3 / 4,

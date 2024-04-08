@@ -1,19 +1,9 @@
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-const _desktopLayout = '''
-nav content
-nav content
-''';
-
-const _phoneLayout = '''
-content content
-nav nav
-''';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class NavBarPage extends StatefulWidget {
   final Widget child;
@@ -38,6 +28,7 @@ class _NavBarPageState extends State<NavBarPage> {
         context.goNamed(RouteConstants.home);
         break;
       case 1:
+        context.goNamed(RouteConstants.search);
         break;
       // case 2:
       //   context.goNamed(RouteConstants.journal);
@@ -50,45 +41,24 @@ class _NavBarPageState extends State<NavBarPage> {
 
   Widget? getFloatingActionButton({bool isMobile = true}) {
     if (widget.navbarActiveIndex == 0) {
-      if (isMobile) {
-        return FloatingActionButton(
-          onPressed: () {},
-          tooltip: 'Paste',
-          heroTag: "paste-fab",
-          child: const Icon(Icons.paste_rounded),
-        );
-      } else {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FloatingActionButton(
-              onPressed: () {},
-              tooltip: 'Search',
-              heroTag: "search-fab",
-              child: const Icon(Icons.search),
-            ),
-            height16,
-            FloatingActionButton.small(
-              onPressed: () {},
-              tooltip: 'Paste',
-              heroTag: "paste-fab",
-              child: const Icon(Icons.paste_rounded),
-            ),
-          ],
-        );
-      }
+      return FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Paste',
+        heroTag: "paste-fab",
+        child: const Icon(Icons.paste_rounded),
+      );
     }
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
+    final smallScreen = context.breakpoints.smallerOrEqualTo(TABLET);
     final scaffold = Scaffold(
       body: widget.child,
-      floatingActionButton: isMobile ? getFloatingActionButton() : null,
+      floatingActionButton: smallScreen ? getFloatingActionButton() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: isMobile
+      bottomNavigationBar: smallScreen
           ? NavigationBar(
               selectedIndex: widget.navbarActiveIndex,
               onDestinationSelected: _onNavItemTapped,
@@ -97,6 +67,11 @@ class _NavBarPageState extends State<NavBarPage> {
                   icon: Icon(Icons.grid_on),
                   label: "Clipboard",
                   tooltip: "Clipboard",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.search),
+                  label: "Search",
+                  tooltip: "Search Clipboard",
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.workspaces_rounded),
@@ -115,7 +90,7 @@ class _NavBarPageState extends State<NavBarPage> {
 
     late Widget child;
 
-    if (isMobile) {
+    if (smallScreen) {
       child = scaffold;
     } else {
       final navRail = NavigationRail(
@@ -123,6 +98,10 @@ class _NavBarPageState extends State<NavBarPage> {
           NavigationRailDestination(
             icon: Icon(Icons.grid_on),
             label: Text("Clipboard"),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.search),
+            label: Text("Search"),
           ),
           NavigationRailDestination(
             icon: Icon(Icons.workspaces_rounded),

@@ -125,7 +125,8 @@ Future<ClipboardItem?> getClipboardItemForFormat(
         return null;
       } else {
         // Sometimes macOS uses CR for line break;
-        final sanitized = text.replaceAll(RegExp('\r[\n]?'), '\n');
+        final sanitized =
+            Uri.decodeComponent(text.replaceAll(RegExp('\r[\n]?'), '\n'));
         return ClipboardItem.fromText(userId, sanitized);
       }
     case Formats.plainTextFile:
@@ -134,7 +135,8 @@ Future<ClipboardItem?> getClipboardItemForFormat(
       if (contents == null) {
         return null;
       } else {
-        final text = utf8.decode(contents, allowMalformed: true);
+        final text =
+            Uri.decodeComponent(utf8.decode(contents, allowMalformed: true));
 
         if (text.length <= 255) {
           return ClipboardItem.fromText(userId, text);
