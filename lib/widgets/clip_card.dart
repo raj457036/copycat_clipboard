@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/menu.dart';
@@ -22,10 +23,10 @@ class TextPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      borderRadius: _borderRadius,
+      // borderRadius: _borderRadius,
       color: colors.surfaceVariant,
       child: InkWell(
-        borderRadius: _borderRadius,
+        // borderRadius: _borderRadius,
         onTap: () {},
         child: SizedBox.expand(
           child: Padding(
@@ -129,6 +130,21 @@ class FilePreview extends StatelessWidget {
   }
 }
 
+Future<void> _copyToClipboard(
+  BuildContext context,
+  ClipboardItem item,
+) async {
+  final result = await context.read<ClipboardCubit>().copyToClipboard(item);
+
+  if (result) {
+    // ignore: use_build_context_synchronously
+    context.showTextSnackbar("👍 Copied to clipboard");
+  } else {
+    // ignore: use_build_context_synchronously
+    context.showTextSnackbar("❌ Failed to copy to clipboard");
+  }
+}
+
 class ClipOptions extends StatelessWidget {
   final ClipboardItem item;
 
@@ -169,37 +185,63 @@ class ClipOptions extends StatelessWidget {
                   style: context.textTheme.titleSmall,
                 ),
                 Text(
-                  item.modified.ago,
+                  item.modified.ago(context.locale.localeName),
                   style: context.textTheme.labelSmall,
                 ),
               ],
             ),
             const Spacer(),
-            // IconButton(
-            //   icon: const Icon(Icons.arrow_outward_rounded),
-            //   tooltip: "Open link",
-            //   onPressed: () {},
-            // ),
-            // IconButton(
-            //   icon: const Icon(Icons.download_rounded),
-            //   tooltip: "Download",
-            //   onPressed: () {},
-            // ),
             IconButton(
               icon: const Icon(Icons.copy),
               tooltip: "Copy to clipboard",
-              onPressed: () async {
-                final result =
-                    await context.read<ClipboardCubit>().copyToClipboard(item);
+              onPressed: () => _copyToClipboard(context, item),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                if (result) {
-                  // ignore: use_build_context_synchronously
-                  context.showTextSnackbar("👍 Copied to clipboard");
-                } else {
-                  // ignore: use_build_context_synchronously
-                  context.showTextSnackbar("❌ Failed to copy to clipboard");
-                }
-              },
+class ClipCardFooter extends StatelessWidget {
+  final ClipboardItem item;
+
+  const ClipCardFooter({
+    super.key,
+    required this.item,
+  });
+
+  String getType() {
+    switch (item.type) {
+      case ClipItemType.text:
+        return 'Text';
+      case ClipItemType.image:
+        return 'Image ( ${item.fileExtension} )';
+      case ClipItemType.url:
+        return 'URL';
+      case ClipItemType.file:
+        return 'File ( ${item.fileExtension} )';
+      default:
+        return '';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: const BoxDecoration(),
+      child: Padding(
+        padding: const EdgeInsets.all(padding8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              getType(),
+              style: context.textTheme.titleSmall,
+            ),
+            Text(
+              item.modified.ago(context.locale.localeName),
+              style: context.textTheme.labelSmall,
             ),
           ],
         ),
@@ -221,7 +263,6 @@ class ClipCard extends StatelessWidget {
       ClipItemType.image => ImagePreview(item: item),
       ClipItemType.url => UrlPreview(item: item),
       ClipItemType.file => FilePreview(item: item),
-      _ => const Placeholder(),
     };
   }
 
@@ -241,9 +282,19 @@ class ClipCard extends StatelessWidget {
     return Card.outlined(
       child: Column(
         children: [
+          SizedBox.fromSize(
+            size: const Size.fromHeight(56),
+            child: ClipOptions(item: item),
+          ),
+          const Divider(height: 0),
           Expanded(
             child: Menu(
               items: [
+                MenuItem(
+                  icon: Icons.copy,
+                  text: 'Copy to clipboard',
+                  onPressed: () => _copyToClipboard(context, item),
+                ),
                 MenuItem(
                   icon: Icons.visibility_outlined,
                   text: 'Preview',
@@ -271,8 +322,8 @@ class ClipCard extends StatelessWidget {
           ),
           const Divider(height: 0),
           SizedBox.fromSize(
-            size: const Size.fromHeight(56),
-            child: ClipOptions(item: item),
+            size: const Size.fromHeight(35),
+            child: ClipCardFooter(item: item),
           )
         ],
       ),

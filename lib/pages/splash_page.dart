@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class SplashPage extends StatelessWidget {
           switch (state) {
             case AuthenticatedAuthState() || OfflineAuthState():
               context.read<ClipboardCubit>().fetch();
+              context.read<SyncManagerCubit>().syncChanges();
               context.goNamed(RouteConstants.home);
               break;
             case UnauthenticatedAuthState():

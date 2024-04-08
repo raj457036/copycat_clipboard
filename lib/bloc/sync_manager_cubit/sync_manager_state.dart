@@ -4,6 +4,7 @@ part of 'sync_manager_cubit.dart';
 class SyncManagerState with _$SyncManagerState {
   const factory SyncManagerState.unknown() = UnknownSyncState;
   const factory SyncManagerState.checking() = CheckingSyncState;
+  const factory SyncManagerState.failed(Failure failure) = SyncCheckFailedState;
   const factory SyncManagerState.syncing({
     required int progress,
     required int total,

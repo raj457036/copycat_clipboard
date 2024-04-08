@@ -22,59 +22,64 @@ const ClipboardItemSchema = CollectionSchema(
       name: r'created',
       type: IsarType.dateTime,
     ),
-    r'description': PropertySchema(
+    r'deletedAt': PropertySchema(
       id: 1,
+      name: r'deletedAt',
+      type: IsarType.dateTime,
+    ),
+    r'description': PropertySchema(
+      id: 2,
       name: r'description',
       type: IsarType.string,
     ),
     r'fileExtension': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'fileExtension',
       type: IsarType.string,
     ),
     r'lastSynced': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
     r'localPath': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'localPath',
       type: IsarType.string,
     ),
     r'modified': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'serverId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'serverPath': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'serverPath',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
     r'userId': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'userId',
       type: IsarType.string,
     ),
     r'value': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'value',
       type: IsarType.string,
     )
@@ -148,17 +153,18 @@ void _clipboardItemSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.created);
-  writer.writeString(offsets[1], object.description);
-  writer.writeString(offsets[2], object.fileExtension);
-  writer.writeDateTime(offsets[3], object.lastSynced);
-  writer.writeString(offsets[4], object.localPath);
-  writer.writeDateTime(offsets[5], object.modified);
-  writer.writeString(offsets[6], object.serverId);
-  writer.writeString(offsets[7], object.serverPath);
-  writer.writeString(offsets[8], object.title);
-  writer.writeString(offsets[9], object.type.name);
-  writer.writeString(offsets[10], object.userId);
-  writer.writeString(offsets[11], object.value);
+  writer.writeDateTime(offsets[1], object.deletedAt);
+  writer.writeString(offsets[2], object.description);
+  writer.writeString(offsets[3], object.fileExtension);
+  writer.writeDateTime(offsets[4], object.lastSynced);
+  writer.writeString(offsets[5], object.localPath);
+  writer.writeDateTime(offsets[6], object.modified);
+  writer.writeString(offsets[7], object.serverId);
+  writer.writeString(offsets[8], object.serverPath);
+  writer.writeString(offsets[9], object.title);
+  writer.writeString(offsets[10], object.type.name);
+  writer.writeString(offsets[11], object.userId);
+  writer.writeString(offsets[12], object.value);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -169,17 +175,19 @@ ClipboardItem _clipboardItemDeserialize(
 ) {
   final object = ClipboardItem(
     created: reader.readDateTime(offsets[0]),
-    description: reader.readStringOrNull(offsets[1]),
-    lastSynced: reader.readDateTimeOrNull(offsets[3]),
-    localPath: reader.readStringOrNull(offsets[4]),
-    modified: reader.readDateTime(offsets[5]),
-    serverId: reader.readStringOrNull(offsets[6]),
-    serverPath: reader.readStringOrNull(offsets[7]),
-    title: reader.readString(offsets[8]),
-    type: _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[9])] ??
-        ClipItemType.text,
-    userId: reader.readString(offsets[10]),
-    value: reader.readStringOrNull(offsets[11]),
+    deletedAt: reader.readDateTimeOrNull(offsets[1]),
+    description: reader.readStringOrNull(offsets[2]),
+    lastSynced: reader.readDateTimeOrNull(offsets[4]),
+    localPath: reader.readStringOrNull(offsets[5]),
+    modified: reader.readDateTime(offsets[6]),
+    serverId: reader.readStringOrNull(offsets[7]),
+    serverPath: reader.readStringOrNull(offsets[8]),
+    title: reader.readString(offsets[9]),
+    type:
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[10])] ??
+            ClipItemType.text,
+    userId: reader.readString(offsets[11]),
+    value: reader.readStringOrNull(offsets[12]),
   );
   object.id = id;
   return object;
@@ -195,27 +203,29 @@ P _clipboardItemDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 5:
-      return (reader.readDateTime(offset)) as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readDateTime(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readString(offset)) as P;
+    case 10:
       return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
           ClipItemType.text) as P;
-    case 10:
-      return (reader.readString(offset)) as P;
     case 11:
+      return (reader.readString(offset)) as P;
+    case 12:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -379,6 +389,80 @@ extension ClipboardItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'created',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deletedAtIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'deletedAt',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deletedAtIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'deletedAt',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deletedAtEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deletedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deletedAtGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'deletedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deletedAtLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'deletedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deletedAtBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'deletedAt',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1923,6 +2007,19 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByDeletedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deletedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByDeletedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deletedAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -2075,6 +2172,19 @@ extension ClipboardItemQuerySortThenBy
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByDeletedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deletedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByDeletedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deletedAt', Sort.desc);
     });
   }
 
@@ -2239,6 +2349,12 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByDeletedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'deletedAt');
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2330,6 +2446,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, DateTime?, QQueryOperations> deletedAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'deletedAt');
+    });
+  }
+
   QueryBuilder<ClipboardItem, String?, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
@@ -2414,16 +2536,22 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String?,
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
-    )..id = json['id'] as int;
+      deletedAt: json['deletedAt'] == null
+          ? null
+          : DateTime.parse(json['deletedAt'] as String),
+    );
 
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
     <String, dynamic>{
       'value': instance.value,
       'serverPath': instance.serverPath,
       'userId': instance.userId,
+      r'$createdAt': instance.created.toIso8601String(),
+      r'$updatedAt': instance.modified.toIso8601String(),
       'title': instance.title,
       'description': instance.description,
       'type': _$ClipItemTypeEnumMap[instance.type]!,
+      'deletedAt': instance.deletedAt?.toIso8601String(),
     };
 
 const _$ClipItemTypeEnumMap = {

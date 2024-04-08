@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/utils.dart';
+import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
@@ -16,26 +17,29 @@ import 'package:super_clipboard/super_clipboard.dart';
 part 'clipboard_cubit.freezed.dart';
 part 'clipboard_state.dart';
 
-@injectable
+@singleton
 class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
   final ClipboardRepository repo;
   final AuthCubit authCubit;
+  final SyncManagerCubit syncManager;
 
   bool _writing = false;
 
   ClipboardCubit(
     this.repo,
     this.authCubit,
+    this.syncManager,
   ) : super(const ClipboardState.loaded(items: [])) {
     clipboardWatcher.addListener(this);
     clipboardWatcher.start();
   }
 
-  Future<void> fetch() async {
+  Future<void> fetch({bool fromTop = false}) async {
     emit(state.copyWith(loading: true));
+
     final items = await repo.getList(
       limit: state.limit,
-      offset: state.offset,
+      offset: fromTop ? 0 : state.offset,
     );
 
     emit(
@@ -46,10 +50,10 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
         ),
         (r) => state.copyWith(
           loading: false,
-          items: [...state.items, ...r],
-          offset: state.offset + r.length,
+          items: fromTop ? r.results : [...state.items, ...r.results],
+          offset: state.offset + r.results.length,
           limit: state.limit,
-          hasMore: state.limit == r.length,
+          hasMore: r.hasMore,
         ),
       ),
     );
@@ -83,11 +87,14 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
       logger.info("Ignored Duplicate item");
       return (null, null);
     }
-    emit(state.copyWith(items: [item, ...state.items]));
 
     final result = await repo.create(item);
 
-    return result.fold((l) => (l, null), (r) => (null, r));
+    return result.fold((l) => (l, null), (r) {
+      syncManager.updateSyncTime();
+      emit(state.copyWith(items: [r, ...state.items]));
+      return (null, r);
+    });
   }
 
   Future<Failure?> deleteItem(ClipboardItem item) async {
