@@ -77,12 +77,14 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String filePath, {
     bool isImage = false,
     String? preview,
+    String? fileName,
   }) {
+    final basename = p.basename(filePath);
     return ClipboardItem(
-      value: preview ?? filePath,
+      value: preview ?? basename,
       created: DateTime.now(),
       modified: DateTime.now(),
-      title: p.basename(filePath),
+      title: fileName ?? basename,
       type: isImage ? ClipItemType.image : ClipItemType.file,
       localPath: filePath,
       userId: userId,
