@@ -9,6 +9,7 @@ import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 const _borderRadius = BorderRadius.vertical(
   bottom: Radius.circular(12),
@@ -51,6 +52,7 @@ class ImagePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    // context.read<GdriveSyncCubit>().uploadFile(item);
     return Material(
       color: colors.surfaceVariant,
       borderRadius: item.isSynced ? _borderRadius : null,
@@ -109,6 +111,7 @@ class FilePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+
     return Material(
       color: colors.surfaceVariant,
       borderRadius: item.isSynced ? _borderRadius : null,
@@ -119,7 +122,7 @@ class FilePreview extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(padding8),
             child: Text(
-              item.title,
+              item.value ?? item.title,
               overflow: TextOverflow.fade,
               maxLines: 10,
             ),
@@ -132,9 +135,12 @@ class FilePreview extends StatelessWidget {
 
 Future<void> _copyToClipboard(
   BuildContext context,
-  ClipboardItem item,
-) async {
-  final result = await context.read<ClipboardCubit>().copyToClipboard(item);
+  ClipboardItem item, {
+  bool copyFileContent = false,
+}) async {
+  final result = await context
+      .read<ClipboardCubit>()
+      .copyToClipboard(item, copyFileContent);
 
   if (result) {
     // ignore: use_build_context_synchronously
@@ -168,6 +174,12 @@ class ClipOptions extends StatelessWidget {
     }
   }
 
+  Future<void> launchUrl() async {
+    if (item.value != null && Uri.tryParse(item.value!) != null) {
+      await launchUrlString(item.value!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = context.breakpoints.isMobile;
@@ -194,17 +206,48 @@ class ClipOptions extends StatelessWidget {
             const Spacer(),
             if (!isMobile && item.type == ClipItemType.url)
               IconButton(
-                onPressed: () {},
+                onPressed: launchUrl,
                 icon: const Icon(
                   Icons.open_in_new,
                 ),
                 tooltip: "Open in browser",
               ),
-            IconButton(
-              icon: const Icon(Icons.copy),
-              tooltip: "Copy to clipboard",
-              onPressed: () => _copyToClipboard(context, item),
-            ),
+            if (item.fileExtension == ".txt")
+              MenuAnchor(
+                menuChildren: [
+                  MenuItemButton(
+                    leadingIcon: const Icon(Icons.copy_all_rounded),
+                    child: const Text("Copy text file"),
+                    onPressed: () => _copyToClipboard(context, item),
+                  ),
+                  MenuItemButton(
+                    leadingIcon: const Icon(Icons.text_snippet_rounded),
+                    child: const Text("Copy text content"),
+                    onPressed: () =>
+                        _copyToClipboard(context, item, copyFileContent: true),
+                  ),
+                ],
+                child: const Icon(Icons.copy),
+                builder: (BuildContext context, MenuController controller,
+                    Widget? child) {
+                  return IconButton(
+                    onPressed: () {
+                      if (controller.isOpen) {
+                        controller.close();
+                      } else {
+                        controller.open();
+                      }
+                    },
+                    icon: const Icon(Icons.copy),
+                  );
+                },
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: () => _copyToClipboard(context, item),
+                tooltip: "Copy to clipboard",
+              ),
           ],
         ),
       ),
@@ -291,6 +334,12 @@ class ClipCard extends StatelessWidget {
     await context.read<ClipboardCubit>().deleteItem(item);
   }
 
+  Future<void> launchUrl() async {
+    if (item.value != null && Uri.tryParse(item.value!) != null) {
+      await launchUrlString(item.value!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -313,7 +362,7 @@ class ClipCard extends StatelessWidget {
                   MenuItem(
                     icon: Icons.open_in_new,
                     text: 'Open in browser',
-                    onPressed: () {},
+                    onPressed: launchUrl,
                   ),
                 if (item.type == ClipItemType.file ||
                     item.type == ClipItemType.image)

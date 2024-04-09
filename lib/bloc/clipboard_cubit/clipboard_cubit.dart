@@ -59,7 +59,8 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
     );
   }
 
-  Future<bool> copyToClipboard(ClipboardItem item) async {
+  Future<bool> copyToClipboard(ClipboardItem item,
+      [bool copyFileContent = false]) async {
     _writing = true;
     final clipboard = SystemClipboard.instance;
     if (clipboard == null) {
@@ -67,7 +68,7 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
       return false;
     }
 
-    final data = await getFormatForClipboardItem(item);
+    final data = await getFormatForClipboardItem(item, copyFileContent);
     if (data == null) return false;
 
     final items = DataWriterItem()..add(data);
@@ -82,18 +83,19 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
         state.items.first.value == item.value;
   }
 
-  Future<(Failure?, ClipboardItem?)> addItem(ClipboardItem item) async {
+  Future<void> addItem(ClipboardItem item) async {
     if (isSameAsLastItem(item)) {
       logger.info("Ignored Duplicate item");
-      return (null, null);
+      return;
     }
 
     final result = await repo.create(item);
 
-    return result.fold((l) => (l, null), (r) {
-      syncManager.updateSyncTime();
+    await result.fold((l) async {
+      logger.severe(l);
+    }, (r) async {
       emit(state.copyWith(items: [r, ...state.items]));
-      return (null, r);
+      await syncManager.updateSyncTime();
     });
   }
 
@@ -106,6 +108,7 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
   }
 
   Future<void> _readClipboard() async {
+    await Future.delayed(Durations.short3);
     if (authCubit.userId == null) return;
     final clipboard = SystemClipboard.instance;
     if (clipboard == null) {
@@ -115,13 +118,45 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
 
     final reader = await clipboard.read();
 
+    final priority = [
+      Formats.png,
+      Formats.jpeg,
+      Formats.gif,
+      Formats.tiff,
+      Formats.webp,
+      Formats.heic,
+      Formats.svg,
+      Formats.fileUri,
+      Formats.uri,
+      Formats.plainTextFile,
+      Formats.plainText,
+    ];
+
+    if (reader.items.isEmpty) {
+      logger.warning("No item in clipboard");
+      return;
+    }
+
     final res = <DataFormat>{};
+
     for (final item in reader.items) {
+      DataFormat? selectedFormat;
       final itemFormats = item.getFormats(Formats.standardFormats);
       for (final format in itemFormats) {
-        if (!res.contains(format)) {
-          res.add(format);
+        if (selectedFormat == null) {
+          selectedFormat = format;
+          continue;
         }
+
+        final pref = priority.indexOf(format);
+        final selectedPref = priority.indexOf(selectedFormat);
+
+        if ((pref != -1 && pref < selectedPref) || selectedPref == -1) {
+          selectedFormat = format;
+        }
+      }
+      if (selectedFormat != null) {
+        res.add(selectedFormat);
       }
     }
 
@@ -139,6 +174,7 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
       return;
     }
     logger.info("Copy Event Captured");
+
     _readClipboard();
   }
 

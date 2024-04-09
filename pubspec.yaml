@@ -37,9 +37,10 @@ dependencies:
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1
   uuid: ^4.3.3
-  lazy_g_drive: ^2.1.1
   rxdart: ^0.27.7
   internet_connection_checker_plus: ^2.3.0
+  url_launcher: ^6.2.5
+  googleapis: ^13.1.0
 
 
 dev_dependencies:

@@ -13,7 +13,8 @@ import 'package:super_clipboard/super_clipboard.dart';
 // Custom Formats
 // Images
 
-FutureOr<EncodedData>? getFormatForClipboardItem(ClipboardItem item) {
+Future<EncodedData?> getFormatForClipboardItem(ClipboardItem item,
+    [bool copyFileContent = false]) async {
   switch (item.type) {
     case ClipItemType.text:
     case ClipItemType.url:
@@ -24,6 +25,13 @@ FutureOr<EncodedData>? getFormatForClipboardItem(ClipboardItem item) {
         final isWindow = Platform.isWindows;
         final file = item.getFile();
         if (file == null) return null;
+
+        if (copyFileContent) {
+          if (item.fileExtension == ".txt") {
+            final content = await file.readAsString();
+            return Formats.plainText(content);
+          }
+        }
         return Formats.fileUri(Uri.file(file.path, windows: isWindow));
       }
     default:
@@ -65,12 +73,19 @@ Future<String?> writeImageFile(
     Formats.gif => "gif",
     Formats.tiff => "tiff",
     Formats.webp => "webp",
+    Formats.heic => "heic",
+    Formats.svg => "svg",
     _ => null,
   };
-  if (ext == null) return null;
+
+  if (ext == null) {
+    logger.warning("Extension not found for $format");
+    return null;
+  }
   final appDir = await getApplicationDocumentsDirectory();
-  final contents = await readFile(reader, Formats.png);
+  final contents = await readFile(reader, format);
   if (contents == null) {
+    logger.warning("Couldn't read content of image file with format $format");
     return null;
   } else {
     final directory = p.join(
@@ -112,57 +127,126 @@ Future<String?> writeFile(Uri uri) async {
   return path;
 }
 
+String cleanText(String text) {
+  try {
+    return Uri.decodeComponent(text);
+  } catch (e) {
+    return text;
+  }
+}
+
+Future<ClipboardItem?> processPlainText(
+  String userId,
+  ClipboardDataReader reader,
+) async {
+  final text = await reader.readValue(Formats.plainText);
+  if (text == null) {
+    logger.warning("Text is null");
+    return null;
+  } else {
+    // Sometimes macOS uses CR for line break;
+    var sanitized = cleanText(text.replaceAll(RegExp('\r[\n]?'), '\n'));
+
+    return ClipboardItem.fromText(userId, sanitized);
+  }
+}
+
+Future<ClipboardItem?> processPlainTextFile(
+  String userId,
+  ClipboardDataReader reader,
+) async {
+  final appDir = await getApplicationDocumentsDirectory();
+  final suggestedName = await reader.getSuggestedName();
+  final contents = await readFile(reader, Formats.plainTextFile);
+  if (contents == null) {
+    logger.warning("Text file content is null");
+    return null;
+  } else {
+    final text = cleanText(utf8.decode(contents, allowMalformed: true));
+
+    if (text.length <= 255) {
+      return ClipboardItem.fromText(userId, text);
+    }
+    final directory = p.join(appDir.path, "texts");
+    await createDirectoryIfNotExists(directory);
+    final path = p.join(directory, "${getId()}.txt");
+    await File(path).writeAsString(text);
+    return ClipboardItem.fromFile(
+      userId,
+      path,
+      preview: text.substring(0, 254),
+      fileName: suggestedName,
+    );
+  }
+}
+
+Future<ClipboardItem?> processImageFile(
+  String userId,
+  DataFormat format,
+  ClipboardDataReader reader,
+) async {
+  final suggestedName = await reader.getSuggestedName();
+  final path = await writeImageFile(reader, format as SimpleFileFormat);
+  if (path == null) {
+    logger.warning("Image file couldn't be created.");
+    return null;
+  } else {
+    return ClipboardItem.fromFile(
+      userId,
+      path,
+      isImage: true,
+      fileName: suggestedName,
+    );
+  }
+}
+
+Future<ClipboardItem?> processUri(
+  String userId,
+  ClipboardDataReader reader,
+) async {
+  // Make sure to request both values before awaiting
+  final fileUriFuture = reader.readValue(Formats.fileUri);
+  final uriFuture = reader.readValue(Formats.uri);
+
+  // try file first and if it fails try regular URI
+  final fileUri = await fileUriFuture;
+  if (fileUri != null) {
+    {
+      final suggestedName = await reader.getSuggestedName();
+      final path = await writeFile(fileUri);
+      if (path == null) {
+        logger.warning("File couldn't be created.");
+        return null;
+      }
+
+      logger.info("FileUri: $fileUri");
+      return ClipboardItem.fromFile(
+        userId,
+        path,
+        fileName: suggestedName,
+      );
+    }
+  }
+  final uri = await uriFuture;
+  if (uri != null) {
+    logger.info("Uri: ${uri.uri} Name: ${uri.name}");
+    return ClipboardItem.fromUri(userId, uri.uri);
+  }
+  logger.warning("Invalid uri found! falling back to text");
+  return processPlainText(userId, reader);
+}
+
 Future<ClipboardItem?> getClipboardItemForFormat(
   String userId,
   DataFormat format,
   ClipboardDataReader reader,
 ) async {
-  logger.info("Parsing clipboard contents");
+  logger.info("Parsing format: $format");
   switch (format) {
     case Formats.plainText:
-      final text = await reader.readValue(Formats.plainText);
-      if (text == null) {
-        return null;
-      } else {
-        // Sometimes macOS uses CR for line break;
-        final sanitized =
-            Uri.decodeComponent(text.replaceAll(RegExp('\r[\n]?'), '\n'));
-        return ClipboardItem.fromText(userId, sanitized);
-      }
+      return processPlainText(userId, reader);
     case Formats.plainTextFile:
-      final appDir = await getApplicationDocumentsDirectory();
-      final contents = await readFile(reader, Formats.plainTextFile);
-      if (contents == null) {
-        return null;
-      } else {
-        final text =
-            Uri.decodeComponent(utf8.decode(contents, allowMalformed: true));
-
-        if (text.length <= 255) {
-          return ClipboardItem.fromText(userId, text);
-        }
-        final directory = p.join(appDir.path, "texts");
-        await createDirectoryIfNotExists(directory);
-        final path = p.join(directory, "${getId()}.txt");
-        await File(path).writeAsString(text);
-        return ClipboardItem.fromFile(userId, path,
-            preview: text.substring(0, 50));
-      }
-    case Formats.htmlText:
-      //? Unsupported format
-      return null;
-    // final html = await reader.readValue(Formats.htmlText);
-    // if (html == null) {
-    //   return null;
-    // } else {
-    //   return _RepresentationWidget(
-    //     format: format,
-    //     name: 'HTML Text',
-    //     synthesized: reader.isSynthesized(format),
-    //     virtual: reader.isVirtual(format),
-    //     content: Text(html),
-    //   );
-    // }
+      return processPlainTextFile(userId, reader);
     case Formats.png:
     case Formats.jpeg:
     case Formats.gif:
@@ -170,36 +254,12 @@ Future<ClipboardItem?> getClipboardItemForFormat(
     case Formats.webp:
     case Formats.heic:
     case Formats.svg:
-      final path = await writeImageFile(reader, format as SimpleFileFormat);
-      if (path == null) {
-        return null;
-      } else {
-        return ClipboardItem.fromFile(userId, path, isImage: true);
-      }
+      return processImageFile(userId, format, reader);
     case Formats.uri:
     case Formats.fileUri:
-      // Make sure to request both values before awaiting
-      final fileUriFuture = reader.readValue(Formats.fileUri);
-      final uriFuture = reader.readValue(Formats.uri);
-
-      // try file first and if it fails try regular URI
-      final fileUri = await fileUriFuture;
-      if (fileUri != null) {
-        {
-          final path = await writeFile(fileUri);
-          if (path == null) return null;
-
-          logger.info("FileUri: $fileUri");
-          return ClipboardItem.fromFile(userId, path);
-        }
-      }
-      final uri = await uriFuture;
-      if (uri != null) {
-        logger.info("Uri: ${uri.uri} Name: ${uri.name}");
-        return ClipboardItem.fromUri(userId, uri.uri);
-      }
-      return null;
+      return processUri(userId, reader);
     default:
+      logger.warning("Not supported: $format");
       return null;
   }
 }

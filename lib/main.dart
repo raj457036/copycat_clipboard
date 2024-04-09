@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/gdrive_sync_cubit/gdrive_sync_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
@@ -36,6 +37,9 @@ class MainApp extends StatelessWidget {
           create: (context) => sl()..load(),
         ),
         BlocProvider<SyncManagerCubit>(
+          create: (context) => sl(),
+        ),
+        BlocProvider<GdriveSyncCubit>(
           create: (context) => sl(),
         ),
         BlocProvider<ClipboardCubit>(
