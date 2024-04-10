@@ -18,20 +18,19 @@ abstract class ClipboardRepository {
   FailureOr<bool> delete(ClipboardItem item);
 }
 
+@Named("offline")
 @LazySingleton(as: ClipboardRepository)
-class ClipboardRepositoryImpl implements ClipboardRepository {
-  final ClipboardSource local, remote;
+class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
+  final ClipboardSource local;
 
-  ClipboardRepositoryImpl(
+  ClipboardRepositoryOfflineImpl(
     @Named("local") this.local,
-    @Named("remote") this.remote,
   );
 
   @override
   FailureOr<ClipboardItem> create(ClipboardItem item) async {
     try {
-      final remoteItem = await remote.create(item);
-      final result = await local.create(remoteItem);
+      final result = await local.create(item);
       return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));
@@ -55,8 +54,7 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
-      final remoteItem = await remote.update(item);
-      final result = await local.update(remoteItem);
+      final result = await local.update(item);
       return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));
@@ -67,7 +65,6 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
   FailureOr<bool> delete(ClipboardItem item) async {
     try {
       await local.delete(item);
-      await remote.delete(item);
       return const Right(true);
     } catch (e) {
       return Left(Failure.fromException(e));

@@ -2,41 +2,13 @@ import 'dart:io';
 
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/base.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 import 'package:path/path.dart' as p;
 
 part 'clipboard_item.freezed.dart';
 part 'clipboard_item.g.dart';
-
-const _supportedUriSchemas = {
-  "http",
-  "https",
-  "ftp",
-  "file",
-  "mailto",
-  "tel",
-  "data",
-  "ws",
-  "wss",
-  "ldap",
-  "urn",
-  "git",
-  "ssh",
-  "irc",
-  "news"
-};
-
-enum ClipItemType {
-  @JsonValue("text")
-  text,
-  @JsonValue("url")
-  url,
-  @JsonValue("file")
-  file,
-  @JsonValue("image")
-  image,
-}
 
 @freezed
 @Collection(ignore: {'copyWith'})
@@ -46,16 +18,17 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   factory ClipboardItem({
     @JsonKey(name: "\$id", includeToJson: false) String? serverId,
     @JsonKey(includeFromJson: false, includeToJson: false) DateTime? lastSynced,
-    String? value,
     @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-    String? serverPath,
-    required String userId,
     @JsonKey(name: "\$createdAt") required DateTime created,
     @JsonKey(name: "\$updatedAt") required DateTime modified,
-    required String title,
-    String? description,
     @Enumerated(EnumType.name) required ClipItemType type,
+    required String userId,
+    required String title,
+    String? value,
+    String? serverPath,
+    String? description,
     DateTime? deletedAt,
+    int? size,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
@@ -91,16 +64,12 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     );
   }
 
-  factory ClipboardItem.fromUri(String userId, Uri uri) {
-    if (!_supportedUriSchemas.contains(uri.scheme)) {
-      return ClipboardItem.fromText(userId, uri.toString());
-    }
-
+  factory ClipboardItem.fromURL(String userId, String url) {
     return ClipboardItem(
-      value: uri.toString(),
+      value: url,
       created: DateTime.now(),
       modified: DateTime.now(),
-      title: uri.host,
+      title: url.substring(0, 35),
       type: ClipItemType.url,
       userId: userId,
     );

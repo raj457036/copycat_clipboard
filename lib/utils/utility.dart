@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:uuid/v4.dart';
@@ -41,4 +42,11 @@ int getRandomIndex(int max) {
 
 DateTime nowUTC() {
   return DateTime.now().toUtc();
+}
+
+Future<void> createDirectoryIfNotExists(String path) async {
+  final dir = Directory(path);
+  if (!await dir.exists()) {
+    await dir.create(recursive: true);
+  }
 }

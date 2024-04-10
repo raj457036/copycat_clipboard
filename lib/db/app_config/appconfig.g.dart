@@ -17,8 +17,13 @@ const AppConfigSchema = CollectionSchema(
   name: r'AppConfig',
   id: -7085420701237142207,
   properties: {
-    r'themeMode': PropertySchema(
+    r'isPersisted': PropertySchema(
       id: 0,
+      name: r'isPersisted',
+      type: IsarType.bool,
+    ),
+    r'themeMode': PropertySchema(
+      id: 1,
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
@@ -54,7 +59,8 @@ void _appConfigSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.themeMode.name);
+  writer.writeBool(offsets[0], object.isPersisted);
+  writer.writeString(offsets[1], object.themeMode.name);
 }
 
 AppConfig _appConfigDeserialize(
@@ -65,7 +71,7 @@ AppConfig _appConfigDeserialize(
 ) {
   final object = AppConfig(
     themeMode:
-        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[0])] ??
+        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[1])] ??
             ThemeMode.system,
   );
   object.id = id;
@@ -80,6 +86,8 @@ P _appConfigDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readBool(offset)) as P;
+    case 1:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
@@ -243,6 +251,16 @@ extension AppConfigQueryFilter
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> isPersistedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isPersisted',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> themeModeEqualTo(
     ThemeMode value, {
     bool caseSensitive = true,
@@ -383,6 +401,18 @@ extension AppConfigQueryLinks
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {}
 
 extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByIsPersistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByThemeMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.asc);
@@ -410,6 +440,18 @@ extension AppConfigQuerySortThenBy
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByIsPersistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByThemeMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.asc);
@@ -425,6 +467,12 @@ extension AppConfigQuerySortThenBy
 
 extension AppConfigQueryWhereDistinct
     on QueryBuilder<AppConfig, AppConfig, QDistinct> {
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isPersisted');
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByThemeMode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -438,6 +486,12 @@ extension AppConfigQueryProperty
   QueryBuilder<AppConfig, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<AppConfig, bool, QQueryOperations> isPersistedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isPersisted');
     });
   }
 

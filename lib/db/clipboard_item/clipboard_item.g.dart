@@ -37,54 +37,64 @@ const ClipboardItemSchema = CollectionSchema(
       name: r'fileExtension',
       type: IsarType.string,
     ),
-    r'isSynced': PropertySchema(
+    r'isPersisted': PropertySchema(
       id: 4,
+      name: r'isPersisted',
+      type: IsarType.bool,
+    ),
+    r'isSynced': PropertySchema(
+      id: 5,
       name: r'isSynced',
       type: IsarType.bool,
     ),
     r'lastSynced': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
     r'localPath': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'localPath',
       type: IsarType.string,
     ),
     r'modified': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'serverId': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'serverPath': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'serverPath',
       type: IsarType.string,
     ),
+    r'size': PropertySchema(
+      id: 11,
+      name: r'size',
+      type: IsarType.long,
+    ),
     r'title': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 11,
+      id: 13,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
     r'userId': PropertySchema(
-      id: 12,
+      id: 14,
       name: r'userId',
       type: IsarType.string,
     ),
     r'value': PropertySchema(
-      id: 13,
+      id: 15,
       name: r'value',
       type: IsarType.string,
     )
@@ -161,16 +171,18 @@ void _clipboardItemSerialize(
   writer.writeDateTime(offsets[1], object.deletedAt);
   writer.writeString(offsets[2], object.description);
   writer.writeString(offsets[3], object.fileExtension);
-  writer.writeBool(offsets[4], object.isSynced);
-  writer.writeDateTime(offsets[5], object.lastSynced);
-  writer.writeString(offsets[6], object.localPath);
-  writer.writeDateTime(offsets[7], object.modified);
-  writer.writeString(offsets[8], object.serverId);
-  writer.writeString(offsets[9], object.serverPath);
-  writer.writeString(offsets[10], object.title);
-  writer.writeString(offsets[11], object.type.name);
-  writer.writeString(offsets[12], object.userId);
-  writer.writeString(offsets[13], object.value);
+  writer.writeBool(offsets[4], object.isPersisted);
+  writer.writeBool(offsets[5], object.isSynced);
+  writer.writeDateTime(offsets[6], object.lastSynced);
+  writer.writeString(offsets[7], object.localPath);
+  writer.writeDateTime(offsets[8], object.modified);
+  writer.writeString(offsets[9], object.serverId);
+  writer.writeString(offsets[10], object.serverPath);
+  writer.writeLong(offsets[11], object.size);
+  writer.writeString(offsets[12], object.title);
+  writer.writeString(offsets[13], object.type.name);
+  writer.writeString(offsets[14], object.userId);
+  writer.writeString(offsets[15], object.value);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -183,17 +195,18 @@ ClipboardItem _clipboardItemDeserialize(
     created: reader.readDateTime(offsets[0]),
     deletedAt: reader.readDateTimeOrNull(offsets[1]),
     description: reader.readStringOrNull(offsets[2]),
-    lastSynced: reader.readDateTimeOrNull(offsets[5]),
-    localPath: reader.readStringOrNull(offsets[6]),
-    modified: reader.readDateTime(offsets[7]),
-    serverId: reader.readStringOrNull(offsets[8]),
-    serverPath: reader.readStringOrNull(offsets[9]),
-    title: reader.readString(offsets[10]),
+    lastSynced: reader.readDateTimeOrNull(offsets[6]),
+    localPath: reader.readStringOrNull(offsets[7]),
+    modified: reader.readDateTime(offsets[8]),
+    serverId: reader.readStringOrNull(offsets[9]),
+    serverPath: reader.readStringOrNull(offsets[10]),
+    size: reader.readLongOrNull(offsets[11]),
+    title: reader.readString(offsets[12]),
     type:
-        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[11])] ??
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[13])] ??
             ClipItemType.text,
-    userId: reader.readString(offsets[12]),
-    value: reader.readStringOrNull(offsets[13]),
+    userId: reader.readString(offsets[14]),
+    value: reader.readStringOrNull(offsets[15]),
   );
   object.id = id;
   return object;
@@ -217,23 +230,27 @@ P _clipboardItemDeserializeProp<P>(
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
-      return (reader.readDateTime(offset)) as P;
-    case 8:
       return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readDateTime(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
-          ClipItemType.text) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 12:
       return (reader.readString(offset)) as P;
     case 13:
+      return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
+          ClipItemType.text) as P;
+    case 14:
+      return (reader.readString(offset)) as P;
+    case 15:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -842,6 +859,16 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      isPersistedEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isPersisted',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       isSyncedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1439,6 +1466,79 @@ extension ClipboardItemQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'serverPath',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sizeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'size',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sizeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'size',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> sizeEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'size',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sizeGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'size',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sizeLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'size',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> sizeBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'size',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2065,6 +2165,19 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByIsPersistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
@@ -2140,6 +2253,18 @@ extension ClipboardItemQuerySortBy
       sortByServerPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverPath', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortBySizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.desc);
     });
   }
 
@@ -2258,6 +2383,19 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByIsPersistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
@@ -2333,6 +2471,18 @@ extension ClipboardItemQuerySortThenBy
       thenByServerPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverPath', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenBySizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.desc);
     });
   }
 
@@ -2414,6 +2564,13 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct>
+      distinctByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isPersisted');
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isSynced');
@@ -2450,6 +2607,12 @@ extension ClipboardItemQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'serverPath', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'size');
     });
   }
 
@@ -2515,6 +2678,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, bool, QQueryOperations> isPersistedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isPersisted');
+    });
+  }
+
   QueryBuilder<ClipboardItem, bool, QQueryOperations> isSyncedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isSynced');
@@ -2552,6 +2721,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, int?, QQueryOperations> sizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'size');
+    });
+  }
+
   QueryBuilder<ClipboardItem, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
@@ -2584,30 +2759,32 @@ extension ClipboardItemQueryProperty
 _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
     _$ClipboardItemImpl(
       serverId: json[r'$id'] as String?,
-      value: json['value'] as String?,
-      serverPath: json['serverPath'] as String?,
-      userId: json['userId'] as String,
       created: DateTime.parse(json[r'$createdAt'] as String),
       modified: DateTime.parse(json[r'$updatedAt'] as String),
-      title: json['title'] as String,
-      description: json['description'] as String?,
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
+      userId: json['userId'] as String,
+      title: json['title'] as String,
+      value: json['value'] as String?,
+      serverPath: json['serverPath'] as String?,
+      description: json['description'] as String?,
       deletedAt: json['deletedAt'] == null
           ? null
           : DateTime.parse(json['deletedAt'] as String),
+      size: json['size'] as int?,
     );
 
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
     <String, dynamic>{
-      'value': instance.value,
-      'serverPath': instance.serverPath,
-      'userId': instance.userId,
       r'$createdAt': instance.created.toIso8601String(),
       r'$updatedAt': instance.modified.toIso8601String(),
-      'title': instance.title,
-      'description': instance.description,
       'type': _$ClipItemTypeEnumMap[instance.type]!,
+      'userId': instance.userId,
+      'title': instance.title,
+      'value': instance.value,
+      'serverPath': instance.serverPath,
+      'description': instance.description,
       'deletedAt': instance.deletedAt?.toIso8601String(),
+      'size': instance.size,
     };
 
 const _$ClipItemTypeEnumMap = {

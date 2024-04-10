@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -230,7 +231,7 @@ Future<ClipboardItem?> processUri(
   final uri = await uriFuture;
   if (uri != null) {
     logger.info("Uri: ${uri.uri} Name: ${uri.name}");
-    return ClipboardItem.fromUri(userId, uri.uri);
+    return ClipboardItem.fromURL(userId, uri.uri);
   }
   logger.warning("Invalid uri found! falling back to text");
   return processPlainText(userId, reader);
