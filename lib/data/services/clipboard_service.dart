@@ -277,8 +277,13 @@ class ClipboardFormatProcessor {
     }
 
     final ext = p.extension(file.path).substring(1);
-    final fileName = p.basename(file.path);
-    final tempFile = await _writeTempFile(folder: "files", ext: ext);
+    final fileName = p.basenameWithoutExtension(file.path);
+    final tempFile = await _writeTempFile(
+      folder: "files",
+      ext: ext,
+      file: file,
+      fileName: fileName,
+    );
 
     if (tempFile == null) {
       logger.warning("Couldn't write file");
@@ -318,7 +323,10 @@ class ClipboardFormatProcessor {
     if (uri != null) {
       return await getUrl(reader, uri);
     }
-    return null;
+
+    logger.info("Uri couldn't be parsed, trying with text.");
+
+    return await _getPlainText(reader);
   }
 
   Future<Clip?> process(
@@ -360,7 +368,7 @@ class ClipboardFormatProcessor {
 class ClipboardService with ClipboardListener {
   bool writing = false;
   bool _started = false;
-  late final BehaviorSubject<List<Clip>> onCopy;
+  late final BehaviorSubject<List<Clip?>> onCopy;
   final ClipboardFormatProcessor processor = ClipboardFormatProcessor();
   ClipboardWatcher get watcher => clipboardWatcher;
 
@@ -377,7 +385,7 @@ class ClipboardService with ClipboardListener {
     if (_started) return;
     _started = true;
     watcher.addListener(this);
-    onCopy = BehaviorSubject<List<Clip>>();
+    onCopy = BehaviorSubject<List<Clip?>>();
     await watcher.start();
   }
 
@@ -396,6 +404,7 @@ class ClipboardService with ClipboardListener {
   }
 
   Future<void> readClipboard() async {
+    logger.info("Reading clipboard");
     await Future.delayed(Durations.short4);
     final reader = await getReader();
 
@@ -441,6 +450,6 @@ class ClipboardService with ClipboardListener {
       ),
     );
 
-    onCopy.add(clips.where((clip) => clip != null).toList() as List<Clip>);
+    onCopy.add(clips);
   }
 }

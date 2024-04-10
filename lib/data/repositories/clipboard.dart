@@ -18,6 +18,60 @@ abstract class ClipboardRepository {
   FailureOr<bool> delete(ClipboardItem item);
 }
 
+@Named("cloud")
+@LazySingleton(as: ClipboardRepository)
+class ClipboardRepositoryCloudImpl implements ClipboardRepository {
+  final ClipboardSource remote;
+
+  ClipboardRepositoryCloudImpl(
+    @Named("remote") this.remote,
+  );
+
+  @override
+  FailureOr<ClipboardItem> create(ClipboardItem item) async {
+    try {
+      final result = await remote.create(item);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<PaginatedResult<ClipboardItem>> getList({
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    try {
+      final result = await remote.getList(limit: limit, offset: offset);
+
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<ClipboardItem> update(ClipboardItem item) async {
+    try {
+      final result = await remote.update(item);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<bool> delete(ClipboardItem item) async {
+    try {
+      await remote.delete(item);
+      return const Right(true);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+}
+
 @Named("offline")
 @LazySingleton(as: ClipboardRepository)
 class ClipboardRepositoryOfflineImpl implements ClipboardRepository {

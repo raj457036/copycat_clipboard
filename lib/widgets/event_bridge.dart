@@ -1,12 +1,9 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class EventBridge extends StatelessWidget {
   final Widget child;
@@ -20,20 +17,6 @@ class EventBridge extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
-            switch (state) {
-              case AuthenticatedAuthState() || OfflineAuthState():
-                context.read<ClipboardCubit>().fetch();
-                context.read<SyncManagerCubit>().syncChanges();
-                context.goNamed(RouteConstants.home);
-                break;
-              case UnauthenticatedAuthState():
-                context.goNamed(RouteConstants.login);
-              default:
-            }
-          },
-        ),
         BlocListener<SyncManagerCubit, SyncManagerState>(
           listener: (context, state) {
             if (state is SyncedState) {
@@ -45,23 +28,52 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) {
             switch (state) {
               case OfflinePersistanceCreating():
-                context.showTextSnackbar("Inserting Clip...");
+                // showTextSnackbar("Inserting Clip...");
                 break;
               case OfflinePersistanceUpdating():
-                context.showTextSnackbar("Updating Clip...");
+                // showTextSnackbar("Updating Clip...");
                 break;
-              case OfflinePersistanceSaved(:final item, :final created):
+              case OfflinePersistanceSaved(
+                  :final item,
+                  :final created,
+                  :final synced
+                ):
                 context.read<ClipboardCubit>().put(item, isNew: created);
+                if (!synced) {
+                  context.read<CloudPersistanceCubit>().persist(item);
+                }
                 break;
               case OfflinePersistanceError(:final failure):
-                context.showFailureSnackbar(failure);
+                // showFailureSnackbar(failure);
+                break;
+              case _:
+            }
+          },
+        ),
+        BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
+          listener: (context, state) {
+            switch (state) {
+              case CloudPersistanceCreating():
+                // showTextSnackbar("(Sync) Inserting Clip...");
+                break;
+              case CloudPersistanceUpdating():
+                // showTextSnackbar("(Sync) Updating Clip...");
+                break;
+              case CloudPersistanceSaved(:final item):
+                context
+                    .read<OfflinePersistanceCubit>()
+                    .persist(item, synced: true);
+                context.read<SyncManagerCubit>().updateSyncTime();
+                break;
+              case CloudPersistanceError(:final failure):
+                // showFailureSnackbar(failure);
                 break;
               case _:
             }
           },
         ),
       ],
-      child: Container(),
+      child: child,
     );
   }
 }

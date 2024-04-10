@@ -16,6 +16,7 @@ import 'package:isar/isar.dart' as _i5;
 import '../bloc/app_config_cubit/app_config_cubit.dart' as _i12;
 import '../bloc/auth_cubit/auth_cubit.dart' as _i11;
 import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i18;
+import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i19;
 import '../bloc/offline_persistance_cubit/offline_persistance_cubit.dart'
     as _i15;
 import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i17;
@@ -27,7 +28,7 @@ import '../data/sources/clipboard/clipboard.dart' as _i9;
 import '../data/sources/clipboard/local_source.dart' as _i10;
 import '../data/sources/clipboard/remote_source.dart' as _i14;
 import '../utils/network_status.dart' as _i7;
-import 'db_envs.dart' as _i19;
+import 'db_envs.dart' as _i20;
 import 'modules.dart' as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -101,6 +102,11 @@ extension GetItInjectableX on _i1.GetIt {
               gh<String>(instanceName: 'databaseId'),
               gh<String>(instanceName: 'clipboardCollectionId'),
             ));
+    gh.lazySingleton<_i13.ClipboardRepository>(
+      () => _i13.ClipboardRepositoryCloudImpl(
+          gh<_i9.ClipboardSource>(instanceName: 'remote')),
+      instanceName: 'cloud',
+    );
     gh.singleton<_i17.SyncManagerCubit>(() => _i17.SyncManagerCubit(
           gh<_i5.Isar>(),
           gh<_i11.AuthCubit>(),
@@ -109,10 +115,14 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.singleton<_i18.ClipboardCubit>(() => _i18.ClipboardCubit(
         gh<_i13.ClipboardRepository>(instanceName: 'offline')));
+    gh.factory<_i19.CloudPersistanceCubit>(() => _i19.CloudPersistanceCubit(
+          gh<_i7.NetworkStatus>(),
+          gh<_i13.ClipboardRepository>(instanceName: 'cloud'),
+        ));
     return this;
   }
 }
 
 class _$RegisterModule extends _i6.RegisterModule {}
 
-class _$AppWriteDbEnvModule extends _i19.AppWriteDbEnvModule {}
+class _$AppWriteDbEnvModule extends _i20.AppWriteDbEnvModule {}

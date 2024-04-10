@@ -33,10 +33,12 @@ class RemoteClipboardSource implements ClipboardSource {
         Permission.write(Role.user(item.userId)),
       ],
     );
-    return item.copyWith(
+    final createdItem = item.copyWith(
       lastSynced: DateTime.now(),
       serverId: doc.$id,
     );
+    createdItem.id = item.id;
+    return createdItem;
   }
 
   @override
@@ -78,10 +80,12 @@ class RemoteClipboardSource implements ClipboardSource {
       documentId: item.serverId!,
       data: item.toJson(),
     );
-    return item.copyWith(
+    final updatedItem = item.copyWith(
       lastSynced: DateTime.now(),
       serverId: doc.$id,
     );
+    updatedItem.id = item.id;
+    return updatedItem;
   }
 
   @override

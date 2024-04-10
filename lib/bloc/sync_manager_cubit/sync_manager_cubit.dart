@@ -20,6 +20,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final AuthCubit auth;
   final SyncClipboardRepository syncRepo;
   final NetworkStatus network;
+  final int _syncId = 1;
 
   SyncManagerCubit(
     this.db,
@@ -28,9 +29,14 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     this.network,
   ) : super(const SyncManagerState.unknown());
 
+  Future<SyncStatus?> getSyncInfo() async {
+    final lastSync = await db.syncStatus.get(_syncId);
+    return lastSync;
+  }
+
   Future<void> syncChanges() async {
-    final lastSync = await db.syncStatus.where().findFirst();
     emit(const SyncManagerState.checking());
+    final lastSync = await getSyncInfo();
 
     if (!network.isConnected) {
       emit(const SyncManagerState.failed(noInternetConnectionFailure));
@@ -80,15 +86,15 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     // Fetch unsynced changes from local db
     // Sync local changes with server
     // ? Has to be done manually!
-    await updateSyncTime(lastSync);
+    await updateSyncTime();
   }
 
-  Future<void> updateSyncTime([SyncStatus? lastSync]) async {
-    final lastSync0 = lastSync ?? await db.syncStatus.where().findFirst();
+  Future<void> updateSyncTime() async {
+    final lastSync0 = await getSyncInfo();
     final syncTime = DateTime.now();
-    final updatedSyncStatus = (lastSync0 ?? SyncStatus()
-          ..id = 1)
-        .copyWith(lastSync: syncTime);
+    final updatedSyncStatus =
+        (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
+    updatedSyncStatus.id = _syncId;
     await db.writeTxn(() async => await db.syncStatus.put(updatedSyncStatus));
     emit(SyncManagerState.synced(lastSynced: syncTime));
   }
