@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -23,14 +24,26 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final ClipboardRepository repo;
   final ClipboardService clipboard;
 
-  late StreamSubscription<List<Clip>> copySub;
+  late StreamSubscription<List<Clip?>> copySub;
 
   OfflinePersistanceCubit(
     this.auth,
     @Named("offline") this.repo,
     this.clipboard,
   ) : super(const OfflinePersistanceState.initial()) {
+    clipboard.start();
     copySub = clipboard.onCopy.listen(onClips);
+  }
+
+  Future<void> deleteTempFile(File file) async {
+    try {
+      await file.delete();
+    } catch (e) {
+      logger.shout(
+        "Couldn't delete file from temp storage.",
+        e,
+      );
+    }
   }
 
   Future<String> getPesistedPath(String root, File file) async {
@@ -40,6 +53,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     await createDirectoryIfNotExists(dirPath);
     final filePath = p.join(dirPath, basename);
     await file.copy(filePath);
+    deleteTempFile(file);
     return filePath;
   }
 
@@ -57,6 +71,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
             userId,
             path,
             fileName: clip.fileName,
+            isImage: true,
           );
         }
       case ClipItemType.file:
@@ -84,16 +99,17 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     }
   }
 
-  Future<void> onClips(List<Clip> clips) async {
+  Future<void> onClips(List<Clip?> clips) async {
     if (clips.isEmpty) return;
 
     for (final clip in clips) {
+      if (clip == null) continue;
       final item = await _convertToClipboardItem(clip);
       await persist(item);
     }
   }
 
-  Future<void> persist(ClipboardItem item) async {
+  Future<void> persist(ClipboardItem item, {bool synced = false}) async {
     if (!item.isPersisted) {
       emit(OfflinePersistanceState.creatingItem(item));
       final created = await repo.create(item);
@@ -101,17 +117,24 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       emit(
         created.fold(
           (l) => OfflinePersistanceState.error(l),
-          (r) => OfflinePersistanceState.saved(r, created: true),
+          (r) => OfflinePersistanceState.saved(
+            r,
+            created: true,
+            synced: synced,
+          ),
         ),
       );
     } else {
       emit(OfflinePersistanceState.updatingItem(item));
-      final created = await repo.update(item);
+      final updated = await repo.update(item);
 
       emit(
-        created.fold(
+        updated.fold(
           (l) => OfflinePersistanceState.error(l),
-          (r) => OfflinePersistanceState.saved(r),
+          (r) => OfflinePersistanceState.saved(
+            r,
+            synced: synced,
+          ),
         ),
       );
     }

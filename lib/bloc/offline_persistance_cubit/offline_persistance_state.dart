@@ -7,8 +7,11 @@ sealed class OfflinePersistanceState with _$OfflinePersistanceState {
       OfflinePersistanceCreating;
   const factory OfflinePersistanceState.updatingItem(ClipboardItem item) =
       OfflinePersistanceUpdating;
-  const factory OfflinePersistanceState.saved(ClipboardItem item,
-      {@Default(false) bool created}) = OfflinePersistanceSaved;
+  const factory OfflinePersistanceState.saved(
+    ClipboardItem item, {
+    @Default(false) bool created,
+    @Default(false) bool synced,
+  }) = OfflinePersistanceSaved;
   const factory OfflinePersistanceState.error(Failure failure) =
       OfflinePersistanceError;
 }

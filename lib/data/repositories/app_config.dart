@@ -12,11 +12,12 @@ abstract class AppConfigRepository {
 @LazySingleton(as: AppConfigRepository)
 class AppConfigRepositoryImpl implements AppConfigRepository {
   final Isar db;
+  final _fixedId = 1;
 
   AppConfigRepositoryImpl(this.db);
 
   Future<AppConfig> create() async {
-    final appConfig = AppConfig();
+    final appConfig = AppConfig()..id = _fixedId;
     final id = await db.writeTxn(
       () async => await db.appConfigs.put(appConfig),
     );
@@ -27,7 +28,7 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
   @override
   FailureOr<AppConfig> get() async {
     try {
-      final result = await db.appConfigs.where().findFirst();
+      final result = await db.appConfigs.get(_fixedId);
       if (result == null) {
         final result = await create();
         return Right(result);
