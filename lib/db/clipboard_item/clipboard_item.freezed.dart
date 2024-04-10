@@ -24,20 +24,21 @@ mixin _$ClipboardItem {
   String? get serverId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced => throw _privateConstructorUsedError;
-  String? get value => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath => throw _privateConstructorUsedError;
-  String? get serverPath => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
   @JsonKey(name: "\$createdAt")
   DateTime get created => throw _privateConstructorUsedError;
   @JsonKey(name: "\$updatedAt")
   DateTime get modified => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   ClipItemType get type => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String? get value => throw _privateConstructorUsedError;
+  String? get serverPath => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   DateTime? get deletedAt => throw _privateConstructorUsedError;
+  int? get size => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,16 +56,17 @@ abstract class $ClipboardItemCopyWith<$Res> {
       {@JsonKey(name: "\$id", includeToJson: false) String? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
-      String? value,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      String? serverPath,
-      String userId,
       @JsonKey(name: "\$createdAt") DateTime created,
       @JsonKey(name: "\$updatedAt") DateTime modified,
-      String title,
-      String? description,
       @Enumerated(EnumType.name) ClipItemType type,
-      DateTime? deletedAt});
+      String userId,
+      String title,
+      String? value,
+      String? serverPath,
+      String? description,
+      DateTime? deletedAt,
+      int? size});
 }
 
 /// @nodoc
@@ -82,16 +84,17 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
   $Res call({
     Object? serverId = freezed,
     Object? lastSynced = freezed,
-    Object? value = freezed,
     Object? localPath = freezed,
-    Object? serverPath = freezed,
-    Object? userId = null,
     Object? created = null,
     Object? modified = null,
-    Object? title = null,
-    Object? description = freezed,
     Object? type = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? value = freezed,
+    Object? serverPath = freezed,
+    Object? description = freezed,
     Object? deletedAt = freezed,
+    Object? size = freezed,
   }) {
     return _then(_value.copyWith(
       serverId: freezed == serverId
@@ -102,22 +105,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String?,
       localPath: freezed == localPath
           ? _value.localPath
           : localPath // ignore: cast_nullable_to_non_nullable
               as String?,
-      serverPath: freezed == serverPath
-          ? _value.serverPath
-          : serverPath // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -126,22 +117,38 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.modified
           : modified // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ClipItemType,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: freezed == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serverPath: freezed == serverPath
+          ? _value.serverPath
+          : serverPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       deletedAt: freezed == deletedAt
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      size: freezed == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -158,16 +165,17 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       {@JsonKey(name: "\$id", includeToJson: false) String? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
-      String? value,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      String? serverPath,
-      String userId,
       @JsonKey(name: "\$createdAt") DateTime created,
       @JsonKey(name: "\$updatedAt") DateTime modified,
-      String title,
-      String? description,
       @Enumerated(EnumType.name) ClipItemType type,
-      DateTime? deletedAt});
+      String userId,
+      String title,
+      String? value,
+      String? serverPath,
+      String? description,
+      DateTime? deletedAt,
+      int? size});
 }
 
 /// @nodoc
@@ -183,16 +191,17 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
   $Res call({
     Object? serverId = freezed,
     Object? lastSynced = freezed,
-    Object? value = freezed,
     Object? localPath = freezed,
-    Object? serverPath = freezed,
-    Object? userId = null,
     Object? created = null,
     Object? modified = null,
-    Object? title = null,
-    Object? description = freezed,
     Object? type = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? value = freezed,
+    Object? serverPath = freezed,
+    Object? description = freezed,
     Object? deletedAt = freezed,
+    Object? size = freezed,
   }) {
     return _then(_$ClipboardItemImpl(
       serverId: freezed == serverId
@@ -203,22 +212,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String?,
       localPath: freezed == localPath
           ? _value.localPath
           : localPath // ignore: cast_nullable_to_non_nullable
               as String?,
-      serverPath: freezed == serverPath
-          ? _value.serverPath
-          : serverPath // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -227,22 +224,38 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.modified
           : modified // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ClipItemType,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: freezed == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serverPath: freezed == serverPath
+          ? _value.serverPath
+          : serverPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       deletedAt: freezed == deletedAt
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      size: freezed == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -253,16 +266,17 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   _$ClipboardItemImpl(
       {@JsonKey(name: "\$id", includeToJson: false) this.serverId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.lastSynced,
-      this.value,
       @JsonKey(includeFromJson: false, includeToJson: false) this.localPath,
-      this.serverPath,
-      required this.userId,
       @JsonKey(name: "\$createdAt") required this.created,
       @JsonKey(name: "\$updatedAt") required this.modified,
-      required this.title,
-      this.description,
       @Enumerated(EnumType.name) required this.type,
-      this.deletedAt})
+      required this.userId,
+      required this.title,
+      this.value,
+      this.serverPath,
+      this.description,
+      this.deletedAt,
+      this.size})
       : super._();
 
   factory _$ClipboardItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -275,14 +289,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final DateTime? lastSynced;
   @override
-  final String? value;
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   final String? localPath;
-  @override
-  final String? serverPath;
-  @override
-  final String userId;
   @override
   @JsonKey(name: "\$createdAt")
   final DateTime created;
@@ -290,18 +298,26 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @JsonKey(name: "\$updatedAt")
   final DateTime modified;
   @override
-  final String title;
-  @override
-  final String? description;
-  @override
   @Enumerated(EnumType.name)
   final ClipItemType type;
   @override
+  final String userId;
+  @override
+  final String title;
+  @override
+  final String? value;
+  @override
+  final String? serverPath;
+  @override
+  final String? description;
+  @override
   final DateTime? deletedAt;
+  @override
+  final int? size;
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, value: $value, localPath: $localPath, serverPath: $serverPath, userId: $userId, created: $created, modified: $modified, title: $title, description: $description, type: $type, deletedAt: $deletedAt)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, value: $value, serverPath: $serverPath, description: $description, deletedAt: $deletedAt, size: $size)';
   }
 
   @override
@@ -313,21 +329,22 @@ class _$ClipboardItemImpl extends _ClipboardItem {
                 other.serverId == serverId) &&
             (identical(other.lastSynced, lastSynced) ||
                 other.lastSynced == lastSynced) &&
-            (identical(other.value, value) || other.value == value) &&
             (identical(other.localPath, localPath) ||
                 other.localPath == localPath) &&
-            (identical(other.serverPath, serverPath) ||
-                other.serverPath == serverPath) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.created, created) || other.created == created) &&
             (identical(other.modified, modified) ||
                 other.modified == modified) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.serverPath, serverPath) ||
+                other.serverPath == serverPath) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.type, type) || other.type == type) &&
             (identical(other.deletedAt, deletedAt) ||
-                other.deletedAt == deletedAt));
+                other.deletedAt == deletedAt) &&
+            (identical(other.size, size) || other.size == size));
   }
 
   @JsonKey(ignore: true)
@@ -336,16 +353,17 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       runtimeType,
       serverId,
       lastSynced,
-      value,
       localPath,
-      serverPath,
-      userId,
       created,
       modified,
-      title,
-      description,
       type,
-      deletedAt);
+      userId,
+      title,
+      value,
+      serverPath,
+      description,
+      deletedAt,
+      size);
 
   @JsonKey(ignore: true)
   @override
@@ -366,17 +384,18 @@ abstract class _ClipboardItem extends ClipboardItem {
       {@JsonKey(name: "\$id", includeToJson: false) final String? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final DateTime? lastSynced,
-      final String? value,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final String? localPath,
-      final String? serverPath,
-      required final String userId,
       @JsonKey(name: "\$createdAt") required final DateTime created,
       @JsonKey(name: "\$updatedAt") required final DateTime modified,
-      required final String title,
-      final String? description,
       @Enumerated(EnumType.name) required final ClipItemType type,
-      final DateTime? deletedAt}) = _$ClipboardItemImpl;
+      required final String userId,
+      required final String title,
+      final String? value,
+      final String? serverPath,
+      final String? description,
+      final DateTime? deletedAt,
+      final int? size}) = _$ClipboardItemImpl;
   _ClipboardItem._() : super._();
 
   factory _ClipboardItem.fromJson(Map<String, dynamic> json) =
@@ -389,14 +408,8 @@ abstract class _ClipboardItem extends ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced;
   @override
-  String? get value;
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath;
-  @override
-  String? get serverPath;
-  @override
-  String get userId;
   @override
   @JsonKey(name: "\$createdAt")
   DateTime get created;
@@ -404,14 +417,22 @@ abstract class _ClipboardItem extends ClipboardItem {
   @JsonKey(name: "\$updatedAt")
   DateTime get modified;
   @override
-  String get title;
-  @override
-  String? get description;
-  @override
   @Enumerated(EnumType.name)
   ClipItemType get type;
   @override
+  String get userId;
+  @override
+  String get title;
+  @override
+  String? get value;
+  @override
+  String? get serverPath;
+  @override
+  String? get description;
+  @override
   DateTime? get deletedAt;
+  @override
+  int? get size;
   @override
   @JsonKey(ignore: true)
   _$$ClipboardItemImplCopyWith<_$ClipboardItemImpl> get copyWith =>

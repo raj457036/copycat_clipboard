@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';

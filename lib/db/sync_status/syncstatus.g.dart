@@ -17,8 +17,13 @@ const SyncStatusSchema = CollectionSchema(
   name: r'SyncStatus',
   id: -6770449623075495653,
   properties: {
-    r'lastSync': PropertySchema(
+    r'isPersisted': PropertySchema(
       id: 0,
+      name: r'isPersisted',
+      type: IsarType.bool,
+    ),
+    r'lastSync': PropertySchema(
+      id: 1,
       name: r'lastSync',
       type: IsarType.dateTime,
     )
@@ -52,7 +57,8 @@ void _syncStatusSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.lastSync);
+  writer.writeBool(offsets[0], object.isPersisted);
+  writer.writeDateTime(offsets[1], object.lastSync);
 }
 
 SyncStatus _syncStatusDeserialize(
@@ -62,7 +68,7 @@ SyncStatus _syncStatusDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = SyncStatus(
-    lastSync: reader.readDateTimeOrNull(offsets[0]),
+    lastSync: reader.readDateTimeOrNull(offsets[1]),
   );
   object.id = id;
   return object;
@@ -76,6 +82,8 @@ P _syncStatusDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readBool(offset)) as P;
+    case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -226,6 +234,16 @@ extension SyncStatusQueryFilter
     });
   }
 
+  QueryBuilder<SyncStatus, SyncStatus, QAfterFilterCondition>
+      isPersistedEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isPersisted',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<SyncStatus, SyncStatus, QAfterFilterCondition> lastSyncIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -306,6 +324,18 @@ extension SyncStatusQueryLinks
 
 extension SyncStatusQuerySortBy
     on QueryBuilder<SyncStatus, SyncStatus, QSortBy> {
+  QueryBuilder<SyncStatus, SyncStatus, QAfterSortBy> sortByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SyncStatus, SyncStatus, QAfterSortBy> sortByIsPersistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.desc);
+    });
+  }
+
   QueryBuilder<SyncStatus, SyncStatus, QAfterSortBy> sortByLastSync() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastSync', Sort.asc);
@@ -333,6 +363,18 @@ extension SyncStatusQuerySortThenBy
     });
   }
 
+  QueryBuilder<SyncStatus, SyncStatus, QAfterSortBy> thenByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SyncStatus, SyncStatus, QAfterSortBy> thenByIsPersistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isPersisted', Sort.desc);
+    });
+  }
+
   QueryBuilder<SyncStatus, SyncStatus, QAfterSortBy> thenByLastSync() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastSync', Sort.asc);
@@ -348,6 +390,12 @@ extension SyncStatusQuerySortThenBy
 
 extension SyncStatusQueryWhereDistinct
     on QueryBuilder<SyncStatus, SyncStatus, QDistinct> {
+  QueryBuilder<SyncStatus, SyncStatus, QDistinct> distinctByIsPersisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isPersisted');
+    });
+  }
+
   QueryBuilder<SyncStatus, SyncStatus, QDistinct> distinctByLastSync() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastSync');
@@ -360,6 +408,12 @@ extension SyncStatusQueryProperty
   QueryBuilder<SyncStatus, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<SyncStatus, bool, QQueryOperations> isPersistedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isPersisted');
     });
   }
 

@@ -1,13 +1,14 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
-import 'package:clipboard/bloc/gdrive_sync_cubit/gdrive_sync_cubit.dart';
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/generated/app_localizations.dart';
 import 'package:clipboard/routes/routes.dart';
+import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,19 +40,14 @@ class MainApp extends StatelessWidget {
         BlocProvider<SyncManagerCubit>(
           create: (context) => sl(),
         ),
-        BlocProvider<GdriveSyncCubit>(
+        BlocProvider<OfflinePersistanceCubit>(
           create: (context) => sl(),
         ),
         BlocProvider<ClipboardCubit>(
           create: (context) => sl(),
         ),
       ],
-      child: BlocListener<SyncManagerCubit, SyncManagerState>(
-        listener: (context, state) {
-          if (state is SyncedState) {
-            context.read<ClipboardCubit>().fetch(fromTop: true);
-          }
-        },
+      child: EventBridge(
         child: BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
           selector: (state) {
             return state.maybeWhen(
