@@ -27,10 +27,9 @@ class AuthCubit extends Cubit<AuthState> {
     final now = DateTime.now();
     if (_session != null &&
         _lastSessionFetched != null &&
-        now.difference(_lastSessionFetched!).inMinutes < 30) {
+        now.difference(_lastSessionFetched!).inMinutes < 55) {
       return _session!;
     }
-
     _session = await account.getSession(sessionId: "current");
     _lastSessionFetched = DateTime.now();
     return _session!;
@@ -55,13 +54,12 @@ class AuthCubit extends Cubit<AuthState> {
         provider: 'google',
         scopes: [
           DriveApi.driveFileScope,
-          "https://www.googleapis.com/auth/drive.file",
-          "https://www.googleapis.com/auth/drive.appdata",
+          DriveApi.driveAppdataScope,
         ],
       );
       await fetchSession();
     } catch (e) {
-      emit(const AuthState.unauthenticated());
+      emit(AuthState.unauthenticated(Failure.fromException(e)));
       return;
     }
   }

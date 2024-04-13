@@ -1,3 +1,7 @@
+buildscript {
+    ext.kotlin_version='1.9.23';
+}
+
 allprojects {
     repositories {
         google()
@@ -16,3 +20,4 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+

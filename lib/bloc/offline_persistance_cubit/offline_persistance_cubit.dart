@@ -23,6 +23,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final AuthCubit auth;
   final ClipboardRepository repo;
   final ClipboardService clipboard;
+  final CopyToClipboard copy;
 
   late StreamSubscription<List<Clip?>> copySub;
 
@@ -30,7 +31,8 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     this.auth,
     @Named("offline") this.repo,
     this.clipboard,
-  ) : super(const OfflinePersistanceState.initial()) {
+  )   : copy = CopyToClipboard(clipboard),
+        super(const OfflinePersistanceState.initial()) {
     clipboard.start();
     copySub = clipboard.onCopy.listen(onClips);
   }
@@ -43,6 +45,28 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
         "Couldn't delete file from temp storage.",
         e,
       );
+    }
+  }
+
+  Future<bool> copyToClipboard(
+    ClipboardItem item, {
+    bool fileContent = false,
+  }) async {
+    switch (item.type) {
+      case ClipItemType.text:
+        return copy.text(item.value ?? "");
+      case ClipItemType.url:
+        return copy.url(Uri.tryParse(item.value ?? ""));
+      case ClipItemType.image:
+      case ClipItemType.file:
+        if (item.localPath == null) return false;
+        if (fileContent) {
+          final result = await copy.fileContent(File(item.localPath!));
+          if (result) return true;
+        }
+        return copy.file(File(item.localPath!));
+      default:
+        return false;
     }
   }
 

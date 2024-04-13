@@ -1,12 +1,13 @@
-import 'dart:async' show Completer;
+import 'dart:async' show Completer, FutureOr;
 import 'dart:convert' show utf8;
-import 'dart:io' show Directory, File;
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import "package:path/path.dart" as p;
@@ -366,7 +367,7 @@ class ClipboardFormatProcessor {
 
 @injectable
 class ClipboardService with ClipboardListener {
-  bool writing = false;
+  bool _writing = false;
   bool _started = false;
   late final BehaviorSubject<List<Clip?>> onCopy;
   final ClipboardFormatProcessor processor = ClipboardFormatProcessor();
@@ -375,10 +376,14 @@ class ClipboardService with ClipboardListener {
   Future<ClipboardReader?> getReader() async =>
       await SystemClipboard.instance?.read();
 
+  void setWriting(bool writing) {
+    _writing = writing;
+  }
+
   Future<void> write(Iterable<DataWriterItem> items) async {
-    writing = true;
+    setWriting(true);
     await SystemClipboard.instance?.write(items);
-    await Future.delayed(Durations.short3, () => writing = false);
+    await Future.delayed(Durations.short3, () => setWriting(false));
   }
 
   Future<void> start() async {
@@ -399,7 +404,7 @@ class ClipboardService with ClipboardListener {
 
   @override
   void onClipboardChanged() {
-    if (writing) return;
+    if (_writing) return;
     readClipboard();
   }
 
@@ -451,5 +456,106 @@ class ClipboardService with ClipboardListener {
     );
 
     onCopy.add(clips);
+  }
+}
+
+class CopyToClipboard {
+  final ClipboardService service;
+
+  CopyToClipboard(this.service);
+
+  Future<bool> writeToClipboard(DataWriterItem item) async {
+    try {
+      await service.write([item]);
+      return true;
+    } catch (e) {
+      logger.shout(e);
+      return false;
+    }
+  }
+
+  Future<bool> text(String text) {
+    final item = DataWriterItem();
+    item.add(Formats.plainText(text));
+    return writeToClipboard(item);
+  }
+
+  Future<bool> url(Uri? uri) {
+    if (uri == null) return Future.value(false);
+    final item = DataWriterItem();
+    item.add(Formats.uri(NamedUri(uri)));
+    return writeToClipboard(item);
+  }
+
+  Future<bool> fileContent(File file) async {
+    final bytes = await file.readAsBytes();
+    final ext = p.extension(file.path);
+    FutureOr<EncodedData>? format;
+    switch (ext) {
+      case ".jpeg":
+      case ".jpg":
+        format = Formats.jpeg(bytes);
+        break;
+      case ".png":
+        format = Formats.png(bytes);
+        break;
+      case ".gif":
+        format = Formats.gif(bytes);
+        break;
+      case ".tiff":
+        format = Formats.tiff(bytes);
+        break;
+      case ".webp":
+        format = Formats.webp(bytes);
+        break;
+      case ".heic":
+        format = Formats.heic(bytes);
+        break;
+      case ".heif":
+        format = Formats.heif(bytes);
+        break;
+      case ".bmp":
+        format = Formats.bmp(bytes);
+        break;
+      case ".ico":
+        format = Formats.ico(bytes);
+        break;
+      case ".svg":
+        format = Formats.svg(bytes);
+        break;
+      case ".pdf":
+        format = Formats.pdf(bytes);
+        break;
+      case ".txt":
+        format = Formats.plainTextFile(bytes);
+        break;
+      default:
+        return false;
+    }
+
+    final item = DataWriterItem()..add(format);
+    return writeToClipboard(item);
+  }
+
+  Future<bool> file(File file, {bool copyTo = false}) async {
+    if (Platform.isAndroid || Platform.isIOS || copyTo) {
+      String? outputFile = await FilePicker.platform.saveFile(
+        dialogTitle: 'Save to',
+        fileName: "clipboard_item${p.extension(file.path)}",
+        bytes: await file.readAsBytes(),
+      );
+
+      if (outputFile == null) return false;
+
+      if (copyTo &&
+          (Platform.isLinux || Platform.isMacOS || Platform.isWindows)) {
+        await file.copy(outputFile);
+      }
+      return true;
+    }
+
+    final item = DataWriterItem();
+    item.add(Formats.fileUri(file.uri));
+    return writeToClipboard(item);
   }
 }
