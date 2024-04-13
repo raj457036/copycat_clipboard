@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
@@ -139,9 +140,10 @@ Future<void> _copyToClipboard(
   ClipboardItem item, {
   bool copyFileContent = false,
 }) async {
-  final result = await context
-      .read<ClipboardCubit>()
-      .copyToClipboard(item, copyFileContent);
+  final result = await context.read<OfflinePersistanceCubit>().copyToClipboard(
+        item,
+        fileContent: copyFileContent,
+      );
 
   if (result) {
     // ignore: use_build_context_synchronously
@@ -213,17 +215,24 @@ class ClipOptions extends StatelessWidget {
                 ),
                 tooltip: "Open in browser",
               ),
-            if (item.fileExtension == ".txt")
+            if (item.fileExtension == ".txt" || item.type == ClipItemType.image)
               MenuAnchor(
                 menuChildren: [
+                  if (Platform.isIOS || Platform.isAndroid)
+                    MenuItemButton(
+                      leadingIcon: const Icon(Icons.file_download_outlined),
+                      child: const Text("Save file"),
+                      onPressed: () => _copyToClipboard(context, item),
+                    )
+                  else
+                    MenuItemButton(
+                      leadingIcon: const Icon(Icons.file_copy_outlined),
+                      child: const Text("Copy file"),
+                      onPressed: () => _copyToClipboard(context, item),
+                    ),
                   MenuItemButton(
                     leadingIcon: const Icon(Icons.copy_all_rounded),
-                    child: const Text("Copy text file"),
-                    onPressed: () => _copyToClipboard(context, item),
-                  ),
-                  MenuItemButton(
-                    leadingIcon: const Icon(Icons.text_snippet_rounded),
-                    child: const Text("Copy text content"),
+                    child: const Text("Copy content"),
                     onPressed: () =>
                         _copyToClipboard(context, item, copyFileContent: true),
                   ),
