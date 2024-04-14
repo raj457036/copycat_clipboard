@@ -6,5 +6,5 @@ abstract class AppWriteDbEnvModule {
   String get databaseId => "6612ac3373a3890d0907";
 
   @Named("clipboardCollectionId")
-  String get clipboardCollectionId => "6612ac4a62fe284e0137";
+  String get clipboardCollectionId => "661bc1f9787ef90e5000";
 }

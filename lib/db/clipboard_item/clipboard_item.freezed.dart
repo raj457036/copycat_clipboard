@@ -33,12 +33,35 @@ mixin _$ClipboardItem {
   @Enumerated(EnumType.name)
   ClipItemType get type => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String? get value => throw _privateConstructorUsedError;
-  String? get serverPath => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   DateTime? get deletedAt => throw _privateConstructorUsedError;
-  int? get size => throw _privateConstructorUsedError;
+  bool get encrypted => throw _privateConstructorUsedError; // Text related
+  String? get text => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError; // Files related
+  String? get fileName => throw _privateConstructorUsedError;
+  String? get fileMimeType => throw _privateConstructorUsedError;
+  String? get fileExtension => throw _privateConstructorUsedError;
+  String? get driveFileId => throw _privateConstructorUsedError;
+  int? get fileSize => throw _privateConstructorUsedError; // in KB
+  String? get imgBlurHash =>
+      throw _privateConstructorUsedError; // only for image
+// Source Information
+  String? get sourceUrl => throw _privateConstructorUsedError;
+  String? get sourceApp => throw _privateConstructorUsedError;
+  @Enumerated(EnumType.name)
+  PlatformOS get os => throw _privateConstructorUsedError; // local only
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get localOnly => throw _privateConstructorUsedError; // Stats
+  int get copiedCount => throw _privateConstructorUsedError;
+  DateTime? get lastCopied =>
+      throw _privateConstructorUsedError; // non persistant state
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool? get downloading => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  double? get downloadProgress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -61,12 +84,30 @@ abstract class $ClipboardItemCopyWith<$Res> {
       @JsonKey(name: "\$updatedAt") DateTime modified,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
-      String title,
-      String? value,
-      String? serverPath,
+      String? title,
       String? description,
       DateTime? deletedAt,
-      int? size});
+      bool encrypted,
+      String? text,
+      String? url,
+      String? fileName,
+      String? fileMimeType,
+      String? fileExtension,
+      String? driveFileId,
+      int? fileSize,
+      String? imgBlurHash,
+      String? sourceUrl,
+      String? sourceApp,
+      @Enumerated(EnumType.name) PlatformOS os,
+      @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
+      int copiedCount,
+      DateTime? lastCopied,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool? downloading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      double? downloadProgress});
 }
 
 /// @nodoc
@@ -89,12 +130,26 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? modified = null,
     Object? type = null,
     Object? userId = null,
-    Object? title = null,
-    Object? value = freezed,
-    Object? serverPath = freezed,
+    Object? title = freezed,
     Object? description = freezed,
     Object? deletedAt = freezed,
-    Object? size = freezed,
+    Object? encrypted = null,
+    Object? text = freezed,
+    Object? url = freezed,
+    Object? fileName = freezed,
+    Object? fileMimeType = freezed,
+    Object? fileExtension = freezed,
+    Object? driveFileId = freezed,
+    Object? fileSize = freezed,
+    Object? imgBlurHash = freezed,
+    Object? sourceUrl = freezed,
+    Object? sourceApp = freezed,
+    Object? os = null,
+    Object? localOnly = null,
+    Object? copiedCount = null,
+    Object? lastCopied = freezed,
+    Object? downloading = freezed,
+    Object? downloadProgress = freezed,
   }) {
     return _then(_value.copyWith(
       serverId: freezed == serverId
@@ -125,17 +180,9 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      title: null == title
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      serverPath: freezed == serverPath
-          ? _value.serverPath
-          : serverPath // ignore: cast_nullable_to_non_nullable
               as String?,
       description: freezed == description
           ? _value.description
@@ -145,10 +192,74 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      size: freezed == size
-          ? _value.size
-          : size // ignore: cast_nullable_to_non_nullable
+      encrypted: null == encrypted
+          ? _value.encrypted
+          : encrypted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      text: freezed == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileMimeType: freezed == fileMimeType
+          ? _value.fileMimeType
+          : fileMimeType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileExtension: freezed == fileExtension
+          ? _value.fileExtension
+          : fileExtension // ignore: cast_nullable_to_non_nullable
+              as String?,
+      driveFileId: freezed == driveFileId
+          ? _value.driveFileId
+          : driveFileId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileSize: freezed == fileSize
+          ? _value.fileSize
+          : fileSize // ignore: cast_nullable_to_non_nullable
               as int?,
+      imgBlurHash: freezed == imgBlurHash
+          ? _value.imgBlurHash
+          : imgBlurHash // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sourceUrl: freezed == sourceUrl
+          ? _value.sourceUrl
+          : sourceUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sourceApp: freezed == sourceApp
+          ? _value.sourceApp
+          : sourceApp // ignore: cast_nullable_to_non_nullable
+              as String?,
+      os: null == os
+          ? _value.os
+          : os // ignore: cast_nullable_to_non_nullable
+              as PlatformOS,
+      localOnly: null == localOnly
+          ? _value.localOnly
+          : localOnly // ignore: cast_nullable_to_non_nullable
+              as bool,
+      copiedCount: null == copiedCount
+          ? _value.copiedCount
+          : copiedCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastCopied: freezed == lastCopied
+          ? _value.lastCopied
+          : lastCopied // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      downloading: freezed == downloading
+          ? _value.downloading
+          : downloading // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      downloadProgress: freezed == downloadProgress
+          ? _value.downloadProgress
+          : downloadProgress // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 }
@@ -170,12 +281,30 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       @JsonKey(name: "\$updatedAt") DateTime modified,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
-      String title,
-      String? value,
-      String? serverPath,
+      String? title,
       String? description,
       DateTime? deletedAt,
-      int? size});
+      bool encrypted,
+      String? text,
+      String? url,
+      String? fileName,
+      String? fileMimeType,
+      String? fileExtension,
+      String? driveFileId,
+      int? fileSize,
+      String? imgBlurHash,
+      String? sourceUrl,
+      String? sourceApp,
+      @Enumerated(EnumType.name) PlatformOS os,
+      @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
+      int copiedCount,
+      DateTime? lastCopied,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool? downloading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      double? downloadProgress});
 }
 
 /// @nodoc
@@ -196,12 +325,26 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? modified = null,
     Object? type = null,
     Object? userId = null,
-    Object? title = null,
-    Object? value = freezed,
-    Object? serverPath = freezed,
+    Object? title = freezed,
     Object? description = freezed,
     Object? deletedAt = freezed,
-    Object? size = freezed,
+    Object? encrypted = null,
+    Object? text = freezed,
+    Object? url = freezed,
+    Object? fileName = freezed,
+    Object? fileMimeType = freezed,
+    Object? fileExtension = freezed,
+    Object? driveFileId = freezed,
+    Object? fileSize = freezed,
+    Object? imgBlurHash = freezed,
+    Object? sourceUrl = freezed,
+    Object? sourceApp = freezed,
+    Object? os = null,
+    Object? localOnly = null,
+    Object? copiedCount = null,
+    Object? lastCopied = freezed,
+    Object? downloading = freezed,
+    Object? downloadProgress = freezed,
   }) {
     return _then(_$ClipboardItemImpl(
       serverId: freezed == serverId
@@ -232,17 +375,9 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      title: null == title
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      serverPath: freezed == serverPath
-          ? _value.serverPath
-          : serverPath // ignore: cast_nullable_to_non_nullable
               as String?,
       description: freezed == description
           ? _value.description
@@ -252,10 +387,74 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      size: freezed == size
-          ? _value.size
-          : size // ignore: cast_nullable_to_non_nullable
+      encrypted: null == encrypted
+          ? _value.encrypted
+          : encrypted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      text: freezed == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileMimeType: freezed == fileMimeType
+          ? _value.fileMimeType
+          : fileMimeType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileExtension: freezed == fileExtension
+          ? _value.fileExtension
+          : fileExtension // ignore: cast_nullable_to_non_nullable
+              as String?,
+      driveFileId: freezed == driveFileId
+          ? _value.driveFileId
+          : driveFileId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileSize: freezed == fileSize
+          ? _value.fileSize
+          : fileSize // ignore: cast_nullable_to_non_nullable
               as int?,
+      imgBlurHash: freezed == imgBlurHash
+          ? _value.imgBlurHash
+          : imgBlurHash // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sourceUrl: freezed == sourceUrl
+          ? _value.sourceUrl
+          : sourceUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sourceApp: freezed == sourceApp
+          ? _value.sourceApp
+          : sourceApp // ignore: cast_nullable_to_non_nullable
+              as String?,
+      os: null == os
+          ? _value.os
+          : os // ignore: cast_nullable_to_non_nullable
+              as PlatformOS,
+      localOnly: null == localOnly
+          ? _value.localOnly
+          : localOnly // ignore: cast_nullable_to_non_nullable
+              as bool,
+      copiedCount: null == copiedCount
+          ? _value.copiedCount
+          : copiedCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastCopied: freezed == lastCopied
+          ? _value.lastCopied
+          : lastCopied // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      downloading: freezed == downloading
+          ? _value.downloading
+          : downloading // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      downloadProgress: freezed == downloadProgress
+          ? _value.downloadProgress
+          : downloadProgress // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -271,12 +470,31 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       @JsonKey(name: "\$updatedAt") required this.modified,
       @Enumerated(EnumType.name) required this.type,
       required this.userId,
-      required this.title,
-      this.value,
-      this.serverPath,
+      this.title,
       this.description,
       this.deletedAt,
-      this.size})
+      this.encrypted = false,
+      this.text,
+      this.url,
+      this.fileName,
+      this.fileMimeType,
+      this.fileExtension,
+      this.driveFileId,
+      this.fileSize,
+      this.imgBlurHash,
+      this.sourceUrl,
+      this.sourceApp,
+      @Enumerated(EnumType.name) required this.os,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.localOnly = false,
+      this.copiedCount = 0,
+      this.lastCopied,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.downloading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.downloadProgress})
       : super._();
 
   factory _$ClipboardItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -303,21 +521,65 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   final String userId;
   @override
-  final String title;
-  @override
-  final String? value;
-  @override
-  final String? serverPath;
+  final String? title;
   @override
   final String? description;
   @override
   final DateTime? deletedAt;
   @override
-  final int? size;
+  @JsonKey()
+  final bool encrypted;
+// Text related
+  @override
+  final String? text;
+  @override
+  final String? url;
+// Files related
+  @override
+  final String? fileName;
+  @override
+  final String? fileMimeType;
+  @override
+  final String? fileExtension;
+  @override
+  final String? driveFileId;
+  @override
+  final int? fileSize;
+// in KB
+  @override
+  final String? imgBlurHash;
+// only for image
+// Source Information
+  @override
+  final String? sourceUrl;
+  @override
+  final String? sourceApp;
+  @override
+  @Enumerated(EnumType.name)
+  final PlatformOS os;
+// local only
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool localOnly;
+// Stats
+  @override
+  @JsonKey()
+  final int copiedCount;
+  @override
+  final DateTime? lastCopied;
+// non persistant state
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool? downloading;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final double? downloadProgress;
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, value: $value, serverPath: $serverPath, description: $description, deletedAt: $deletedAt, size: $size)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress)';
   }
 
   @override
@@ -337,33 +599,75 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.value, value) || other.value == value) &&
-            (identical(other.serverPath, serverPath) ||
-                other.serverPath == serverPath) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.deletedAt, deletedAt) ||
                 other.deletedAt == deletedAt) &&
-            (identical(other.size, size) || other.size == size));
+            (identical(other.encrypted, encrypted) ||
+                other.encrypted == encrypted) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
+            (identical(other.fileMimeType, fileMimeType) ||
+                other.fileMimeType == fileMimeType) &&
+            (identical(other.fileExtension, fileExtension) ||
+                other.fileExtension == fileExtension) &&
+            (identical(other.driveFileId, driveFileId) ||
+                other.driveFileId == driveFileId) &&
+            (identical(other.fileSize, fileSize) ||
+                other.fileSize == fileSize) &&
+            (identical(other.imgBlurHash, imgBlurHash) ||
+                other.imgBlurHash == imgBlurHash) &&
+            (identical(other.sourceUrl, sourceUrl) ||
+                other.sourceUrl == sourceUrl) &&
+            (identical(other.sourceApp, sourceApp) ||
+                other.sourceApp == sourceApp) &&
+            (identical(other.os, os) || other.os == os) &&
+            (identical(other.localOnly, localOnly) ||
+                other.localOnly == localOnly) &&
+            (identical(other.copiedCount, copiedCount) ||
+                other.copiedCount == copiedCount) &&
+            (identical(other.lastCopied, lastCopied) ||
+                other.lastCopied == lastCopied) &&
+            (identical(other.downloading, downloading) ||
+                other.downloading == downloading) &&
+            (identical(other.downloadProgress, downloadProgress) ||
+                other.downloadProgress == downloadProgress));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      serverId,
-      lastSynced,
-      localPath,
-      created,
-      modified,
-      type,
-      userId,
-      title,
-      value,
-      serverPath,
-      description,
-      deletedAt,
-      size);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        serverId,
+        lastSynced,
+        localPath,
+        created,
+        modified,
+        type,
+        userId,
+        title,
+        description,
+        deletedAt,
+        encrypted,
+        text,
+        url,
+        fileName,
+        fileMimeType,
+        fileExtension,
+        driveFileId,
+        fileSize,
+        imgBlurHash,
+        sourceUrl,
+        sourceApp,
+        os,
+        localOnly,
+        copiedCount,
+        lastCopied,
+        downloading,
+        downloadProgress
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -390,12 +694,31 @@ abstract class _ClipboardItem extends ClipboardItem {
       @JsonKey(name: "\$updatedAt") required final DateTime modified,
       @Enumerated(EnumType.name) required final ClipItemType type,
       required final String userId,
-      required final String title,
-      final String? value,
-      final String? serverPath,
+      final String? title,
       final String? description,
       final DateTime? deletedAt,
-      final int? size}) = _$ClipboardItemImpl;
+      final bool encrypted,
+      final String? text,
+      final String? url,
+      final String? fileName,
+      final String? fileMimeType,
+      final String? fileExtension,
+      final String? driveFileId,
+      final int? fileSize,
+      final String? imgBlurHash,
+      final String? sourceUrl,
+      final String? sourceApp,
+      @Enumerated(EnumType.name) required final PlatformOS os,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool localOnly,
+      final int copiedCount,
+      final DateTime? lastCopied,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool? downloading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final double? downloadProgress}) = _$ClipboardItemImpl;
   _ClipboardItem._() : super._();
 
   factory _ClipboardItem.fromJson(Map<String, dynamic> json) =
@@ -422,17 +745,52 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   String get userId;
   @override
-  String get title;
-  @override
-  String? get value;
-  @override
-  String? get serverPath;
+  String? get title;
   @override
   String? get description;
   @override
   DateTime? get deletedAt;
   @override
-  int? get size;
+  bool get encrypted;
+  @override // Text related
+  String? get text;
+  @override
+  String? get url;
+  @override // Files related
+  String? get fileName;
+  @override
+  String? get fileMimeType;
+  @override
+  String? get fileExtension;
+  @override
+  String? get driveFileId;
+  @override
+  int? get fileSize;
+  @override // in KB
+  String? get imgBlurHash;
+  @override // only for image
+// Source Information
+  String? get sourceUrl;
+  @override
+  String? get sourceApp;
+  @override
+  @Enumerated(EnumType.name)
+  PlatformOS get os;
+  @override // local only
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get localOnly;
+  @override // Stats
+  int get copiedCount;
+  @override
+  DateTime? get lastCopied;
+  @override // non persistant state
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool? get downloading;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  double? get downloadProgress;
   @override
   @JsonKey(ignore: true)
   _$$ClipboardItemImplCopyWith<_$ClipboardItemImpl> get copyWith =>

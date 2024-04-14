@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:clipboard/common/logging.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:uuid/v4.dart';
 
 /// Simple wrapper around [Future.delayed] to wait for few seconds.
@@ -49,4 +52,31 @@ Future<void> createDirectoryIfNotExists(String path) async {
   if (!await dir.exists()) {
     await dir.create(recursive: true);
   }
+}
+
+Future<void> deleteTempFile(File file) async {
+  try {
+    await file.delete();
+  } catch (e) {
+    logger.shout(
+      "Couldn't delete file from temp storage.",
+      e,
+    );
+  }
+}
+
+Future<String> getPersistedRootDirPath(String root) async {
+  final docDir = await getApplicationDocumentsDirectory();
+  final dirPath = p.join(docDir.path, "offline", root);
+  await createDirectoryIfNotExists(dirPath);
+  return dirPath;
+}
+
+Future<String> getPesistedPath(String root, File file) async {
+  final basename = p.basename(file.path);
+  final dirPath = await getPersistedRootDirPath(root);
+  final filePath = p.join(dirPath, basename);
+  await file.copy(filePath);
+  deleteTempFile(file);
+  return filePath;
 }

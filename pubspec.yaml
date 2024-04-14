@@ -43,6 +43,9 @@ dependencies:
   googleapis: ^13.1.0
   file_picker: ^8.0.0+1
   http: ^1.0.0
+  blurhash_dart: ^1.2.1
+  mime: ^1.0.5
+  image: ^4.1.7
 
 dev_dependencies:
   flutter_test:

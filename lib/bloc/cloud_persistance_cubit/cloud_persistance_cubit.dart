@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
@@ -47,7 +45,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       switch (item.type) {
         case ClipItemType.text || ClipItemType.url:
           await _create(item);
-        case ClipItemType.image || ClipItemType.file:
+        case ClipItemType.media || ClipItemType.file:
           await _uploadAndCreate(item);
       }
     }
@@ -69,12 +67,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     final session = await auth.getSession();
 
     drive.accessToken = session.providerAccessToken;
-    final result = await drive.upload(File(item.localPath!));
-    final updatedItem = item.copyWith(
-      serverPath: result.id,
-      size: (result.size / 1024 / 1024).round(),
-    );
-    updatedItem.id = item.id;
+    final updatedItem = await drive.upload(item);
     await _create(updatedItem);
   }
 }
