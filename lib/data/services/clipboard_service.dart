@@ -3,13 +3,16 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:injectable/injectable.dart';
+import 'package:mime/mime.dart' as mime;
 import "package:path/path.dart" as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -51,18 +54,31 @@ class Clip {
   final ClipItemType type;
   final File? file;
   final String? fileName;
+  final String? fileMimeType;
+  final String? fileExtension;
+  final String? blurHash;
+  final int? fileSize;
   final String? text;
-  final String? url;
-  final bool isImage;
+  final Uri? uri;
 
   Clip({
     required this.type,
     required this.file,
     required this.fileName,
     required this.text,
-    required this.url,
-    required this.isImage,
+    required this.uri,
+    required this.fileMimeType,
+    required this.fileExtension,
+    required this.fileSize,
+    this.blurHash,
   });
+
+  bool get isImage => fileMimeType?.startsWith("image") ?? false;
+  bool get isVideo => fileMimeType?.startsWith("video") ?? false;
+  bool get isAudio => fileMimeType?.startsWith("audio") ?? false;
+  bool get isText => type == ClipItemType.text;
+  bool get isUri => type == ClipItemType.url;
+  bool get isFile => type == ClipItemType.file;
 
   factory Clip.text({
     required String text,
@@ -70,49 +86,63 @@ class Clip {
       Clip(
         file: null,
         fileName: null,
-        isImage: false,
-        url: null,
+        uri: null,
         text: text,
         type: ClipItemType.text,
+        fileMimeType: null,
+        fileExtension: null,
+        fileSize: null,
       );
 
-  factory Clip.url({
-    required String url,
+  factory Clip.uri({
+    required Uri uri,
   }) =>
       Clip(
         file: null,
         fileName: null,
-        isImage: false,
-        url: url,
+        uri: uri,
         text: null,
         type: ClipItemType.url,
+        fileMimeType: null,
+        fileExtension: null,
+        fileSize: null,
       );
 
   factory Clip.imageFile({
     required File file,
     String? fileName,
+    required String mimeType,
+    required int fileSize,
+    String? blurHash,
   }) =>
       Clip(
         fileName: fileName,
-        isImage: true,
         file: file,
-        url: null,
+        uri: null,
         text: null,
-        type: ClipItemType.image,
+        type: ClipItemType.media,
+        fileMimeType: mimeType,
+        fileExtension: p.extension(file.path),
+        fileSize: fileSize,
+        blurHash: blurHash,
       );
 
   factory Clip.file({
     required File file,
     String? textPreview,
     String? fileName,
+    required String mimeType,
+    required int fileSize,
   }) =>
       Clip(
         file: file,
         fileName: fileName,
-        isImage: false,
-        url: null,
+        uri: null,
         text: textPreview,
         type: ClipItemType.file,
+        fileMimeType: mimeType,
+        fileExtension: p.extension(file.path),
+        fileSize: fileSize,
       );
 }
 
@@ -145,7 +175,7 @@ class ClipboardFormatProcessor {
     return await c.future;
   }
 
-  Future<File?> _writeTempFile({
+  Future<(File?, String?, int)> _writeTempFile({
     required String folder,
     required String ext,
     String? fileName,
@@ -153,6 +183,7 @@ class ClipboardFormatProcessor {
     String? textContent,
     File? file,
   }) async {
+    /// returns file, mimetype and size
     assert(
       !(file == null && content == null && textContent == null),
       "Provide atleast one of content, textContent or file",
@@ -167,15 +198,22 @@ class ClipboardFormatProcessor {
 
     if (file != null) {
       await file.copy(path);
-      return file_;
+      return (file_, mime.lookupMimeType(file.path), await file.length());
     } else if (textContent != null) {
       await file_.writeAsString(textContent);
-      return file_;
+      return (file_, "text/plain", textContent.length);
     } else if (content != null) {
       await file_.writeAsBytes(content);
-      return file_;
+      return (
+        file_,
+        mime.lookupMimeType(
+          path,
+          headerBytes: content.sublist(0, 100),
+        ),
+        content.length,
+      );
     }
-    return null;
+    return (null, null, 0);
   }
 
   Future<Clip?> _getPlainText(ClipboardDataReader reader) async {
@@ -205,22 +243,21 @@ class ClipboardFormatProcessor {
       return Clip.text(text: text);
     }
 
-    final file = await _writeTempFile(
+    final (file, mimeType, size) = await _writeTempFile(
       folder: "texts",
       ext: "txt",
       fileName: fileName,
       textContent: text,
     );
 
-    if (file == null) {
-      logger.warning("Couldn't write text file");
-      return null;
-    }
+    if (file == null) return null;
 
     return Clip.file(
       file: file,
+      mimeType: mimeType ?? "application/octet-stream",
       textPreview: text,
       fileName: fileName,
+      fileSize: size,
     );
   }
 
@@ -239,21 +276,30 @@ class ClipboardFormatProcessor {
       return null;
     }
 
-    final file = await _writeTempFile(
+    final (file, mimeType, size) = await _writeTempFile(
       folder: "images",
       ext: ext,
       fileName: fileName,
       content: binary,
     );
 
-    if (file == null) {
-      logger.warning("Couldn't write image file");
-      return null;
+    if (file == null) return null;
+
+    String? blurHash;
+
+    try {
+      final image = img.decodeImage(binary);
+      blurHash = BlurHash.encode(image!, numCompX: 4, numCompY: 3).hash;
+    } catch (e) {
+      logger.shout("Couldn't get blur hash from the image!", e);
     }
 
     return Clip.imageFile(
       file: file,
+      mimeType: mimeType ?? "application/octet-stream",
       fileName: fileName,
+      fileSize: size,
+      blurHash: blurHash,
     );
   }
 
@@ -279,21 +325,20 @@ class ClipboardFormatProcessor {
 
     final ext = p.extension(file.path).substring(1);
     final fileName = p.basenameWithoutExtension(file.path);
-    final tempFile = await _writeTempFile(
+    final (tempFile, mimeType, size) = await _writeTempFile(
       folder: "files",
       ext: ext,
       file: file,
       fileName: fileName,
     );
 
-    if (tempFile == null) {
-      logger.warning("Couldn't write file");
-      return null;
-    }
+    if (tempFile == null) return null;
 
     return Clip.file(
       file: tempFile,
+      mimeType: mimeType ?? "application/octet-stream",
       fileName: fileName,
+      fileSize: size,
     );
   }
 
@@ -301,7 +346,7 @@ class ClipboardFormatProcessor {
     final schema = uri.uri.scheme;
     final isSupported = _supportedUriSchemas.contains(schema);
     if (isSupported) {
-      return Clip.url(url: uri.uri.toString());
+      return Clip.uri(uri: uri.uri);
     } else {
       logger.warning("Unsupported uri schema: $schema. Converting to text.");
       return Clip.text(text: uri.uri.toString());
@@ -487,50 +532,26 @@ class CopyToClipboard {
     return writeToClipboard(item);
   }
 
-  Future<bool> fileContent(File file) async {
+  Future<bool> fileContent(File file, {String? mimeType}) async {
     final bytes = await file.readAsBytes();
-    final ext = p.extension(file.path);
     FutureOr<EncodedData>? format;
-    switch (ext) {
-      case ".jpeg":
-      case ".jpg":
-        format = Formats.jpeg(bytes);
-        break;
-      case ".png":
-        format = Formats.png(bytes);
-        break;
-      case ".gif":
-        format = Formats.gif(bytes);
-        break;
-      case ".tiff":
-        format = Formats.tiff(bytes);
-        break;
-      case ".webp":
-        format = Formats.webp(bytes);
-        break;
-      case ".heic":
-        format = Formats.heic(bytes);
-        break;
-      case ".heif":
-        format = Formats.heif(bytes);
-        break;
-      case ".bmp":
-        format = Formats.bmp(bytes);
-        break;
-      case ".ico":
-        format = Formats.ico(bytes);
-        break;
-      case ".svg":
-        format = Formats.svg(bytes);
-        break;
-      case ".pdf":
-        format = Formats.pdf(bytes);
-        break;
-      case ".txt":
-        format = Formats.plainTextFile(bytes);
-        break;
-      default:
-        return false;
+
+    for (final f in Formats.standardFormats) {
+      if (f is SimpleFileFormat) {
+        final mime_ = mimeType ?? mime.lookupMimeType(file.path);
+        final isThis = f.mimeTypes?.contains(mime_);
+        if (isThis != null && isThis) {
+          format = f(bytes);
+          break;
+        }
+      }
+    }
+
+    if (format == null) {
+      logger.warning(
+        "Couldn't determine mime type for file ${file.path} with mime type $mimeType",
+      );
+      return false;
     }
 
     final item = DataWriterItem()..add(format);

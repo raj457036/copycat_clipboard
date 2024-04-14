@@ -17,85 +17,141 @@ const ClipboardItemSchema = CollectionSchema(
   name: r'ClipboardItem',
   id: 7228975801377184843,
   properties: {
-    r'created': PropertySchema(
+    r'copiedCount': PropertySchema(
       id: 0,
+      name: r'copiedCount',
+      type: IsarType.long,
+    ),
+    r'created': PropertySchema(
+      id: 1,
       name: r'created',
       type: IsarType.dateTime,
     ),
     r'deletedAt': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'deletedAt',
       type: IsarType.dateTime,
     ),
     r'description': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'description',
       type: IsarType.string,
     ),
+    r'driveFileId': PropertySchema(
+      id: 4,
+      name: r'driveFileId',
+      type: IsarType.string,
+    ),
+    r'encrypted': PropertySchema(
+      id: 5,
+      name: r'encrypted',
+      type: IsarType.bool,
+    ),
     r'fileExtension': PropertySchema(
-      id: 3,
+      id: 6,
       name: r'fileExtension',
       type: IsarType.string,
     ),
+    r'fileMimeType': PropertySchema(
+      id: 7,
+      name: r'fileMimeType',
+      type: IsarType.string,
+    ),
+    r'fileName': PropertySchema(
+      id: 8,
+      name: r'fileName',
+      type: IsarType.string,
+    ),
+    r'fileSize': PropertySchema(
+      id: 9,
+      name: r'fileSize',
+      type: IsarType.long,
+    ),
+    r'imgBlurHash': PropertySchema(
+      id: 10,
+      name: r'imgBlurHash',
+      type: IsarType.string,
+    ),
     r'isPersisted': PropertySchema(
-      id: 4,
+      id: 11,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'isSynced': PropertySchema(
-      id: 5,
+      id: 12,
       name: r'isSynced',
       type: IsarType.bool,
     ),
+    r'lastCopied': PropertySchema(
+      id: 13,
+      name: r'lastCopied',
+      type: IsarType.dateTime,
+    ),
     r'lastSynced': PropertySchema(
-      id: 6,
+      id: 14,
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
+    r'localOnly': PropertySchema(
+      id: 15,
+      name: r'localOnly',
+      type: IsarType.bool,
+    ),
     r'localPath': PropertySchema(
-      id: 7,
+      id: 16,
       name: r'localPath',
       type: IsarType.string,
     ),
     r'modified': PropertySchema(
-      id: 8,
+      id: 17,
       name: r'modified',
       type: IsarType.dateTime,
     ),
+    r'os': PropertySchema(
+      id: 18,
+      name: r'os',
+      type: IsarType.string,
+      enumMap: _ClipboardItemosEnumValueMap,
+    ),
     r'serverId': PropertySchema(
-      id: 9,
+      id: 19,
       name: r'serverId',
       type: IsarType.string,
     ),
-    r'serverPath': PropertySchema(
-      id: 10,
-      name: r'serverPath',
+    r'sourceApp': PropertySchema(
+      id: 20,
+      name: r'sourceApp',
       type: IsarType.string,
     ),
-    r'size': PropertySchema(
-      id: 11,
-      name: r'size',
-      type: IsarType.long,
+    r'sourceUrl': PropertySchema(
+      id: 21,
+      name: r'sourceUrl',
+      type: IsarType.string,
+    ),
+    r'text': PropertySchema(
+      id: 22,
+      name: r'text',
+      type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 12,
+      id: 23,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 13,
+      id: 24,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
-    r'userId': PropertySchema(
-      id: 14,
-      name: r'userId',
+    r'url': PropertySchema(
+      id: 25,
+      name: r'url',
       type: IsarType.string,
     ),
-    r'value': PropertySchema(
-      id: 15,
-      name: r'value',
+    r'userId': PropertySchema(
+      id: 26,
+      name: r'userId',
       type: IsarType.string,
     )
   },
@@ -126,7 +182,31 @@ int _clipboardItemEstimateSize(
     }
   }
   {
+    final value = object.driveFileId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.fileExtension;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.fileMimeType;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.fileName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.imgBlurHash;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -137,6 +217,7 @@ int _clipboardItemEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.os.name.length * 3;
   {
     final value = object.serverId;
     if (value != null) {
@@ -144,20 +225,37 @@ int _clipboardItemEstimateSize(
     }
   }
   {
-    final value = object.serverPath;
+    final value = object.sourceApp;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.title.length * 3;
-  bytesCount += 3 + object.type.name.length * 3;
-  bytesCount += 3 + object.userId.length * 3;
   {
-    final value = object.value;
+    final value = object.sourceUrl;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.text;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.title;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  bytesCount += 3 + object.type.name.length * 3;
+  {
+    final value = object.url;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  bytesCount += 3 + object.userId.length * 3;
   return bytesCount;
 }
 
@@ -167,22 +265,33 @@ void _clipboardItemSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.created);
-  writer.writeDateTime(offsets[1], object.deletedAt);
-  writer.writeString(offsets[2], object.description);
-  writer.writeString(offsets[3], object.fileExtension);
-  writer.writeBool(offsets[4], object.isPersisted);
-  writer.writeBool(offsets[5], object.isSynced);
-  writer.writeDateTime(offsets[6], object.lastSynced);
-  writer.writeString(offsets[7], object.localPath);
-  writer.writeDateTime(offsets[8], object.modified);
-  writer.writeString(offsets[9], object.serverId);
-  writer.writeString(offsets[10], object.serverPath);
-  writer.writeLong(offsets[11], object.size);
-  writer.writeString(offsets[12], object.title);
-  writer.writeString(offsets[13], object.type.name);
-  writer.writeString(offsets[14], object.userId);
-  writer.writeString(offsets[15], object.value);
+  writer.writeLong(offsets[0], object.copiedCount);
+  writer.writeDateTime(offsets[1], object.created);
+  writer.writeDateTime(offsets[2], object.deletedAt);
+  writer.writeString(offsets[3], object.description);
+  writer.writeString(offsets[4], object.driveFileId);
+  writer.writeBool(offsets[5], object.encrypted);
+  writer.writeString(offsets[6], object.fileExtension);
+  writer.writeString(offsets[7], object.fileMimeType);
+  writer.writeString(offsets[8], object.fileName);
+  writer.writeLong(offsets[9], object.fileSize);
+  writer.writeString(offsets[10], object.imgBlurHash);
+  writer.writeBool(offsets[11], object.isPersisted);
+  writer.writeBool(offsets[12], object.isSynced);
+  writer.writeDateTime(offsets[13], object.lastCopied);
+  writer.writeDateTime(offsets[14], object.lastSynced);
+  writer.writeBool(offsets[15], object.localOnly);
+  writer.writeString(offsets[16], object.localPath);
+  writer.writeDateTime(offsets[17], object.modified);
+  writer.writeString(offsets[18], object.os.name);
+  writer.writeString(offsets[19], object.serverId);
+  writer.writeString(offsets[20], object.sourceApp);
+  writer.writeString(offsets[21], object.sourceUrl);
+  writer.writeString(offsets[22], object.text);
+  writer.writeString(offsets[23], object.title);
+  writer.writeString(offsets[24], object.type.name);
+  writer.writeString(offsets[25], object.url);
+  writer.writeString(offsets[26], object.userId);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -192,21 +301,34 @@ ClipboardItem _clipboardItemDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = ClipboardItem(
-    created: reader.readDateTime(offsets[0]),
-    deletedAt: reader.readDateTimeOrNull(offsets[1]),
-    description: reader.readStringOrNull(offsets[2]),
-    lastSynced: reader.readDateTimeOrNull(offsets[6]),
-    localPath: reader.readStringOrNull(offsets[7]),
-    modified: reader.readDateTime(offsets[8]),
-    serverId: reader.readStringOrNull(offsets[9]),
-    serverPath: reader.readStringOrNull(offsets[10]),
-    size: reader.readLongOrNull(offsets[11]),
-    title: reader.readString(offsets[12]),
+    copiedCount: reader.readLong(offsets[0]),
+    created: reader.readDateTime(offsets[1]),
+    deletedAt: reader.readDateTimeOrNull(offsets[2]),
+    description: reader.readStringOrNull(offsets[3]),
+    driveFileId: reader.readStringOrNull(offsets[4]),
+    encrypted: reader.readBool(offsets[5]),
+    fileExtension: reader.readStringOrNull(offsets[6]),
+    fileMimeType: reader.readStringOrNull(offsets[7]),
+    fileName: reader.readStringOrNull(offsets[8]),
+    fileSize: reader.readLongOrNull(offsets[9]),
+    imgBlurHash: reader.readStringOrNull(offsets[10]),
+    lastCopied: reader.readDateTimeOrNull(offsets[13]),
+    lastSynced: reader.readDateTimeOrNull(offsets[14]),
+    localOnly: reader.readBool(offsets[15]),
+    localPath: reader.readStringOrNull(offsets[16]),
+    modified: reader.readDateTime(offsets[17]),
+    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[18])] ??
+        PlatformOS.android,
+    serverId: reader.readStringOrNull(offsets[19]),
+    sourceApp: reader.readStringOrNull(offsets[20]),
+    sourceUrl: reader.readStringOrNull(offsets[21]),
+    text: reader.readStringOrNull(offsets[22]),
+    title: reader.readStringOrNull(offsets[23]),
     type:
-        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[13])] ??
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[24])] ??
             ClipItemType.text,
-    userId: reader.readString(offsets[14]),
-    value: reader.readStringOrNull(offsets[15]),
+    url: reader.readStringOrNull(offsets[25]),
+    userId: reader.readString(offsets[26]),
   );
   object.id = id;
   return object;
@@ -220,54 +342,89 @@ P _clipboardItemDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readDateTime(offset)) as P;
-    case 9:
       return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readLongOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 12:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 13:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 14:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 15:
+      return (reader.readBool(offset)) as P;
+    case 16:
+      return (reader.readStringOrNull(offset)) as P;
+    case 17:
+      return (reader.readDateTime(offset)) as P;
+    case 18:
+      return (_ClipboardItemosValueEnumMap[reader.readStringOrNull(offset)] ??
+          PlatformOS.android) as P;
+    case 19:
+      return (reader.readStringOrNull(offset)) as P;
+    case 20:
+      return (reader.readStringOrNull(offset)) as P;
+    case 21:
+      return (reader.readStringOrNull(offset)) as P;
+    case 22:
+      return (reader.readStringOrNull(offset)) as P;
+    case 23:
+      return (reader.readStringOrNull(offset)) as P;
+    case 24:
       return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
           ClipItemType.text) as P;
-    case 14:
-      return (reader.readString(offset)) as P;
-    case 15:
+    case 25:
       return (reader.readStringOrNull(offset)) as P;
+    case 26:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
+const _ClipboardItemosEnumValueMap = {
+  r'android': r'android',
+  r'ios': r'ios',
+  r'macos': r'macos',
+  r'windows': r'windows',
+};
+const _ClipboardItemosValueEnumMap = {
+  r'android': PlatformOS.android,
+  r'ios': PlatformOS.ios,
+  r'macos': PlatformOS.macos,
+  r'windows': PlatformOS.windows,
+};
 const _ClipboardItemtypeEnumValueMap = {
   r'text': r'text',
-  r'url': r'url',
+  r'media': r'media',
   r'file': r'file',
-  r'image': r'image',
+  r'url': r'url',
 };
 const _ClipboardItemtypeValueEnumMap = {
   r'text': ClipItemType.text,
-  r'url': ClipItemType.url,
+  r'media': ClipItemType.media,
   r'file': ClipItemType.file,
-  r'image': ClipItemType.image,
+  r'url': ClipItemType.url,
 };
 
 Id _clipboardItemGetId(ClipboardItem object) {
@@ -366,6 +523,62 @@ extension ClipboardItemQueryWhere
 
 extension ClipboardItemQueryFilter
     on QueryBuilder<ClipboardItem, ClipboardItem, QFilterCondition> {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      copiedCountEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'copiedCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      copiedCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'copiedCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      copiedCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'copiedCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      copiedCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'copiedCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       createdEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -651,6 +864,170 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'driveFileId',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'driveFileId',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'driveFileId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'driveFileId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'driveFileId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'driveFileId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'driveFileId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'driveFileId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'driveFileId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'driveFileId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'driveFileId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      driveFileIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'driveFileId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      encryptedEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'encrypted',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       fileExtensionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -804,6 +1181,388 @@ extension ClipboardItemQueryFilter
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'fileMimeType',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'fileMimeType',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileMimeType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fileMimeType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fileMimeType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fileMimeType',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fileMimeType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fileMimeType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fileMimeType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fileMimeType',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileMimeType',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileMimeTypeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fileMimeType',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'fileName',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'fileName',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fileName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fileName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fileName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fileName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fileName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fileName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fileName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fileName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileSizeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'fileSize',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileSizeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'fileSize',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileSizeEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileSize',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileSizeGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fileSize',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileSizeLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fileSize',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      fileSizeBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fileSize',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -859,6 +1618,160 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'imgBlurHash',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'imgBlurHash',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imgBlurHash',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'imgBlurHash',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'imgBlurHash',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'imgBlurHash',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'imgBlurHash',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'imgBlurHash',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'imgBlurHash',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'imgBlurHash',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imgBlurHash',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      imgBlurHashIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'imgBlurHash',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       isPersistedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -874,6 +1787,80 @@ extension ClipboardItemQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isSynced',
         value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      lastCopiedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastCopied',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      lastCopiedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastCopied',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      lastCopiedEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastCopied',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      lastCopiedGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastCopied',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      lastCopiedLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastCopied',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      lastCopiedBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastCopied',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -948,6 +1935,16 @@ extension ClipboardItemQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      localOnlyEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'localOnly',
+        value: value,
       ));
     });
   }
@@ -1162,6 +2159,140 @@ extension ClipboardItemQueryFilter
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> osEqualTo(
+    PlatformOS value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'os',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      osGreaterThan(
+    PlatformOS value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'os',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> osLessThan(
+    PlatformOS value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'os',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> osBetween(
+    PlatformOS lower,
+    PlatformOS upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'os',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      osStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'os',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> osEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'os',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> osContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'os',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> osMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'os',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      osIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'os',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      osIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'os',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverIdIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -1317,31 +2448,31 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathIsNull() {
+      sourceAppIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'serverPath',
+        property: r'sourceApp',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathIsNotNull() {
+      sourceAppIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'serverPath',
+        property: r'sourceApp',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathEqualTo(
+      sourceAppEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'serverPath',
+        property: r'sourceApp',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1349,7 +2480,7 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathGreaterThan(
+      sourceAppGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1357,7 +2488,7 @@ extension ClipboardItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'serverPath',
+        property: r'sourceApp',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1365,7 +2496,7 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathLessThan(
+      sourceAppLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1373,7 +2504,7 @@ extension ClipboardItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'serverPath',
+        property: r'sourceApp',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1381,7 +2512,7 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathBetween(
+      sourceAppBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1390,7 +2521,7 @@ extension ClipboardItemQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'serverPath',
+        property: r'sourceApp',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1401,13 +2532,13 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathStartsWith(
+      sourceAppStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'serverPath',
+        property: r'sourceApp',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1415,13 +2546,13 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathEndsWith(
+      sourceAppEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'serverPath',
+        property: r'sourceApp',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1429,10 +2560,10 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathContains(String value, {bool caseSensitive = true}) {
+      sourceAppContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'serverPath',
+        property: r'sourceApp',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1440,10 +2571,10 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathMatches(String pattern, {bool caseSensitive = true}) {
+      sourceAppMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'serverPath',
+        property: r'sourceApp',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1451,101 +2582,353 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathIsEmpty() {
+      sourceAppIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'serverPath',
+        property: r'sourceApp',
         value: '',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverPathIsNotEmpty() {
+      sourceAppIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'serverPath',
+        property: r'sourceApp',
         value: '',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      sizeIsNull() {
+      sourceUrlIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'size',
+        property: r'sourceUrl',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      sizeIsNotNull() {
+      sourceUrlIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'size',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> sizeEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'size',
-        value: value,
+        property: r'sourceUrl',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      sizeGreaterThan(
-    int? value, {
+      sourceUrlEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sourceUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlGreaterThan(
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'size',
+        property: r'sourceUrl',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      sizeLessThan(
-    int? value, {
+      sourceUrlLessThan(
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'size',
+        property: r'sourceUrl',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> sizeBetween(
-    int? lower,
-    int? upper, {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'size',
+        property: r'sourceUrl',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'sourceUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'sourceUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'sourceUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'sourceUrl',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sourceUrl',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      sourceUrlIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'sourceUrl',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'text',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'text',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> textEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'text',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'text',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'text',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> textBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'text',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'text',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'text',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'text',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> textMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'text',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'text',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      textIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'text',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      titleIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'title',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      titleIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'title',
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       titleEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1559,7 +2942,7 @@ extension ClipboardItemQueryFilter
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       titleGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1575,7 +2958,7 @@ extension ClipboardItemQueryFilter
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       titleLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1591,8 +2974,8 @@ extension ClipboardItemQueryFilter
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       titleBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1815,6 +3198,158 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      urlIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'url',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      urlIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'url',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> urlEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'url',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      urlGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'url',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> urlLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'url',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> urlBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'url',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      urlStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'url',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> urlEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'url',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> urlContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'url',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition> urlMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'url',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      urlIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'url',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      urlIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'url',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       userIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1949,160 +3484,6 @@ extension ClipboardItemQueryFilter
       ));
     });
   }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'value',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'value',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'value',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'value',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'value',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'value',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'value',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'value',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'value',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'value',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'value',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      valueIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'value',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension ClipboardItemQueryObject
@@ -2113,6 +3494,19 @@ extension ClipboardItemQueryLinks
 
 extension ClipboardItemQuerySortBy
     on QueryBuilder<ClipboardItem, ClipboardItem, QSortBy> {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByCopiedCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'copiedCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByCopiedCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'copiedCount', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.asc);
@@ -2151,6 +3545,32 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByDriveFileId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'driveFileId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByDriveFileIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'driveFileId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByEncrypted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'encrypted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByEncryptedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'encrypted', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
       sortByFileExtension() {
     return QueryBuilder.apply(this, (query) {
@@ -2162,6 +3582,59 @@ extension ClipboardItemQuerySortBy
       sortByFileExtensionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileExtension', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByFileMimeType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileMimeType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByFileMimeTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileMimeType', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByFileName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByFileNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByFileSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByFileSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByImgBlurHash() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imgBlurHash', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByImgBlurHashDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imgBlurHash', Sort.desc);
     });
   }
 
@@ -2191,6 +3664,19 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByLastCopied() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastCopied', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByLastCopiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastCopied', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByLastSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastSynced', Sort.asc);
@@ -2201,6 +3687,19 @@ extension ClipboardItemQuerySortBy
       sortByLastSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByLocalOnly() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localOnly', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByLocalOnlyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localOnly', Sort.desc);
     });
   }
 
@@ -2230,6 +3729,18 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByOs() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'os', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByOsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'os', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByServerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.asc);
@@ -2243,28 +3754,41 @@ extension ClipboardItemQuerySortBy
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByServerPath() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortBySourceApp() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'serverPath', Sort.asc);
+      return query.addSortBy(r'sourceApp', Sort.asc);
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
-      sortByServerPathDesc() {
+      sortBySourceAppDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'serverPath', Sort.desc);
+      return query.addSortBy(r'sourceApp', Sort.desc);
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortBySize() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortBySourceUrl() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'size', Sort.asc);
+      return query.addSortBy(r'sourceUrl', Sort.asc);
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortBySizeDesc() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortBySourceUrlDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'size', Sort.desc);
+      return query.addSortBy(r'sourceUrl', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByText() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'text', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByTextDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'text', Sort.desc);
     });
   }
 
@@ -2292,6 +3816,18 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByUrl() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'url', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByUrlDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'url', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
@@ -2303,22 +3839,23 @@ extension ClipboardItemQuerySortBy
       return query.addSortBy(r'userId', Sort.desc);
     });
   }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByValue() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'value', Sort.asc);
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByValueDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'value', Sort.desc);
-    });
-  }
 }
 
 extension ClipboardItemQuerySortThenBy
     on QueryBuilder<ClipboardItem, ClipboardItem, QSortThenBy> {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByCopiedCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'copiedCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByCopiedCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'copiedCount', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.asc);
@@ -2357,6 +3894,32 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByDriveFileId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'driveFileId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByDriveFileIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'driveFileId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByEncrypted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'encrypted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByEncryptedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'encrypted', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
       thenByFileExtension() {
     return QueryBuilder.apply(this, (query) {
@@ -2371,6 +3934,46 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByFileMimeType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileMimeType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByFileMimeTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileMimeType', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByFileName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByFileNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByFileSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByFileSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -2380,6 +3983,19 @@ extension ClipboardItemQuerySortThenBy
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByImgBlurHash() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imgBlurHash', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByImgBlurHashDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imgBlurHash', Sort.desc);
     });
   }
 
@@ -2409,6 +4025,19 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByLastCopied() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastCopied', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByLastCopiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastCopied', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByLastSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastSynced', Sort.asc);
@@ -2419,6 +4048,19 @@ extension ClipboardItemQuerySortThenBy
       thenByLastSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByLocalOnly() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localOnly', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByLocalOnlyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localOnly', Sort.desc);
     });
   }
 
@@ -2448,6 +4090,18 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByOs() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'os', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByOsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'os', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByServerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.asc);
@@ -2461,28 +4115,41 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByServerPath() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenBySourceApp() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'serverPath', Sort.asc);
+      return query.addSortBy(r'sourceApp', Sort.asc);
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
-      thenByServerPathDesc() {
+      thenBySourceAppDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'serverPath', Sort.desc);
+      return query.addSortBy(r'sourceApp', Sort.desc);
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenBySize() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenBySourceUrl() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'size', Sort.asc);
+      return query.addSortBy(r'sourceUrl', Sort.asc);
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenBySizeDesc() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenBySourceUrlDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'size', Sort.desc);
+      return query.addSortBy(r'sourceUrl', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByText() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'text', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByTextDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'text', Sort.desc);
     });
   }
 
@@ -2510,6 +4177,18 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByUrl() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'url', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByUrlDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'url', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
@@ -2521,22 +4200,17 @@ extension ClipboardItemQuerySortThenBy
       return query.addSortBy(r'userId', Sort.desc);
     });
   }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByValue() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'value', Sort.asc);
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByValueDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'value', Sort.desc);
-    });
-  }
 }
 
 extension ClipboardItemQueryWhereDistinct
     on QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> {
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct>
+      distinctByCopiedCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'copiedCount');
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'created');
@@ -2556,11 +4230,51 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByDriveFileId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'driveFileId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByEncrypted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'encrypted');
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByFileExtension(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fileExtension',
           caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByFileMimeType(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fileMimeType', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByFileName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fileName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByFileSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fileSize');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByImgBlurHash(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'imgBlurHash', caseSensitive: caseSensitive);
     });
   }
 
@@ -2577,9 +4291,21 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByLastCopied() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastCopied');
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByLastSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastSynced');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByLocalOnly() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'localOnly');
     });
   }
 
@@ -2596,6 +4322,13 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByOs(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'os', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByServerId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2603,16 +4336,24 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByServerPath(
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctBySourceApp(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'serverPath', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'sourceApp', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctBySize() {
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctBySourceUrl(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'size');
+      return query.addDistinctBy(r'sourceUrl', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByText(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'text', caseSensitive: caseSensitive);
     });
   }
 
@@ -2630,17 +4371,17 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByUrl(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'url', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByUserId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'userId', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByValue(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'value', caseSensitive: caseSensitive);
     });
   }
 }
@@ -2650,6 +4391,12 @@ extension ClipboardItemQueryProperty
   QueryBuilder<ClipboardItem, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, int, QQueryOperations> copiedCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'copiedCount');
     });
   }
 
@@ -2671,10 +4418,47 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> driveFileIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'driveFileId');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, bool, QQueryOperations> encryptedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'encrypted');
+    });
+  }
+
   QueryBuilder<ClipboardItem, String?, QQueryOperations>
       fileExtensionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fileExtension');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, String?, QQueryOperations>
+      fileMimeTypeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fileMimeType');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> fileNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fileName');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, int?, QQueryOperations> fileSizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fileSize');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> imgBlurHashProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'imgBlurHash');
     });
   }
 
@@ -2691,9 +4475,22 @@ extension ClipboardItemQueryProperty
   }
 
   QueryBuilder<ClipboardItem, DateTime?, QQueryOperations>
+      lastCopiedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastCopied');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, DateTime?, QQueryOperations>
       lastSyncedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastSynced');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, bool, QQueryOperations> localOnlyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'localOnly');
     });
   }
 
@@ -2709,25 +4506,37 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, PlatformOS, QQueryOperations> osProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'os');
+    });
+  }
+
   QueryBuilder<ClipboardItem, String?, QQueryOperations> serverIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'serverId');
     });
   }
 
-  QueryBuilder<ClipboardItem, String?, QQueryOperations> serverPathProperty() {
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> sourceAppProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'serverPath');
+      return query.addPropertyName(r'sourceApp');
     });
   }
 
-  QueryBuilder<ClipboardItem, int?, QQueryOperations> sizeProperty() {
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> sourceUrlProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'size');
+      return query.addPropertyName(r'sourceUrl');
     });
   }
 
-  QueryBuilder<ClipboardItem, String, QQueryOperations> titleProperty() {
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> textProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'text');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
     });
@@ -2739,15 +4548,15 @@ extension ClipboardItemQueryProperty
     });
   }
 
-  QueryBuilder<ClipboardItem, String, QQueryOperations> userIdProperty() {
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> urlProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'userId');
+      return query.addPropertyName(r'url');
     });
   }
 
-  QueryBuilder<ClipboardItem, String?, QQueryOperations> valueProperty() {
+  QueryBuilder<ClipboardItem, String, QQueryOperations> userIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'value');
+      return query.addPropertyName(r'userId');
     });
   }
 }
@@ -2763,14 +4572,27 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       modified: DateTime.parse(json[r'$updatedAt'] as String),
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
       userId: json['userId'] as String,
-      title: json['title'] as String,
-      value: json['value'] as String?,
-      serverPath: json['serverPath'] as String?,
+      title: json['title'] as String?,
       description: json['description'] as String?,
       deletedAt: json['deletedAt'] == null
           ? null
           : DateTime.parse(json['deletedAt'] as String),
-      size: json['size'] as int?,
+      encrypted: json['encrypted'] as bool? ?? false,
+      text: json['text'] as String?,
+      url: json['url'] as String?,
+      fileName: json['fileName'] as String?,
+      fileMimeType: json['fileMimeType'] as String?,
+      fileExtension: json['fileExtension'] as String?,
+      driveFileId: json['driveFileId'] as String?,
+      fileSize: json['fileSize'] as int?,
+      imgBlurHash: json['imgBlurHash'] as String?,
+      sourceUrl: json['sourceUrl'] as String?,
+      sourceApp: json['sourceApp'] as String?,
+      os: $enumDecode(_$PlatformOSEnumMap, json['os']),
+      copiedCount: json['copiedCount'] as int? ?? 0,
+      lastCopied: json['lastCopied'] == null
+          ? null
+          : DateTime.parse(json['lastCopied'] as String),
     );
 
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
@@ -2780,16 +4602,34 @@ Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
       'type': _$ClipItemTypeEnumMap[instance.type]!,
       'userId': instance.userId,
       'title': instance.title,
-      'value': instance.value,
-      'serverPath': instance.serverPath,
       'description': instance.description,
       'deletedAt': instance.deletedAt?.toIso8601String(),
-      'size': instance.size,
+      'encrypted': instance.encrypted,
+      'text': instance.text,
+      'url': instance.url,
+      'fileName': instance.fileName,
+      'fileMimeType': instance.fileMimeType,
+      'fileExtension': instance.fileExtension,
+      'driveFileId': instance.driveFileId,
+      'fileSize': instance.fileSize,
+      'imgBlurHash': instance.imgBlurHash,
+      'sourceUrl': instance.sourceUrl,
+      'sourceApp': instance.sourceApp,
+      'os': _$PlatformOSEnumMap[instance.os]!,
+      'copiedCount': instance.copiedCount,
+      'lastCopied': instance.lastCopied?.toIso8601String(),
     };
 
 const _$ClipItemTypeEnumMap = {
   ClipItemType.text: 'text',
-  ClipItemType.url: 'url',
+  ClipItemType.media: 'media',
   ClipItemType.file: 'file',
-  ClipItemType.image: 'image',
+  ClipItemType.url: 'url',
+};
+
+const _$PlatformOSEnumMap = {
+  PlatformOS.android: 'android',
+  PlatformOS.ios: 'ios',
+  PlatformOS.macos: 'macos',
+  PlatformOS.windows: 'windows',
 };

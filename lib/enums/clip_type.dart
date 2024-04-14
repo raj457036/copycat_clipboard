@@ -3,10 +3,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 enum ClipItemType {
   @JsonValue("text")
   text,
-  @JsonValue("url")
-  url,
+  @JsonValue("media")
+  media, // image, video, audio
   @JsonValue("file")
   file,
-  @JsonValue("image")
-  image,
+  @JsonValue("url")
+  url,
 }

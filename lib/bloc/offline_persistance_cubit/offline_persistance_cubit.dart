@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -12,8 +11,6 @@ import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 part 'offline_persistance_cubit.freezed.dart';
 part 'offline_persistance_state.dart';
@@ -37,48 +34,41 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     copySub = clipboard.onCopy.listen(onClips);
   }
 
-  Future<void> deleteTempFile(File file) async {
-    try {
-      await file.delete();
-    } catch (e) {
-      logger.shout(
-        "Couldn't delete file from temp storage.",
-        e,
-      );
-    }
-  }
-
   Future<bool> copyToClipboard(
     ClipboardItem item, {
     bool fileContent = false,
   }) async {
+    bool copied = false;
     switch (item.type) {
       case ClipItemType.text:
-        return copy.text(item.value ?? "");
+        copied = await copy.text(item.text ?? "");
       case ClipItemType.url:
-        return copy.url(Uri.tryParse(item.value ?? ""));
-      case ClipItemType.image:
+        copied = await copy.url(Uri.tryParse(item.url ?? ""));
+      case ClipItemType.media:
       case ClipItemType.file:
         if (item.localPath == null) return false;
         if (fileContent) {
-          final result = await copy.fileContent(File(item.localPath!));
-          if (result) return true;
+          final result = await copy.fileContent(
+            File(item.localPath!),
+            mimeType: item.fileMimeType,
+          );
+          if (result) copied = true;
         }
-        return copy.file(File(item.localPath!));
+        copied = await copy.file(File(item.localPath!));
       default:
-        return false;
+        copied = false;
     }
-  }
 
-  Future<String> getPesistedPath(String root, File file) async {
-    final docDir = await getApplicationDocumentsDirectory();
-    final basename = p.basename(file.path);
-    final dirPath = p.join(docDir.path, "offline", root);
-    await createDirectoryIfNotExists(dirPath);
-    final filePath = p.join(dirPath, basename);
-    await file.copy(filePath);
-    deleteTempFile(file);
-    return filePath;
+    if (copied) {
+      persist(
+        item.copyWith(
+          copiedCount: item.copiedCount + 1,
+          lastCopied: DateTime.now(),
+        )..applyId(item),
+      );
+    }
+
+    return copied;
   }
 
   Future<ClipboardItem> _convertToClipboardItem(Clip clip) async {
@@ -88,38 +78,37 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     switch (clip.type) {
       case ClipItemType.text:
         return ClipboardItem.fromText(userId, clip.text!);
-      case ClipItemType.image:
+      case ClipItemType.media:
         {
-          final path = await getPesistedPath("images", clip.file!);
-          return ClipboardItem.fromFile(
+          final path = await getPesistedPath("medias", clip.file!);
+          return ClipboardItem.fromMedia(
             userId,
             path,
             fileName: clip.fileName,
-            isImage: true,
+            fileMimeType: clip.fileMimeType,
+            fileExtension: clip.fileExtension,
+            fileSize:
+                clip.fileSize != null ? clip.fileSize! ~/ 1024 : null, // in KB
+            blurHash: clip.blurHash,
           );
         }
       case ClipItemType.file:
         {
-          final isTextFile = clip.text != null;
           final path = await getPesistedPath("files", clip.file!);
 
-          if (isTextFile) {
-            return ClipboardItem.fromFile(
-              userId,
-              path,
-              preview: clip.text?.substring(0, 1023),
-              fileName: clip.fileName,
-            );
-          } else {
-            return ClipboardItem.fromFile(
-              userId,
-              path,
-              fileName: clip.fileName,
-            );
-          }
+          return ClipboardItem.fromFile(
+            userId,
+            path,
+            preview: clip.text?.substring(0, 1024),
+            fileName: clip.fileName,
+            fileMimeType: clip.fileMimeType,
+            fileExtension: clip.fileExtension,
+            fileSize:
+                clip.fileSize != null ? clip.fileSize! ~/ 1024 : null, // in KB
+          );
         }
       case ClipItemType.url:
-        return ClipboardItem.fromURL(userId, clip.url!);
+        return ClipboardItem.fromURL(userId, clip.uri!);
     }
   }
 

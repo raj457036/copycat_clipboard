@@ -7,4 +7,8 @@ mixin IsarIdMixin {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isPersisted => id != Isar.autoIncrement;
+
+  void applyId(IsarIdMixin item) {
+    id = item.id;
+  }
 }

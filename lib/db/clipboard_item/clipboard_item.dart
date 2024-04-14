@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/enums/platform_os.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 import 'package:path/path.dart' as p;
@@ -23,55 +24,143 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @JsonKey(name: "\$updatedAt") required DateTime modified,
     @Enumerated(EnumType.name) required ClipItemType type,
     required String userId,
-    required String title,
-    String? value,
-    String? serverPath,
+    String? title,
     String? description,
     DateTime? deletedAt,
-    int? size,
+    @Default(false) bool encrypted,
+    // Text related
+    String? text,
+    String? url,
+    // Files related
+    String? fileName,
+    String? fileMimeType,
+    String? fileExtension,
+    String? driveFileId,
+    int? fileSize, // in KB
+    String? imgBlurHash, // only for image
+
+    // Source Information
+    String? sourceUrl,
+    String? sourceApp,
+    @Enumerated(EnumType.name) required PlatformOS os,
+
+    // local only
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(false)
+    bool localOnly,
+
+    // Stats
+    @Default(0) int copiedCount,
+    DateTime? lastCopied,
+
+    // non persistant state
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    bool? downloading,
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    double? downloadProgress,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
       _$ClipboardItemFromJson(json);
 
-  factory ClipboardItem.fromText(String userId, String text) {
+  factory ClipboardItem.fromText(
+    String userId,
+    String text, {
+    String? sourceUrl,
+    String? sourceApp,
+  }) {
     return ClipboardItem(
-      value: text,
+      text: text,
       created: DateTime.now(),
       modified: DateTime.now(),
-      title: "Text",
       type: ClipItemType.text,
       userId: userId,
+      os: currentPlatformOS(),
+      sourceUrl: sourceUrl,
+      sourceApp: sourceApp,
+    );
+  }
+
+  factory ClipboardItem.fromMedia(
+    String userId,
+    String filePath, {
+    String? fileName,
+    String? fileMimeType,
+    String? fileExtension,
+    int? fileSize, // in KB
+    String? blurHash, // only for image
+    String? sourceUrl,
+    String? sourceApp,
+  }) {
+    return ClipboardItem(
+      created: DateTime.now(),
+      modified: DateTime.now(),
+      type: ClipItemType.media,
+      localPath: filePath,
+      userId: userId,
+      fileName: fileName,
+      fileExtension: fileExtension,
+      fileSize: fileSize,
+      fileMimeType: fileMimeType,
+      imgBlurHash: blurHash,
+      os: currentPlatformOS(),
+      sourceUrl: sourceUrl,
+      sourceApp: sourceApp,
     );
   }
 
   factory ClipboardItem.fromFile(
     String userId,
     String filePath, {
-    bool isImage = false,
     String? preview,
     String? fileName,
+    String? fileMimeType,
+    String? fileExtension,
+    int? fileSize, // in KB
+    String? sourceUrl,
+    String? sourceApp,
   }) {
     final basename = p.basename(filePath);
+
     return ClipboardItem(
-      value: preview ?? basename,
+      text: preview,
       created: DateTime.now(),
       modified: DateTime.now(),
       title: fileName ?? basename,
-      type: isImage ? ClipItemType.image : ClipItemType.file,
+      type: ClipItemType.file,
       localPath: filePath,
       userId: userId,
+      fileName: fileName,
+      fileExtension: fileExtension,
+      fileSize: fileSize,
+      fileMimeType: fileMimeType,
+      os: currentPlatformOS(),
+      sourceUrl: sourceUrl,
+      sourceApp: sourceApp,
     );
   }
 
-  factory ClipboardItem.fromURL(String userId, String url) {
+  factory ClipboardItem.fromURL(
+    String userId,
+    Uri uri, {
+    String? title,
+    String? description,
+    String? sourceUrl,
+    String? sourceApp,
+  }) {
     return ClipboardItem(
-      value: url,
+      url: uri.toString(),
       created: DateTime.now(),
       modified: DateTime.now(),
-      title: url.substring(0, 35),
+      title: title,
+      description: description,
       type: ClipItemType.url,
       userId: userId,
+      os: currentPlatformOS(),
+      sourceUrl: sourceUrl,
+      sourceApp: sourceApp,
     );
   }
 
@@ -79,7 +168,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   Future<void> cleanUp() async {
     try {
       if (localPath != null && type == ClipItemType.file ||
-          type == ClipItemType.image) {
+          type == ClipItemType.media) {
         final file = File(localPath!);
         if (await file.exists()) {
           await file.delete();
@@ -90,10 +179,11 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     }
   }
 
-  String? get fileExtension =>
-      localPath != null ? p.extension(localPath!) : null;
-
   bool get isSynced => lastSynced != null;
 
-  File? getFile() => localPath != null ? File(localPath!) : null;
+  File? getLocalFile() => localPath != null ? File(localPath!) : null;
+
+  String? get rootDir => type == ClipItemType.file || type == ClipItemType.media
+      ? '${type.name}s'
+      : null;
 }
