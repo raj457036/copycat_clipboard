@@ -23,13 +23,13 @@ import '../bloc/offline_persistance_cubit/offline_persistance_cubit.dart'
     as _i22;
 import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i19;
 import '../data/repositories/app_config.dart' as _i8;
-import '../data/repositories/clipboard.dart' as _i14;
+import '../data/repositories/clipboard.dart' as _i13;
 import '../data/repositories/sync_clipboard.dart' as _i15;
 import '../data/services/clipboard_service.dart' as _i3;
 import '../data/services/drive_service.dart' as _i7;
 import '../data/sources/clipboard/clipboard.dart' as _i9;
 import '../data/sources/clipboard/local_source.dart' as _i10;
-import '../data/sources/clipboard/remote_source.dart' as _i13;
+import '../data/sources/clipboard/remote_source.dart' as _i14;
 import '../utils/network_status.dart' as _i6;
 import 'modules.dart' as _i5;
 
@@ -82,19 +82,17 @@ extension GetItInjectableX on _i1.GetIt {
       ),
       preResolve: true,
     );
-    gh.lazySingleton<_i9.ClipboardSource>(
-      () => _i13.RemoteClipboardSource(
-        gh<_i12.SupabaseClient>(),
-        gh<_i6.NetworkStatus>(),
-        gh<String>(instanceName: 'databaseId'),
-        gh<String>(instanceName: 'clipboardCollectionId'),
-      ),
-      instanceName: 'remote',
-    );
-    gh.lazySingleton<_i14.ClipboardRepository>(
-      () => _i14.ClipboardRepositoryOfflineImpl(
+    gh.lazySingleton<_i13.ClipboardRepository>(
+      () => _i13.ClipboardRepositoryOfflineImpl(
           gh<_i9.ClipboardSource>(instanceName: 'local')),
       instanceName: 'offline',
+    );
+    gh.lazySingleton<_i9.ClipboardSource>(
+      () => _i14.RemoteClipboardSource(
+        gh<_i12.SupabaseClient>(),
+        gh<_i6.NetworkStatus>(),
+      ),
+      instanceName: 'remote',
     );
     gh.lazySingleton<_i15.SyncClipboardRepository>(
         () => _i15.SyncClipboardRepositoryImpl(gh<_i12.SupabaseClient>()));
@@ -102,8 +100,8 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i17.SupabaseClient>(),
           gh<_i6.NetworkStatus>(),
         ));
-    gh.lazySingleton<_i14.ClipboardRepository>(
-      () => _i14.ClipboardRepositoryCloudImpl(
+    gh.lazySingleton<_i13.ClipboardRepository>(
+      () => _i13.ClipboardRepositoryCloudImpl(
           gh<_i9.ClipboardSource>(instanceName: 'remote')),
       instanceName: 'cloud',
     );
@@ -116,18 +114,18 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i6.NetworkStatus>(),
         ));
     gh.singleton<_i20.ClipboardCubit>(() => _i20.ClipboardCubit(
-        gh<_i14.ClipboardRepository>(instanceName: 'offline')));
+        gh<_i13.ClipboardRepository>(instanceName: 'offline')));
     gh.factory<_i21.CloudPersistanceCubit>(() => _i21.CloudPersistanceCubit(
           gh<_i6.NetworkStatus>(),
           gh<_i16.AuthCubit>(),
           gh<_i18.GoogleTokenManagerCubit>(),
-          gh<_i14.ClipboardRepository>(instanceName: 'cloud'),
+          gh<_i13.ClipboardRepository>(instanceName: 'cloud'),
           gh<_i7.DriveService>(instanceName: 'google_drive'),
         ));
     gh.lazySingleton<_i22.OfflinePersistanceCubit>(
         () => _i22.OfflinePersistanceCubit(
               gh<_i16.AuthCubit>(),
-              gh<_i14.ClipboardRepository>(instanceName: 'offline'),
+              gh<_i13.ClipboardRepository>(instanceName: 'offline'),
               gh<_i3.ClipboardService>(),
             ));
     return this;

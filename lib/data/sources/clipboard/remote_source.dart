@@ -12,25 +12,21 @@ class RemoteClipboardSource implements ClipboardSource {
   final String table = "clipboard_items";
 
   final NetworkStatus network;
-  final String databaseId;
-  final String collectionId;
 
   RemoteClipboardSource(
     this.client,
     this.network,
-    @Named("databaseId") this.databaseId,
-    @Named("clipboardCollectionId") this.collectionId,
   );
 
   PostgrestClient get db => client.rest;
 
   @override
   Future<ClipboardItem> create(ClipboardItem item) async {
-    if (!network.isConnected) return item;
+    if (!await network.isConnected) return item;
     final docs = await db.from(table).insert(item.toJson()).select();
 
     final createdItem = item.copyWith(
-      lastSynced: DateTime.now(),
+      lastSynced: DateTime.now().toUtc(),
       serverId: docs.first['id'],
     )..applyId(item);
 
@@ -43,7 +39,7 @@ class RemoteClipboardSource implements ClipboardSource {
     int offset = 0,
     DateTime? afterDate,
   }) async {
-    if (!network.isConnected) {
+    if (!await network.isConnected) {
       return PaginatedResult(results: [], hasMore: false);
     }
 
@@ -60,7 +56,7 @@ class RemoteClipboardSource implements ClipboardSource {
 
   @override
   Future<ClipboardItem> update(ClipboardItem item) async {
-    if (!network.isConnected) return item;
+    if (!await network.isConnected) return item;
 
     if (item.serverId == null) {
       return await create(item);
@@ -68,14 +64,14 @@ class RemoteClipboardSource implements ClipboardSource {
 
     await db.from(table).update(item.toJson()).eq("id", item.serverId!);
     final updatedItem = item.copyWith(
-      lastSynced: DateTime.now(),
+      lastSynced: DateTime.now().toUtc(),
     )..applyId(item);
     return updatedItem;
   }
 
   @override
   Future<bool> delete(ClipboardItem item) async {
-    if (!network.isConnected) return false;
+    if (!await network.isConnected) return false;
 
     if (item.serverId == null) {
       return true;

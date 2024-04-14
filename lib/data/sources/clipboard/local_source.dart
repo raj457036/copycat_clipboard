@@ -42,7 +42,7 @@ class LocalClipboardSource implements ClipboardSource {
   @override
   Future<ClipboardItem> update(ClipboardItem item) async {
     final updated = item.copyWith(
-      modified: DateTime.now(),
+      modified: DateTime.now().toUtc(),
     );
     updated.id = item.id;
     await db.writeTxn(

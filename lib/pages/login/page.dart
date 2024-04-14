@@ -44,9 +44,24 @@ class LoginPage extends StatelessWidget {
                 ].join(",")
               },
               colored: true,
-              redirectUrl: 'io.supabase.flutter://reset-callback/',
+              queryParams: const {
+                su_auth.OAuthProvider.google: {
+                  "prompt": "consent",
+                  "access_type": "offline",
+                }
+              },
+              redirectUrl: 'clipboard://login-callback/',
               onSuccess: (su_auth.Session response) {
                 context.read<AuthCubit>().authenticated(response);
+
+                if (response.user.appMetadata["provider"] == "google" &&
+                    response.providerToken != null) {
+                  context.read<GoogleTokenManagerCubit>().save(
+                        accessToken: response.providerToken ?? '',
+                        refreshToken: response.providerRefreshToken,
+                        expiry: DateTime.now().add(const Duration(minutes: 55)),
+                      );
+                }
               },
               onError: (error) {
                 context.read<AuthCubit>().unauthenticated(

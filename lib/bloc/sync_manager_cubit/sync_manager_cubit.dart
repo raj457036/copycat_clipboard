@@ -38,7 +38,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     emit(const SyncManagerState.checking());
     final lastSync = await getSyncInfo();
 
-    if (!network.isConnected) {
+    if (!await network.isConnected) {
       emit(const SyncManagerState.failed(noInternetConnectionFailure));
       return;
     }
@@ -49,7 +49,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     while (hasMore) {
       final result = await syncRepo.getLatestItems(
         userId: auth.userId!,
-        lastSynced: lastSync?.lastSync,
+        lastSynced: lastSync?.lastSync?.toUtc(),
         offset: offset,
       );
 
@@ -67,7 +67,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
               .serverIdEqualTo(item.serverId)
               .findFirst();
           if (result == null) {
-            items[i] = item.copyWith(lastSynced: DateTime.now());
+            items[i] = item.copyWith(lastSynced: DateTime.now().toUtc());
           } else {
             items[i] = item.copyWith(
               lastSynced: result.lastSynced,
@@ -91,7 +91,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
   Future<void> updateSyncTime() async {
     final lastSync0 = await getSyncInfo();
-    final syncTime = DateTime.now();
+    final syncTime = DateTime.now().toUtc();
     final updatedSyncStatus =
         (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
     updatedSyncStatus.id = _syncId;

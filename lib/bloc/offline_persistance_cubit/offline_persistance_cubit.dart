@@ -63,7 +63,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       persist(
         item.copyWith(
           copiedCount: item.copiedCount + 1,
-          lastCopied: DateTime.now(),
+          lastCopied: DateTime.now().toUtc(),
         )..applyId(item),
       );
     }

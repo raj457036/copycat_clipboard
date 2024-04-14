@@ -53,11 +53,13 @@ class EventBridge extends StatelessWidget {
         BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
           listener: (context, state) {
             switch (state) {
-              case CloudPersistanceCreating():
+              case CloudPersistanceCreating(:final item):
                 // showTextSnackbar("(Sync) Inserting Clip...");
+                context.read<ClipboardCubit>().put(item);
                 break;
-              case CloudPersistanceUpdating():
+              case CloudPersistanceUpdating(:final item):
                 // showTextSnackbar("(Sync) Updating Clip...");
+                context.read<ClipboardCubit>().put(item);
                 break;
               case CloudPersistanceSaved(:final item):
                 context

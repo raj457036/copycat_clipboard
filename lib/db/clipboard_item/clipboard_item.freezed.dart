@@ -62,6 +62,12 @@ mixin _$ClipboardItem {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get downloadProgress => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool? get uploading => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  double? get uploadProgress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -107,7 +113,13 @@ abstract class $ClipboardItemCopyWith<$Res> {
       bool? downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      double? downloadProgress});
+      double? downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool? uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      double? uploadProgress});
 }
 
 /// @nodoc
@@ -150,6 +162,8 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? lastCopied = freezed,
     Object? downloading = freezed,
     Object? downloadProgress = freezed,
+    Object? uploading = freezed,
+    Object? uploadProgress = freezed,
   }) {
     return _then(_value.copyWith(
       serverId: freezed == serverId
@@ -260,6 +274,14 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.downloadProgress
           : downloadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
+      uploading: freezed == uploading
+          ? _value.uploading
+          : uploading // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      uploadProgress: freezed == uploadProgress
+          ? _value.uploadProgress
+          : uploadProgress // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 }
@@ -304,7 +326,13 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       bool? downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      double? downloadProgress});
+      double? downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool? uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      double? uploadProgress});
 }
 
 /// @nodoc
@@ -345,6 +373,8 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? lastCopied = freezed,
     Object? downloading = freezed,
     Object? downloadProgress = freezed,
+    Object? uploading = freezed,
+    Object? uploadProgress = freezed,
   }) {
     return _then(_$ClipboardItemImpl(
       serverId: freezed == serverId
@@ -455,6 +485,14 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.downloadProgress
           : downloadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
+      uploading: freezed == uploading
+          ? _value.uploading
+          : uploading // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      uploadProgress: freezed == uploadProgress
+          ? _value.uploadProgress
+          : uploadProgress // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -494,7 +532,13 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.downloadProgress})
+      this.downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.uploadProgress})
       : super._();
 
   factory _$ClipboardItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -577,10 +621,18 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   final double? downloadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool? uploading;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final double? uploadProgress;
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress)';
   }
 
   @override
@@ -634,7 +686,11 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.downloading, downloading) ||
                 other.downloading == downloading) &&
             (identical(other.downloadProgress, downloadProgress) ||
-                other.downloadProgress == downloadProgress));
+                other.downloadProgress == downloadProgress) &&
+            (identical(other.uploading, uploading) ||
+                other.uploading == uploading) &&
+            (identical(other.uploadProgress, uploadProgress) ||
+                other.uploadProgress == uploadProgress));
   }
 
   @JsonKey(ignore: true)
@@ -667,7 +723,9 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         copiedCount,
         lastCopied,
         downloading,
-        downloadProgress
+        downloadProgress,
+        uploading,
+        uploadProgress
       ]);
 
   @JsonKey(ignore: true)
@@ -719,7 +777,13 @@ abstract class _ClipboardItem extends ClipboardItem {
       final bool? downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final double? downloadProgress}) = _$ClipboardItemImpl;
+      final double? downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool? uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final double? uploadProgress}) = _$ClipboardItemImpl;
   _ClipboardItem._() : super._();
 
   factory _ClipboardItem.fromJson(Map<String, dynamic> json) =
@@ -792,6 +856,14 @@ abstract class _ClipboardItem extends ClipboardItem {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get downloadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool? get uploading;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  double? get uploadProgress;
   @override
   @JsonKey(ignore: true)
   _$$ClipboardItemImplCopyWith<_$ClipboardItemImpl> get copyWith =>

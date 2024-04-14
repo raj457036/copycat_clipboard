@@ -72,90 +72,100 @@ const ClipboardItemSchema = CollectionSchema(
       name: r'imgBlurHash',
       type: IsarType.string,
     ),
-    r'isPersisted': PropertySchema(
+    r'inCache': PropertySchema(
       id: 11,
+      name: r'inCache',
+      type: IsarType.bool,
+    ),
+    r'isPersisted': PropertySchema(
+      id: 12,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'isSynced': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'isSynced',
       type: IsarType.bool,
     ),
+    r'isSyncing': PropertySchema(
+      id: 14,
+      name: r'isSyncing',
+      type: IsarType.bool,
+    ),
     r'lastCopied': PropertySchema(
-      id: 13,
+      id: 15,
       name: r'lastCopied',
       type: IsarType.dateTime,
     ),
     r'lastSynced': PropertySchema(
-      id: 14,
+      id: 16,
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
     r'localOnly': PropertySchema(
-      id: 15,
+      id: 17,
       name: r'localOnly',
       type: IsarType.bool,
     ),
     r'localPath': PropertySchema(
-      id: 16,
+      id: 18,
       name: r'localPath',
       type: IsarType.string,
     ),
     r'modified': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'os': PropertySchema(
-      id: 18,
+      id: 20,
       name: r'os',
       type: IsarType.string,
       enumMap: _ClipboardItemosEnumValueMap,
     ),
     r'rootDir': PropertySchema(
-      id: 19,
+      id: 21,
       name: r'rootDir',
       type: IsarType.string,
     ),
     r'serverId': PropertySchema(
-      id: 20,
+      id: 22,
       name: r'serverId',
       type: IsarType.long,
     ),
     r'sourceApp': PropertySchema(
-      id: 21,
+      id: 23,
       name: r'sourceApp',
       type: IsarType.string,
     ),
     r'sourceUrl': PropertySchema(
-      id: 22,
+      id: 24,
       name: r'sourceUrl',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 23,
+      id: 25,
       name: r'text',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 24,
+      id: 26,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 25,
+      id: 27,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
     r'url': PropertySchema(
-      id: 26,
+      id: 28,
       name: r'url',
       type: IsarType.string,
     ),
     r'userId': PropertySchema(
-      id: 27,
+      id: 29,
       name: r'userId',
       type: IsarType.string,
     )
@@ -281,23 +291,25 @@ void _clipboardItemSerialize(
   writer.writeString(offsets[8], object.fileName);
   writer.writeLong(offsets[9], object.fileSize);
   writer.writeString(offsets[10], object.imgBlurHash);
-  writer.writeBool(offsets[11], object.isPersisted);
-  writer.writeBool(offsets[12], object.isSynced);
-  writer.writeDateTime(offsets[13], object.lastCopied);
-  writer.writeDateTime(offsets[14], object.lastSynced);
-  writer.writeBool(offsets[15], object.localOnly);
-  writer.writeString(offsets[16], object.localPath);
-  writer.writeDateTime(offsets[17], object.modified);
-  writer.writeString(offsets[18], object.os.name);
-  writer.writeString(offsets[19], object.rootDir);
-  writer.writeLong(offsets[20], object.serverId);
-  writer.writeString(offsets[21], object.sourceApp);
-  writer.writeString(offsets[22], object.sourceUrl);
-  writer.writeString(offsets[23], object.text);
-  writer.writeString(offsets[24], object.title);
-  writer.writeString(offsets[25], object.type.name);
-  writer.writeString(offsets[26], object.url);
-  writer.writeString(offsets[27], object.userId);
+  writer.writeBool(offsets[11], object.inCache);
+  writer.writeBool(offsets[12], object.isPersisted);
+  writer.writeBool(offsets[13], object.isSynced);
+  writer.writeBool(offsets[14], object.isSyncing);
+  writer.writeDateTime(offsets[15], object.lastCopied);
+  writer.writeDateTime(offsets[16], object.lastSynced);
+  writer.writeBool(offsets[17], object.localOnly);
+  writer.writeString(offsets[18], object.localPath);
+  writer.writeDateTime(offsets[19], object.modified);
+  writer.writeString(offsets[20], object.os.name);
+  writer.writeString(offsets[21], object.rootDir);
+  writer.writeLong(offsets[22], object.serverId);
+  writer.writeString(offsets[23], object.sourceApp);
+  writer.writeString(offsets[24], object.sourceUrl);
+  writer.writeString(offsets[25], object.text);
+  writer.writeString(offsets[26], object.title);
+  writer.writeString(offsets[27], object.type.name);
+  writer.writeString(offsets[28], object.url);
+  writer.writeString(offsets[29], object.userId);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -318,23 +330,23 @@ ClipboardItem _clipboardItemDeserialize(
     fileName: reader.readStringOrNull(offsets[8]),
     fileSize: reader.readLongOrNull(offsets[9]),
     imgBlurHash: reader.readStringOrNull(offsets[10]),
-    lastCopied: reader.readDateTimeOrNull(offsets[13]),
-    lastSynced: reader.readDateTimeOrNull(offsets[14]),
-    localOnly: reader.readBool(offsets[15]),
-    localPath: reader.readStringOrNull(offsets[16]),
-    modified: reader.readDateTime(offsets[17]),
-    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[18])] ??
+    lastCopied: reader.readDateTimeOrNull(offsets[15]),
+    lastSynced: reader.readDateTimeOrNull(offsets[16]),
+    localOnly: reader.readBool(offsets[17]),
+    localPath: reader.readStringOrNull(offsets[18]),
+    modified: reader.readDateTime(offsets[19]),
+    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[20])] ??
         PlatformOS.android,
-    serverId: reader.readLongOrNull(offsets[20]),
-    sourceApp: reader.readStringOrNull(offsets[21]),
-    sourceUrl: reader.readStringOrNull(offsets[22]),
-    text: reader.readStringOrNull(offsets[23]),
-    title: reader.readStringOrNull(offsets[24]),
+    serverId: reader.readLongOrNull(offsets[22]),
+    sourceApp: reader.readStringOrNull(offsets[23]),
+    sourceUrl: reader.readStringOrNull(offsets[24]),
+    text: reader.readStringOrNull(offsets[25]),
+    title: reader.readStringOrNull(offsets[26]),
     type:
-        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[25])] ??
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[27])] ??
             ClipItemType.text,
-    url: reader.readStringOrNull(offsets[26]),
-    userId: reader.readString(offsets[27]),
+    url: reader.readStringOrNull(offsets[28]),
+    userId: reader.readString(offsets[29]),
   );
   object.id = id;
   return object;
@@ -374,36 +386,40 @@ P _clipboardItemDeserializeProp<P>(
     case 12:
       return (reader.readBool(offset)) as P;
     case 13:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 14:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 15:
       return (reader.readBool(offset)) as P;
+    case 14:
+      return (reader.readBool(offset)) as P;
+    case 15:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 16:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 17:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
+      return (reader.readDateTime(offset)) as P;
+    case 20:
       return (_ClipboardItemosValueEnumMap[reader.readStringOrNull(offset)] ??
           PlatformOS.android) as P;
-    case 19:
-      return (reader.readStringOrNull(offset)) as P;
-    case 20:
-      return (reader.readLongOrNull(offset)) as P;
     case 21:
       return (reader.readStringOrNull(offset)) as P;
     case 22:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 23:
       return (reader.readStringOrNull(offset)) as P;
     case 24:
       return (reader.readStringOrNull(offset)) as P;
     case 25:
-      return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
-          ClipItemType.text) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 26:
       return (reader.readStringOrNull(offset)) as P;
     case 27:
+      return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
+          ClipItemType.text) as P;
+    case 28:
+      return (reader.readStringOrNull(offset)) as P;
+    case 29:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1780,6 +1796,16 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      inCacheEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'inCache',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       isPersistedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1794,6 +1820,16 @@ extension ClipboardItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isSynced',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      isSyncingEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isSyncing',
         value: value,
       ));
     });
@@ -3720,6 +3756,18 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByInCache() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'inCache', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByInCacheDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'inCache', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isPersisted', Sort.asc);
@@ -3743,6 +3791,19 @@ extension ClipboardItemQuerySortBy
       sortByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByIsSyncing() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSyncing', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByIsSyncingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSyncing', Sort.desc);
     });
   }
 
@@ -4093,6 +4154,18 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByInCache() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'inCache', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByInCacheDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'inCache', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isPersisted', Sort.asc);
@@ -4116,6 +4189,19 @@ extension ClipboardItemQuerySortThenBy
       thenByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByIsSyncing() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSyncing', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByIsSyncingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSyncing', Sort.desc);
     });
   }
 
@@ -4384,6 +4470,12 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByInCache() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'inCache');
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct>
       distinctByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
@@ -4394,6 +4486,12 @@ extension ClipboardItemQueryWhereDistinct
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isSynced');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByIsSyncing() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isSyncing');
     });
   }
 
@@ -4574,6 +4672,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, bool, QQueryOperations> inCacheProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'inCache');
+    });
+  }
+
   QueryBuilder<ClipboardItem, bool, QQueryOperations> isPersistedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isPersisted');
@@ -4583,6 +4687,12 @@ extension ClipboardItemQueryProperty
   QueryBuilder<ClipboardItem, bool, QQueryOperations> isSyncedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isSynced');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, bool, QQueryOperations> isSyncingProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isSyncing');
     });
   }
 
