@@ -1,8 +1,8 @@
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -16,10 +16,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Clipboard"),
+        actions: const [
+          SyncStatusButton(),
+          width16,
+        ],
       ),
       body: BlocSelector<ClipboardCubit, ClipboardState,
           (List<ClipboardItem>, bool)>(
@@ -29,6 +32,13 @@ class HomePage extends StatelessWidget {
         builder: (context, state) {
           final items = state.$1;
           final hasMore = state.$2 ? 1 : 0;
+
+          if (items.isEmpty) {
+            return const Center(
+              child: Text("Your clipboard is empty."),
+            );
+          }
+
           return ResponsiveGridView.builder(
             padding: const EdgeInsets.all(padding16),
             gridDelegate: const ResponsiveGridDelegate(

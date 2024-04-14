@@ -113,44 +113,49 @@ const ClipboardItemSchema = CollectionSchema(
       type: IsarType.string,
       enumMap: _ClipboardItemosEnumValueMap,
     ),
-    r'serverId': PropertySchema(
+    r'rootDir': PropertySchema(
       id: 19,
+      name: r'rootDir',
+      type: IsarType.string,
+    ),
+    r'serverId': PropertySchema(
+      id: 20,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'sourceApp': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'sourceApp',
       type: IsarType.string,
     ),
     r'sourceUrl': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'sourceUrl',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'text',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 23,
+      id: 24,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
     r'url': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'url',
       type: IsarType.string,
     ),
     r'userId': PropertySchema(
-      id: 26,
+      id: 27,
       name: r'userId',
       type: IsarType.string,
     )
@@ -219,6 +224,12 @@ int _clipboardItemEstimateSize(
   }
   bytesCount += 3 + object.os.name.length * 3;
   {
+    final value = object.rootDir;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.serverId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -284,14 +295,15 @@ void _clipboardItemSerialize(
   writer.writeString(offsets[16], object.localPath);
   writer.writeDateTime(offsets[17], object.modified);
   writer.writeString(offsets[18], object.os.name);
-  writer.writeString(offsets[19], object.serverId);
-  writer.writeString(offsets[20], object.sourceApp);
-  writer.writeString(offsets[21], object.sourceUrl);
-  writer.writeString(offsets[22], object.text);
-  writer.writeString(offsets[23], object.title);
-  writer.writeString(offsets[24], object.type.name);
-  writer.writeString(offsets[25], object.url);
-  writer.writeString(offsets[26], object.userId);
+  writer.writeString(offsets[19], object.rootDir);
+  writer.writeString(offsets[20], object.serverId);
+  writer.writeString(offsets[21], object.sourceApp);
+  writer.writeString(offsets[22], object.sourceUrl);
+  writer.writeString(offsets[23], object.text);
+  writer.writeString(offsets[24], object.title);
+  writer.writeString(offsets[25], object.type.name);
+  writer.writeString(offsets[26], object.url);
+  writer.writeString(offsets[27], object.userId);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -319,16 +331,16 @@ ClipboardItem _clipboardItemDeserialize(
     modified: reader.readDateTime(offsets[17]),
     os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[18])] ??
         PlatformOS.android,
-    serverId: reader.readStringOrNull(offsets[19]),
-    sourceApp: reader.readStringOrNull(offsets[20]),
-    sourceUrl: reader.readStringOrNull(offsets[21]),
-    text: reader.readStringOrNull(offsets[22]),
-    title: reader.readStringOrNull(offsets[23]),
+    serverId: reader.readStringOrNull(offsets[20]),
+    sourceApp: reader.readStringOrNull(offsets[21]),
+    sourceUrl: reader.readStringOrNull(offsets[22]),
+    text: reader.readStringOrNull(offsets[23]),
+    title: reader.readStringOrNull(offsets[24]),
     type:
-        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[24])] ??
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[25])] ??
             ClipItemType.text,
-    url: reader.readStringOrNull(offsets[25]),
-    userId: reader.readString(offsets[26]),
+    url: reader.readStringOrNull(offsets[26]),
+    userId: reader.readString(offsets[27]),
   );
   object.id = id;
   return object;
@@ -391,11 +403,13 @@ P _clipboardItemDeserializeProp<P>(
     case 23:
       return (reader.readStringOrNull(offset)) as P;
     case 24:
+      return (reader.readStringOrNull(offset)) as P;
+    case 25:
       return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
           ClipItemType.text) as P;
-    case 25:
-      return (reader.readStringOrNull(offset)) as P;
     case 26:
+      return (reader.readStringOrNull(offset)) as P;
+    case 27:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2294,6 +2308,160 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'rootDir',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'rootDir',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'rootDir',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'rootDir',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'rootDir',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'rootDir',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'rootDir',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'rootDir',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'rootDir',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'rootDir',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'rootDir',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      rootDirIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'rootDir',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -3741,6 +3909,18 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByRootDir() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rootDir', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByRootDirDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rootDir', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByServerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.asc);
@@ -4102,6 +4282,18 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByRootDir() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rootDir', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByRootDirDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rootDir', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByServerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.asc);
@@ -4329,6 +4521,13 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByRootDir(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'rootDir', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByServerId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -4509,6 +4708,12 @@ extension ClipboardItemQueryProperty
   QueryBuilder<ClipboardItem, PlatformOS, QQueryOperations> osProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'os');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> rootDirProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'rootDir');
     });
   }
 

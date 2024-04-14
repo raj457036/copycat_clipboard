@@ -35,7 +35,7 @@ class TextPreview extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(padding8),
             child: Text(
-              item.value!,
+              item.text!,
               overflow: TextOverflow.fade,
               maxLines: 10,
             ),
@@ -46,10 +46,10 @@ class TextPreview extends StatelessWidget {
   }
 }
 
-class ImagePreview extends StatelessWidget {
+class MediaPreview extends StatelessWidget {
   final ClipboardItem item;
 
-  const ImagePreview({super.key, required this.item});
+  const MediaPreview({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class UrlPreview extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(padding8),
             child: Text(
-              item.value!,
+              item.url!,
               overflow: TextOverflow.fade,
               maxLines: 10,
             ),
@@ -123,11 +123,13 @@ class FilePreview extends StatelessWidget {
         child: SizedBox.expand(
           child: Padding(
             padding: const EdgeInsets.all(padding8),
-            child: Text(
-              item.value ?? item.title,
-              overflow: TextOverflow.fade,
-              maxLines: 10,
-            ),
+            child: item.fileName != null
+                ? Text(
+                    item.fileName!,
+                    overflow: TextOverflow.fade,
+                    maxLines: 10,
+                  )
+                : const Icon(Icons.folder_open),
           ),
         ),
       ),
@@ -166,8 +168,8 @@ class ClipOptions extends StatelessWidget {
     switch (item.type) {
       case ClipItemType.text:
         return 'Text';
-      case ClipItemType.image:
-        return 'Image ( ${item.fileExtension} )';
+      case ClipItemType.media:
+        return 'Media ( ${item.fileMimeType} )';
       case ClipItemType.url:
         return 'URL';
       case ClipItemType.file:
@@ -178,8 +180,8 @@ class ClipOptions extends StatelessWidget {
   }
 
   Future<void> launchUrl() async {
-    if (item.value != null && Uri.tryParse(item.value!) != null) {
-      await launchUrlString(item.value!);
+    if (item.url != null && Uri.tryParse(item.url!) != null) {
+      await launchUrlString(item.url!);
     }
   }
 
@@ -215,7 +217,7 @@ class ClipOptions extends StatelessWidget {
                 ),
                 tooltip: "Open in browser",
               ),
-            if (item.fileExtension == ".txt" || item.type == ClipItemType.image)
+            if (item.fileExtension == ".txt" || item.type == ClipItemType.media)
               MenuAnchor(
                 menuChildren: [
                   if (Platform.isIOS || Platform.isAndroid)
@@ -327,7 +329,7 @@ class ClipCard extends StatelessWidget {
   Widget getPreview() {
     return switch (item.type) {
       ClipItemType.text => TextPreview(item: item),
-      ClipItemType.image => ImagePreview(item: item),
+      ClipItemType.media => MediaPreview(item: item),
       ClipItemType.url => UrlPreview(item: item),
       ClipItemType.file => FilePreview(item: item),
     };
@@ -345,8 +347,8 @@ class ClipCard extends StatelessWidget {
   }
 
   Future<void> launchUrl() async {
-    if (item.value != null && Uri.tryParse(item.value!) != null) {
-      await launchUrlString(item.value!);
+    if (item.url != null && Uri.tryParse(item.url!) != null) {
+      await launchUrlString(item.url!);
     }
   }
 
@@ -375,7 +377,7 @@ class ClipCard extends StatelessWidget {
                     onPressed: launchUrl,
                   ),
                 if (item.type == ClipItemType.file ||
-                    item.type == ClipItemType.image)
+                    item.type == ClipItemType.media)
                   MenuItem(
                     icon: Icons.save_as_outlined,
                     text: 'Save to files',
