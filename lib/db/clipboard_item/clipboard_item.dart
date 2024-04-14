@@ -62,6 +62,12 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
     double? downloadProgress,
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    bool? uploading,
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    double? uploadProgress,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
@@ -76,8 +82,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     return ClipboardItem(
       text: text,
       userId: userId ?? kLocalUserId,
-      created: DateTime.now(),
-      modified: DateTime.now(),
+      created: DateTime.now().toUtc(),
+      modified: DateTime.now().toUtc(),
       type: ClipItemType.text,
       os: currentPlatformOS(),
       sourceUrl: sourceUrl,
@@ -97,8 +103,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String? sourceApp,
   }) {
     return ClipboardItem(
-      created: DateTime.now(),
-      modified: DateTime.now(),
+      created: DateTime.now().toUtc(),
+      modified: DateTime.now().toUtc(),
       type: ClipItemType.media,
       localPath: filePath,
       userId: userId ?? kLocalUserId,
@@ -128,8 +134,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
     return ClipboardItem(
       text: preview,
-      created: DateTime.now(),
-      modified: DateTime.now(),
+      created: DateTime.now().toUtc(),
+      modified: DateTime.now().toUtc(),
       title: fileName ?? basename,
       type: ClipItemType.file,
       localPath: filePath,
@@ -154,8 +160,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   }) {
     return ClipboardItem(
       url: uri.toString(),
-      created: DateTime.now(),
-      modified: DateTime.now(),
+      created: DateTime.now().toUtc(),
+      modified: DateTime.now().toUtc(),
       title: title,
       description: description,
       type: ClipItemType.url,
@@ -183,7 +189,9 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
   bool get isSynced => lastSynced != null;
 
-  File? getLocalFile() => localPath != null ? File(localPath!) : null;
+  bool get inCache =>
+      ((type == ClipItemType.file || type == ClipItemType.media) &&
+          localPath != null);
 
   String? get rootDir => type == ClipItemType.file || type == ClipItemType.media
       ? '${type.name}s'
@@ -195,4 +203,6 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     }
     return this;
   }
+
+  bool get isSyncing => uploading ?? downloading ?? false;
 }

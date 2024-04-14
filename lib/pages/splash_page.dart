@@ -14,6 +14,10 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(
+      Durations.long1,
+      context.read<AuthCubit>().checkForAuthentication,
+    );
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         switch (state) {

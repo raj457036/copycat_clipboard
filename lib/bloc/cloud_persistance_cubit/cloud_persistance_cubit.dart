@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/google_token_cubit/google_token_manager_cubit.dart';
@@ -30,7 +32,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   ) : super(const CloudPersistanceState.initial());
 
   Future<void> persist(ClipboardItem item) async {
-    if (!network.isConnected) {
+    if (!await network.isConnected) {
       emit(const CloudPersistanceState.error(noInternetConnectionFailure));
       return;
     }
@@ -41,7 +43,10 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       emit(
         result.fold(
           (l) => CloudPersistanceState.error(l),
-          (r) => CloudPersistanceState.saved(r),
+          (r) => CloudPersistanceState.saved(r.copyWith(
+            uploading: false,
+            downloading: false,
+          )..applyId(r)),
         ),
       );
     } else {
@@ -55,19 +60,27 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   }
 
   Future<void> _create(ClipboardItem item) async {
-    emit(CloudPersistanceState.creatingItem(item));
+    emit(CloudPersistanceState.creatingItem(
+        item.copyWith(uploading: true)..applyId(item)));
     final result = await repo.create(item);
     emit(
       result.fold(
         (l) => CloudPersistanceState.error(l),
-        (r) => CloudPersistanceState.saved(r, created: true),
+        (r) => CloudPersistanceState.saved(
+          r.copyWith(
+            uploading: false,
+            downloading: false,
+          )..applyId(r),
+          created: true,
+        ),
       ),
     );
   }
 
   Future<void> _uploadAndCreate(ClipboardItem item) async {
-    emit(CloudPersistanceState.uploadingFile(item));
-    final session = auth.getSession();
+    emit(CloudPersistanceState.uploadingFile(
+        item.copyWith(uploading: true)..applyId(item)));
+    final session = auth.session;
 
     if (session == null) {
       emit(const CloudPersistanceState.error(notLoggedInFailure));
@@ -91,5 +104,43 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     drive.accessToken = accessToken;
     final updatedItem = await drive.upload(item.assignUserId(session.user.id));
     await _create(updatedItem);
+  }
+
+  Future<void> download(ClipboardItem item) async {
+    if (item.localPath != null) {
+      final exists = await File(item.localPath!).exists();
+      if (exists) return;
+    }
+
+    emit(
+      CloudPersistanceState.downloadingFile(
+        item.copyWith(downloading: true)..applyId(item),
+      ),
+    );
+    final session = auth.session;
+
+    if (session == null) {
+      emit(const CloudPersistanceState.error(notLoggedInFailure));
+      return;
+    }
+
+    final accessToken = await gToken.getAccessToken();
+
+    if (accessToken == null) {
+      emit(
+        const CloudPersistanceState.error(
+          Failure(
+            message: "Google Drive not authenticated.",
+            code: "gdrive-unauth",
+          ),
+        ),
+      );
+      return;
+    }
+
+    drive.accessToken = accessToken;
+    final updatedItem =
+        await drive.download(item.assignUserId(session.user.id));
+    await persist(updatedItem);
   }
 }

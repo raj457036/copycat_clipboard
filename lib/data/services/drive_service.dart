@@ -48,7 +48,6 @@ class GoogleAuthClient with http.BaseClient {
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     request.headers["Authorization"] = "Bearer $accessToken";
     final client = http.Client();
-    StreamSubscription<List<int>>? subscription;
     try {
       int currentBytes = 0;
       final response = await client.send(request);
@@ -56,9 +55,17 @@ class GoogleAuthClient with http.BaseClient {
           int.tryParse(response.headers['content-length'] ?? '-') ??
           1;
 
-      final broadcastStream = response.stream.asBroadcastStream();
+      final stream = response.stream.map((chunk) {
+        currentBytes += chunk.length;
+        progress?.add((currentBytes, totalBytes));
+
+        logger.info(
+          'Uploaded: $currentBytes / $totalBytes bytes',
+        );
+        return chunk;
+      });
       final newResponse = http.StreamedResponse(
-        broadcastStream,
+        stream,
         response.statusCode,
         contentLength: response.contentLength,
         request: response.request,
@@ -67,25 +74,9 @@ class GoogleAuthClient with http.BaseClient {
         persistentConnection: response.persistentConnection,
         reasonPhrase: response.reasonPhrase,
       );
-      subscription = broadcastStream.listen(
-        (List<int> chunk) {
-          currentBytes += chunk.length;
-          progress?.add((currentBytes, totalBytes));
 
-          logger.info(
-            'Uploaded: $currentBytes / $totalBytes bytes',
-          );
-        },
-        onDone: () => subscription?.cancel(),
-        onError: (error) {
-          logger.shout("Failed to upload/download", error);
-          subscription?.cancel();
-        },
-        cancelOnError: true,
-      );
       return newResponse;
     } finally {
-      subscription?.cancel();
       client.close();
     }
   }

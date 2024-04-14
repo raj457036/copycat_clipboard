@@ -14,10 +14,10 @@ class GoogleTokenManagerCubit extends Cubit<GoogleTokenManagerState> {
       : super(const GoogleTokenManagerState.initial());
 
   Future<String?> getAccessToken() async {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     switch (state) {
       case GoogleTokenManagerLoadedState(:final token, :final expiry):
-        if (now.isAfter(expiry)) {
+        if (now.isBefore(expiry)) {
           return token;
         }
         //TODO? REFRESH TOKEN
@@ -33,7 +33,8 @@ class GoogleTokenManagerCubit extends Cubit<GoogleTokenManagerState> {
     String? refreshToken,
   }) async {
     emit(const GoogleTokenManagerState.loading());
-    final metadata = client.auth.currentUser?.userMetadata ?? {};
+    final user = client.auth.currentUser;
+    final metadata = user?.userMetadata ?? {};
     final refresh = refreshToken != null && refreshToken.trim().isEmpty
         ? metadata["google_refresh_token"]
         : refreshToken;
@@ -61,7 +62,8 @@ class GoogleTokenManagerCubit extends Cubit<GoogleTokenManagerState> {
   Future<void> load() async {
     emit(const GoogleTokenManagerState.loading());
     try {
-      final metadata = client.auth.currentUser?.userMetadata;
+      final user = client.auth.currentUser;
+      final metadata = user?.userMetadata;
 
       if (metadata == null) {
         emit(const GoogleTokenManagerState.notAvailable());

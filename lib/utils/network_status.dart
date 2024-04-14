@@ -21,9 +21,15 @@ class NetworkStatus {
   }
 
   late final StreamSubscription<InternetStatus> _subscription;
-  bool _isConnected = false;
+  bool? _isConnected;
 
-  bool get isConnected => _isConnected;
+  Future<bool> get isConnected async {
+    if (_isConnected != null) {
+      return _isConnected!;
+    }
+    _isConnected = await InternetConnection().hasInternetAccess;
+    return _isConnected!;
+  }
 
   @disposeMethod
   void dispose() {

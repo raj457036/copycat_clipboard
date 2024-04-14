@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -9,8 +12,10 @@ import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/menu.dart';
+import 'package:clipboard/widgets/syncing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image/image.dart' as img;
 import 'package:url_launcher/url_launcher_string.dart';
 
 const _borderRadius = BorderRadius.vertical(
@@ -51,6 +56,15 @@ class MediaPreview extends StatelessWidget {
 
   const MediaPreview({super.key, required this.item});
 
+  ImageProvider getPreview() {
+    if (item.localPath != null) {
+      return FileImage(File(item.localPath!));
+    }
+    final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
+    final bin = Uint8List.fromList(img.encodeJpg(image_));
+    return MemoryImage(bin);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -65,7 +79,7 @@ class MediaPreview extends StatelessWidget {
           borderRadius: item.isSynced ? _borderRadius : BorderRadius.zero,
           child: SizedBox.expand(
             child: Image(
-              image: FileImage(File(item.localPath!)),
+              image: getPreview(),
               gaplessPlayback: true,
               fit: BoxFit.cover,
             ),
@@ -185,6 +199,10 @@ class ClipOptions extends StatelessWidget {
     }
   }
 
+  Future<void> _download(BuildContext context) async {
+    context.read<CloudPersistanceCubit>().download(item);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = context.breakpoints.isMobile;
@@ -217,43 +235,54 @@ class ClipOptions extends StatelessWidget {
                 ),
                 tooltip: "Open in browser",
               ),
-            if (item.fileExtension == ".txt" || item.type == ClipItemType.media)
-              MenuAnchor(
-                menuChildren: [
-                  if (Platform.isIOS || Platform.isAndroid)
-                    MenuItemButton(
-                      leadingIcon: const Icon(Icons.file_download_outlined),
-                      child: const Text("Save file"),
-                      onPressed: () => _copyToClipboard(context, item),
-                    )
-                  else
+            if (item.type == ClipItemType.media ||
+                item.type == ClipItemType.file)
+              if (item.inCache)
+                MenuAnchor(
+                  menuChildren: [
                     MenuItemButton(
                       leadingIcon: const Icon(Icons.file_copy_outlined),
-                      child: const Text("Copy file"),
+                      child: Platform.isIOS || Platform.isAndroid
+                          ? const Text("Save file")
+                          : const Text("Copy file"),
                       onPressed: () => _copyToClipboard(context, item),
                     ),
-                  MenuItemButton(
-                    leadingIcon: const Icon(Icons.copy_all_rounded),
-                    child: const Text("Copy content"),
-                    onPressed: () =>
-                        _copyToClipboard(context, item, copyFileContent: true),
-                  ),
-                ],
-                child: const Icon(Icons.copy),
-                builder: (BuildContext context, MenuController controller,
-                    Widget? child) {
-                  return IconButton(
-                    onPressed: () {
-                      if (controller.isOpen) {
-                        controller.close();
-                      } else {
-                        controller.open();
-                      }
-                    },
-                    icon: const Icon(Icons.copy),
-                  );
-                },
-              )
+                    if (item.fileMimeType != null &&
+                        (item.fileMimeType!.startsWith("image") ||
+                            item.fileMimeType!.startsWith("text")))
+                      MenuItemButton(
+                        leadingIcon: const Icon(Icons.copy_all_rounded),
+                        child: const Text("Copy content"),
+                        onPressed: () => _copyToClipboard(
+                          context,
+                          item,
+                          copyFileContent: true,
+                        ),
+                      ),
+                  ],
+                  child: const Icon(Icons.copy),
+                  builder: (BuildContext context, MenuController controller,
+                      Widget? child) {
+                    return IconButton(
+                      onPressed: () {
+                        if (controller.isOpen) {
+                          controller.close();
+                        } else {
+                          controller.open();
+                        }
+                      },
+                      icon: const Icon(Icons.copy),
+                    );
+                  },
+                )
+              else
+                IconButton(
+                  icon: item.isSyncing
+                      ? const AnimatedSyncingIcon()
+                      : const Icon(Icons.download_for_offline_outlined),
+                  onPressed: item.isSyncing ? null : () => _download(context),
+                  tooltip: "Download needed",
+                )
             else
               IconButton(
                 icon: const Icon(Icons.copy),
@@ -304,9 +333,13 @@ class ClipSyncStatus extends StatelessWidget {
               ),
               const Spacer(),
               TextButton(
-                onPressed: () {},
+                onPressed: item.isSyncing
+                    ? null
+                    : () {
+                        context.read<CloudPersistanceCubit>().persist(item);
+                      },
                 child: Text(
-                  "Sync Now",
+                  item.isSyncing ? "Syncing" : "Sync Now",
                   style: context.textTheme.labelMedium
                       ?.copyWith(color: colors.error),
                 ),
@@ -377,7 +410,7 @@ class ClipCard extends StatelessWidget {
                     onPressed: launchUrl,
                   ),
                 if (item.type == ClipItemType.file ||
-                    item.type == ClipItemType.media)
+                    item.type == ClipItemType.media && item.inCache)
                   MenuItem(
                     icon: Icons.save_as_outlined,
                     text: 'Save to files',

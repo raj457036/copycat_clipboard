@@ -22,14 +22,11 @@ class AuthCubit extends Cubit<AuthState> {
   String? get userId =>
       state.whenOrNull(authenticated: (session) => session.user.id);
 
-  Session? getSession() {
-    return sbClient.auth.currentSession;
-  }
+  Session? get session => sbClient.auth.currentSession;
 
   checkForAuthentication() {
-    final cs = getSession();
-    if (cs != null) {
-      authenticated(cs);
+    if (session != null) {
+      authenticated(session!);
     } else {
       unauthenticated(notLoggedInFailure);
     }
