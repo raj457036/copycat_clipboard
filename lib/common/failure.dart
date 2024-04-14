@@ -27,4 +27,9 @@ const noInternetConnectionFailure = Failure(
   code: 'no_internet',
 );
 
+const notLoggedInFailure = Failure(
+  message: 'Not logged in',
+  code: 'not_logged_in',
+);
+
 typedef FailureOr<T> = Future<Either<Failure, T>>;

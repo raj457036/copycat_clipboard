@@ -11,19 +11,21 @@ import 'package:path/path.dart' as p;
 part 'clipboard_item.freezed.dart';
 part 'clipboard_item.g.dart';
 
+const kLocalUserId = "local_user";
+
 @freezed
 @Collection(ignore: {'copyWith'})
 class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   ClipboardItem._();
 
   factory ClipboardItem({
-    @JsonKey(name: "\$id", includeToJson: false) String? serverId,
+    @JsonKey(name: "id", includeToJson: false) int? serverId,
     @JsonKey(includeFromJson: false, includeToJson: false) DateTime? lastSynced,
     @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-    @JsonKey(name: "\$createdAt") required DateTime created,
-    @JsonKey(name: "\$updatedAt") required DateTime modified,
+    @JsonKey(name: "created") required DateTime created,
+    @JsonKey(name: "modified") required DateTime modified,
     @Enumerated(EnumType.name) required ClipItemType type,
-    required String userId,
+    @Default(kLocalUserId) String userId,
     String? title,
     String? description,
     DateTime? deletedAt,
@@ -66,17 +68,17 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       _$ClipboardItemFromJson(json);
 
   factory ClipboardItem.fromText(
-    String userId,
     String text, {
+    String? userId,
     String? sourceUrl,
     String? sourceApp,
   }) {
     return ClipboardItem(
       text: text,
+      userId: userId ?? kLocalUserId,
       created: DateTime.now(),
       modified: DateTime.now(),
       type: ClipItemType.text,
-      userId: userId,
       os: currentPlatformOS(),
       sourceUrl: sourceUrl,
       sourceApp: sourceApp,
@@ -84,8 +86,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   }
 
   factory ClipboardItem.fromMedia(
-    String userId,
     String filePath, {
+    String? userId,
     String? fileName,
     String? fileMimeType,
     String? fileExtension,
@@ -99,7 +101,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       modified: DateTime.now(),
       type: ClipItemType.media,
       localPath: filePath,
-      userId: userId,
+      userId: userId ?? kLocalUserId,
       fileName: fileName,
       fileExtension: fileExtension,
       fileSize: fileSize,
@@ -112,8 +114,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   }
 
   factory ClipboardItem.fromFile(
-    String userId,
     String filePath, {
+    String? userId,
     String? preview,
     String? fileName,
     String? fileMimeType,
@@ -131,7 +133,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       title: fileName ?? basename,
       type: ClipItemType.file,
       localPath: filePath,
-      userId: userId,
+      userId: userId ?? kLocalUserId,
       fileName: fileName,
       fileExtension: fileExtension,
       fileSize: fileSize,
@@ -143,8 +145,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   }
 
   factory ClipboardItem.fromURL(
-    String userId,
     Uri uri, {
+    String? userId,
     String? title,
     String? description,
     String? sourceUrl,
@@ -157,7 +159,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       title: title,
       description: description,
       type: ClipItemType.url,
-      userId: userId,
+      userId: userId ?? kLocalUserId,
       os: currentPlatformOS(),
       sourceUrl: sourceUrl,
       sourceApp: sourceApp,
@@ -186,4 +188,11 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   String? get rootDir => type == ClipItemType.file || type == ClipItemType.media
       ? '${type.name}s'
       : null;
+
+  ClipboardItem assignUserId([String? newUserId]) {
+    if (newUserId != null && newUserId != userId) {
+      return copyWith(userId: userId)..applyId(this);
+    }
+    return this;
+  }
 }

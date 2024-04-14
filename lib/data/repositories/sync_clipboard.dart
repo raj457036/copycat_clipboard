@@ -1,9 +1,9 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SyncClipboardRepository {
   FailureOr<PaginatedResult<ClipboardItem>> getLatestItems({
@@ -23,15 +23,12 @@ abstract class SyncClipboardRepository {
 
 @LazySingleton(as: SyncClipboardRepository)
 class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
-  final Databases db;
-  final String databaseId;
-  final String collectionId;
+  final SupabaseClient client;
+  final String table = "clipboard_items";
 
-  SyncClipboardRepositoryImpl(
-    this.db,
-    @Named("databaseId") this.databaseId,
-    @Named("clipboardCollectionId") this.collectionId,
-  );
+  SyncClipboardRepositoryImpl(this.client);
+
+  PostgrestClient get db => client.rest;
 
   @override
   FailureOr<PaginatedResult<ClipboardItem>> getDeletedItems({
@@ -41,20 +38,16 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
     DateTime? lastSynced,
   }) async {
     try {
-      final docs = await db.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        queries: [
-          Query.equal("userId", userId),
-          Query.isNotNull("deletedAt"),
-          Query.greaterThanEqual("deletedAt", lastSynced),
-          Query.orderDesc("\$updatedAt"),
-          Query.limit(limit),
-          Query.offset(offset),
-        ],
-      );
-      final items =
-          docs.documents.map((e) => ClipboardItem.fromJson(e.data)).toList();
+      var query = db.from(table).select().eq("userId", userId).isFilter(
+            "deletedAt",
+            null,
+          );
+
+      if (lastSynced != null) {
+        query = query.gte("deletedAt", lastSynced.toIso8601String());
+      }
+      final docs = await query.order("modified").range(offset, offset + limit);
+      final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
       return Right(
         PaginatedResult(
           results: items,
@@ -74,21 +67,13 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
     DateTime? lastSynced,
   }) async {
     try {
-      final docs = await db.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        queries: [
-          Query.equal("userId", userId),
-          if (lastSynced != null)
-            Query.greaterThan(
-                "\$updatedAt", lastSynced.toUtc().toIso8601String()),
-          Query.orderDesc("\$updatedAt"),
-          Query.limit(limit),
-          Query.offset(offset),
-        ],
-      );
-      final items =
-          docs.documents.map((e) => ClipboardItem.fromJson(e.data)).toList();
+      var query = db.from(table).select().eq("userId", userId);
+
+      if (lastSynced != null) {
+        query = query.gt("modified", lastSynced.toString());
+      }
+      final docs = await query.order("modified").range(offset, offset + limit);
+      final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
       return Right(
         PaginatedResult(
           results: items,

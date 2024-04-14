@@ -27,15 +27,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:exported="true" android:name="com.linusu.flutter_web_auth_2.CallbackActivity" >
-            <intent-filter android:label="flutter_web_auth_2">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="appwrite-callback-660c3aced8bf66564dec" />
-            </intent-filter>
-        </activity>
-
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

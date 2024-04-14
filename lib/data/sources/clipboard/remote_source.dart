@@ -1,43 +1,39 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/network_status.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 @Named("remote")
 @LazySingleton(as: ClipboardSource)
 class RemoteClipboardSource implements ClipboardSource {
-  final Databases db;
+  final SupabaseClient client;
+  final String table = "clipboard_items";
+
   final NetworkStatus network;
   final String databaseId;
   final String collectionId;
 
   RemoteClipboardSource(
-    this.db,
+    this.client,
     this.network,
     @Named("databaseId") this.databaseId,
     @Named("clipboardCollectionId") this.collectionId,
   );
 
+  PostgrestClient get db => client.rest;
+
   @override
   Future<ClipboardItem> create(ClipboardItem item) async {
     if (!network.isConnected) return item;
-    final doc = await db.createDocument(
-      databaseId: databaseId,
-      collectionId: collectionId,
-      documentId: ID.unique(),
-      data: item.toJson(),
-      permissions: [
-        Permission.read(Role.user(item.userId)),
-        Permission.write(Role.user(item.userId)),
-      ],
-    );
+    final docs = await db.from(table).insert(item.toJson()).select();
+
     final createdItem = item.copyWith(
       lastSynced: DateTime.now(),
-      serverId: doc.$id,
-    );
-    createdItem.id = item.id;
+      serverId: docs.first['id'],
+    )..applyId(item);
+
     return createdItem;
   }
 
@@ -50,18 +46,14 @@ class RemoteClipboardSource implements ClipboardSource {
     if (!network.isConnected) {
       return PaginatedResult(results: [], hasMore: false);
     }
-    final items = await db.listDocuments(
-      databaseId: databaseId,
-      collectionId: collectionId,
-      queries: [
-        Query.orderDesc('\$updatedAt'),
-        Query.limit(limit),
-        Query.offset(offset),
-      ],
-    );
 
-    final clips =
-        items.documents.map((e) => ClipboardItem.fromJson(e.data)).toList();
+    final items = await db
+        .from(table)
+        .select()
+        .order("modified")
+        .range(offset, limit + offset);
+
+    final clips = items.map((e) => ClipboardItem.fromJson(e)).toList();
 
     return PaginatedResult(results: clips, hasMore: clips.length == limit);
   }
@@ -74,17 +66,10 @@ class RemoteClipboardSource implements ClipboardSource {
       return await create(item);
     }
 
-    final doc = await db.updateDocument(
-      databaseId: databaseId,
-      collectionId: collectionId,
-      documentId: item.serverId!,
-      data: item.toJson(),
-    );
+    await db.from(table).update(item.toJson()).eq("id", item.serverId!);
     final updatedItem = item.copyWith(
       lastSynced: DateTime.now(),
-      serverId: doc.$id,
-    );
-    updatedItem.id = item.id;
+    )..applyId(item);
     return updatedItem;
   }
 
@@ -96,11 +81,7 @@ class RemoteClipboardSource implements ClipboardSource {
       return true;
     }
 
-    await db.deleteDocument(
-      databaseId: databaseId,
-      collectionId: collectionId,
-      documentId: item.serverId!,
-    );
+    await db.from(table).delete().eq("id", item.serverId!);
     return true;
   }
 }
