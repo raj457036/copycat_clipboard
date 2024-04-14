@@ -1,6 +1,5 @@
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
-import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
@@ -21,7 +20,6 @@ final router = GoRouter(
       path: rootLocation,
       builder: (context, state) => SplashPage(
         key: state.pageKey,
-        account: sl(),
       ),
     ),
     GoRoute(
@@ -29,7 +27,6 @@ final router = GoRouter(
       path: '/login',
       builder: (context, state) => LoginPage(
         key: state.pageKey,
-        account: sl(),
       ),
     ),
     ShellRoute(

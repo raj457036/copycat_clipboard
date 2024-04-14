@@ -5,13 +5,13 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
   clipboard_watcher
+  gtk
   irondash_engine_context
   isar_flutter_libs
   screen_retriever
   super_native_extensions
   url_launcher_linux
   window_manager
-  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

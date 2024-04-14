@@ -121,7 +121,7 @@ const ClipboardItemSchema = CollectionSchema(
     r'serverId': PropertySchema(
       id: 20,
       name: r'serverId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'sourceApp': PropertySchema(
       id: 21,
@@ -230,12 +230,6 @@ int _clipboardItemEstimateSize(
     }
   }
   {
-    final value = object.serverId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.sourceApp;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -296,7 +290,7 @@ void _clipboardItemSerialize(
   writer.writeDateTime(offsets[17], object.modified);
   writer.writeString(offsets[18], object.os.name);
   writer.writeString(offsets[19], object.rootDir);
-  writer.writeString(offsets[20], object.serverId);
+  writer.writeLong(offsets[20], object.serverId);
   writer.writeString(offsets[21], object.sourceApp);
   writer.writeString(offsets[22], object.sourceUrl);
   writer.writeString(offsets[23], object.text);
@@ -331,7 +325,7 @@ ClipboardItem _clipboardItemDeserialize(
     modified: reader.readDateTime(offsets[17]),
     os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[18])] ??
         PlatformOS.android,
-    serverId: reader.readStringOrNull(offsets[20]),
+    serverId: reader.readLongOrNull(offsets[20]),
     sourceApp: reader.readStringOrNull(offsets[21]),
     sourceUrl: reader.readStringOrNull(offsets[22]),
     text: reader.readStringOrNull(offsets[23]),
@@ -395,7 +389,7 @@ P _clipboardItemDeserializeProp<P>(
     case 19:
       return (reader.readStringOrNull(offset)) as P;
     case 20:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 21:
       return (reader.readStringOrNull(offset)) as P;
     case 22:
@@ -2480,58 +2474,49 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      serverIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'serverId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'serverId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'serverId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -2540,77 +2525,6 @@ extension ClipboardItemQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'serverId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'serverId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'serverId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'serverId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'serverId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'serverId',
-        value: '',
       ));
     });
   }
@@ -4528,10 +4442,9 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
-  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByServerId(
-      {bool caseSensitive = true}) {
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByServerId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'serverId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'serverId');
     });
   }
 
@@ -4717,7 +4630,7 @@ extension ClipboardItemQueryProperty
     });
   }
 
-  QueryBuilder<ClipboardItem, String?, QQueryOperations> serverIdProperty() {
+  QueryBuilder<ClipboardItem, int?, QQueryOperations> serverIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'serverId');
     });
@@ -4772,11 +4685,11 @@ extension ClipboardItemQueryProperty
 
 _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
     _$ClipboardItemImpl(
-      serverId: json[r'$id'] as String?,
-      created: DateTime.parse(json[r'$createdAt'] as String),
-      modified: DateTime.parse(json[r'$updatedAt'] as String),
+      serverId: json['id'] as int?,
+      created: DateTime.parse(json['created'] as String),
+      modified: DateTime.parse(json['modified'] as String),
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
-      userId: json['userId'] as String,
+      userId: json['userId'] as String? ?? kLocalUserId,
       title: json['title'] as String?,
       description: json['description'] as String?,
       deletedAt: json['deletedAt'] == null
@@ -4802,8 +4715,8 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
     <String, dynamic>{
-      r'$createdAt': instance.created.toIso8601String(),
-      r'$updatedAt': instance.modified.toIso8601String(),
+      'created': instance.created.toIso8601String(),
+      'modified': instance.modified.toIso8601String(),
       'type': _$ClipItemTypeEnumMap[instance.type]!,
       'userId': instance.userId,
       'title': instance.title,

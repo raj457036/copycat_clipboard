@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:clipboard/bloc/google_token_cubit/google_token_manager_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
@@ -33,7 +34,10 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-          create: (context) => sl()..fetchSession(),
+          create: (context) => sl(),
+        ),
+        BlocProvider<GoogleTokenManagerCubit>(
+          create: (context) => sl(),
         ),
         BlocProvider<AppConfigCubit>(
           create: (context) => sl()..load(),

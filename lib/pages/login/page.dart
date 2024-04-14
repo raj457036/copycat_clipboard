@@ -1,18 +1,18 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/google_token_cubit/google_token_manager_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/constants/strings/asset_constants.dart';
+import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:googleapis/drive/v3.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart' as su_auth;
 
 class LoginPage extends StatelessWidget {
-  final Account account;
-  const LoginPage({super.key, required this.account});
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class LoginPage extends StatelessWidget {
           case AuthenticatedAuthState() || OfflineAuthState():
             context.read<ClipboardCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();
+            context.read<GoogleTokenManagerCubit>().load();
             context.goNamed(RouteConstants.home);
             break;
           default:
@@ -31,30 +32,26 @@ class LoginPage extends StatelessWidget {
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(padding16),
-            child: BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) {
-                final isLoading = switch (state) {
-                  UnauthenticatedAuthState() => false,
-                  _ => true,
-                };
-                return ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(183, 40),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: const EdgeInsets.all(padding4),
-                  ),
-                  onPressed: isLoading
-                      ? null
-                      : context.read<AuthCubit>().createNewSession,
-                  label: isLoading
-                      ? const CircularProgressIndicator.adaptive()
-                      : Text("Continue with Google",
-                          style: context.textTheme.titleSmall),
-                  icon: Image.asset(
-                    AssetConstants.googleLogo,
-                    width: 24,
-                  ),
-                );
+            child: su_auth.SupaSocialsAuth(
+              socialProviders: const [
+                su_auth.OAuthProvider.apple,
+                su_auth.OAuthProvider.google,
+              ],
+              scopes: {
+                su_auth.OAuthProvider.google: [
+                  DriveApi.driveFileScope,
+                  DriveApi.driveAppdataScope,
+                ].join(",")
+              },
+              colored: true,
+              redirectUrl: 'io.supabase.flutter://reset-callback/',
+              onSuccess: (su_auth.Session response) {
+                context.read<AuthCubit>().authenticated(response);
+              },
+              onError: (error) {
+                context.read<AuthCubit>().unauthenticated(
+                      Failure.fromException(error),
+                    );
               },
             ),
           ),

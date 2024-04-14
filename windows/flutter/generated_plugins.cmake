@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links
   awesome_notifications
   clipboard_watcher
   connectivity_plus
@@ -12,7 +13,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   super_native_extensions
   url_launcher_windows
   window_manager
-  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

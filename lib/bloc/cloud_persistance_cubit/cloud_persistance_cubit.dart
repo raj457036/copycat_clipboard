@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/google_token_cubit/google_token_manager_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/drive_service.dart';
@@ -16,12 +17,14 @@ part 'cloud_persistance_state.dart';
 class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   final NetworkStatus network;
   final AuthCubit auth;
+  final GoogleTokenManagerCubit gToken;
   final ClipboardRepository repo;
   final DriveService drive;
 
   CloudPersistanceCubit(
     this.network,
     this.auth,
+    this.gToken,
     @Named("cloud") this.repo,
     @Named("google_drive") this.drive,
   ) : super(const CloudPersistanceState.initial());
@@ -64,10 +67,29 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
   Future<void> _uploadAndCreate(ClipboardItem item) async {
     emit(CloudPersistanceState.uploadingFile(item));
-    final session = await auth.getSession();
+    final session = auth.getSession();
 
-    drive.accessToken = session.providerAccessToken;
-    final updatedItem = await drive.upload(item);
+    if (session == null) {
+      emit(const CloudPersistanceState.error(notLoggedInFailure));
+      return;
+    }
+
+    final accessToken = await gToken.getAccessToken();
+
+    if (accessToken == null) {
+      emit(
+        const CloudPersistanceState.error(
+          Failure(
+            message: "Google Drive not authenticated.",
+            code: "gdrive-unauth",
+          ),
+        ),
+      );
+      return;
+    }
+
+    drive.accessToken = accessToken;
+    final updatedItem = await drive.upload(item.assignUserId(session.user.id));
     await _create(updatedItem);
   }
 }

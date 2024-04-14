@@ -72,18 +72,20 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   }
 
   Future<ClipboardItem> _convertToClipboardItem(Clip clip) async {
-    final session = await auth.getSession();
-    final userId = session.userId;
+    final userId = auth.userId;
 
     switch (clip.type) {
       case ClipItemType.text:
-        return ClipboardItem.fromText(userId, clip.text!);
+        return ClipboardItem.fromText(
+          clip.text!,
+          userId: userId,
+        );
       case ClipItemType.media:
         {
           final path = await getPesistedPath("medias", clip.file!);
           return ClipboardItem.fromMedia(
-            userId,
             path,
+            userId: userId,
             fileName: clip.fileName,
             fileMimeType: clip.fileMimeType,
             fileExtension: clip.fileExtension,
@@ -97,8 +99,8 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
           final path = await getPesistedPath("files", clip.file!);
 
           return ClipboardItem.fromFile(
-            userId,
             path,
+            userId: userId,
             preview: clip.text?.substring(0, 1024),
             fileName: clip.fileName,
             fileMimeType: clip.fileMimeType,
@@ -108,7 +110,10 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
           );
         }
       case ClipItemType.url:
-        return ClipboardItem.fromURL(userId, clip.uri!);
+        return ClipboardItem.fromURL(
+          clip.uri!,
+          userId: userId,
+        );
     }
   }
 

@@ -8,13 +8,13 @@
 
 #include <awesome_notifications/awesome_notifications_plugin.h>
 #include <clipboard_watcher/clipboard_watcher_plugin.h>
+#include <gtk/gtk_plugin.h>
 #include <irondash_engine_context/irondash_engine_context_plugin.h>
 #include <isar_flutter_libs/isar_flutter_libs_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
 #include <super_native_extensions/super_native_extensions_plugin.h>
 #include <url_launcher_linux/url_launcher_plugin.h>
 #include <window_manager/window_manager_plugin.h>
-#include <window_to_front/window_to_front_plugin.h>
 
 void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) awesome_notifications_registrar =
@@ -23,6 +23,9 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) clipboard_watcher_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "ClipboardWatcherPlugin");
   clipboard_watcher_plugin_register_with_registrar(clipboard_watcher_registrar);
+  g_autoptr(FlPluginRegistrar) gtk_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "GtkPlugin");
+  gtk_plugin_register_with_registrar(gtk_registrar);
   g_autoptr(FlPluginRegistrar) irondash_engine_context_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "IrondashEngineContextPlugin");
   irondash_engine_context_plugin_register_with_registrar(irondash_engine_context_registrar);
@@ -41,7 +44,4 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) window_manager_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "WindowManagerPlugin");
   window_manager_plugin_register_with_registrar(window_manager_registrar);
-  g_autoptr(FlPluginRegistrar) window_to_front_registrar =
-      fl_plugin_registry_get_registrar_for_plugin(registry, "WindowToFrontPlugin");
-  window_to_front_plugin_register_with_registrar(window_to_front_registrar);
 }

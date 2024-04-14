@@ -20,15 +20,15 @@ ClipboardItem _$ClipboardItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClipboardItem {
-  @JsonKey(name: "\$id", includeToJson: false)
-  String? get serverId => throw _privateConstructorUsedError;
+  @JsonKey(name: "id", includeToJson: false)
+  int? get serverId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath => throw _privateConstructorUsedError;
-  @JsonKey(name: "\$createdAt")
+  @JsonKey(name: "created")
   DateTime get created => throw _privateConstructorUsedError;
-  @JsonKey(name: "\$updatedAt")
+  @JsonKey(name: "modified")
   DateTime get modified => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   ClipItemType get type => throw _privateConstructorUsedError;
@@ -76,12 +76,12 @@ abstract class $ClipboardItemCopyWith<$Res> {
       _$ClipboardItemCopyWithImpl<$Res, ClipboardItem>;
   @useResult
   $Res call(
-      {@JsonKey(name: "\$id", includeToJson: false) String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      @JsonKey(name: "\$createdAt") DateTime created,
-      @JsonKey(name: "\$updatedAt") DateTime modified,
+      @JsonKey(name: "created") DateTime created,
+      @JsonKey(name: "modified") DateTime modified,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
       String? title,
@@ -155,7 +155,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
       serverId: freezed == serverId
           ? _value.serverId
           : serverId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       lastSynced: freezed == lastSynced
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
@@ -273,12 +273,12 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "\$id", includeToJson: false) String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      @JsonKey(name: "\$createdAt") DateTime created,
-      @JsonKey(name: "\$updatedAt") DateTime modified,
+      @JsonKey(name: "created") DateTime created,
+      @JsonKey(name: "modified") DateTime modified,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
       String? title,
@@ -350,7 +350,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
       serverId: freezed == serverId
           ? _value.serverId
           : serverId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       lastSynced: freezed == lastSynced
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
@@ -463,13 +463,13 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClipboardItemImpl extends _ClipboardItem {
   _$ClipboardItemImpl(
-      {@JsonKey(name: "\$id", includeToJson: false) this.serverId,
+      {@JsonKey(name: "id", includeToJson: false) this.serverId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) this.localPath,
-      @JsonKey(name: "\$createdAt") required this.created,
-      @JsonKey(name: "\$updatedAt") required this.modified,
+      @JsonKey(name: "created") required this.created,
+      @JsonKey(name: "modified") required this.modified,
       @Enumerated(EnumType.name) required this.type,
-      required this.userId,
+      this.userId = kLocalUserId,
       this.title,
       this.description,
       this.deletedAt,
@@ -501,8 +501,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       _$$ClipboardItemImplFromJson(json);
 
   @override
-  @JsonKey(name: "\$id", includeToJson: false)
-  final String? serverId;
+  @JsonKey(name: "id", includeToJson: false)
+  final int? serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   final DateTime? lastSynced;
@@ -510,15 +510,16 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final String? localPath;
   @override
-  @JsonKey(name: "\$createdAt")
+  @JsonKey(name: "created")
   final DateTime created;
   @override
-  @JsonKey(name: "\$updatedAt")
+  @JsonKey(name: "modified")
   final DateTime modified;
   @override
   @Enumerated(EnumType.name)
   final ClipItemType type;
   @override
+  @JsonKey()
   final String userId;
   @override
   final String? title;
@@ -685,15 +686,15 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
 abstract class _ClipboardItem extends ClipboardItem {
   factory _ClipboardItem(
-      {@JsonKey(name: "\$id", includeToJson: false) final String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) final int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final String? localPath,
-      @JsonKey(name: "\$createdAt") required final DateTime created,
-      @JsonKey(name: "\$updatedAt") required final DateTime modified,
+      @JsonKey(name: "created") required final DateTime created,
+      @JsonKey(name: "modified") required final DateTime modified,
       @Enumerated(EnumType.name) required final ClipItemType type,
-      required final String userId,
+      final String userId,
       final String? title,
       final String? description,
       final DateTime? deletedAt,
@@ -725,8 +726,8 @@ abstract class _ClipboardItem extends ClipboardItem {
       _$ClipboardItemImpl.fromJson;
 
   @override
-  @JsonKey(name: "\$id", includeToJson: false)
-  String? get serverId;
+  @JsonKey(name: "id", includeToJson: false)
+  int? get serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced;
@@ -734,10 +735,10 @@ abstract class _ClipboardItem extends ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath;
   @override
-  @JsonKey(name: "\$createdAt")
+  @JsonKey(name: "created")
   DateTime get created;
   @override
-  @JsonKey(name: "\$updatedAt")
+  @JsonKey(name: "modified")
   DateTime get modified;
   @override
   @Enumerated(EnumType.name)
