@@ -11,18 +11,6 @@ import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as p;
 import 'package:rxdart/rxdart.dart';
 
-class DriveFile {
-  final String id;
-  final int size;
-  final String name;
-
-  DriveFile({
-    required this.id,
-    required this.size,
-    required this.name,
-  });
-}
-
 abstract class DriveService {
   String? accessToken;
 
@@ -34,19 +22,19 @@ abstract class DriveService {
 class GoogleAuthClient with http.BaseClient {
   final String accessToken;
   BehaviorSubject<(int, int)>? progress;
-  int contentLength = 0;
+  int? contentLength;
 
   GoogleAuthClient(this.accessToken);
 
   BehaviorSubject<(int, int)> setProgressListener({int? contentLength}) {
     progress ??= BehaviorSubject<(int, int)>();
-    this.contentLength = contentLength ?? 0;
+    this.contentLength ??= contentLength;
     return progress!;
   }
 
   void unsetProgressListener() {
     progress?.close();
-    contentLength = 0;
+    contentLength = null;
     progress = null;
   }
 
@@ -64,10 +52,22 @@ class GoogleAuthClient with http.BaseClient {
     try {
       int currentBytes = 0;
       final response = await client.send(request);
-      final totalBytes =
+      final totalBytes = contentLength ??
           int.tryParse(response.headers['content-length'] ?? '-') ??
-              contentLength;
-      subscription = response.stream.listen(
+          1;
+
+      final broadcastStream = response.stream.asBroadcastStream();
+      final newResponse = http.StreamedResponse(
+        broadcastStream,
+        response.statusCode,
+        contentLength: response.contentLength,
+        request: response.request,
+        headers: response.headers,
+        isRedirect: response.isRedirect,
+        persistentConnection: response.persistentConnection,
+        reasonPhrase: response.reasonPhrase,
+      );
+      subscription = broadcastStream.listen(
         (List<int> chunk) {
           currentBytes += chunk.length;
           progress?.add((currentBytes, totalBytes));
@@ -76,9 +76,14 @@ class GoogleAuthClient with http.BaseClient {
             'Uploaded: $currentBytes / $totalBytes bytes',
           );
         },
+        onDone: () => subscription?.cancel(),
+        onError: (error) {
+          logger.shout("Failed to upload/download", error);
+          subscription?.cancel();
+        },
         cancelOnError: true,
       );
-      return response;
+      return newResponse;
     } finally {
       subscription?.cancel();
       client.close();
