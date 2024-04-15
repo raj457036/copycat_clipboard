@@ -43,7 +43,8 @@ extension SnackbarExtension on BuildContext {
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showTextSnackbar(
       String text,
       {bool isLoading = false}) {
-    final isMobile = breakpoints.isMobile;
+    final mq = MediaQuery.maybeOf(this);
+    final isMobile = mq != null ? mq.size.width < 400 : false;
     return showSnackbar(
       SnackBar(
         content: isLoading

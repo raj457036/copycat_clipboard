@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/data/services/google_services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
@@ -10,8 +11,12 @@ part 'google_token_manager_state.dart';
 @singleton
 class GoogleTokenManagerCubit extends Cubit<GoogleTokenManagerState> {
   final SupabaseClient client;
-  GoogleTokenManagerCubit(this.client)
-      : super(const GoogleTokenManagerState.initial());
+  final GoogleOAuth2Service oauthService;
+
+  GoogleTokenManagerCubit(
+    this.client,
+    this.oauthService,
+  ) : super(const GoogleTokenManagerState.initial());
 
   Future<String?> getAccessToken() async {
     final now = DateTime.now().toUtc();
@@ -33,6 +38,11 @@ class GoogleTokenManagerCubit extends Cubit<GoogleTokenManagerState> {
     String? refreshToken,
   }) async {
     emit(const GoogleTokenManagerState.loading());
+
+    oauthService.accessToken = accessToken;
+
+    final info = await oauthService.getTokenInfo();
+
     final user = client.auth.currentUser;
     final metadata = user?.userMetadata ?? {};
     final refresh = refreshToken != null && refreshToken.trim().isEmpty

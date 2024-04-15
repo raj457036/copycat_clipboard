@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +55,7 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) {
             switch (state) {
               case CloudPersistanceCreating(:final item):
-                // showTextSnackbar("(Sync) Inserting Clip...");
+                showTextSnackbar("(Sync) Inserting Clip...");
                 context.read<ClipboardCubit>().put(item);
                 break;
               case CloudPersistanceUpdating(:final item):
@@ -67,7 +68,8 @@ class EventBridge extends StatelessWidget {
                     .persist(item, synced: true);
                 context.read<SyncManagerCubit>().updateSyncTime();
                 break;
-              case CloudPersistanceError(:final failure):
+              case CloudPersistanceError(:final item):
+                context.read<ClipboardCubit>().put(item);
                 // showFailureSnackbar(failure);
                 break;
               case _:

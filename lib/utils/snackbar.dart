@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
   Failure failure,
 ) {
-  return scaffoldMessengerKey.currentContext?.showFailureSnackbar(failure);
+  return appKey.currentContext?.showFailureSnackbar(failure);
 }
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   String text, {
   bool isLoading = false,
 }) {
-  return scaffoldMessengerKey.currentContext?.showTextSnackbar(
+  return appKey.currentContext?.showTextSnackbar(
     text,
     isLoading: isLoading,
   );
@@ -22,5 +22,5 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
   SnackBar snackBar,
 ) {
-  return scaffoldMessengerKey.currentContext?.showSnackbar(snackBar);
+  return appKey.currentContext?.showSnackbar(snackBar);
 }

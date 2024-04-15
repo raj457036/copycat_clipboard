@@ -134,7 +134,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
 
       emit(
         created.fold(
-          (l) => OfflinePersistanceState.error(l),
+          (l) => OfflinePersistanceState.error(l, item),
           (r) => OfflinePersistanceState.saved(
             r,
             created: true,
@@ -148,7 +148,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
 
       emit(
         updated.fold(
-          (l) => OfflinePersistanceState.error(l),
+          (l) => OfflinePersistanceState.error(l, item),
           (r) => OfflinePersistanceState.saved(
             r,
             synced: synced,

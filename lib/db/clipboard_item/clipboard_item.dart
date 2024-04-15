@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:clipboard/enums/clip_type.dart';
@@ -68,6 +69,9 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
     double? uploadProgress,
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    Failure? failure,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
@@ -199,9 +203,17 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
   ClipboardItem assignUserId([String? newUserId]) {
     if (newUserId != null && newUserId != userId) {
-      return copyWith(userId: userId)..applyId(this);
+      return copyWith(userId: newUserId)..applyId(this);
     }
     return this;
+  }
+
+  ClipboardItem syncDone([Failure? failure]) {
+    return copyWith(
+      downloading: false,
+      uploading: false,
+      failure: failure,
+    )..applyId(this);
   }
 
   bool get isSyncing => uploading ?? downloading ?? false;

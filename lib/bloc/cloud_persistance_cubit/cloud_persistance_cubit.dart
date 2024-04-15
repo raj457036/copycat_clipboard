@@ -5,7 +5,7 @@ import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/google_token_cubit/google_token_manager_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
-import 'package:clipboard/data/services/drive_service.dart';
+import 'package:clipboard/data/services/google_services.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/network_status.dart';
@@ -33,28 +33,32 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
   Future<void> persist(ClipboardItem item) async {
     if (!await network.isConnected) {
-      emit(const CloudPersistanceState.error(noInternetConnectionFailure));
+      emit(
+        CloudPersistanceState.error(
+          noInternetConnectionFailure,
+          item.syncDone(noInternetConnectionFailure),
+        ),
+      );
       return;
     }
-
+    final userId = auth.userId;
+    item = item.assignUserId(userId);
     if (item.serverId != null) {
       emit(CloudPersistanceState.updatingItem(item));
+
       final result = await repo.update(item);
       emit(
         result.fold(
-          (l) => CloudPersistanceState.error(l),
-          (r) => CloudPersistanceState.saved(r.copyWith(
-            uploading: false,
-            downloading: false,
-          )..applyId(r)),
+          (l) => CloudPersistanceState.error(l, item.syncDone(l)),
+          (r) => CloudPersistanceState.saved(r.syncDone()),
         ),
       );
     } else {
       switch (item.type) {
         case ClipItemType.text || ClipItemType.url:
-          await _create(item);
+          await _create(item.assignUserId(userId));
         case ClipItemType.media || ClipItemType.file:
-          await _uploadAndCreate(item);
+          await _uploadAndCreate(item.assignUserId(userId));
       }
     }
   }
@@ -65,12 +69,9 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     final result = await repo.create(item);
     emit(
       result.fold(
-        (l) => CloudPersistanceState.error(l),
+        (l) => CloudPersistanceState.error(l, item.syncDone(l)),
         (r) => CloudPersistanceState.saved(
-          r.copyWith(
-            uploading: false,
-            downloading: false,
-          )..applyId(r),
+          r.syncDone(),
           created: true,
         ),
       ),
@@ -83,19 +84,26 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     final session = auth.session;
 
     if (session == null) {
-      emit(const CloudPersistanceState.error(notLoggedInFailure));
+      emit(
+        CloudPersistanceState.error(
+          notLoggedInFailure,
+          item.syncDone(notLoggedInFailure),
+        ),
+      );
       return;
     }
 
     final accessToken = await gToken.getAccessToken();
 
     if (accessToken == null) {
+      const failure = Failure(
+        message: "Google Drive not authenticated.",
+        code: "gdrive-unauth",
+      );
       emit(
-        const CloudPersistanceState.error(
-          Failure(
-            message: "Google Drive not authenticated.",
-            code: "gdrive-unauth",
-          ),
+        CloudPersistanceState.error(
+          failure,
+          item.syncDone(failure),
         ),
       );
       return;
@@ -120,19 +128,24 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     final session = auth.session;
 
     if (session == null) {
-      emit(const CloudPersistanceState.error(notLoggedInFailure));
+      emit(CloudPersistanceState.error(
+        notLoggedInFailure,
+        item.syncDone(notLoggedInFailure),
+      ));
       return;
     }
 
     final accessToken = await gToken.getAccessToken();
 
     if (accessToken == null) {
+      const failure = Failure(
+        message: "Google Drive not authenticated.",
+        code: "gdrive-unauth",
+      );
       emit(
-        const CloudPersistanceState.error(
-          Failure(
-            message: "Google Drive not authenticated.",
-            code: "gdrive-unauth",
-          ),
+        CloudPersistanceState.error(
+          failure,
+          item.syncDone(failure),
         ),
       );
       return;
