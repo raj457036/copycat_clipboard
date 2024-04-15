@@ -57,6 +57,7 @@ class MainApp extends StatelessWidget {
       ],
       child: EventBridge(
         child: BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
+          // key: appKey,
           selector: (state) {
             return state.maybeWhen(
               orElse: () => ThemeMode.system,

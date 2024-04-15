@@ -68,6 +68,9 @@ mixin _$ClipboardItem {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get uploadProgress => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Failure? get failure => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -119,7 +122,10 @@ abstract class $ClipboardItemCopyWith<$Res> {
       bool? uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      double? uploadProgress});
+      double? uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      Failure? failure});
 }
 
 /// @nodoc
@@ -164,6 +170,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? downloadProgress = freezed,
     Object? uploading = freezed,
     Object? uploadProgress = freezed,
+    Object? failure = freezed,
   }) {
     return _then(_value.copyWith(
       serverId: freezed == serverId
@@ -282,6 +289,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.uploadProgress
           : uploadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
+      failure: freezed == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure?,
     ) as $Val);
   }
 }
@@ -332,7 +343,10 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       bool? uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      double? uploadProgress});
+      double? uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      Failure? failure});
 }
 
 /// @nodoc
@@ -375,6 +389,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? downloadProgress = freezed,
     Object? uploading = freezed,
     Object? uploadProgress = freezed,
+    Object? failure = freezed,
   }) {
     return _then(_$ClipboardItemImpl(
       serverId: freezed == serverId
@@ -493,6 +508,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.uploadProgress
           : uploadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
+      failure: freezed == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure?,
     ));
   }
 }
@@ -538,7 +557,10 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.uploadProgress})
+      this.uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.failure})
       : super._();
 
   factory _$ClipboardItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -629,10 +651,14 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   final double? uploadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final Failure? failure;
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress, failure: $failure)';
   }
 
   @override
@@ -690,7 +716,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.uploading, uploading) ||
                 other.uploading == uploading) &&
             (identical(other.uploadProgress, uploadProgress) ||
-                other.uploadProgress == uploadProgress));
+                other.uploadProgress == uploadProgress) &&
+            (identical(other.failure, failure) || other.failure == failure));
   }
 
   @JsonKey(ignore: true)
@@ -725,7 +752,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         downloading,
         downloadProgress,
         uploading,
-        uploadProgress
+        uploadProgress,
+        failure
       ]);
 
   @JsonKey(ignore: true)
@@ -783,7 +811,10 @@ abstract class _ClipboardItem extends ClipboardItem {
       final bool? uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final double? uploadProgress}) = _$ClipboardItemImpl;
+      final double? uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final Failure? failure}) = _$ClipboardItemImpl;
   _ClipboardItem._() : super._();
 
   factory _ClipboardItem.fromJson(Map<String, dynamic> json) =
@@ -864,6 +895,10 @@ abstract class _ClipboardItem extends ClipboardItem {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get uploadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Failure? get failure;
   @override
   @JsonKey(ignore: true)
   _$$ClipboardItemImplCopyWith<_$ClipboardItemImpl> get copyWith =>

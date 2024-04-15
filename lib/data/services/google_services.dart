@@ -5,6 +5,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:googleapis/drive/v3.dart';
+import 'package:googleapis/oauth2/v2.dart' as oauth2;
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime;
@@ -79,6 +80,26 @@ class GoogleAuthClient with http.BaseClient {
     } finally {
       client.close();
     }
+  }
+}
+
+@lazySingleton
+class GoogleOAuth2Service {
+  String? accessToken;
+
+  GoogleAuthClient get authClient {
+    if (accessToken == null) {
+      throw Exception('No access token provided');
+    }
+    return GoogleAuthClient(accessToken!);
+  }
+
+  oauth2.Oauth2Api getOAuth([http.Client? client]) =>
+      oauth2.Oauth2Api(client ?? authClient);
+
+  Future<oauth2.Tokeninfo> getTokenInfo() async {
+    final client = getOAuth();
+    return await client.tokeninfo();
   }
 }
 
