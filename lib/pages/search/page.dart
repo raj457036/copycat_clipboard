@@ -7,10 +7,10 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(isMobile ? 80 : 100),
+          preferredSize: Size.fromHeight(width <= 400 ? 80 : 100),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(padding16),

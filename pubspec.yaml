@@ -28,7 +28,6 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_layout_grid: ^2.0.6
   flutter_platform_widgets: ^6.1.0
-  responsive_framework: ^1.4.0
   window_manager: ^0.3.8
   clipboard_watcher: ^0.2.1
   timeago: ^3.6.1
@@ -51,6 +50,7 @@ dependencies:
   supabase_flutter: ^2.5.0
   app_links: ^4.0.1
   device_preview: ^1.1.0
+  toastification: ^1.2.1
 
 dev_dependencies:
   flutter_test:

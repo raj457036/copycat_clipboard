@@ -191,12 +191,15 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     }
   }
 
+  @ignore
   bool get isSynced => lastSynced != null;
 
+  @ignore
   bool get inCache =>
       ((type == ClipItemType.file || type == ClipItemType.media) &&
           localPath != null);
 
+  @ignore
   String? get rootDir => type == ClipItemType.file || type == ClipItemType.media
       ? '${type.name}s'
       : null;
@@ -216,5 +219,10 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     )..applyId(this);
   }
 
+  @ignore
+  bool get needDownload =>
+      serverId != null && driveFileId != null && localPath == null;
+
+  @ignore
   bool get isSyncing => uploading ?? downloading ?? false;
 }

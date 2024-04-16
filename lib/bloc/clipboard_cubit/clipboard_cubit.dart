@@ -8,6 +8,7 @@ import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 part 'clipboard_cubit.freezed.dart';
 part 'clipboard_state.dart';
@@ -15,23 +16,41 @@ part 'clipboard_state.dart';
 @singleton
 class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
   final ClipboardRepository repo;
+  final Isar db;
 
-  ClipboardCubit(@Named("offline") this.repo)
-      : super(const ClipboardState.loaded(items: []));
+  ClipboardCubit(
+    @Named("offline") this.repo,
+    this.db,
+  ) : super(const ClipboardState.loaded(items: []));
+
+  Future<void> fixDatabase() async {
+    // final count = await db.clipboardItems.count();
+    // final issueItem = <int>[];
+
+    // for (var i = 0; i < count; i++) {
+    //   try {
+    //     // await db.clipboardItems.where().find;
+    //   } catch (e) {
+    //     issueItem.add(i);
+    //   }
+    // }
+    // await db
+    //     .writeTxn(() async => await .deleteAll([77, 87, 79]));
+  }
 
   void put(ClipboardItem item, {bool isNew = false}) {
     if (isNew) {
       emit(state.copyWith(items: [item, ...state.items]));
     } else {
+      final items = state.items.replaceWhere((it) => it.id == item.id, item);
       emit(
-        state.copyWith(
-          items: state.items.replaceWhere((it) => it.id == item.id, item),
-        ),
+        state.copyWith(items: items),
       );
     }
   }
 
   Future<void> fetch({bool fromTop = false}) async {
+    await fixDatabase();
     emit(state.copyWith(loading: true));
 
     final items = await repo.getList(
@@ -54,24 +73,6 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
         ),
       ),
     );
-  }
-
-  Future<bool> copyToClipboard(ClipboardItem item,
-      [bool copyFileContent = false]) async {
-    // _writing = true;
-    // final clipboard = SystemClipboard.instance;
-    // if (clipboard == null) {
-    //   logger.severe("Clipboard is not available.");
-    //   return false;
-    // }
-
-    // final data = await getFormatForClipboardItem(item, copyFileContent);
-    // if (data == null) return false;
-
-    // final items = DataWriterItem()..add(data);
-    // await clipboard.write([items]);
-    // await Future.delayed(Durations.short1, () => _writing = false);
-    return true;
   }
 
   Future<Failure?> deleteItem(ClipboardItem item) async {

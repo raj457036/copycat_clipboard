@@ -2,7 +2,6 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 extension MaterialStateExtension<T> on T {
@@ -15,7 +14,6 @@ extension BuildContextExtension on BuildContext {
   ColorScheme get colors => theme.colorScheme;
   TextTheme get textTheme => theme.textTheme;
   bool get isDarkMode => theme.brightness == Brightness.dark;
-  ResponsiveBreakpointsData get breakpoints => ResponsiveBreakpoints.of(this);
 }
 
 extension SnackbarExtension on BuildContext {
@@ -80,13 +78,17 @@ extension EnumParserExtension<T extends Enum> on List<T> {
 
 extension ListExtension<T> on List<T> {
   List<T> replace(int index, T value) {
-    if (index == -1) return this;
+    if (index == -1) {
+      return this;
+    }
+
     return [...take(index), value, ...skip(index + 1)];
   }
 
   List<T> replaceWhere(bool Function(T value) predicate, T value) {
     final index = indexWhere(predicate);
-    return replace(index, value);
+    final result = replace(index, value);
+    return result;
   }
 
   T getRandom() {

@@ -1,4 +1,3 @@
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -112,13 +111,12 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
-
+    final width = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: child,
       onLongPress: () => openOptionDialog(context),
       onSecondaryTapDown: (detail) {
-        if (isMobile) {
+        if (width <= 600) {
           openOptionDialog(context);
           return;
         }

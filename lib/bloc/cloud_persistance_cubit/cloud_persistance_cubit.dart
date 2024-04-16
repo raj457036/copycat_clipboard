@@ -23,6 +23,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   final ClipboardRepository repo;
   final DriveService drive;
 
+  bool active = true;
+
   CloudPersistanceCubit(
     this.network,
     this.auth,
@@ -32,6 +34,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   ) : super(const CloudPersistanceState.initial());
 
   Future<void> persist(ClipboardItem item) async {
+    if (!active) return;
     if (!await network.isConnected) {
       emit(
         CloudPersistanceState.error(
