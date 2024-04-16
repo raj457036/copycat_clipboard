@@ -56,4 +56,9 @@ class LocalClipboardSource implements ClipboardSource {
     final result = await db.writeTxn(() => db.clipboardItems.delete(item.id));
     return result;
   }
+
+  @override
+  Future<void> deleteAll() async {
+    await db.writeTxn(() => db.clipboardItems.clear());
+  }
 }

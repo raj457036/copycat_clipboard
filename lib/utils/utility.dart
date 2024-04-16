@@ -80,3 +80,12 @@ Future<String> getPesistedPath(String root, File file) async {
   deleteTempFile(file);
   return filePath;
 }
+
+Future<void> clearPersistedRootDir() async {
+  final docDir = await getApplicationDocumentsDirectory();
+  final dirPath = p.join(docDir.path, "offline");
+  final dir = Directory(dirPath);
+  if (await dir.exists()) {
+    await dir.delete(recursive: true);
+  }
+}

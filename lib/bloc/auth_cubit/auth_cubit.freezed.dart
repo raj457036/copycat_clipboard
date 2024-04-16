@@ -19,7 +19,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(Session session) authenticated,
+    required TResult Function(Session session, User user) authenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
     required TResult Function() offlineAuthMode,
@@ -28,7 +28,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(Session session)? authenticated,
+    TResult? Function(Session session, User user)? authenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
     TResult? Function()? offlineAuthMode,
@@ -37,7 +37,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(Session session)? authenticated,
+    TResult Function(Session session, User user)? authenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     TResult Function()? offlineAuthMode,
@@ -130,7 +130,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(Session session) authenticated,
+    required TResult Function(Session session, User user) authenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
     required TResult Function() offlineAuthMode,
@@ -142,7 +142,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(Session session)? authenticated,
+    TResult? Function(Session session, User user)? authenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
     TResult? Function()? offlineAuthMode,
@@ -154,7 +154,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(Session session)? authenticated,
+    TResult Function(Session session, User user)? authenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     TResult Function()? offlineAuthMode,
@@ -218,7 +218,7 @@ abstract class _$$AuthenticatedAuthStateImplCopyWith<$Res> {
           $Res Function(_$AuthenticatedAuthStateImpl) then) =
       __$$AuthenticatedAuthStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Session session});
+  $Res call({Session session, User user});
 }
 
 /// @nodoc
@@ -234,12 +234,17 @@ class __$$AuthenticatedAuthStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? session = null,
+    Object? user = null,
   }) {
     return _then(_$AuthenticatedAuthStateImpl(
       session: null == session
           ? _value.session
           : session // ignore: cast_nullable_to_non_nullable
               as Session,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User,
     ));
   }
 }
@@ -247,14 +252,17 @@ class __$$AuthenticatedAuthStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
-  const _$AuthenticatedAuthStateImpl({required this.session});
+  const _$AuthenticatedAuthStateImpl(
+      {required this.session, required this.user});
 
   @override
   final Session session;
+  @override
+  final User user;
 
   @override
   String toString() {
-    return 'AuthState.authenticated(session: $session)';
+    return 'AuthState.authenticated(session: $session, user: $user)';
   }
 
   @override
@@ -262,11 +270,12 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthenticatedAuthStateImpl &&
-            (identical(other.session, session) || other.session == session));
+            (identical(other.session, session) || other.session == session) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, session);
+  int get hashCode => Object.hash(runtimeType, session, user);
 
   @JsonKey(ignore: true)
   @override
@@ -279,38 +288,38 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(Session session) authenticated,
+    required TResult Function(Session session, User user) authenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
     required TResult Function() offlineAuthMode,
   }) {
-    return authenticated(session);
+    return authenticated(session, user);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(Session session)? authenticated,
+    TResult? Function(Session session, User user)? authenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
     TResult? Function()? offlineAuthMode,
   }) {
-    return authenticated?.call(session);
+    return authenticated?.call(session, user);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(Session session)? authenticated,
+    TResult Function(Session session, User user)? authenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     TResult Function()? offlineAuthMode,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(session);
+      return authenticated(session, user);
     }
     return orElse();
   }
@@ -357,10 +366,12 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
 }
 
 abstract class AuthenticatedAuthState implements AuthState {
-  const factory AuthenticatedAuthState({required final Session session}) =
-      _$AuthenticatedAuthStateImpl;
+  const factory AuthenticatedAuthState(
+      {required final Session session,
+      required final User user}) = _$AuthenticatedAuthStateImpl;
 
   Session get session;
+  User get user;
   @JsonKey(ignore: true)
   _$$AuthenticatedAuthStateImplCopyWith<_$AuthenticatedAuthStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -408,7 +419,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(Session session) authenticated,
+    required TResult Function(Session session, User user) authenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
     required TResult Function() offlineAuthMode,
@@ -420,7 +431,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(Session session)? authenticated,
+    TResult? Function(Session session, User user)? authenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
     TResult? Function()? offlineAuthMode,
@@ -432,7 +443,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(Session session)? authenticated,
+    TResult Function(Session session, User user)? authenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     TResult Function()? offlineAuthMode,
@@ -557,7 +568,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(Session session) authenticated,
+    required TResult Function(Session session, User user) authenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
     required TResult Function() offlineAuthMode,
@@ -569,7 +580,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(Session session)? authenticated,
+    TResult? Function(Session session, User user)? authenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
     TResult? Function()? offlineAuthMode,
@@ -581,7 +592,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(Session session)? authenticated,
+    TResult Function(Session session, User user)? authenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     TResult Function()? offlineAuthMode,
@@ -683,7 +694,7 @@ class _$OfflineAuthStateImpl implements OfflineAuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(Session session) authenticated,
+    required TResult Function(Session session, User user) authenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
     required TResult Function() offlineAuthMode,
@@ -695,7 +706,7 @@ class _$OfflineAuthStateImpl implements OfflineAuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(Session session)? authenticated,
+    TResult? Function(Session session, User user)? authenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
     TResult? Function()? offlineAuthMode,
@@ -707,7 +718,7 @@ class _$OfflineAuthStateImpl implements OfflineAuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(Session session)? authenticated,
+    TResult Function(Session session, User user)? authenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     TResult Function()? offlineAuthMode,

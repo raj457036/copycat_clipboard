@@ -1,13 +1,11 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
-import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,14 +20,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Clipboard"),
-        actions: [
-          const SyncStatusButton(),
-          IconButton(
-              onPressed: () async {
-                context.read<AuthCubit>().logout();
-                context.goNamed(RouteConstants.login);
-              },
-              icon: const Icon(Icons.logout)),
+        actions: const [
+          SyncStatusButton(),
+          LogoutButton(),
           width16,
         ],
       ),

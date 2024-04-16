@@ -19,21 +19,26 @@ class AuthCubit extends Cubit<AuthState> {
     this.network,
   ) : super(const AuthState.unknown());
 
-  String? get userId =>
-      state.whenOrNull(authenticated: (session) => session.user.id);
+  String? get userId => state.whenOrNull(authenticated: (_, user) => user.id);
 
   Session? get session => sbClient.auth.currentSession;
 
   checkForAuthentication() {
     if (session != null) {
-      authenticated(session!);
+      authenticated(
+        session!,
+        session!.user,
+      );
     } else {
       unauthenticated(notLoggedInFailure);
     }
   }
 
-  void authenticated(Session session) {
-    emit(AuthState.authenticated(session: session));
+  void authenticated(Session session, User user) {
+    emit(AuthState.authenticated(
+      session: session,
+      user: user,
+    ));
   }
 
   void unauthenticated(Failure failure) {

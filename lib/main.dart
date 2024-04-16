@@ -57,7 +57,6 @@ class MainApp extends StatelessWidget {
       ],
       child: EventBridge(
         child: BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
-          // key: appKey,
           selector: (state) {
             return state.maybeWhen(
               orElse: () => ThemeMode.system,
@@ -65,52 +64,59 @@ class MainApp extends StatelessWidget {
             );
           },
           builder: (context, state) {
-            return ResponsiveBreakpoints.builder(
-              breakpoints: [
-                const Breakpoint(start: 0, end: 450, name: MOBILE),
-                const Breakpoint(start: 451, end: 800, name: TABLET),
-                const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-              ],
-              child: MaterialApp.router(
-                scaffoldMessengerKey: scaffoldMessengerKey,
-                routeInformationParser: router.routeInformationParser,
-                routeInformationProvider: router.routeInformationProvider,
-                routerDelegate: router.routerDelegate,
-                backButtonDispatcher: router.backButtonDispatcher,
-                themeMode: state,
-                theme: ThemeData(
-                  useMaterial3: true,
-                  textTheme: textTheme.apply(
-                    bodyColor: lightColorScheme.onSurface,
-                    displayColor: lightColorScheme.onSurface,
-                  ),
-                  colorScheme: lightColorScheme,
-                  brightness: Brightness.light,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    ),
+            return MaterialApp.router(
+              scaffoldMessengerKey: scaffoldMessengerKey,
+              routeInformationParser: router.routeInformationParser,
+              routeInformationProvider: router.routeInformationProvider,
+              routerDelegate: router.routerDelegate,
+              backButtonDispatcher: router.backButtonDispatcher,
+              themeMode: state,
+              theme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: lightColorScheme.onSurface,
+                  displayColor: lightColorScheme.onSurface,
+                ),
+                colorScheme: lightColorScheme,
+                brightness: Brightness.light,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
                   ),
                 ),
-                darkTheme: ThemeData(
-                  useMaterial3: true,
-                  textTheme: textTheme.apply(
-                    bodyColor: darkColorScheme.onSurface,
-                    displayColor: darkColorScheme.onSurface,
-                  ),
-                  colorScheme: darkColorScheme,
-                  brightness: Brightness.dark,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    ),
-                  ),
-                ),
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
               ),
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: darkColorScheme.onSurface,
+                  displayColor: darkColorScheme.onSurface,
+                ),
+                colorScheme: darkColorScheme,
+                brightness: Brightness.dark,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                ),
+              ),
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              builder: (context, child) {
+                if (child == null) {
+                  return const SizedBox.shrink();
+                }
+                return ResponsiveBreakpoints(
+                  key: appKey,
+                  breakpoints: const [
+                    Breakpoint(start: 0, end: 450, name: MOBILE),
+                    Breakpoint(start: 451, end: 800, name: TABLET),
+                    Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                    Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+                  ],
+                  child: child,
+                );
+              },
             );
           },
         ),

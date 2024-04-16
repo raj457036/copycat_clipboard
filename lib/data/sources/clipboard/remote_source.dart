@@ -80,4 +80,9 @@ class RemoteClipboardSource implements ClipboardSource {
     await db.from(table).delete().eq("id", item.serverId!);
     return true;
   }
+
+  @override
+  Future<bool> deleteAll() {
+    throw UnimplementedError();
+  }
 }

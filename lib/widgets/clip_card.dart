@@ -18,6 +18,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:url_launcher/url_launcher_string.dart';
 
+Future<void> _copyToClipboard(
+  BuildContext context,
+  ClipboardItem item, {
+  bool copyFileContent = false,
+}) async {
+  final result = await context.read<OfflinePersistanceCubit>().copyToClipboard(
+        item,
+        fileContent: copyFileContent,
+      );
+
+  if (result) {
+    // ignore: use_build_context_synchronously
+    context.showTextSnackbar("📝 Copied to clipboard");
+  } else {
+    // ignore: use_build_context_synchronously
+    context.showTextSnackbar("❌ Failed to copy to clipboard");
+  }
+}
+
 const _borderRadius = BorderRadius.vertical(
   bottom: Radius.circular(12),
 );
@@ -151,25 +170,6 @@ class FilePreview extends StatelessWidget {
   }
 }
 
-Future<void> _copyToClipboard(
-  BuildContext context,
-  ClipboardItem item, {
-  bool copyFileContent = false,
-}) async {
-  final result = await context.read<OfflinePersistanceCubit>().copyToClipboard(
-        item,
-        fileContent: copyFileContent,
-      );
-
-  if (result) {
-    // ignore: use_build_context_synchronously
-    context.showTextSnackbar("📝 Copied to clipboard");
-  } else {
-    // ignore: use_build_context_synchronously
-    context.showTextSnackbar("❌ Failed to copy to clipboard");
-  }
-}
-
 class ClipOptions extends StatelessWidget {
   final ClipboardItem item;
 
@@ -205,39 +205,44 @@ class ClipOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
+    final isFileType =
+        (item.type == ClipItemType.media || item.type == ClipItemType.file);
     return DecoratedBox(
       decoration: const BoxDecoration(),
       child: Padding(
         padding: const EdgeInsets.all(padding8),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  getType(),
-                  style: context.textTheme.titleSmall,
+        child: LayoutBuilder(builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          return Row(
+            children: [
+              FittedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      getType(),
+                      style: context.textTheme.titleSmall,
+                      overflow: TextOverflow.fade,
+                    ),
+                    Text(
+                      item.modified.ago(context.locale.localeName),
+                      style: context.textTheme.labelMedium,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ],
                 ),
-                Text(
-                  item.modified.ago(context.locale.localeName),
-                  style: context.textTheme.labelMedium,
-                ),
-              ],
-            ),
-            const Spacer(),
-            if (!isMobile && item.type == ClipItemType.url)
-              IconButton(
-                onPressed: launchUrl,
-                icon: const Icon(
-                  Icons.open_in_new,
-                ),
-                tooltip: "Open in browser",
               ),
-            if (item.type == ClipItemType.media ||
-                item.type == ClipItemType.file)
-              if (item.inCache)
+              const Spacer(),
+              if (width > 200 && item.type == ClipItemType.url)
+                IconButton(
+                  onPressed: launchUrl,
+                  icon: const Icon(
+                    Icons.open_in_new,
+                  ),
+                  tooltip: "Open in browser",
+                ),
+              if (width > 180 && isFileType && item.inCache)
                 MenuAnchor(
                   menuChildren: [
                     MenuItemButton(
@@ -274,23 +279,24 @@ class ClipOptions extends StatelessWidget {
                       icon: const Icon(Icons.copy),
                     );
                   },
-                )
-              else
+                ),
+              if (width > 180 && isFileType && !item.inCache)
                 IconButton(
                   icon: item.isSyncing
                       ? const AnimatedSyncingIcon()
                       : const Icon(Icons.download_for_offline_outlined),
                   onPressed: item.isSyncing ? null : () => _download(context),
                   tooltip: "Download needed",
-                )
-            else
-              IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: () => _copyToClipboard(context, item),
-                tooltip: "Copy to clipboard",
-              ),
-          ],
-        ),
+                ),
+              if (width > 180 && !isFileType)
+                IconButton(
+                  icon: const Icon(Icons.copy),
+                  onPressed: () => _copyToClipboard(context, item),
+                  tooltip: "Copy to clipboard",
+                ),
+            ],
+          );
+        }),
       ),
     );
   }
@@ -319,33 +325,37 @@ class ClipSyncStatus extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(padding8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.sync_problem_rounded,
-                size: 18,
-              ),
-              width6,
-              Text(
-                "Local",
-                style: context.textTheme.labelMedium,
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: item.isSyncing
-                    ? null
-                    : () {
-                        context.read<CloudPersistanceCubit>().persist(item);
-                      },
-                child: Text(
-                  item.isSyncing ? "Syncing" : "Sync Now",
-                  style: context.textTheme.labelMedium
-                      ?.copyWith(color: colors.error),
+          child: LayoutBuilder(builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.sync_problem_rounded,
+                  size: 18,
                 ),
-              ),
-            ],
-          ),
+                width6,
+                if (width > 150)
+                  Text(
+                    "Local",
+                    style: context.textTheme.labelMedium,
+                  ),
+                const Spacer(),
+                TextButton(
+                  onPressed: item.isSyncing
+                      ? null
+                      : () {
+                          context.read<CloudPersistanceCubit>().persist(item);
+                        },
+                  child: Text(
+                    item.isSyncing ? "Syncing" : "Sync Now",
+                    style: context.textTheme.labelMedium
+                        ?.copyWith(color: colors.error),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
