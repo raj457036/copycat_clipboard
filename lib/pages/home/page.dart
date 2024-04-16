@@ -6,7 +6,6 @@ import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -41,29 +40,35 @@ class HomePage extends StatelessWidget {
             );
           }
 
-          return ResponsiveGridView.builder(
+          return GridView.builder(
             padding: const EdgeInsets.all(padding16),
-            gridDelegate: const ResponsiveGridDelegate(
-              minCrossAxisExtent: 300,
-              maxCrossAxisExtent: 300,
-              crossAxisSpacing: padding12,
-              mainAxisSpacing: padding12,
-              childAspectRatio: 3 / 4,
-              // childAspectRatio: 3 / 4,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 250,
+              crossAxisSpacing: padding6,
+              mainAxisSpacing: padding6,
+              childAspectRatio: 1,
             ),
             itemCount: items.length + hasMore,
             itemBuilder: (context, index) {
               if (index == items.length) {
-                return Center(
-                  child: TextButton(
-                    onPressed: () => _loadMore(context),
-                    child: const Text("Load More"),
+                return Card.outlined(
+                  child: Center(
+                    child: TextButton.icon(
+                      onPressed: () => _loadMore(context),
+                      label: const Text(
+                        "Load More",
+                      ),
+                      icon: const Icon(Icons.read_more),
+                    ),
                   ),
                 );
               }
 
               final item = state.$1[index];
-              return ClipCard(item: item);
+              return ClipCard(
+                key: ValueKey("clipboard-item-${item.id}"),
+                item: item,
+              );
             },
           );
         },

@@ -1,9 +1,7 @@
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 class NavBarPage extends StatefulWidget {
   final Widget child;
@@ -39,7 +37,7 @@ class _NavBarPageState extends State<NavBarPage> {
     }
   }
 
-  Widget? getFloatingActionButton({bool isMobile = true}) {
+  Widget? getFloatingActionButton() {
     if (widget.navbarActiveIndex == 0) {
       return FloatingActionButton(
         onPressed: () {},
@@ -53,7 +51,8 @@ class _NavBarPageState extends State<NavBarPage> {
 
   @override
   Widget build(BuildContext context) {
-    final smallScreen = context.breakpoints.smallerOrEqualTo(TABLET);
+    final width = MediaQuery.of(context).size.width;
+    final smallScreen = width <= 700;
     final scaffold = Scaffold(
       body: widget.child,
       floatingActionButton: smallScreen ? getFloatingActionButton() : null,
@@ -112,7 +111,7 @@ class _NavBarPageState extends State<NavBarPage> {
             label: Text("Settings"),
           ),
         ],
-        leading: getFloatingActionButton(isMobile: false),
+        leading: getFloatingActionButton(),
         labelType: NavigationRailLabelType.all,
         groupAlignment: 0,
         selectedIndex: widget.navbarActiveIndex,

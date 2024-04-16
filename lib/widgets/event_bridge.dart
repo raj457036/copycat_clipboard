@@ -39,7 +39,7 @@ class EventBridge extends StatelessWidget {
                   :final created,
                   :final synced
                 ):
-                context.read<ClipboardCubit>().put(item, isNew: created);
+                // context.read<ClipboardCubit>().put(item, isNew: created);
                 if (!synced) {
                   context.read<CloudPersistanceCubit>().persist(item);
                 }
@@ -56,7 +56,7 @@ class EventBridge extends StatelessWidget {
             switch (state) {
               case CloudPersistanceCreating(:final item) ||
                     CloudPersistanceUpdating(:final item):
-                context.read<ClipboardCubit>().put(item);
+                // context.read<ClipboardCubit>().put(item);
                 break;
               case CloudPersistanceSaved(:final item):
                 context
@@ -65,8 +65,8 @@ class EventBridge extends StatelessWidget {
                 context.read<SyncManagerCubit>().updateSyncTime();
                 break;
               case CloudPersistanceError(:final item, :final failure):
-                showFailureSnackbar(failure);
-                context.read<ClipboardCubit>().put(item);
+                showToastMessage(context, failure.message);
+                // context.read<ClipboardCubit>().put(item);
                 break;
               case _:
             }

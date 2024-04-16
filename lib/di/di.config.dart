@@ -16,12 +16,12 @@ import 'package:supabase_flutter/supabase_flutter.dart' as _i12;
 
 import '../bloc/app_config_cubit/app_config_cubit.dart' as _i11;
 import '../bloc/auth_cubit/auth_cubit.dart' as _i18;
-import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i20;
+import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i19;
 import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i21;
 import '../bloc/google_token_cubit/google_token_manager_cubit.dart' as _i14;
 import '../bloc/offline_persistance_cubit/offline_persistance_cubit.dart'
     as _i22;
-import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i19;
+import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i20;
 import '../data/repositories/app_config.dart' as _i8;
 import '../data/repositories/clipboard.dart' as _i13;
 import '../data/repositories/sync_clipboard.dart' as _i17;
@@ -106,19 +106,21 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i15.SupabaseClient>(),
           gh<_i6.NetworkStatus>(),
         ));
+    gh.singleton<_i19.ClipboardCubit>(() => _i19.ClipboardCubit(
+          gh<_i13.ClipboardRepository>(instanceName: 'offline'),
+          gh<_i4.Isar>(),
+        ));
     gh.lazySingleton<_i13.ClipboardRepository>(
       () => _i13.ClipboardRepositoryCloudImpl(
           gh<_i9.ClipboardSource>(instanceName: 'remote')),
       instanceName: 'cloud',
     );
-    gh.singleton<_i19.SyncManagerCubit>(() => _i19.SyncManagerCubit(
+    gh.singleton<_i20.SyncManagerCubit>(() => _i20.SyncManagerCubit(
           gh<_i4.Isar>(),
           gh<_i18.AuthCubit>(),
           gh<_i17.SyncClipboardRepository>(),
           gh<_i6.NetworkStatus>(),
         ));
-    gh.singleton<_i20.ClipboardCubit>(() => _i20.ClipboardCubit(
-        gh<_i13.ClipboardRepository>(instanceName: 'offline')));
     gh.factory<_i21.CloudPersistanceCubit>(() => _i21.CloudPersistanceCubit(
           gh<_i6.NetworkStatus>(),
           gh<_i18.AuthCubit>(),
