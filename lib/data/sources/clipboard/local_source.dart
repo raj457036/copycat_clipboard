@@ -25,13 +25,13 @@ class LocalClipboardSource implements ClipboardSource {
     int limit = 50,
     int offset = 0,
   }) async {
-    var results = await db.clipboardItems
+    var results = await db.txn(() async => await db.clipboardItems
         .filter()
         .deletedAtIsNull()
         .sortByModifiedDesc()
         .offset(offset)
         .limit(limit)
-        .findAll();
+        .findAll());
 
     return PaginatedResult(
       results: results,

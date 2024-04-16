@@ -1,5 +1,3 @@
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -14,56 +12,6 @@ extension BuildContextExtension on BuildContext {
   ColorScheme get colors => theme.colorScheme;
   TextTheme get textTheme => theme.textTheme;
   bool get isDarkMode => theme.brightness == Brightness.dark;
-}
-
-extension SnackbarExtension on BuildContext {
-  ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackbar(
-      SnackBar snackBar) {
-    scaffoldMessenger.hideCurrentSnackBar();
-    return scaffoldMessenger.showSnackBar(snackBar);
-  }
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showFailureSnackbar(
-      Failure failure) {
-    final mq = MediaQuery.maybeOf(this);
-    final isMobile = mq != null ? mq.size.width < 400 : false;
-    return showSnackbar(
-      SnackBar(
-        content: Text(failure.message),
-        behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
-        width: isMobile ? null : 400,
-        showCloseIcon: !isMobile,
-      ),
-    );
-  }
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showTextSnackbar(
-      String text,
-      {bool isLoading = false}) {
-    final mq = MediaQuery.maybeOf(this);
-    final isMobile = mq != null ? mq.size.width < 400 : false;
-    return showSnackbar(
-      SnackBar(
-        content: isLoading
-            ? Row(
-                children: [
-                  const SizedBox.square(
-                    dimension: 22,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  width16,
-                  Text(text)
-                ],
-              )
-            : Text(text),
-        showCloseIcon: !isMobile && !isLoading,
-        behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
-        width: isMobile ? null : 400,
-      ),
-    );
-  }
 }
 
 extension EnumParserExtension<T extends Enum> on List<T> {
