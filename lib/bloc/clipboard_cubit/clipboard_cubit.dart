@@ -24,16 +24,6 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
   ) : super(const ClipboardState.loaded(items: []));
 
   Future<void> fixDatabase() async {
-    // final count = await db.clipboardItems.count();
-    // final issueItem = <int>[];
-
-    // for (var i = 0; i < count; i++) {
-    //   try {
-    //     // await db.clipboardItems.where().find;
-    //   } catch (e) {
-    //     issueItem.add(i);
-    //   }
-    // }
     // await db
     //     .writeTxn(() async => await .deleteAll([77, 87, 79]));
   }

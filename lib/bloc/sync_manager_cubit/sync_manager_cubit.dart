@@ -62,10 +62,10 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
         for (var i = 0; i < items.length; i++) {
           final item = items[i];
-          final result = await db.clipboardItems
+          final result = await db.txn(() async => await db.clipboardItems
               .filter()
               .serverIdEqualTo(item.serverId)
-              .findFirst();
+              .findFirst());
           if (result == null) {
             items[i] = item.copyWith(lastSynced: DateTime.now().toUtc());
           } else {
@@ -86,16 +86,19 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     // Fetch unsynced changes from local db
     // Sync local changes with server
     // ? Has to be done manually!
-    await updateSyncTime();
+    await updateSyncTime(refreshLocalCache: true);
   }
 
-  Future<void> updateSyncTime() async {
+  Future<void> updateSyncTime({bool refreshLocalCache = false}) async {
     final lastSync0 = await getSyncInfo();
     final syncTime = DateTime.now().toUtc();
     final updatedSyncStatus =
         (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
     updatedSyncStatus.id = _syncId;
     await db.writeTxn(() async => await db.syncStatus.put(updatedSyncStatus));
-    emit(SyncManagerState.synced(lastSynced: syncTime));
+    emit(SyncManagerState.synced(
+      lastSynced: syncTime,
+      refreshLocalCache: refreshLocalCache,
+    ));
   }
 }

@@ -12,5 +12,6 @@ class SyncManagerState with _$SyncManagerState {
 
   const factory SyncManagerState.synced({
     required DateTime lastSynced,
+    @Default(false) bool refreshLocalCache,
   }) = SyncedState;
 }

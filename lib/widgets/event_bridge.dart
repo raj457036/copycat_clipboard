@@ -20,8 +20,10 @@ class EventBridge extends StatelessWidget {
       listeners: [
         BlocListener<SyncManagerCubit, SyncManagerState>(
           listener: (context, state) {
-            if (state is SyncedState) {
-              context.read<ClipboardCubit>().fetch(fromTop: true);
+            switch (state) {
+              case SyncedState(refreshLocalCache: true):
+                context.read<ClipboardCubit>().fetch(fromTop: true);
+                break;
             }
           },
         ),
@@ -39,7 +41,7 @@ class EventBridge extends StatelessWidget {
                   :final created,
                   :final synced
                 ):
-                // context.read<ClipboardCubit>().put(item, isNew: created);
+                context.read<ClipboardCubit>().put(item, isNew: created);
                 if (!synced) {
                   context.read<CloudPersistanceCubit>().persist(item);
                 }
@@ -56,17 +58,21 @@ class EventBridge extends StatelessWidget {
             switch (state) {
               case CloudPersistanceCreating(:final item) ||
                     CloudPersistanceUpdating(:final item):
-                // context.read<ClipboardCubit>().put(item);
+                context.read<ClipboardCubit>().put(item);
                 break;
               case CloudPersistanceSaved(:final item):
                 context
                     .read<OfflinePersistanceCubit>()
                     .persist(item, synced: true);
-                context.read<SyncManagerCubit>().updateSyncTime();
+                context
+                    .read<SyncManagerCubit>()
+                    .updateSyncTime(refreshLocalCache: false);
                 break;
               case CloudPersistanceError(:final item, :final failure):
-                showToastMessage(context, failure.message);
-                // context.read<ClipboardCubit>().put(item);
+                // showToastMessage(
+                //     scaffoldMessengerKey.currentContext!, failure.message);
+                showFailureSnackbar(failure);
+                context.read<ClipboardCubit>().put(item);
                 break;
               case _:
             }

@@ -1,6 +1,6 @@
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/syncing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ class SyncStatusButton extends StatelessWidget {
   Future<void> syncNow(BuildContext context, DateTime? lastSync) async {
     final now = DateTime.now().toUtc();
     if (lastSync != null && now.difference(lastSync).inSeconds < 60) {
-      context.showTextSnackbar(
+      showTextSnackbar(
         '✋ Last sync was less than 1 minutes ago.',
       );
       return;
@@ -59,8 +59,7 @@ class SyncStatusButton extends StatelessWidget {
             isSyncing = false;
             lastSync = lastSynced;
             icon = Icons.sync_rounded;
-            message =
-                "Last synced at ${dateFormatter.add_jm().format(lastSynced)}";
+            message = "Last synced at ${dateTimeFormatter.format(lastSynced)}";
             break;
         }
 

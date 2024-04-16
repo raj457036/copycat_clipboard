@@ -22,7 +22,8 @@ mixin _$SyncManagerState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function(DateTime lastSynced) synced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,7 +32,7 @@ mixin _$SyncManagerState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function(DateTime lastSynced)? synced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,7 +41,7 @@ mixin _$SyncManagerState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function(DateTime lastSynced)? synced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -134,7 +135,8 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function(DateTime lastSynced) synced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
   }) {
     return unknown();
   }
@@ -146,7 +148,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function(DateTime lastSynced)? synced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return unknown?.call();
   }
@@ -158,7 +160,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function(DateTime lastSynced)? synced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -254,7 +256,8 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function(DateTime lastSynced) synced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
   }) {
     return checking();
   }
@@ -266,7 +269,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function(DateTime lastSynced)? synced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return checking?.call();
   }
@@ -278,7 +281,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function(DateTime lastSynced)? synced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
     if (checking != null) {
@@ -402,7 +405,8 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function(DateTime lastSynced) synced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
   }) {
     return failed(failure);
   }
@@ -414,7 +418,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function(DateTime lastSynced)? synced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return failed?.call(failure);
   }
@@ -426,7 +430,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function(DateTime lastSynced)? synced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
     if (failed != null) {
@@ -563,7 +567,8 @@ class _$SyncingStateImpl implements SyncingState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function(DateTime lastSynced) synced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
   }) {
     return syncing(progress, total);
   }
@@ -575,7 +580,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function(DateTime lastSynced)? synced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return syncing?.call(progress, total);
   }
@@ -587,7 +592,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function(DateTime lastSynced)? synced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
     if (syncing != null) {
@@ -655,7 +660,7 @@ abstract class _$$SyncedStateImplCopyWith<$Res> {
           _$SyncedStateImpl value, $Res Function(_$SyncedStateImpl) then) =
       __$$SyncedStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DateTime lastSynced});
+  $Res call({DateTime lastSynced, bool refreshLocalCache});
 }
 
 /// @nodoc
@@ -670,12 +675,17 @@ class __$$SyncedStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? lastSynced = null,
+    Object? refreshLocalCache = null,
   }) {
     return _then(_$SyncedStateImpl(
       lastSynced: null == lastSynced
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      refreshLocalCache: null == refreshLocalCache
+          ? _value.refreshLocalCache
+          : refreshLocalCache // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -683,14 +693,18 @@ class __$$SyncedStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SyncedStateImpl implements SyncedState {
-  const _$SyncedStateImpl({required this.lastSynced});
+  const _$SyncedStateImpl(
+      {required this.lastSynced, this.refreshLocalCache = false});
 
   @override
   final DateTime lastSynced;
+  @override
+  @JsonKey()
+  final bool refreshLocalCache;
 
   @override
   String toString() {
-    return 'SyncManagerState.synced(lastSynced: $lastSynced)';
+    return 'SyncManagerState.synced(lastSynced: $lastSynced, refreshLocalCache: $refreshLocalCache)';
   }
 
   @override
@@ -699,11 +713,13 @@ class _$SyncedStateImpl implements SyncedState {
         (other.runtimeType == runtimeType &&
             other is _$SyncedStateImpl &&
             (identical(other.lastSynced, lastSynced) ||
-                other.lastSynced == lastSynced));
+                other.lastSynced == lastSynced) &&
+            (identical(other.refreshLocalCache, refreshLocalCache) ||
+                other.refreshLocalCache == refreshLocalCache));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lastSynced);
+  int get hashCode => Object.hash(runtimeType, lastSynced, refreshLocalCache);
 
   @JsonKey(ignore: true)
   @override
@@ -718,9 +734,10 @@ class _$SyncedStateImpl implements SyncedState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function(DateTime lastSynced) synced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
   }) {
-    return synced(lastSynced);
+    return synced(lastSynced, refreshLocalCache);
   }
 
   @override
@@ -730,9 +747,9 @@ class _$SyncedStateImpl implements SyncedState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function(DateTime lastSynced)? synced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
-    return synced?.call(lastSynced);
+    return synced?.call(lastSynced, refreshLocalCache);
   }
 
   @override
@@ -742,11 +759,11 @@ class _$SyncedStateImpl implements SyncedState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function(DateTime lastSynced)? synced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
     if (synced != null) {
-      return synced(lastSynced);
+      return synced(lastSynced, refreshLocalCache);
     }
     return orElse();
   }
@@ -793,10 +810,12 @@ class _$SyncedStateImpl implements SyncedState {
 }
 
 abstract class SyncedState implements SyncManagerState {
-  const factory SyncedState({required final DateTime lastSynced}) =
-      _$SyncedStateImpl;
+  const factory SyncedState(
+      {required final DateTime lastSynced,
+      final bool refreshLocalCache}) = _$SyncedStateImpl;
 
   DateTime get lastSynced;
+  bool get refreshLocalCache;
   @JsonKey(ignore: true)
   _$$SyncedStateImplCopyWith<_$SyncedStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
