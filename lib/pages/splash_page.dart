@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/google_token_cubit/google_token_manager_cubit.dart';
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,12 @@ class SplashPage extends StatelessWidget {
             context.read<ClipboardCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();
             context.read<GoogleTokenManagerCubit>().load();
+            context.read<OfflinePersistanceCubit>().startListners();
             context.goNamed(RouteConstants.home);
             break;
           case UnauthenticatedAuthState():
             context.goNamed(RouteConstants.login);
+            context.read<OfflinePersistanceCubit>().stopListners();
           default:
         }
       },

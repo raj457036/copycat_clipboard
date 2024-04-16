@@ -16,6 +16,8 @@ abstract class ClipboardRepository {
   FailureOr<ClipboardItem> update(ClipboardItem item);
 
   FailureOr<bool> delete(ClipboardItem item);
+
+  FailureOr<void> deleteAll();
 }
 
 @Named("cloud")
@@ -70,6 +72,12 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
       return Left(Failure.fromException(e));
     }
   }
+
+  @override
+  FailureOr<void> deleteAll() async {
+    // no-op
+    return const Right(null);
+  }
 }
 
 @Named("offline")
@@ -120,6 +128,16 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     try {
       await local.delete(item);
       return const Right(true);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<void> deleteAll() async {
+    try {
+      await local.deleteAll();
+      return const Right(null);
     } catch (e) {
       return Left(Failure.fromException(e));
     }

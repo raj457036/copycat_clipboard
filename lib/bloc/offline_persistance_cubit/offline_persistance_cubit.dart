@@ -22,6 +22,8 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final ClipboardService clipboard;
   final CopyToClipboard copy;
 
+  bool _listening = false;
+
   late StreamSubscription<List<Clip?>> copySub;
 
   OfflinePersistanceCubit(
@@ -29,9 +31,25 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     @Named("offline") this.repo,
     this.clipboard,
   )   : copy = CopyToClipboard(clipboard),
-        super(const OfflinePersistanceState.initial()) {
+        super(const OfflinePersistanceState.initial());
+
+  void startListners() {
+    if (_listening) return;
     clipboard.start();
     copySub = clipboard.onCopy.listen(onClips);
+    _listening = true;
+  }
+
+  void stopListners() {
+    if (!_listening) return;
+    clipboard.dispose();
+    copySub.cancel();
+    _listening = false;
+  }
+
+  Future<void> reset() async {
+    await repo.deleteAll();
+    await clearPersistedRootDir();
   }
 
   Future<bool> copyToClipboard(
@@ -160,8 +178,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
 
   @override
   Future<void> close() {
-    copySub.cancel();
-    clipboard.dispose();
+    stopListners();
     return super.close();
   }
 }

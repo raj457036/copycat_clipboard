@@ -50,6 +50,7 @@ dependencies:
   supabase_auth_ui: ^0.4.4
   supabase_flutter: ^2.5.0
   app_links: ^4.0.1
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:
