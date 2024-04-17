@@ -22,6 +22,8 @@ AppConfig _$AppConfigFromJson(Map<String, dynamic> json) {
 mixin _$AppConfig {
   @Enumerated(EnumType.name)
   ThemeMode get themeMode => throw _privateConstructorUsedError;
+  bool get enableSync => throw _privateConstructorUsedError;
+  bool get enableFileSync => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,10 @@ abstract class $AppConfigCopyWith<$Res> {
   factory $AppConfigCopyWith(AppConfig value, $Res Function(AppConfig) then) =
       _$AppConfigCopyWithImpl<$Res, AppConfig>;
   @useResult
-  $Res call({@Enumerated(EnumType.name) ThemeMode themeMode});
+  $Res call(
+      {@Enumerated(EnumType.name) ThemeMode themeMode,
+      bool enableSync,
+      bool enableFileSync});
 }
 
 /// @nodoc
@@ -51,12 +56,22 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
   @override
   $Res call({
     Object? themeMode = null,
+    Object? enableSync = null,
+    Object? enableFileSync = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
               as ThemeMode,
+      enableSync: null == enableSync
+          ? _value.enableSync
+          : enableSync // ignore: cast_nullable_to_non_nullable
+              as bool,
+      enableFileSync: null == enableFileSync
+          ? _value.enableFileSync
+          : enableFileSync // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -69,7 +84,10 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       __$$AppConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@Enumerated(EnumType.name) ThemeMode themeMode});
+  $Res call(
+      {@Enumerated(EnumType.name) ThemeMode themeMode,
+      bool enableSync,
+      bool enableFileSync});
 }
 
 /// @nodoc
@@ -84,12 +102,22 @@ class __$$AppConfigImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? themeMode = null,
+    Object? enableSync = null,
+    Object? enableFileSync = null,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
               as ThemeMode,
+      enableSync: null == enableSync
+          ? _value.enableSync
+          : enableSync // ignore: cast_nullable_to_non_nullable
+              as bool,
+      enableFileSync: null == enableFileSync
+          ? _value.enableFileSync
+          : enableFileSync // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -98,7 +126,9 @@ class __$$AppConfigImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AppConfigImpl extends _AppConfig {
   _$AppConfigImpl(
-      {@Enumerated(EnumType.name) this.themeMode = ThemeMode.system})
+      {@Enumerated(EnumType.name) this.themeMode = ThemeMode.system,
+      this.enableSync = true,
+      this.enableFileSync = true})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -108,10 +138,16 @@ class _$AppConfigImpl extends _AppConfig {
   @JsonKey()
   @Enumerated(EnumType.name)
   final ThemeMode themeMode;
+  @override
+  @JsonKey()
+  final bool enableSync;
+  @override
+  @JsonKey()
+  final bool enableFileSync;
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync)';
   }
 
   @override
@@ -120,12 +156,17 @@ class _$AppConfigImpl extends _AppConfig {
         (other.runtimeType == runtimeType &&
             other is _$AppConfigImpl &&
             (identical(other.themeMode, themeMode) ||
-                other.themeMode == themeMode));
+                other.themeMode == themeMode) &&
+            (identical(other.enableSync, enableSync) ||
+                other.enableSync == enableSync) &&
+            (identical(other.enableFileSync, enableFileSync) ||
+                other.enableFileSync == enableFileSync));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, themeMode);
+  int get hashCode =>
+      Object.hash(runtimeType, themeMode, enableSync, enableFileSync);
 
   @JsonKey(ignore: true)
   @override
@@ -142,8 +183,10 @@ class _$AppConfigImpl extends _AppConfig {
 }
 
 abstract class _AppConfig extends AppConfig {
-  factory _AppConfig({@Enumerated(EnumType.name) final ThemeMode themeMode}) =
-      _$AppConfigImpl;
+  factory _AppConfig(
+      {@Enumerated(EnumType.name) final ThemeMode themeMode,
+      final bool enableSync,
+      final bool enableFileSync}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -152,6 +195,10 @@ abstract class _AppConfig extends AppConfig {
   @override
   @Enumerated(EnumType.name)
   ThemeMode get themeMode;
+  @override
+  bool get enableSync;
+  @override
+  bool get enableFileSync;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>

@@ -17,13 +17,23 @@ const AppConfigSchema = CollectionSchema(
   name: r'AppConfig',
   id: -7085420701237142207,
   properties: {
-    r'isPersisted': PropertySchema(
+    r'enableFileSync': PropertySchema(
       id: 0,
+      name: r'enableFileSync',
+      type: IsarType.bool,
+    ),
+    r'enableSync': PropertySchema(
+      id: 1,
+      name: r'enableSync',
+      type: IsarType.bool,
+    ),
+    r'isPersisted': PropertySchema(
+      id: 2,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'themeMode': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
@@ -59,8 +69,10 @@ void _appConfigSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.isPersisted);
-  writer.writeString(offsets[1], object.themeMode.name);
+  writer.writeBool(offsets[0], object.enableFileSync);
+  writer.writeBool(offsets[1], object.enableSync);
+  writer.writeBool(offsets[2], object.isPersisted);
+  writer.writeString(offsets[3], object.themeMode.name);
 }
 
 AppConfig _appConfigDeserialize(
@@ -70,8 +82,10 @@ AppConfig _appConfigDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AppConfig(
+    enableFileSync: reader.readBool(offsets[0]),
+    enableSync: reader.readBool(offsets[1]),
     themeMode:
-        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[1])] ??
+        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[3])] ??
             ThemeMode.system,
   );
   object.id = id;
@@ -88,6 +102,10 @@ P _appConfigDeserializeProp<P>(
     case 0:
       return (reader.readBool(offset)) as P;
     case 1:
+      return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
@@ -198,6 +216,26 @@ extension AppConfigQueryWhere
 
 extension AppConfigQueryFilter
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      enableFileSyncEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'enableFileSync',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> enableSyncEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'enableSync',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -401,6 +439,30 @@ extension AppConfigQueryLinks
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {}
 
 extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByEnableFileSync() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableFileSync', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByEnableFileSyncDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableFileSync', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByEnableSync() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableSync', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByEnableSyncDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableSync', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isPersisted', Sort.asc);
@@ -428,6 +490,30 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
 
 extension AppConfigQuerySortThenBy
     on QueryBuilder<AppConfig, AppConfig, QSortThenBy> {
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByEnableFileSync() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableFileSync', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByEnableFileSyncDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableFileSync', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByEnableSync() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableSync', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByEnableSyncDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'enableSync', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -467,6 +553,18 @@ extension AppConfigQuerySortThenBy
 
 extension AppConfigQueryWhereDistinct
     on QueryBuilder<AppConfig, AppConfig, QDistinct> {
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByEnableFileSync() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'enableFileSync');
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByEnableSync() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'enableSync');
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isPersisted');
@@ -486,6 +584,18 @@ extension AppConfigQueryProperty
   QueryBuilder<AppConfig, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<AppConfig, bool, QQueryOperations> enableFileSyncProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'enableFileSync');
+    });
+  }
+
+  QueryBuilder<AppConfig, bool, QQueryOperations> enableSyncProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'enableSync');
     });
   }
 
@@ -510,11 +620,15 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
     _$AppConfigImpl(
       themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
           ThemeMode.system,
+      enableSync: json['enableSync'] as bool? ?? true,
+      enableFileSync: json['enableFileSync'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
     <String, dynamic>{
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
+      'enableSync': instance.enableSync,
+      'enableFileSync': instance.enableFileSync,
     };
 
 const _$ThemeModeEnumMap = {

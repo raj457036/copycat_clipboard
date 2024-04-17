@@ -45,12 +45,12 @@ dependencies:
   mime: ^1.0.5
   image: ^4.1.7
   intl: ^0.19.0
-  google_sign_in: ^6.2.1
   supabase_auth_ui: ^0.4.4
   supabase_flutter: ^2.5.0
   app_links: ^4.0.1
   device_preview: ^1.1.0
   toastification: ^1.2.1
+  flutter_web_auth_2: ^3.1.1
 
 dev_dependencies:
   flutter_test:

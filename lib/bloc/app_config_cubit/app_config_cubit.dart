@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/app_config.dart';
 import 'package:clipboard/db/app_config/appconfig.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -21,5 +22,29 @@ class AppConfigCubit extends Cubit<AppConfigState> {
       (l) => AppConfigState.error(failure: l),
       (r) => AppConfigState.loaded(config: r),
     ));
+  }
+
+  Future<void> changeThemeMode(ThemeMode mode) async {
+    state.whenOrNull(loaded: (config) {
+      final newConfig = config.copyWith(themeMode: mode)..applyId(config);
+      emit(AppConfigState.loaded(config: newConfig));
+      repo.update(newConfig);
+    });
+  }
+
+  Future<void> changeSync(bool value) async {
+    state.whenOrNull(loaded: (config) {
+      final newConfig = config.copyWith(enableSync: value)..applyId(config);
+      emit(AppConfigState.loaded(config: newConfig));
+      repo.update(newConfig);
+    });
+  }
+
+  Future<void> changeFileSync(bool value) async {
+    state.whenOrNull(loaded: (config) {
+      final newConfig = config.copyWith(enableFileSync: value)..applyId(config);
+      emit(AppConfigState.loaded(config: newConfig));
+      repo.update(newConfig);
+    });
   }
 }

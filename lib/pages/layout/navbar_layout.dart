@@ -33,6 +33,9 @@ class _NavBarPageState extends State<NavBarPage> {
       //   break;
       case 2:
         break;
+      case 3:
+        context.goNamed(RouteConstants.settings);
+        break;
       default:
     }
   }

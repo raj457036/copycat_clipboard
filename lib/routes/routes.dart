@@ -1,10 +1,12 @@
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
+import "package:clipboard/pages/drive_setup/page.dart";
 import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/search/page.dart";
+import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:go_router/go_router.dart";
 
@@ -29,11 +31,25 @@ final router = GoRouter(
         key: state.pageKey,
       ),
     ),
+    GoRoute(
+      name: RouteConstants.driveConnect,
+      path: '/drive-connect/:code',
+      builder: (context, state) {
+        final code = state.pathParameters["code"]!;
+        final scopes = state.uri.queryParameters["scopes"]!.split(" ");
+        return DriveSetupPage(
+          key: state.pageKey,
+          code: code,
+          scopes: scopes,
+        );
+      },
+    ),
     ShellRoute(
       builder: (context, state, child) {
         final activeIndex = switch (state.fullPath) {
           "/home" => 0,
           "/search" => 1,
+          "/settings" => 3,
           _ => 0,
         };
 
@@ -59,6 +75,14 @@ final router = GoRouter(
           pageBuilder: (context, state) => NoTransitionPage(
             key: state.pageKey,
             child: const SearchPage(),
+          ),
+        ),
+        GoRoute(
+          name: RouteConstants.settings,
+          path: '/settings',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const SettingsPage(),
           ),
         ),
       ],
