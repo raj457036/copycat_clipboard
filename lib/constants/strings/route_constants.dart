@@ -3,4 +3,6 @@ class RouteConstants {
   static const String login = "login";
   static const String home = "home";
   static const String search = "search";
+  static const String settings = "settings";
+  static const String driveConnect = "drive-connect";
 }

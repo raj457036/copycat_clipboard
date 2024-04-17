@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clipboard Drive Connect</title>
+    <style>
+      .center {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+        height: 100vh;
+        width: 100vw;
+        font-family: "Helvetica Neue", Helvetica, Arial;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">
+      <p id="msg">Please wait... while we redirect you to clipboard app.</p>
+    </div>
+
+    <script>
+      location.href = "clipboard:/drive_connect" + location.search;
+
+      setTimeout(() => {
+        document.querySelector("#msg").innerText =
+          "Done! You may now close this window.";
+      }, 2000);
+    </script>
+  </body>
+</html>

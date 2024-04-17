@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert' show jsonDecode;
 import 'dart:io' as io;
 
 import 'package:clipboard/common/logging.dart';
@@ -182,5 +183,33 @@ class GoogleDriveService implements DriveService {
     final drive = getDrive();
     if (item.driveFileId == null) return;
     await drive.files.delete(item.driveFileId!);
+  }
+
+  Future<void> connect() async {
+// Construct an Uri to Google's oauth2 endpoint
+    final url2 = Uri.https('www.googleapis.com', 'oauth2/v4/token');
+
+// Use this code to get an access token
+    final response = await http.post(url2, body: {
+      'client_id':
+          "892296995692-18bkkorqb2g2suf8sb1l45s71gutto59.apps.googleusercontent.com",
+      'client_secret': "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",
+      'redirect_uri': 'https://clipboard-419514.web.app',
+      'grant_type': 'authorization_code',
+      'code': "code",
+    });
+
+// Get the access token from the response
+    print(jsonDecode(response.body));
+    /**
+     * EXAMPLE
+     * {
+     * access_token: ya29.a0Ad52N39hDea9LWlWvKrDmckhah7v99Fb_dRH9aC5_eVeGOFNQaw5E5c9MEy3iGbm_AnPa7fFvxHa3XYVk1gd7tQIYgoaYebuEA4G5q2OTPwumjWPGEpsUCsD2vrTmYY45CrULF6d887-kn51ogPfQccPKoFPb4CwKf2raCgYKARsSARESFQHGX2MiVOKLLrUk0uPHZKX8KEffOw0171, 
+     * expires_in: 3599, 
+     * refresh_token: 1//0g1sr9BvaLN1tCgYIARAAGBASNwF-L9Ir6EqfF0lF4lDWPTNn_LNvv0UE4PRwpahu7qicpoyCcrEtxM5alNIF-9bHNGSOjRAG2FY, 
+     * scope: https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file, 
+     * token_type: Bearer
+     * }
+     */
   }
 }

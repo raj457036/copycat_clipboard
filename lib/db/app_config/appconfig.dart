@@ -13,6 +13,8 @@ class AppConfig with _$AppConfig, IsarIdMixin {
 
   factory AppConfig({
     @Default(ThemeMode.system) @Enumerated(EnumType.name) ThemeMode themeMode,
+    @Default(true) bool enableSync,
+    @Default(true) bool enableFileSync,
   }) = _AppConfig;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>
