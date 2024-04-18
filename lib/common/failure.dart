@@ -27,7 +27,7 @@ const noInternetConnectionFailure = Failure(
   code: 'no_internet',
 );
 
-const notLoggedInFailure = Failure(
+const authFailure = Failure(
   message: 'Not logged in',
   code: 'not_logged_in',
 );

@@ -17,8 +17,6 @@ PODS:
     - ReachabilitySwift
   - device_info_plus (0.0.1):
     - FlutterMacOS
-  - flutter_web_auth_2 (3.0.0):
-    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - google_sign_in_ios (0.0.1):
     - Flutter
@@ -53,8 +51,6 @@ PODS:
     - FlutterMacOS
   - window_manager (0.2.0):
     - FlutterMacOS
-  - window_to_front (0.0.1):
-    - FlutterMacOS
 
 DEPENDENCIES:
   - app_links (from `Flutter/ephemeral/.symlinks/plugins/app_links/macos`)
@@ -62,7 +58,6 @@ DEPENDENCIES:
   - clipboard_watcher (from `Flutter/ephemeral/.symlinks/plugins/clipboard_watcher/macos`)
   - connectivity_plus (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin`)
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
-  - flutter_web_auth_2 (from `Flutter/ephemeral/.symlinks/plugins/flutter_web_auth_2/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - google_sign_in_ios (from `Flutter/ephemeral/.symlinks/plugins/google_sign_in_ios/darwin`)
   - irondash_engine_context (from `Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos`)
@@ -74,7 +69,6 @@ DEPENDENCIES:
   - super_native_extensions (from `Flutter/ephemeral/.symlinks/plugins/super_native_extensions/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
   - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
-  - window_to_front (from `Flutter/ephemeral/.symlinks/plugins/window_to_front/macos`)
 
 SPEC REPOS:
   trunk:
@@ -95,8 +89,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin
   device_info_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
-  flutter_web_auth_2:
-    :path: Flutter/ephemeral/.symlinks/plugins/flutter_web_auth_2/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   google_sign_in_ios:
@@ -119,8 +111,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
   window_manager:
     :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
-  window_to_front:
-    :path: Flutter/ephemeral/.symlinks/plugins/window_to_front/macos
 
 SPEC CHECKSUMS:
   app_links: 10e0a0ab602ffaf34d142cd4862f29d34b303b2a
@@ -129,7 +119,6 @@ SPEC CHECKSUMS:
   clipboard_watcher: a71da520051c24c1b969a411b3e152d4dcc93ca5
   connectivity_plus: e2dad488011aeb593e219360e804c43cc1af5770
   device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
-  flutter_web_auth_2: 2e1dc2d2139973e4723c5286ce247dd590390d70
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   google_sign_in_ios: 7c205d44fdc266640375c6ac33d96ba3983dbe02
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
@@ -145,7 +134,6 @@ SPEC CHECKSUMS:
   super_native_extensions: 85efee3a7495b46b04befcfc86ed12069264ebf3
   url_launcher_macos: d2691c7dd33ed713bf3544850a623080ec693d95
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
-  window_to_front: 4cdc24ddd8461ad1a55fa06286d6a79d8b29e8d8
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 

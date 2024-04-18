@@ -187,7 +187,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
         }
       }
     } catch (e) {
-      logger.warning("Couldn't delete file! $e");
+      logger.w("Couldn't delete file! $e");
     }
   }
 

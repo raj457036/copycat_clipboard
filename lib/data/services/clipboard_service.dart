@@ -219,7 +219,7 @@ class ClipboardFormatProcessor {
   Future<Clip?> _getPlainText(ClipboardDataReader reader) async {
     final text = await reader.readValue(Formats.plainText);
     if (text == null) {
-      logger.warning("Text is null");
+      logger.w("Text is null");
       return null;
     } else {
       // Sometimes macOS uses CR for line break;
@@ -232,7 +232,7 @@ class ClipboardFormatProcessor {
     final (fileName, binary) = await readFile(reader, Formats.plainTextFile);
 
     if (binary == null) {
-      logger.warning("Text file is null or empty.");
+      logger.w("Text file is null or empty.");
       return null;
     }
     final text = cleanText(utf8.decode(binary, allowMalformed: true));
@@ -272,7 +272,7 @@ class ClipboardFormatProcessor {
     );
 
     if (binary == null) {
-      logger.warning("Couldn't read content of image file with format $format");
+      logger.w("Couldn't read content of image file with format $format");
       return null;
     }
 
@@ -291,7 +291,10 @@ class ClipboardFormatProcessor {
       final image = img.decodeImage(binary);
       blurHash = BlurHash.encode(image!, numCompX: 4, numCompY: 3).hash;
     } catch (e) {
-      logger.shout("Couldn't get blur hash from the image!", e);
+      logger.e(
+        "Couldn't get blur hash from the image!",
+        error: e,
+      );
     }
 
     return Clip.imageFile(
@@ -312,14 +315,14 @@ class ClipboardFormatProcessor {
       final filePath = Uri.decodeFull(uri.path);
       file = File(filePath);
     } catch (e) {
-      logger.shout(e);
+      logger.e(e);
       return null;
     }
 
     // check if file exists
     final exists = await file.exists();
     if (!exists) {
-      logger.warning("Couldn't find file at $uri");
+      logger.w("Couldn't find file at $uri");
       return null;
     }
 
@@ -348,7 +351,7 @@ class ClipboardFormatProcessor {
     if (isSupported) {
       return Clip.uri(uri: uri.uri);
     } else {
-      logger.warning("Unsupported uri schema: $schema. Converting to text.");
+      logger.w("Unsupported uri schema: $schema. Converting to text.");
       return Clip.text(text: uri.uri.toString());
     }
   }
@@ -370,7 +373,7 @@ class ClipboardFormatProcessor {
       return await getUrl(reader, uri);
     }
 
-    logger.info("Uri couldn't be parsed, trying with text.");
+    logger.i("Uri couldn't be parsed, trying with text.");
 
     return await _getPlainText(reader);
   }
@@ -454,17 +457,17 @@ class ClipboardService with ClipboardListener {
   }
 
   Future<void> readClipboard() async {
-    logger.info("Reading clipboard");
+    logger.i("Reading clipboard");
     await Future.delayed(Durations.short4);
     final reader = await getReader();
 
     if (reader == null) {
-      logger.shout("Clipboard is not available!");
+      logger.e("Clipboard is not available!");
       return;
     }
 
     if (reader.items.isEmpty) {
-      logger.warning("No item in clipboard");
+      logger.w("No item in clipboard");
       return;
     }
 
@@ -514,7 +517,7 @@ class CopyToClipboard {
       await service.write([item]);
       return true;
     } catch (e) {
-      logger.shout(e);
+      logger.e(e);
       return false;
     }
   }
@@ -548,7 +551,7 @@ class CopyToClipboard {
     }
 
     if (format == null) {
-      logger.warning(
+      logger.w(
         "Couldn't determine mime type for file ${file.path} with mime type $mimeType",
       );
       return false;

@@ -18,28 +18,31 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$DriveSetupState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unknown,
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
     required TResult Function(String code, List<String> scopes) verifyingCode,
     required TResult Function() refreshingToken,
-    required TResult Function(String accessToken, DateTime expiry) setupDone,
+    required TResult Function(DriveAccessToken token) setupDone,
     required TResult Function(Failure failure) setupError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? unknown,
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
     TResult? Function(String code, List<String> scopes)? verifyingCode,
     TResult? Function()? refreshingToken,
-    TResult? Function(String accessToken, DateTime expiry)? setupDone,
+    TResult? Function(DriveAccessToken token)? setupDone,
     TResult? Function(Failure failure)? setupError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unknown,
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
     TResult Function(String code, List<String> scopes)? verifyingCode,
     TResult Function()? refreshingToken,
-    TResult Function(String accessToken, DateTime expiry)? setupDone,
+    TResult Function(DriveAccessToken token)? setupDone,
     TResult Function(Failure failure)? setupError,
     required TResult orElse(),
   }) =>
@@ -47,6 +50,7 @@ mixin _$DriveSetupState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
     required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
     required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
     required TResult Function(DriveSetupDone value) setupDone,
@@ -56,6 +60,7 @@ mixin _$DriveSetupState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
     TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult? Function(DriveSetupDone value)? setupDone,
@@ -65,6 +70,7 @@ mixin _$DriveSetupState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
     TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult Function(DriveSetupDone value)? setupDone,
@@ -97,6 +103,8 @@ abstract class _$$DriveSetupUnknownImplCopyWith<$Res> {
   factory _$$DriveSetupUnknownImplCopyWith(_$DriveSetupUnknownImpl value,
           $Res Function(_$DriveSetupUnknownImpl) then) =
       __$$DriveSetupUnknownImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool waiting});
 }
 
 /// @nodoc
@@ -106,63 +114,92 @@ class __$$DriveSetupUnknownImplCopyWithImpl<$Res>
   __$$DriveSetupUnknownImplCopyWithImpl(_$DriveSetupUnknownImpl _value,
       $Res Function(_$DriveSetupUnknownImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? waiting = null,
+  }) {
+    return _then(_$DriveSetupUnknownImpl(
+      waiting: null == waiting
+          ? _value.waiting
+          : waiting // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$DriveSetupUnknownImpl implements DriveSetupUnknown {
-  const _$DriveSetupUnknownImpl();
+  const _$DriveSetupUnknownImpl({this.waiting = false});
+
+  @override
+  @JsonKey()
+  final bool waiting;
 
   @override
   String toString() {
-    return 'DriveSetupState.unknown()';
+    return 'DriveSetupState.unknown(waiting: $waiting)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DriveSetupUnknownImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$DriveSetupUnknownImpl &&
+            (identical(other.waiting, waiting) || other.waiting == waiting));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, waiting);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DriveSetupUnknownImplCopyWith<_$DriveSetupUnknownImpl> get copyWith =>
+      __$$DriveSetupUnknownImplCopyWithImpl<_$DriveSetupUnknownImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unknown,
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
     required TResult Function(String code, List<String> scopes) verifyingCode,
     required TResult Function() refreshingToken,
-    required TResult Function(String accessToken, DateTime expiry) setupDone,
+    required TResult Function(DriveAccessToken token) setupDone,
     required TResult Function(Failure failure) setupError,
   }) {
-    return unknown();
+    return unknown(waiting);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? unknown,
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
     TResult? Function(String code, List<String> scopes)? verifyingCode,
     TResult? Function()? refreshingToken,
-    TResult? Function(String accessToken, DateTime expiry)? setupDone,
+    TResult? Function(DriveAccessToken token)? setupDone,
     TResult? Function(Failure failure)? setupError,
   }) {
-    return unknown?.call();
+    return unknown?.call(waiting);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unknown,
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
     TResult Function(String code, List<String> scopes)? verifyingCode,
     TResult Function()? refreshingToken,
-    TResult Function(String accessToken, DateTime expiry)? setupDone,
+    TResult Function(DriveAccessToken token)? setupDone,
     TResult Function(Failure failure)? setupError,
     required TResult orElse(),
   }) {
     if (unknown != null) {
-      return unknown();
+      return unknown(waiting);
     }
     return orElse();
   }
@@ -171,6 +208,7 @@ class _$DriveSetupUnknownImpl implements DriveSetupUnknown {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
     required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
     required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
     required TResult Function(DriveSetupDone value) setupDone,
@@ -183,6 +221,7 @@ class _$DriveSetupUnknownImpl implements DriveSetupUnknown {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
     TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult? Function(DriveSetupDone value)? setupDone,
@@ -195,6 +234,7 @@ class _$DriveSetupUnknownImpl implements DriveSetupUnknown {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
     TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult Function(DriveSetupDone value)? setupDone,
@@ -209,7 +249,139 @@ class _$DriveSetupUnknownImpl implements DriveSetupUnknown {
 }
 
 abstract class DriveSetupUnknown implements DriveSetupState {
-  const factory DriveSetupUnknown() = _$DriveSetupUnknownImpl;
+  const factory DriveSetupUnknown({final bool waiting}) =
+      _$DriveSetupUnknownImpl;
+
+  bool get waiting;
+  @JsonKey(ignore: true)
+  _$$DriveSetupUnknownImplCopyWith<_$DriveSetupUnknownImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DriveSetupFetchingImplCopyWith<$Res> {
+  factory _$$DriveSetupFetchingImplCopyWith(_$DriveSetupFetchingImpl value,
+          $Res Function(_$DriveSetupFetchingImpl) then) =
+      __$$DriveSetupFetchingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DriveSetupFetchingImplCopyWithImpl<$Res>
+    extends _$DriveSetupStateCopyWithImpl<$Res, _$DriveSetupFetchingImpl>
+    implements _$$DriveSetupFetchingImplCopyWith<$Res> {
+  __$$DriveSetupFetchingImplCopyWithImpl(_$DriveSetupFetchingImpl _value,
+      $Res Function(_$DriveSetupFetchingImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DriveSetupFetchingImpl implements DriveSetupFetching {
+  const _$DriveSetupFetchingImpl();
+
+  @override
+  String toString() {
+    return 'DriveSetupState.fetching()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$DriveSetupFetchingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
+    required TResult Function(String code, List<String> scopes) verifyingCode,
+    required TResult Function() refreshingToken,
+    required TResult Function(DriveAccessToken token) setupDone,
+    required TResult Function(Failure failure) setupError,
+  }) {
+    return fetching();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
+    TResult? Function(String code, List<String> scopes)? verifyingCode,
+    TResult? Function()? refreshingToken,
+    TResult? Function(DriveAccessToken token)? setupDone,
+    TResult? Function(Failure failure)? setupError,
+  }) {
+    return fetching?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
+    TResult Function(String code, List<String> scopes)? verifyingCode,
+    TResult Function()? refreshingToken,
+    TResult Function(DriveAccessToken token)? setupDone,
+    TResult Function(Failure failure)? setupError,
+    required TResult orElse(),
+  }) {
+    if (fetching != null) {
+      return fetching();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
+    required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
+    required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
+    required TResult Function(DriveSetupDone value) setupDone,
+    required TResult Function(DriveSetupError value) setupError,
+  }) {
+    return fetching(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
+    TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
+    TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
+    TResult? Function(DriveSetupDone value)? setupDone,
+    TResult? Function(DriveSetupError value)? setupError,
+  }) {
+    return fetching?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
+    TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
+    TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
+    TResult Function(DriveSetupDone value)? setupDone,
+    TResult Function(DriveSetupError value)? setupError,
+    required TResult orElse(),
+  }) {
+    if (fetching != null) {
+      return fetching(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DriveSetupFetching implements DriveSetupState {
+  const factory DriveSetupFetching() = _$DriveSetupFetchingImpl;
 }
 
 /// @nodoc
@@ -295,10 +467,11 @@ class _$DriveSetupVerifyingCodeImpl implements DriveSetupVerifyingCode {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unknown,
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
     required TResult Function(String code, List<String> scopes) verifyingCode,
     required TResult Function() refreshingToken,
-    required TResult Function(String accessToken, DateTime expiry) setupDone,
+    required TResult Function(DriveAccessToken token) setupDone,
     required TResult Function(Failure failure) setupError,
   }) {
     return verifyingCode(code, scopes);
@@ -307,10 +480,11 @@ class _$DriveSetupVerifyingCodeImpl implements DriveSetupVerifyingCode {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? unknown,
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
     TResult? Function(String code, List<String> scopes)? verifyingCode,
     TResult? Function()? refreshingToken,
-    TResult? Function(String accessToken, DateTime expiry)? setupDone,
+    TResult? Function(DriveAccessToken token)? setupDone,
     TResult? Function(Failure failure)? setupError,
   }) {
     return verifyingCode?.call(code, scopes);
@@ -319,10 +493,11 @@ class _$DriveSetupVerifyingCodeImpl implements DriveSetupVerifyingCode {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unknown,
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
     TResult Function(String code, List<String> scopes)? verifyingCode,
     TResult Function()? refreshingToken,
-    TResult Function(String accessToken, DateTime expiry)? setupDone,
+    TResult Function(DriveAccessToken token)? setupDone,
     TResult Function(Failure failure)? setupError,
     required TResult orElse(),
   }) {
@@ -336,6 +511,7 @@ class _$DriveSetupVerifyingCodeImpl implements DriveSetupVerifyingCode {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
     required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
     required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
     required TResult Function(DriveSetupDone value) setupDone,
@@ -348,6 +524,7 @@ class _$DriveSetupVerifyingCodeImpl implements DriveSetupVerifyingCode {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
     TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult? Function(DriveSetupDone value)? setupDone,
@@ -360,6 +537,7 @@ class _$DriveSetupVerifyingCodeImpl implements DriveSetupVerifyingCode {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
     TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult Function(DriveSetupDone value)? setupDone,
@@ -426,10 +604,11 @@ class _$DriveSetupRefreshingTokenImpl implements DriveSetupRefreshingToken {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unknown,
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
     required TResult Function(String code, List<String> scopes) verifyingCode,
     required TResult Function() refreshingToken,
-    required TResult Function(String accessToken, DateTime expiry) setupDone,
+    required TResult Function(DriveAccessToken token) setupDone,
     required TResult Function(Failure failure) setupError,
   }) {
     return refreshingToken();
@@ -438,10 +617,11 @@ class _$DriveSetupRefreshingTokenImpl implements DriveSetupRefreshingToken {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? unknown,
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
     TResult? Function(String code, List<String> scopes)? verifyingCode,
     TResult? Function()? refreshingToken,
-    TResult? Function(String accessToken, DateTime expiry)? setupDone,
+    TResult? Function(DriveAccessToken token)? setupDone,
     TResult? Function(Failure failure)? setupError,
   }) {
     return refreshingToken?.call();
@@ -450,10 +630,11 @@ class _$DriveSetupRefreshingTokenImpl implements DriveSetupRefreshingToken {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unknown,
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
     TResult Function(String code, List<String> scopes)? verifyingCode,
     TResult Function()? refreshingToken,
-    TResult Function(String accessToken, DateTime expiry)? setupDone,
+    TResult Function(DriveAccessToken token)? setupDone,
     TResult Function(Failure failure)? setupError,
     required TResult orElse(),
   }) {
@@ -467,6 +648,7 @@ class _$DriveSetupRefreshingTokenImpl implements DriveSetupRefreshingToken {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
     required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
     required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
     required TResult Function(DriveSetupDone value) setupDone,
@@ -479,6 +661,7 @@ class _$DriveSetupRefreshingTokenImpl implements DriveSetupRefreshingToken {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
     TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult? Function(DriveSetupDone value)? setupDone,
@@ -491,6 +674,7 @@ class _$DriveSetupRefreshingTokenImpl implements DriveSetupRefreshingToken {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
     TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult Function(DriveSetupDone value)? setupDone,
@@ -514,7 +698,9 @@ abstract class _$$DriveSetupDoneImplCopyWith<$Res> {
           $Res Function(_$DriveSetupDoneImpl) then) =
       __$$DriveSetupDoneImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String accessToken, DateTime expiry});
+  $Res call({DriveAccessToken token});
+
+  $DriveAccessTokenCopyWith<$Res> get token;
 }
 
 /// @nodoc
@@ -528,35 +714,36 @@ class __$$DriveSetupDoneImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accessToken = null,
-    Object? expiry = null,
+    Object? token = null,
   }) {
     return _then(_$DriveSetupDoneImpl(
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
-      expiry: null == expiry
-          ? _value.expiry
-          : expiry // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      token: null == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as DriveAccessToken,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DriveAccessTokenCopyWith<$Res> get token {
+    return $DriveAccessTokenCopyWith<$Res>(_value.token, (value) {
+      return _then(_value.copyWith(token: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$DriveSetupDoneImpl implements DriveSetupDone {
-  const _$DriveSetupDoneImpl({required this.accessToken, required this.expiry});
+  const _$DriveSetupDoneImpl({required this.token});
 
   @override
-  final String accessToken;
-  @override
-  final DateTime expiry;
+  final DriveAccessToken token;
 
   @override
   String toString() {
-    return 'DriveSetupState.setupDone(accessToken: $accessToken, expiry: $expiry)';
+    return 'DriveSetupState.setupDone(token: $token)';
   }
 
   @override
@@ -564,13 +751,11 @@ class _$DriveSetupDoneImpl implements DriveSetupDone {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DriveSetupDoneImpl &&
-            (identical(other.accessToken, accessToken) ||
-                other.accessToken == accessToken) &&
-            (identical(other.expiry, expiry) || other.expiry == expiry));
+            (identical(other.token, token) || other.token == token));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken, expiry);
+  int get hashCode => Object.hash(runtimeType, token);
 
   @JsonKey(ignore: true)
   @override
@@ -582,39 +767,42 @@ class _$DriveSetupDoneImpl implements DriveSetupDone {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unknown,
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
     required TResult Function(String code, List<String> scopes) verifyingCode,
     required TResult Function() refreshingToken,
-    required TResult Function(String accessToken, DateTime expiry) setupDone,
+    required TResult Function(DriveAccessToken token) setupDone,
     required TResult Function(Failure failure) setupError,
   }) {
-    return setupDone(accessToken, expiry);
+    return setupDone(token);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? unknown,
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
     TResult? Function(String code, List<String> scopes)? verifyingCode,
     TResult? Function()? refreshingToken,
-    TResult? Function(String accessToken, DateTime expiry)? setupDone,
+    TResult? Function(DriveAccessToken token)? setupDone,
     TResult? Function(Failure failure)? setupError,
   }) {
-    return setupDone?.call(accessToken, expiry);
+    return setupDone?.call(token);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unknown,
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
     TResult Function(String code, List<String> scopes)? verifyingCode,
     TResult Function()? refreshingToken,
-    TResult Function(String accessToken, DateTime expiry)? setupDone,
+    TResult Function(DriveAccessToken token)? setupDone,
     TResult Function(Failure failure)? setupError,
     required TResult orElse(),
   }) {
     if (setupDone != null) {
-      return setupDone(accessToken, expiry);
+      return setupDone(token);
     }
     return orElse();
   }
@@ -623,6 +811,7 @@ class _$DriveSetupDoneImpl implements DriveSetupDone {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
     required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
     required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
     required TResult Function(DriveSetupDone value) setupDone,
@@ -635,6 +824,7 @@ class _$DriveSetupDoneImpl implements DriveSetupDone {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
     TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult? Function(DriveSetupDone value)? setupDone,
@@ -647,6 +837,7 @@ class _$DriveSetupDoneImpl implements DriveSetupDone {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
     TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult Function(DriveSetupDone value)? setupDone,
@@ -661,12 +852,10 @@ class _$DriveSetupDoneImpl implements DriveSetupDone {
 }
 
 abstract class DriveSetupDone implements DriveSetupState {
-  const factory DriveSetupDone(
-      {required final String accessToken,
-      required final DateTime expiry}) = _$DriveSetupDoneImpl;
+  const factory DriveSetupDone({required final DriveAccessToken token}) =
+      _$DriveSetupDoneImpl;
 
-  String get accessToken;
-  DateTime get expiry;
+  DriveAccessToken get token;
   @JsonKey(ignore: true)
   _$$DriveSetupDoneImplCopyWith<_$DriveSetupDoneImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -737,10 +926,11 @@ class _$DriveSetupErrorImpl implements DriveSetupError {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unknown,
+    required TResult Function(bool waiting) unknown,
+    required TResult Function() fetching,
     required TResult Function(String code, List<String> scopes) verifyingCode,
     required TResult Function() refreshingToken,
-    required TResult Function(String accessToken, DateTime expiry) setupDone,
+    required TResult Function(DriveAccessToken token) setupDone,
     required TResult Function(Failure failure) setupError,
   }) {
     return setupError(failure);
@@ -749,10 +939,11 @@ class _$DriveSetupErrorImpl implements DriveSetupError {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? unknown,
+    TResult? Function(bool waiting)? unknown,
+    TResult? Function()? fetching,
     TResult? Function(String code, List<String> scopes)? verifyingCode,
     TResult? Function()? refreshingToken,
-    TResult? Function(String accessToken, DateTime expiry)? setupDone,
+    TResult? Function(DriveAccessToken token)? setupDone,
     TResult? Function(Failure failure)? setupError,
   }) {
     return setupError?.call(failure);
@@ -761,10 +952,11 @@ class _$DriveSetupErrorImpl implements DriveSetupError {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unknown,
+    TResult Function(bool waiting)? unknown,
+    TResult Function()? fetching,
     TResult Function(String code, List<String> scopes)? verifyingCode,
     TResult Function()? refreshingToken,
-    TResult Function(String accessToken, DateTime expiry)? setupDone,
+    TResult Function(DriveAccessToken token)? setupDone,
     TResult Function(Failure failure)? setupError,
     required TResult orElse(),
   }) {
@@ -778,6 +970,7 @@ class _$DriveSetupErrorImpl implements DriveSetupError {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DriveSetupUnknown value) unknown,
+    required TResult Function(DriveSetupFetching value) fetching,
     required TResult Function(DriveSetupVerifyingCode value) verifyingCode,
     required TResult Function(DriveSetupRefreshingToken value) refreshingToken,
     required TResult Function(DriveSetupDone value) setupDone,
@@ -790,6 +983,7 @@ class _$DriveSetupErrorImpl implements DriveSetupError {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DriveSetupUnknown value)? unknown,
+    TResult? Function(DriveSetupFetching value)? fetching,
     TResult? Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult? Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult? Function(DriveSetupDone value)? setupDone,
@@ -802,6 +996,7 @@ class _$DriveSetupErrorImpl implements DriveSetupError {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DriveSetupUnknown value)? unknown,
+    TResult Function(DriveSetupFetching value)? fetching,
     TResult Function(DriveSetupVerifyingCode value)? verifyingCode,
     TResult Function(DriveSetupRefreshingToken value)? refreshingToken,
     TResult Function(DriveSetupDone value)? setupDone,

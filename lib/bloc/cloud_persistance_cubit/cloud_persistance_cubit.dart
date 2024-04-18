@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
-import 'package:clipboard/data/services/google_drive_connect.dart';
 import 'package:clipboard/data/services/google_services.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
@@ -21,14 +20,12 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   final AuthCubit auth;
   final ClipboardRepository repo;
   final DriveService drive;
-  final GoogleDriveConnect driveConnect;
 
   bool active = true;
 
   CloudPersistanceCubit(
     this.network,
     this.auth,
-    this.driveConnect,
     @Named("cloud") this.repo,
     @Named("google_drive") this.drive,
   ) : super(const CloudPersistanceState.initial());
@@ -89,8 +86,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     if (session == null) {
       emit(
         CloudPersistanceState.error(
-          notLoggedInFailure,
-          item.syncDone(notLoggedInFailure),
+          authFailure,
+          item.syncDone(authFailure),
         ),
       );
       return;
@@ -118,8 +115,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
     if (session == null) {
       emit(CloudPersistanceState.error(
-        notLoggedInFailure,
-        item.syncDone(notLoggedInFailure),
+        authFailure,
+        item.syncDone(authFailure),
       ));
       return;
     }
@@ -130,9 +127,5 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     final updatedItem =
         await drive.download(item.assignUserId(session.user.id));
     await persist(updatedItem);
-  }
-
-  Future<void> connectDrive() async {
-    await driveConnect.launchConsentPage();
   }
 }

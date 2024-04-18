@@ -1,3 +1,4 @@
+import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
 import "package:clipboard/pages/drive_setup/page.dart";
@@ -8,6 +9,7 @@ import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/search/page.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
 
 const rootLocation = "/";
@@ -37,10 +39,9 @@ final router = GoRouter(
       builder: (context, state) {
         final code = state.pathParameters["code"]!;
         final scopes = state.uri.queryParameters["scopes"]!.split(" ");
+        context.read<DriveSetupCubit>().verifyAuthCodeAndSetup(code, scopes);
         return DriveSetupPage(
           key: state.pageKey,
-          code: code,
-          scopes: scopes,
         );
       },
     ),
