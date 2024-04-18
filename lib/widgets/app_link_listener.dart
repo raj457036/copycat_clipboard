@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppLinkListener extends StatefulWidget {
@@ -29,6 +31,7 @@ class _AppLinkListenerState extends State<AppLinkListener> {
     if (uri.pathSegments.contains("drive_connect")) {
       final code = uri.queryParameters["code"];
       final scope = uri.queryParameters["scope"] ?? "";
+      final error = uri.queryParameters["error"];
       if (code != null) {
         rootNavKey.currentContext?.pushNamed(
           RouteConstants.driveConnect,
@@ -39,6 +42,10 @@ class _AppLinkListenerState extends State<AppLinkListener> {
             "scopes": scope,
           },
         );
+      }
+
+      if (error != null) {
+        context.read<DriveSetupCubit>().setupError(error);
       }
     }
   }

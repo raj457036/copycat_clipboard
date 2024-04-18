@@ -3,11 +3,13 @@ import 'package:clipboard/utils/color_extension.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
-class IssueCard extends StatelessWidget {
+class InfoCard extends StatelessWidget {
   final Color? color;
+  final String? title;
   final String description;
 
-  const IssueCard({super.key, this.color, required this.description});
+  const InfoCard(
+      {super.key, this.title, this.color, required this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class IssueCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "⚠ Attention Needed!",
+              title ?? "⚠ Attention Needed!",
               style: textTheme.titleMedium,
             ),
             height12,
