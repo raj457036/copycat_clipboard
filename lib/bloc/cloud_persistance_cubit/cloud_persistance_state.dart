@@ -7,6 +7,10 @@ class CloudPersistanceState with _$CloudPersistanceState {
       CloudPersistanceCreating;
   const factory CloudPersistanceState.updatingItem(ClipboardItem item) =
       CloudPersistanceUpdating;
+  const factory CloudPersistanceState.deletingItem(ClipboardItem item) =
+      CloudPersistanceDeleting;
+  const factory CloudPersistanceState.deletedItem(ClipboardItem item) =
+      CloudPersistanceDeleted;
   const factory CloudPersistanceState.uploadingFile(ClipboardItem item) =
       CloudPersistanceUploadingFile;
   const factory CloudPersistanceState.downloadingFile(ClipboardItem item) =

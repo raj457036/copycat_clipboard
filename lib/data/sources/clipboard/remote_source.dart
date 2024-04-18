@@ -2,6 +2,7 @@ import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/network_status.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -26,7 +27,7 @@ class RemoteClipboardSource implements ClipboardSource {
     final docs = await db.from(table).insert(item.toJson()).select();
 
     final createdItem = item.copyWith(
-      lastSynced: DateTime.now().toUtc(),
+      lastSynced: nowUTC(),
       serverId: docs.first['id'],
     )..applyId(item);
 
@@ -64,7 +65,7 @@ class RemoteClipboardSource implements ClipboardSource {
 
     await db.from(table).update(item.toJson()).eq("id", item.serverId!);
     final updatedItem = item.copyWith(
-      lastSynced: DateTime.now().toUtc(),
+      lastSynced: nowUTC(),
     )..applyId(item);
     return updatedItem;
   }

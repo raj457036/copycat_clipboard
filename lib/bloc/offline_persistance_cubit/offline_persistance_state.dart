@@ -7,6 +7,10 @@ sealed class OfflinePersistanceState with _$OfflinePersistanceState {
       OfflinePersistanceCreating;
   const factory OfflinePersistanceState.updatingItem(ClipboardItem item) =
       OfflinePersistanceUpdating;
+  const factory OfflinePersistanceState.deletingItem(ClipboardItem item) =
+      OfflinePersistanceDeleting;
+  const factory OfflinePersistanceState.deletedItem(ClipboardItem item) =
+      OfflinePersistanceDeleted;
   const factory OfflinePersistanceState.saved(
     ClipboardItem item, {
     @Default(false) bool created,

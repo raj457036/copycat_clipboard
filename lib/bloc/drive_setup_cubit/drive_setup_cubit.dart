@@ -9,11 +9,23 @@ import 'package:injectable/injectable.dart';
 part 'drive_setup_cubit.freezed.dart';
 part 'drive_setup_state.dart';
 
-@injectable
+@lazySingleton
 class DriveSetupCubit extends Cubit<DriveSetupState> {
   final DriveCredentialRepository repo;
 
   DriveSetupCubit(this.repo) : super(const DriveSetupState.unknown());
+
+  Future<String?> get accessToken async {
+    var token = state.whenOrNull(setupDone: (token) => token);
+    if (token == null) {
+      return null;
+    }
+
+    if (token.isExpired) {
+      token = await refreshAccess();
+    }
+    return token?.accessToken;
+  }
 
   Future<void> fetch() async {
     emit(const DriveSetupState.fetching());
@@ -56,13 +68,19 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
     ));
   }
 
-  Future<void> refreshAccess() async {
+  Future<DriveAccessToken?> refreshAccess() async {
     emit(const DriveSetupState.refreshingToken());
     final result = await repo.refreshAccessToken();
-    emit(result.fold(
-      (l) => DriveSetupState.setupError(failure: l),
-      (r) => DriveSetupState.setupDone(token: r),
-    ));
+    return result.fold(
+      (l) {
+        emit(DriveSetupState.setupError(failure: l));
+        return null;
+      },
+      (r) {
+        emit(DriveSetupState.setupDone(token: r));
+        return r;
+      },
+    );
   }
 
   void setupError(String code) async {

@@ -3,6 +3,7 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 
@@ -28,7 +29,7 @@ class LocalClipboardSource implements ClipboardSource {
     var results = await db.txn(() async => await db.clipboardItems
         .filter()
         .deletedAtIsNull()
-        .sortByModifiedDesc()
+        .sortByCreatedDesc()
         .offset(offset)
         .limit(limit)
         .findAll());
@@ -42,7 +43,7 @@ class LocalClipboardSource implements ClipboardSource {
   @override
   Future<ClipboardItem> update(ClipboardItem item) async {
     final updated = item.copyWith(
-      modified: DateTime.now().toUtc(),
+      modified: nowUTC(),
     );
     updated.id = item.id;
     await db.writeTxn(

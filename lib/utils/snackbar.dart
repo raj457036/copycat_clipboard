@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
-    SnackBar snackBar) {
+    SnackBar snackBar,
+    {bool closePrevious = false}) {
+  if (closePrevious) {
+    scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
+  }
   return scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 }
 
@@ -46,6 +50,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   String text, {
   bool isLoading = false,
   bool success = false,
+  bool closePrevious = false,
 }) {
   final context = scaffoldMessengerKey.currentContext!;
   final mq = MediaQuery.of(context);
@@ -68,8 +73,10 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
       showCloseIcon: !isMobile && !isLoading,
       behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
       width: isMobile ? null : 480,
-      duration: const Duration(seconds: 2),
+      duration:
+          isLoading ? const Duration(seconds: 30) : const Duration(seconds: 2),
     ),
+    closePrevious: closePrevious,
   );
 }
 

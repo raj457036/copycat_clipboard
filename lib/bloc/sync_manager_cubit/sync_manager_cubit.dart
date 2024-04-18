@@ -7,6 +7,7 @@ import 'package:clipboard/data/repositories/sync_clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/db/sync_status/syncstatus.dart';
 import 'package:clipboard/utils/network_status.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -67,13 +68,12 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
               .serverIdEqualTo(item.serverId)
               .findFirst());
           if (result == null) {
-            items[i] = item.copyWith(lastSynced: DateTime.now().toUtc());
+            items[i] = item.copyWith(lastSynced: nowUTC());
           } else {
             items[i] = item.copyWith(
               lastSynced: result.lastSynced,
               localPath: result.localPath,
-            );
-            items[i].id = result.id;
+            )..applyId(result);
           }
         }
 
@@ -91,7 +91,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
   Future<void> updateSyncTime({bool refreshLocalCache = false}) async {
     final lastSync0 = await getSyncInfo();
-    final syncTime = DateTime.now().toUtc();
+    final syncTime = nowUTC();
     final updatedSyncStatus =
         (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
     updatedSyncStatus.id = _syncId;
