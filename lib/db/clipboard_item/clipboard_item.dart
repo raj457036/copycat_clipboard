@@ -5,6 +5,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/enums/platform_os.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 import 'package:path/path.dart' as p;
@@ -86,8 +87,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     return ClipboardItem(
       text: text,
       userId: userId ?? kLocalUserId,
-      created: DateTime.now().toUtc(),
-      modified: DateTime.now().toUtc(),
+      created: nowUTC(),
+      modified: nowUTC(),
       type: ClipItemType.text,
       os: currentPlatformOS(),
       sourceUrl: sourceUrl,
@@ -107,8 +108,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String? sourceApp,
   }) {
     return ClipboardItem(
-      created: DateTime.now().toUtc(),
-      modified: DateTime.now().toUtc(),
+      created: nowUTC(),
+      modified: nowUTC(),
       type: ClipItemType.media,
       localPath: filePath,
       userId: userId ?? kLocalUserId,
@@ -138,8 +139,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
     return ClipboardItem(
       text: preview,
-      created: DateTime.now().toUtc(),
-      modified: DateTime.now().toUtc(),
+      created: nowUTC(),
+      modified: nowUTC(),
       title: fileName ?? basename,
       type: ClipItemType.file,
       localPath: filePath,
@@ -164,8 +165,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   }) {
     return ClipboardItem(
       url: uri.toString(),
-      created: DateTime.now().toUtc(),
-      modified: DateTime.now().toUtc(),
+      created: nowUTC(),
+      modified: nowUTC(),
       title: title,
       description: description,
       type: ClipItemType.url,

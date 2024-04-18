@@ -45,7 +45,7 @@ class MediaPreview extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: getPreview(),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
               ),
               child: item.needDownload

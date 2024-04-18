@@ -119,7 +119,7 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i15.SyncClipboardRepository>(),
           gh<_i6.NetworkStatus>(),
         ));
-    gh.factory<_i21.DriveSetupCubit>(
+    gh.lazySingleton<_i21.DriveSetupCubit>(
         () => _i21.DriveSetupCubit(gh<_i19.DriveCredentialRepository>()));
     gh.lazySingleton<_i22.OfflinePersistanceCubit>(
         () => _i22.OfflinePersistanceCubit(
@@ -127,12 +127,14 @@ extension GetItInjectableX on _i1.GetIt {
               gh<_i13.ClipboardRepository>(instanceName: 'offline'),
               gh<_i3.ClipboardService>(),
             ));
-    gh.factory<_i23.CloudPersistanceCubit>(() => _i23.CloudPersistanceCubit(
-          gh<_i6.NetworkStatus>(),
-          gh<_i16.AuthCubit>(),
-          gh<_i13.ClipboardRepository>(instanceName: 'cloud'),
-          gh<_i7.DriveService>(instanceName: 'google_drive'),
-        ));
+    gh.lazySingleton<_i23.CloudPersistanceCubit>(
+        () => _i23.CloudPersistanceCubit(
+              gh<_i6.NetworkStatus>(),
+              gh<_i16.AuthCubit>(),
+              gh<_i21.DriveSetupCubit>(),
+              gh<_i13.ClipboardRepository>(instanceName: 'cloud'),
+              gh<_i7.DriveService>(instanceName: 'google_drive'),
+            ));
     return this;
   }
 }

@@ -32,4 +32,9 @@ const authFailure = Failure(
   code: 'not_logged_in',
 );
 
+const driveFailure = Failure(
+  message: 'Google Drive is not available.',
+  code: 'gdrive_not_available',
+);
+
 typedef FailureOr<T> = Future<Either<Failure, T>>;

@@ -81,7 +81,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       persist(
         item.copyWith(
           copiedCount: item.copiedCount + 1,
-          lastCopied: DateTime.now().toUtc(),
+          lastCopied: nowUTC(),
         )..applyId(item),
       );
     }
@@ -174,6 +174,14 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
         ),
       );
     }
+  }
+
+  Future<void> delete(ClipboardItem item) async {
+    if (item.isSynced) return;
+    emit(OfflinePersistanceState.deletingItem(item));
+    await item.cleanUp();
+    await repo.delete(item);
+    emit(OfflinePersistanceState.deletedItem(item));
   }
 
   @override

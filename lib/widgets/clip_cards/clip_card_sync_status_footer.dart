@@ -51,7 +51,9 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                           context.read<CloudPersistanceCubit>().persist(item);
                         },
                   child: Text(
-                    item.isSyncing ? "Syncing" : "Sync Now",
+                    item.isSyncing
+                        ? "Syncing (${((item.uploadProgress ?? 0) * 100) ~/ 1}%)"
+                        : "Sync Now",
                     style: context.textTheme.labelMedium
                         ?.copyWith(color: colors.tertiary),
                   ),

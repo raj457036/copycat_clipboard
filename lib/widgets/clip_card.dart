@@ -1,4 +1,4 @@
-import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
@@ -37,7 +37,7 @@ class ClipCard extends StatelessWidget {
     if (!confirmation) return;
 
     // ignore: use_build_context_synchronously
-    await context.read<ClipboardCubit>().deleteItem(item);
+    await context.read<CloudPersistanceCubit>().delete(item);
   }
 
   Future<void> launchUrl() async {

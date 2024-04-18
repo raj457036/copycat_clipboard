@@ -96,7 +96,7 @@ class DriveCredentialRepositoryImpl implements DriveCredentialRepository {
         "get_gaccess_token",
         method: HttpMethod.get,
       );
-      return Right(DriveAccessToken.fromJson(result.data));
+      return Right(DriveAccessToken.fromJson(jsonDecode(result.data)));
     } catch (e) {
       return Left(Failure.fromException(e));
     }

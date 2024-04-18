@@ -36,6 +36,10 @@ class EventBridge extends StatelessWidget {
               case OfflinePersistanceUpdating():
                 // showTextSnackbar("Updating Clip...");
                 break;
+              case OfflinePersistanceDeleted(:final item):
+                context.read<ClipboardCubit>().deleteItem(item);
+                showTextSnackbar("Item Deleted", closePrevious: true);
+                break;
               case OfflinePersistanceSaved(
                   :final item,
                   :final created,
@@ -56,6 +60,9 @@ class EventBridge extends StatelessWidget {
         BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
           listener: (context, state) {
             switch (state) {
+              case CloudPersistanceUploadingFile(:final item):
+                context.read<ClipboardCubit>().put(item);
+                break;
               case CloudPersistanceCreating(:final item) ||
                     CloudPersistanceUpdating(:final item):
                 context.read<ClipboardCubit>().put(item);
@@ -67,6 +74,17 @@ class EventBridge extends StatelessWidget {
                 context
                     .read<SyncManagerCubit>()
                     .updateSyncTime(refreshLocalCache: false);
+                break;
+              case CloudPersistanceDeleting(:final item):
+                context.read<ClipboardCubit>().put(item);
+                showTextSnackbar(
+                  "Deleting from cloud",
+                  isLoading: true,
+                  closePrevious: true,
+                );
+                break;
+              case CloudPersistanceDeleted(:final item):
+                context.read<OfflinePersistanceCubit>().delete(item);
                 break;
               case CloudPersistanceError(:final item, :final failure):
                 // showToastMessage(

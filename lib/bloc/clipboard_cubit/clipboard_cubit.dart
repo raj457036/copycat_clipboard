@@ -41,7 +41,12 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
 
   Future<void> fetch({bool fromTop = false}) async {
     await fixDatabase();
-    emit(state.copyWith(loading: true));
+    emit(
+      state.copyWith(
+        loading: true,
+        offset: fromTop ? 0 : state.offset,
+      ),
+    );
 
     final items = await repo.getList(
       limit: state.limit,
@@ -65,11 +70,11 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
     );
   }
 
-  Future<Failure?> deleteItem(ClipboardItem item) async {
-    emit(state.copyWith(items: state.items.where((it) => it != item).toList()));
-    await item.cleanUp();
-
-    final result = await repo.delete(item);
-    return result.fold((l) => l, (r) => null);
+  Future<void> deleteItem(ClipboardItem item) async {
+    emit(
+      state.copyWith(
+        items: state.items.where((it) => it.id != item.id).toList(),
+      ),
+    );
   }
 }

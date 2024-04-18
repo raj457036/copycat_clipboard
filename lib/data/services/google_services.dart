@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert' show jsonDecode;
 import 'dart:io' as io;
 
 import 'package:clipboard/common/logging.dart';
@@ -16,8 +15,14 @@ import 'package:rxdart/rxdart.dart';
 abstract class DriveService {
   String? accessToken;
 
-  Future<ClipboardItem> upload(ClipboardItem item);
-  Future<ClipboardItem> download(ClipboardItem item);
+  Future<ClipboardItem> upload(
+    ClipboardItem item, {
+    void Function(int, int)? onProgress,
+  });
+  Future<ClipboardItem> download(
+    ClipboardItem item, {
+    void Function(int, int)? onProgress,
+  });
   Future<void> delete(ClipboardItem item);
 }
 
@@ -25,6 +30,7 @@ class GoogleAuthClient with http.BaseClient {
   final String accessToken;
   BehaviorSubject<(int, int)>? progress;
   int? contentLength;
+  http.Client? _client;
 
   GoogleAuthClient(this.accessToken);
 
@@ -43,44 +49,41 @@ class GoogleAuthClient with http.BaseClient {
   @override
   void close() {
     unsetProgressListener();
+    _client?.close();
     super.close();
   }
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     request.headers["Authorization"] = "Bearer $accessToken";
-    final client = http.Client();
-    try {
-      int currentBytes = 0;
-      final response = await client.send(request);
-      final totalBytes = contentLength ??
-          int.tryParse(response.headers['content-length'] ?? '-') ??
-          1;
+    _client ??= http.Client();
+    int currentBytes = 0;
+    final response = await _client!.send(request);
+    final totalBytes = contentLength ??
+        int.tryParse(response.headers['content-length'] ?? '-') ??
+        1;
 
-      final stream = response.stream.map((chunk) {
-        currentBytes += chunk.length;
-        progress?.add((currentBytes, totalBytes));
+    final stream = response.stream.map((chunk) {
+      currentBytes += chunk.length;
+      progress?.add((currentBytes, totalBytes));
 
-        logger.i(
-          'Uploaded: $currentBytes / $totalBytes bytes',
-        );
-        return chunk;
-      });
-      final newResponse = http.StreamedResponse(
-        stream,
-        response.statusCode,
-        contentLength: response.contentLength,
-        request: response.request,
-        headers: response.headers,
-        isRedirect: response.isRedirect,
-        persistentConnection: response.persistentConnection,
-        reasonPhrase: response.reasonPhrase,
+      logger.i(
+        'Uploaded: $currentBytes / $totalBytes bytes',
       );
+      return chunk;
+    });
+    final newResponse = http.StreamedResponse(
+      stream,
+      response.statusCode,
+      contentLength: response.contentLength,
+      request: response.request,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      persistentConnection: response.persistentConnection,
+      reasonPhrase: response.reasonPhrase,
+    );
 
-      return newResponse;
-    } finally {
-      client.close();
-    }
+    return newResponse;
   }
 }
 
@@ -117,10 +120,19 @@ class GoogleDriveService implements DriveService {
   DriveApi getDrive([http.Client? client]) => DriveApi(client ?? authClient);
 
   @override
-  Future<ClipboardItem> download(ClipboardItem item) async {
+  Future<ClipboardItem> download(
+    ClipboardItem item, {
+    void Function(int, int)? onProgress,
+  }) async {
     if (item.driveFileId == null || item.rootDir == null) return item;
 
     final client = authClient;
+
+    if (onProgress != null) {
+      client
+          .setProgressListener()
+          .listen((value) => onProgress(value.$1, value.$2));
+    }
 
     try {
       final drive = getDrive(client);
@@ -139,19 +151,29 @@ class GoogleDriveService implements DriveService {
 
       await file.addStream(media.stream);
       return item.copyWith(localPath: filePath)..applyId(item);
+    } catch (e) {
+      logger.e(e, error: e);
+      return item;
     } finally {
       client.close();
     }
   }
 
   @override
-  Future<ClipboardItem> upload(ClipboardItem item) async {
+  Future<ClipboardItem> upload(
+    ClipboardItem item, {
+    void Function(int, int)? onProgress,
+  }) async {
     final client = authClient;
     try {
       final io.File file = io.File(item.localPath!);
       final length = await file.length();
 
-      client.setProgressListener(contentLength: length);
+      if (onProgress != null) {
+        client
+            .setProgressListener(contentLength: length)
+            .listen((value) => onProgress(value.$1, value.$2));
+      }
 
       final drive = getDrive(client);
       final gfile = File()
@@ -169,10 +191,13 @@ class GoogleDriveService implements DriveService {
         driveFileId: result.id,
       )..applyId(item);
       logger.i("File uploaded successfully!");
+      return item;
+    } catch (e) {
+      logger.e(e, error: e);
+      return item;
     } finally {
       client.close();
     }
-    return item;
   }
 
   @override
@@ -180,36 +205,13 @@ class GoogleDriveService implements DriveService {
 
   @override
   Future<void> delete(ClipboardItem item) async {
-    final drive = getDrive();
-    if (item.driveFileId == null) return;
-    await drive.files.delete(item.driveFileId!);
-  }
-
-  Future<void> connect() async {
-// Construct an Uri to Google's oauth2 endpoint
-    final url2 = Uri.https('www.googleapis.com', 'oauth2/v4/token');
-
-// Use this code to get an access token
-    final response = await http.post(url2, body: {
-      'client_id':
-          "892296995692-18bkkorqb2g2suf8sb1l45s71gutto59.apps.googleusercontent.com",
-      'client_secret': "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",
-      'redirect_uri': 'https://clipboard-419514.web.app',
-      'grant_type': 'authorization_code',
-      'code': "code",
-    });
-
-// Get the access token from the response
-    print(jsonDecode(response.body));
-    /**
-     * EXAMPLE
-     * {
-     * access_token: ya29.a0Ad52N39hDea9LWlWvKrDmckhah7v99Fb_dRH9aC5_eVeGOFNQaw5E5c9MEy3iGbm_AnPa7fFvxHa3XYVk1gd7tQIYgoaYebuEA4G5q2OTPwumjWPGEpsUCsD2vrTmYY45CrULF6d887-kn51ogPfQccPKoFPb4CwKf2raCgYKARsSARESFQHGX2MiVOKLLrUk0uPHZKX8KEffOw0171, 
-     * expires_in: 3599, 
-     * refresh_token: 1//0g1sr9BvaLN1tCgYIARAAGBASNwF-L9Ir6EqfF0lF4lDWPTNn_LNvv0UE4PRwpahu7qicpoyCcrEtxM5alNIF-9bHNGSOjRAG2FY, 
-     * scope: https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file, 
-     * token_type: Bearer
-     * }
-     */
+    final client = authClient;
+    try {
+      final drive = getDrive();
+      if (item.driveFileId == null) return;
+      await drive.files.delete(item.driveFileId!);
+    } finally {
+      client.close();
+    }
   }
 }
