@@ -22,7 +22,7 @@ dependencies:
   json_annotation: ^4.8.1
   get_it: ^7.6.8
   go_router: ^13.2.2
-  logging: ^1.2.0
+  logger: ^2.2.0
   dartz: ^0.10.1
   form_validator: ^2.1.1
   google_fonts: ^6.2.1
@@ -50,7 +50,6 @@ dependencies:
   app_links: ^4.0.1
   device_preview: ^1.1.0
   toastification: ^1.2.1
-  flutter_web_auth_2: ^3.1.1
 
 dev_dependencies:
   flutter_test:

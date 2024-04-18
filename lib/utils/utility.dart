@@ -58,9 +58,9 @@ Future<void> deleteTempFile(File file) async {
   try {
     await file.delete();
   } catch (e) {
-    logger.shout(
+    logger.e(
       "Couldn't delete file from temp storage.",
-      e,
+      error: e,
     );
   }
 }

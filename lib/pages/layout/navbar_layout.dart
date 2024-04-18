@@ -132,7 +132,7 @@ class _NavBarPageState extends State<NavBarPage> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        logger.info("DID POP: $didPop");
+        logger.i("DID POP: $didPop");
       },
       child: child,
     );

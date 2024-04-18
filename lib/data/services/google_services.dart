@@ -61,7 +61,7 @@ class GoogleAuthClient with http.BaseClient {
         currentBytes += chunk.length;
         progress?.add((currentBytes, totalBytes));
 
-        logger.info(
+        logger.i(
           'Uploaded: $currentBytes / $totalBytes bytes',
         );
         return chunk;
@@ -168,7 +168,7 @@ class GoogleDriveService implements DriveService {
       item = item.copyWith(
         driveFileId: result.id,
       )..applyId(item);
-      logger.info("File uploaded successfully!");
+      logger.i("File uploaded successfully!");
     } finally {
       client.close();
     }
