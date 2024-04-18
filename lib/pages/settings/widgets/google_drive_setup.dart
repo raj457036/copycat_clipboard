@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/pages/settings/widgets/issue_card.dart';
+import 'package:clipboard/pages/settings/widgets/info_card.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,52 +14,57 @@ class GoogleDriveSetup extends StatelessWidget {
     final textTheme = context.textTheme;
     return BlocBuilder<DriveSetupCubit, DriveSetupState>(
       builder: (context, state) {
+        String text = "Connected";
+        bool noClick = false;
+        bool hasError = false;
         switch (state) {
           case DriveSetupUnknown(:final waiting):
-            return ListTile(
-              title: const Text("Google Drive Connection Status"),
-              subtitle: Text(waiting ? "Authorizing..." : "Fetching status..."),
-              trailing: const CircularProgressIndicator(),
-            );
+            text = waiting ? "Authorizing..." : "Loading...";
+            noClick = true;
           case DriveSetupDone():
-            return ListTile(
-              title: const Text("Google Drive Connection Status"),
-              subtitle: const Text("rs457036@gmail.com"),
-              trailing: Text(
-                "Connected",
-                style: textTheme.titleMedium?.copyWith(
-                  color: Colors.green,
-                ),
-              ),
-            );
+            text = "Connected";
+            noClick = true;
+            break;
           case DriveSetupError():
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: padding16),
-                  child: IssueCard(
-                    color: Colors.deepOrange,
-                    description:
-                        "Google Drive not connected, File and media syncing is disabled.\n\n"
-                        "Note: Your files and media are synced securely across "
-                        "devices using Google Drive to protect your privacy.",
-                  ),
-                ),
-                ListTile(
-                  title: const Text("Google Drive Connection Status"),
-                  trailing: ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<DriveSetupCubit>().startSetup();
-                    },
-                    icon: const Icon(Icons.add_to_drive_rounded),
-                    label: const Text("Connect Now"),
-                  ),
-                )
-              ],
-            );
+            text = "Connect Now";
+            noClick = false;
+            hasError = true;
+            break;
         }
-        return const SizedBox.shrink();
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: padding16),
+              child: InfoCard(
+                title: hasError ? null : "ⓘ Tips",
+                color: hasError ? Colors.deepOrange : Colors.green,
+                description:
+                    "${hasError ? "Google Drive not connected, File and media syncing is disabled.\n\n" : ""}"
+                    "Your files and media are synced securely across "
+                    "devices using Google Drive to protect your privacy.",
+              ),
+            ),
+            ListTile(
+              title: const Text("Google Drive"),
+              trailing: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(165, 40),
+                ),
+                onPressed: noClick
+                    ? null
+                    : () {
+                        context.read<DriveSetupCubit>().startSetup();
+                      },
+                icon: Image.asset(
+                  AssetConstants.googleDriveLogo,
+                  height: 20,
+                ),
+                label: Text(text),
+              ),
+            )
+          ],
+        );
       },
     );
   }
