@@ -63,14 +63,13 @@ class GoogleAuthClient with http.BaseClient {
         int.tryParse(response.headers['content-length'] ?? '-') ??
         1;
 
-    final stream = response.stream.map((chunk) {
+    final stream = response.stream.doOnData((chunk) {
       currentBytes += chunk.length;
       progress?.add((currentBytes, totalBytes));
 
       logger.i(
         'Uploaded: $currentBytes / $totalBytes bytes',
       );
-      return chunk;
     });
     final newResponse = http.StreamedResponse(
       stream,
@@ -176,6 +175,7 @@ class GoogleDriveService implements DriveService {
       }
 
       final drive = getDrive(client);
+
       final gfile = File()
         ..name = p.basename(file.path)
         ..mimeType = item.fileMimeType
@@ -210,6 +210,8 @@ class GoogleDriveService implements DriveService {
       final drive = getDrive();
       if (item.driveFileId == null) return;
       await drive.files.delete(item.driveFileId!);
+    } catch (e) {
+      logger.e(e, error: e);
     } finally {
       client.close();
     }
