@@ -1,6 +1,8 @@
 import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
+import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
+import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/drive_setup/page.dart";
 import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
@@ -75,7 +77,10 @@ final router = GoRouter(
           path: '/search',
           pageBuilder: (context, state) => NoTransitionPage(
             key: state.pageKey,
-            child: const SearchPage(),
+            child: BlocProvider<SearchCubit>(
+              create: (context) => sl(),
+              child: const SearchPage(),
+            ),
           ),
         ),
         GoRoute(

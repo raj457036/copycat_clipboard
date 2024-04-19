@@ -11,6 +11,7 @@ abstract class ClipboardRepository {
   FailureOr<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
   });
 
   FailureOr<ClipboardItem> update(ClipboardItem item);
@@ -43,6 +44,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   FailureOr<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
   }) async {
     try {
       final result = await remote.getList(limit: limit, offset: offset);
@@ -103,9 +105,11 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
   FailureOr<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
   }) async {
     try {
-      final result = await local.getList(limit: limit, offset: offset);
+      final result =
+          await local.getList(limit: limit, offset: offset, search: search);
 
       return Right(result);
     } catch (e) {

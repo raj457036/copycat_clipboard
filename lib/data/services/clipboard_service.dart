@@ -60,6 +60,7 @@ class Clip {
   final int? fileSize;
   final String? text;
   final Uri? uri;
+  final TextCategory? textCategory;
 
   Clip({
     required this.type,
@@ -70,6 +71,7 @@ class Clip {
     required this.fileMimeType,
     required this.fileExtension,
     required this.fileSize,
+    this.textCategory,
     this.blurHash,
   });
 
@@ -82,6 +84,7 @@ class Clip {
 
   factory Clip.text({
     required String text,
+    TextCategory? textCategory,
   }) =>
       Clip(
         file: null,
@@ -92,6 +95,7 @@ class Clip {
         fileMimeType: null,
         fileExtension: null,
         fileSize: null,
+        textCategory: textCategory,
       );
 
   factory Clip.uri({
@@ -146,13 +150,60 @@ class Clip {
       );
 }
 
+final rgbRegex = RegExp(r"^#?(?:[0-9a-fA-F]{3}){1,2}$");
+final rgbaRegex = RegExp(r"^#?(?:[0-9a-fA-F]{3,4}){1,2}$");
+final emailRegex = RegExp(
+    r"^([a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9\-\_]+(\.[a-zA-Z]+)*)$");
+final phoneRegex = RegExp(r'^\d{7,15}$');
+
 class ClipboardFormatProcessor {
+  (bool, String) parseColor(String value) {
+    final rgb = rgbRegex.stringMatch(value);
+    if (rgb != null) {
+      return (true, rgb);
+    }
+    final rgba = rgbaRegex.stringMatch(value);
+    if (rgba != null) {
+      return (true, rgba);
+    }
+    return (false, value);
+  }
+
+  (bool, String) parseEmail(String value) {
+    final email = emailRegex.stringMatch(value);
+    if (email != null) {
+      return (true, email);
+    }
+    return (false, value);
+  }
+
+  (bool, String) parsePhone(String value) {
+    final phone = phoneRegex.stringMatch(value);
+    if (phone != null) {
+      return (true, phone);
+    }
+    return (false, value);
+  }
+
   String cleanText(String text) {
     try {
       return Uri.decodeComponent(text);
     } catch (e) {
       return text;
     }
+  }
+
+  (TextCategory?, String) getTextCategory(String value) {
+    final (isColor, color) = parseColor(value);
+    if (isColor) return (TextCategory.color, color);
+
+    final (isEmail, email) = parseEmail(value);
+    if (isEmail) return (TextCategory.email, email);
+
+    final (isPhone, phone) = parsePhone(value);
+    if (isPhone) return (TextCategory.phone, phone);
+
+    return (null, value);
   }
 
   Future<(String?, Uint8List?)> readFile(
@@ -217,14 +268,18 @@ class ClipboardFormatProcessor {
   }
 
   Future<Clip?> _getPlainText(ClipboardDataReader reader) async {
-    final text = await reader.readValue(Formats.plainText);
+    var text = await reader.readValue(Formats.plainText);
     if (text == null) {
       logger.w("Text is null");
       return null;
     } else {
-      // Sometimes macOS uses CR for line break;
-      var sanitized = cleanText(text.replaceAll(RegExp('\r[\n]?'), '\n'));
-      return Clip.text(text: sanitized);
+      text = text.replaceAll(RegExp('\r[\n]?'), '\n');
+      text = cleanText(text);
+      final (textCategory, parsedText) = getTextCategory(text);
+      return Clip.text(
+        text: parsedText,
+        textCategory: textCategory,
+      );
     }
   }
 
@@ -352,7 +407,7 @@ class ClipboardFormatProcessor {
       return Clip.uri(uri: uri.uri);
     } else {
       logger.w("Unsupported uri schema: $schema. Converting to text.");
-      return Clip.text(text: uri.uri.toString());
+      return Clip.text(text: cleanText(uri.uri.toString()));
     }
   }
 

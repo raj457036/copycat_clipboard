@@ -43,6 +43,10 @@ int getRandomIndex(int max) {
   return _random.nextInt(max);
 }
 
+DateTime now() {
+  return DateTime.now();
+}
+
 DateTime nowUTC() {
   return DateTime.now().toUtc();
 }

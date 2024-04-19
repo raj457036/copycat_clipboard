@@ -10,8 +10,8 @@ class SyncStatusButton extends StatelessWidget {
   const SyncStatusButton({super.key});
 
   Future<void> syncNow(BuildContext context, DateTime? lastSync) async {
-    final now = nowUTC();
-    if (lastSync != null && now.difference(lastSync).inSeconds < 60) {
+    final now_ = now();
+    if (lastSync != null && now_.difference(lastSync).inSeconds < 60) {
       showTextSnackbar(
         '✋ Last sync was less than 1 minutes ago.',
       );

@@ -50,7 +50,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     while (hasMore) {
       final result = await syncRepo.getLatestItems(
         userId: auth.userId!,
-        lastSynced: lastSync?.lastSync?.toUtc(),
+        lastSynced: lastSync?.lastSync,
         offset: offset,
       );
 
@@ -68,7 +68,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
               .serverIdEqualTo(item.serverId)
               .findFirst());
           if (result == null) {
-            items[i] = item.copyWith(lastSynced: nowUTC());
+            items[i] = item.copyWith(lastSynced: now());
           } else {
             items[i] = item.copyWith(
               lastSynced: result.lastSynced,
@@ -91,7 +91,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
   Future<void> updateSyncTime({bool refreshLocalCache = false}) async {
     final lastSync0 = await getSyncInfo();
-    final syncTime = nowUTC();
+    final syncTime = now();
     final updatedSyncStatus =
         (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
     updatedSyncStatus.id = _syncId;

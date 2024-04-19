@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/base.dart';
+import 'package:clipboard/db/json_converters/datetime_converters.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/enums/platform_os.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -15,6 +16,8 @@ part 'clipboard_item.g.dart';
 
 const kLocalUserId = "local_user";
 
+final specialSymbols = RegExp(r"[-_|]");
+
 @freezed
 @Collection(ignore: {'copyWith'})
 class ClipboardItem with _$ClipboardItem, IsarIdMixin {
@@ -24,8 +27,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @JsonKey(name: "id", includeToJson: false) int? serverId,
     @JsonKey(includeFromJson: false, includeToJson: false) DateTime? lastSynced,
     @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-    @JsonKey(name: "created") required DateTime created,
-    @JsonKey(name: "modified") required DateTime modified,
+    @JsonKey(name: "created") @DateTimeConverter() required DateTime created,
+    @JsonKey(name: "modified") @DateTimeConverter() required DateTime modified,
     @Enumerated(EnumType.name) required ClipItemType type,
     @Default(kLocalUserId) String userId,
     String? title,
@@ -35,6 +38,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     // Text related
     String? text,
     String? url,
+    @Enumerated(EnumType.name) TextCategory? textCategory,
     // Files related
     String? fileName,
     String? fileMimeType,
@@ -78,21 +82,42 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
       _$ClipboardItemFromJson(json);
 
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get titleWords =>
+      Isar.splitWords((title ?? '').replaceAll(specialSymbols, " "));
+
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get descriptionWords =>
+      Isar.splitWords((description ?? '').replaceAll(specialSymbols, " "));
+
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get urlWords =>
+      Isar.splitWords((url ?? '').replaceAll(specialSymbols, " "));
+
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get textWord =>
+      Isar.splitWords((text ?? '').replaceAll(specialSymbols, " "));
+
+  @Index()
+  String get textCategoryWord => textCategory?.name ?? "";
+
   factory ClipboardItem.fromText(
     String text, {
     String? userId,
     String? sourceUrl,
     String? sourceApp,
+    TextCategory? category,
   }) {
     return ClipboardItem(
       text: text,
       userId: userId ?? kLocalUserId,
-      created: nowUTC(),
-      modified: nowUTC(),
+      created: now(),
+      modified: now(),
       type: ClipItemType.text,
       os: currentPlatformOS(),
       sourceUrl: sourceUrl,
       sourceApp: sourceApp,
+      textCategory: category,
     );
   }
 
@@ -108,8 +133,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String? sourceApp,
   }) {
     return ClipboardItem(
-      created: nowUTC(),
-      modified: nowUTC(),
+      created: now(),
+      modified: now(),
       type: ClipItemType.media,
       localPath: filePath,
       userId: userId ?? kLocalUserId,
@@ -139,8 +164,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
     return ClipboardItem(
       text: preview,
-      created: nowUTC(),
-      modified: nowUTC(),
+      created: now(),
+      modified: now(),
       title: fileName ?? basename,
       type: ClipItemType.file,
       localPath: filePath,
@@ -165,8 +190,8 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   }) {
     return ClipboardItem(
       url: uri.toString(),
-      created: nowUTC(),
-      modified: nowUTC(),
+      created: now(),
+      modified: now(),
       title: title,
       description: description,
       type: ClipItemType.url,

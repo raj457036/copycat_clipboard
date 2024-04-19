@@ -81,7 +81,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       persist(
         item.copyWith(
           copiedCount: item.copiedCount + 1,
-          lastCopied: nowUTC(),
+          lastCopied: now(),
         )..applyId(item),
       );
     }
@@ -97,6 +97,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
         return ClipboardItem.fromText(
           clip.text!,
           userId: userId,
+          category: clip.textCategory,
         );
       case ClipItemType.media:
         {

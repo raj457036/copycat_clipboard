@@ -7,6 +7,7 @@ abstract class ClipboardSource {
   Future<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
   });
 
   Future<ClipboardItem> update(ClipboardItem item);

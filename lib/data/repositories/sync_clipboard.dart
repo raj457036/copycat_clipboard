@@ -70,9 +70,13 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
       var query = db.from(table).select().eq("userId", userId);
 
       if (lastSynced != null) {
-        query = query.gt("modified", lastSynced.toIso8601String());
+        final isoDate = lastSynced.toUtc().toIso8601String();
+        query = query.gt(
+          "modified",
+          isoDate,
+        );
       }
-      final docs = await query.order("modified").range(offset, offset + limit);
+      final docs = await query.range(offset, offset + limit);
       final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
       return Right(
         PaginatedResult(
