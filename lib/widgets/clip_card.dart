@@ -15,9 +15,11 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class ClipCard extends StatelessWidget {
   final ClipboardItem item;
+  final bool deleteAllowed;
   const ClipCard({
     super.key,
     required this.item,
+    this.deleteAllowed = true,
   });
 
   Widget getPreview() {
@@ -73,12 +75,13 @@ class ClipCard extends StatelessWidget {
                     text: 'Save to files',
                     onPressed: () {},
                   ),
-                const MenuItem(type: MenuItemType.divider),
-                MenuItem(
-                  icon: Icons.delete_outline,
-                  text: 'Delete',
-                  onPressed: () => deleteItem(context),
-                ),
+                if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
+                if (deleteAllowed)
+                  MenuItem(
+                    icon: Icons.delete_outline,
+                    text: 'Delete',
+                    onPressed: () => deleteItem(context),
+                  ),
               ],
               child: getPreview(),
             ),

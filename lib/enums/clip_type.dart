@@ -10,3 +10,16 @@ enum ClipItemType {
   @JsonValue("url")
   url,
 }
+
+enum TextCategory {
+  @JsonValue("color")
+  color,
+  @JsonValue("email")
+  email,
+  @JsonValue("phone")
+  phone,
+}
+
+const colorTextCategory = "color";
+const emailTextCategory = "email";
+const phoneTextCategory = "phone";

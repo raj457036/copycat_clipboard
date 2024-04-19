@@ -25,14 +25,60 @@ class LocalClipboardSource implements ClipboardSource {
   Future<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
   }) async {
-    var results = await db.txn(() async => await db.clipboardItems
-        .filter()
-        .deletedAtIsNull()
-        .sortByCreatedDesc()
-        .offset(offset)
-        .limit(limit)
-        .findAll());
+    List<ClipboardItem> results;
+
+    if (search == null) {
+      results = await db.txn(() async => await db.clipboardItems
+          .filter()
+          .deletedAtIsNull()
+          .sortByCreatedDesc()
+          .offset(offset)
+          .limit(limit)
+          .findAll());
+    } else {
+      results = await db.txn(() async {
+        var filter = db.clipboardItems.filter();
+
+        for (final word in Isar.splitWords(search)) {
+          filter = filter
+              .titleWordsElementContains(word, caseSensitive: false)
+              .or()
+              .titleWordsElementStartsWith(word, caseSensitive: false)
+              .or()
+              .titleContains(word, caseSensitive: false)
+              .or()
+              .descriptionWordsElementContains(word, caseSensitive: false)
+              .or()
+              .descriptionWordsElementStartsWith(word, caseSensitive: false)
+              .or()
+              .descriptionContains(word, caseSensitive: false)
+              .or()
+              .urlWordsElementContains(word, caseSensitive: false)
+              .or()
+              .urlWordsElementStartsWith(word, caseSensitive: false)
+              .or()
+              .urlContains(word, caseSensitive: false)
+              .or()
+              .textWordElementContains(word, caseSensitive: false)
+              .or()
+              .textWordElementStartsWith(word, caseSensitive: false)
+              .or()
+              .textContains(word, caseSensitive: false)
+              .or()
+              .textCategoryContains(word, caseSensitive: false);
+        }
+
+        var query = filter
+            .deletedAtIsNull()
+            .sortByCreatedDesc()
+            .offset(offset)
+            .limit(limit)
+            .findAll();
+        return query;
+      });
+    }
 
     return PaginatedResult(
       results: results,
@@ -43,7 +89,7 @@ class LocalClipboardSource implements ClipboardSource {
   @override
   Future<ClipboardItem> update(ClipboardItem item) async {
     final updated = item.copyWith(
-      modified: nowUTC(),
+      modified: now(),
     );
     updated.id = item.id;
     await db.writeTxn(

@@ -27,8 +27,10 @@ mixin _$ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath => throw _privateConstructorUsedError;
   @JsonKey(name: "created")
+  @DateTimeConverter()
   DateTime get created => throw _privateConstructorUsedError;
   @JsonKey(name: "modified")
+  @DateTimeConverter()
   DateTime get modified => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   ClipItemType get type => throw _privateConstructorUsedError;
@@ -38,7 +40,10 @@ mixin _$ClipboardItem {
   DateTime? get deletedAt => throw _privateConstructorUsedError;
   bool get encrypted => throw _privateConstructorUsedError; // Text related
   String? get text => throw _privateConstructorUsedError;
-  String? get url => throw _privateConstructorUsedError; // Files related
+  String? get url => throw _privateConstructorUsedError;
+  @Enumerated(EnumType.name)
+  TextCategory? get textCategory =>
+      throw _privateConstructorUsedError; // Files related
   String? get fileName => throw _privateConstructorUsedError;
   String? get fileMimeType => throw _privateConstructorUsedError;
   String? get fileExtension => throw _privateConstructorUsedError;
@@ -89,8 +94,8 @@ abstract class $ClipboardItemCopyWith<$Res> {
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      @JsonKey(name: "created") DateTime created,
-      @JsonKey(name: "modified") DateTime modified,
+      @JsonKey(name: "created") @DateTimeConverter() DateTime created,
+      @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
       String? title,
@@ -99,6 +104,7 @@ abstract class $ClipboardItemCopyWith<$Res> {
       bool encrypted,
       String? text,
       String? url,
+      @Enumerated(EnumType.name) TextCategory? textCategory,
       String? fileName,
       String? fileMimeType,
       String? fileExtension,
@@ -154,6 +160,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? encrypted = null,
     Object? text = freezed,
     Object? url = freezed,
+    Object? textCategory = freezed,
     Object? fileName = freezed,
     Object? fileMimeType = freezed,
     Object? fileExtension = freezed,
@@ -225,6 +232,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      textCategory: freezed == textCategory
+          ? _value.textCategory
+          : textCategory // ignore: cast_nullable_to_non_nullable
+              as TextCategory?,
       fileName: freezed == fileName
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
@@ -310,8 +321,8 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      @JsonKey(name: "created") DateTime created,
-      @JsonKey(name: "modified") DateTime modified,
+      @JsonKey(name: "created") @DateTimeConverter() DateTime created,
+      @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
       String? title,
@@ -320,6 +331,7 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       bool encrypted,
       String? text,
       String? url,
+      @Enumerated(EnumType.name) TextCategory? textCategory,
       String? fileName,
       String? fileMimeType,
       String? fileExtension,
@@ -373,6 +385,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? encrypted = null,
     Object? text = freezed,
     Object? url = freezed,
+    Object? textCategory = freezed,
     Object? fileName = freezed,
     Object? fileMimeType = freezed,
     Object? fileExtension = freezed,
@@ -444,6 +457,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      textCategory: freezed == textCategory
+          ? _value.textCategory
+          : textCategory // ignore: cast_nullable_to_non_nullable
+              as TextCategory?,
       fileName: freezed == fileName
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
@@ -523,8 +540,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       {@JsonKey(name: "id", includeToJson: false) this.serverId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) this.localPath,
-      @JsonKey(name: "created") required this.created,
-      @JsonKey(name: "modified") required this.modified,
+      @JsonKey(name: "created") @DateTimeConverter() required this.created,
+      @JsonKey(name: "modified") @DateTimeConverter() required this.modified,
       @Enumerated(EnumType.name) required this.type,
       this.userId = kLocalUserId,
       this.title,
@@ -533,6 +550,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.encrypted = false,
       this.text,
       this.url,
+      @Enumerated(EnumType.name) this.textCategory,
       this.fileName,
       this.fileMimeType,
       this.fileExtension,
@@ -577,9 +595,11 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   final String? localPath;
   @override
   @JsonKey(name: "created")
+  @DateTimeConverter()
   final DateTime created;
   @override
   @JsonKey(name: "modified")
+  @DateTimeConverter()
   final DateTime modified;
   @override
   @Enumerated(EnumType.name)
@@ -601,6 +621,9 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   final String? text;
   @override
   final String? url;
+  @override
+  @Enumerated(EnumType.name)
+  final TextCategory? textCategory;
 // Files related
   @override
   final String? fileName;
@@ -658,7 +681,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress, failure: $failure)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, textCategory: $textCategory, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress, failure: $failure)';
   }
 
   @override
@@ -686,6 +709,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
                 other.encrypted == encrypted) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.url, url) || other.url == url) &&
+            (identical(other.textCategory, textCategory) ||
+                other.textCategory == textCategory) &&
             (identical(other.fileName, fileName) ||
                 other.fileName == fileName) &&
             (identical(other.fileMimeType, fileMimeType) ||
@@ -737,6 +762,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         encrypted,
         text,
         url,
+        textCategory,
         fileName,
         fileMimeType,
         fileExtension,
@@ -777,8 +803,12 @@ abstract class _ClipboardItem extends ClipboardItem {
       final DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final String? localPath,
-      @JsonKey(name: "created") required final DateTime created,
-      @JsonKey(name: "modified") required final DateTime modified,
+      @JsonKey(name: "created")
+      @DateTimeConverter()
+      required final DateTime created,
+      @JsonKey(name: "modified")
+      @DateTimeConverter()
+      required final DateTime modified,
       @Enumerated(EnumType.name) required final ClipItemType type,
       final String userId,
       final String? title,
@@ -787,6 +817,7 @@ abstract class _ClipboardItem extends ClipboardItem {
       final bool encrypted,
       final String? text,
       final String? url,
+      @Enumerated(EnumType.name) final TextCategory? textCategory,
       final String? fileName,
       final String? fileMimeType,
       final String? fileExtension,
@@ -831,9 +862,11 @@ abstract class _ClipboardItem extends ClipboardItem {
   String? get localPath;
   @override
   @JsonKey(name: "created")
+  @DateTimeConverter()
   DateTime get created;
   @override
   @JsonKey(name: "modified")
+  @DateTimeConverter()
   DateTime get modified;
   @override
   @Enumerated(EnumType.name)
@@ -852,6 +885,9 @@ abstract class _ClipboardItem extends ClipboardItem {
   String? get text;
   @override
   String? get url;
+  @override
+  @Enumerated(EnumType.name)
+  TextCategory? get textCategory;
   @override // Files related
   String? get fileName;
   @override

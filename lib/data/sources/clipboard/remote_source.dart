@@ -27,7 +27,7 @@ class RemoteClipboardSource implements ClipboardSource {
     final docs = await db.from(table).insert(item.toJson()).select();
 
     final createdItem = item.copyWith(
-      lastSynced: nowUTC(),
+      lastSynced: now(),
       serverId: docs.first['id'],
     )..applyId(item);
 
@@ -39,6 +39,7 @@ class RemoteClipboardSource implements ClipboardSource {
     int limit = 50,
     int offset = 0,
     DateTime? afterDate,
+    String? search,
   }) async {
     if (!await network.isConnected) {
       return PaginatedResult(results: [], hasMore: false);
@@ -65,7 +66,7 @@ class RemoteClipboardSource implements ClipboardSource {
 
     await db.from(table).update(item.toJson()).eq("id", item.serverId!);
     final updatedItem = item.copyWith(
-      lastSynced: nowUTC(),
+      lastSynced: now(),
     )..applyId(item);
     return updatedItem;
   }

@@ -22,6 +22,7 @@ class LogoutButton extends StatelessWidget {
       return IconButton(
         onPressed: () => logout(context),
         icon: const Icon(Icons.logout),
+        tooltip: "Log out",
       );
     }
 

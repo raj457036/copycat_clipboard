@@ -16,15 +16,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Clipboard"),
-        actions: const [
-          SyncStatusButton(),
-          LogoutButton(),
-          width16,
-        ],
-      ),
+      appBar: width > 576
+          ? null
+          : AppBar(
+              title: const Text("Clipboard"),
+              actions: const [
+                SyncStatusButton(),
+                LogoutButton(),
+                width16,
+              ],
+            ),
       body: BlocSelector<ClipboardCubit, ClipboardState,
           (List<ClipboardItem>, bool)>(
         selector: (state) {
