@@ -51,7 +51,7 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
       return Right(
         PaginatedResult(
           results: items,
-          hasMore: items.length == limit,
+          hasMore: items.length > limit,
         ),
       );
     } catch (e) {
@@ -81,7 +81,7 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
       return Right(
         PaginatedResult(
           results: items,
-          hasMore: limit == items.length,
+          hasMore: items.length > limit,
         ),
       );
     } catch (e) {

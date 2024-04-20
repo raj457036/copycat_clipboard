@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' as io;
 
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/numbers/file_sizes.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:googleapis/drive/v3.dart';
@@ -24,13 +25,17 @@ abstract class DriveService {
     void Function(int, int)? onProgress,
   });
   Future<void> delete(ClipboardItem item);
+
+  void cancelOperation(ClipboardItem item);
 }
 
 class GoogleAuthClient with http.BaseClient {
   final String accessToken;
+
   BehaviorSubject<(int, int)>? progress;
   int? contentLength;
-  http.Client? _client;
+  int currentBytes = 0;
+  bool stopped = false;
 
   GoogleAuthClient(this.accessToken);
 
@@ -49,40 +54,39 @@ class GoogleAuthClient with http.BaseClient {
   @override
   void close() {
     unsetProgressListener();
-    _client?.close();
+    stopped = true;
     super.close();
   }
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    if (stopped) {
+      throw StateError('Already stopped');
+    }
     request.headers["Authorization"] = "Bearer $accessToken";
-    _client ??= http.Client();
-    int currentBytes = 0;
-    final response = await _client!.send(request);
-    final totalBytes = contentLength ??
-        int.tryParse(response.headers['content-length'] ?? '-') ??
-        1;
+    final response = await request.send();
+    final totalBytes = contentLength ?? 1;
+    int currentLength = 0;
 
-    final stream = response.stream.doOnData((chunk) {
-      currentBytes += chunk.length;
-      progress?.add((currentBytes, totalBytes));
+    // "range" -> "bytes=0-5505023"
+    final range = response.headers["range"];
+    if (range != null) {
+      final start = int.parse(range.split("=")[1].split("-")[0]);
+      final end = int.parse(range.split("=")[1].split("-")[1]);
+      if (start == 0) {
+        currentLength = end;
+      } else {
+        currentLength = (end - start + 1) + currentBytes;
+      }
+    }
 
-      logger.i(
-        'Uploaded: $currentBytes / $totalBytes bytes',
-      );
-    });
-    final newResponse = http.StreamedResponse(
-      stream,
-      response.statusCode,
-      contentLength: response.contentLength,
-      request: response.request,
-      headers: response.headers,
-      isRedirect: response.isRedirect,
-      persistentConnection: response.persistentConnection,
-      reasonPhrase: response.reasonPhrase,
-    );
+    if (currentLength > currentBytes) {
+      currentBytes = currentLength;
+    }
+    progress?.add((currentBytes, totalBytes));
+    logger.i('Transfered: $currentBytes / $totalBytes bytes');
 
-    return newResponse;
+    return response;
   }
 }
 
@@ -109,6 +113,9 @@ class GoogleOAuth2Service {
 @Named("google_drive")
 @LazySingleton(as: DriveService)
 class GoogleDriveService implements DriveService {
+  final _uploadOperations = <int, Completer>{};
+  final _downloadOperations = <int, Completer>{};
+
   GoogleAuthClient get authClient {
     if (accessToken == null) {
       throw Exception('No access token provided');
@@ -126,6 +133,10 @@ class GoogleDriveService implements DriveService {
     if (item.driveFileId == null || item.rootDir == null) return item;
 
     final client = authClient;
+
+    final completer = Completer();
+    _downloadOperations[item.id] = completer;
+    completer.future.then((value) => client.close());
 
     if (onProgress != null) {
       client
@@ -155,6 +166,7 @@ class GoogleDriveService implements DriveService {
       return item;
     } finally {
       client.close();
+      _downloadOperations.remove(item.id);
     }
   }
 
@@ -164,6 +176,11 @@ class GoogleDriveService implements DriveService {
     void Function(int, int)? onProgress,
   }) async {
     final client = authClient;
+
+    final completer = Completer();
+    _uploadOperations[item.id] = completer;
+    completer.future.then((value) => client.close());
+
     try {
       final io.File file = io.File(item.localPath!);
       final length = await file.length();
@@ -185,8 +202,16 @@ class GoogleDriveService implements DriveService {
       final media = Media(
         file.openRead(),
         length,
+        contentType: item.fileMimeType ?? 'application/octet-stream',
       );
-      final result = await drive.files.create(gfile, uploadMedia: media);
+      final result = await drive.files.create(
+        gfile,
+        uploadMedia: media,
+        uploadOptions: ResumableUploadOptions(
+          chunkSize: length < $10MB ? $5MB : $20MB,
+        ),
+      );
+
       item = item.copyWith(
         driveFileId: result.id,
       )..applyId(item);
@@ -197,6 +222,7 @@ class GoogleDriveService implements DriveService {
       return item;
     } finally {
       client.close();
+      _uploadOperations.remove(item.id);
     }
   }
 
@@ -215,5 +241,13 @@ class GoogleDriveService implements DriveService {
     } finally {
       client.close();
     }
+  }
+
+  @override
+  void cancelOperation(ClipboardItem item) {
+    _uploadOperations[item.id]?.complete();
+    _downloadOperations[item.id]?.complete();
+    _uploadOperations.remove(item.id);
+    _downloadOperations.remove(item.id);
   }
 }

@@ -18,10 +18,14 @@ class SearchPage extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(width <= 400 ? 80 : 100),
+          preferredSize: Size.fromHeight(width <= 568 ? 65 : 100),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(padding16),
+              padding: const EdgeInsets.only(
+                left: padding16,
+                right: padding16,
+                top: padding38,
+              ),
               child: SearchBar(
                 padding: const EdgeInsets.symmetric(horizontal: padding16).msp,
                 leading: const Icon(Icons.search_rounded),

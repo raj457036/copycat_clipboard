@@ -18,11 +18,11 @@ import '../bloc/app_config_cubit/app_config_cubit.dart' as _i11;
 import '../bloc/auth_cubit/auth_cubit.dart' as _i16;
 import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i18;
 import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i24;
-import '../bloc/drive_setup_cubit/drive_setup_cubit.dart' as _i22;
+import '../bloc/drive_setup_cubit/drive_setup_cubit.dart' as _i23;
 import '../bloc/offline_persistance_cubit/offline_persistance_cubit.dart'
-    as _i23;
-import '../bloc/search_cubit/search_cubit.dart' as _i21;
-import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i20;
+    as _i20;
+import '../bloc/search_cubit/search_cubit.dart' as _i22;
+import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i21;
 import '../data/repositories/app_config.dart' as _i8;
 import '../data/repositories/clipboard.dart' as _i13;
 import '../data/repositories/drive_credential.dart' as _i19;
@@ -47,7 +47,7 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.factory<_i3.ClipboardService>(() => _i3.ClipboardService());
+    gh.singleton<_i3.ClipboardService>(() => _i3.ClipboardService());
     await gh.lazySingletonAsync<_i4.Isar>(
       () => registerModule.db,
       preResolve: true,
@@ -109,32 +109,34 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.lazySingleton<_i19.DriveCredentialRepository>(
         () => _i19.DriveCredentialRepositoryImpl(gh<_i17.SupabaseClient>()));
+    gh.lazySingleton<_i20.OfflinePersistanceCubit>(
+        () => _i20.OfflinePersistanceCubit(
+              gh<_i16.AuthCubit>(),
+              gh<_i13.ClipboardRepository>(instanceName: 'offline'),
+              gh<_i3.ClipboardService>(),
+              gh<_i11.AppConfigCubit>(),
+            ));
     gh.lazySingleton<_i13.ClipboardRepository>(
       () => _i13.ClipboardRepositoryCloudImpl(
           gh<_i9.ClipboardSource>(instanceName: 'remote')),
       instanceName: 'cloud',
     );
-    gh.singleton<_i20.SyncManagerCubit>(() => _i20.SyncManagerCubit(
+    gh.singleton<_i21.SyncManagerCubit>(() => _i21.SyncManagerCubit(
           gh<_i4.Isar>(),
           gh<_i16.AuthCubit>(),
           gh<_i15.SyncClipboardRepository>(),
           gh<_i6.NetworkStatus>(),
         ));
-    gh.factory<_i21.SearchCubit>(() => _i21.SearchCubit(
+    gh.factory<_i22.SearchCubit>(() => _i22.SearchCubit(
         gh<_i13.ClipboardRepository>(instanceName: 'offline')));
-    gh.lazySingleton<_i22.DriveSetupCubit>(
-        () => _i22.DriveSetupCubit(gh<_i19.DriveCredentialRepository>()));
-    gh.lazySingleton<_i23.OfflinePersistanceCubit>(
-        () => _i23.OfflinePersistanceCubit(
-              gh<_i16.AuthCubit>(),
-              gh<_i13.ClipboardRepository>(instanceName: 'offline'),
-              gh<_i3.ClipboardService>(),
-            ));
+    gh.lazySingleton<_i23.DriveSetupCubit>(
+        () => _i23.DriveSetupCubit(gh<_i19.DriveCredentialRepository>()));
     gh.lazySingleton<_i24.CloudPersistanceCubit>(
         () => _i24.CloudPersistanceCubit(
               gh<_i6.NetworkStatus>(),
               gh<_i16.AuthCubit>(),
-              gh<_i22.DriveSetupCubit>(),
+              gh<_i23.DriveSetupCubit>(),
+              gh<_i11.AppConfigCubit>(),
               gh<_i13.ClipboardRepository>(instanceName: 'cloud'),
               gh<_i7.DriveService>(instanceName: 'google_drive'),
             ));

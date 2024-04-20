@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/google_services.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -22,19 +25,33 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   final DriveSetupCubit driveCubit;
   final ClipboardRepository repo;
   final DriveService drive;
-
-  bool active = true;
+  final AppConfigCubit appConfig;
 
   CloudPersistanceCubit(
     this.network,
     this.auth,
     this.driveCubit,
+    this.appConfig,
     @Named("cloud") this.repo,
     @Named("google_drive") this.drive,
   ) : super(const CloudPersistanceState.initial());
 
   Future<void> persist(ClipboardItem item) async {
-    if (!active) return;
+    emit(const CloudPersistanceState.initial());
+    if (!appConfig.isSyncEnabled) {
+      if (item.userIntent) {
+        emit(
+          CloudPersistanceState.error(
+            const Failure(
+              message: "Sync is not enabled",
+              code: "sync-not-enabled",
+            ),
+            item,
+          ),
+        );
+      }
+      return;
+    }
     if (!await network.isConnected) {
       emit(
         CloudPersistanceState.error(
@@ -61,14 +78,26 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
         case ClipItemType.text || ClipItemType.url:
           await _create(item.assignUserId(userId));
         case ClipItemType.media || ClipItemType.file:
+          if (!appConfig.isFileSyncEnabled) {
+            emit(
+              CloudPersistanceState.error(
+                const Failure(
+                  message: "File and Media Sync is not enabled",
+                  code: "file-sync-not-enabled",
+                ),
+                item,
+              ),
+            );
+            return;
+          }
           await _uploadAndCreate(item.assignUserId(userId));
       }
     }
+    return;
   }
 
   Future<void> _create(ClipboardItem item) async {
-    emit(CloudPersistanceState.creatingItem(
-        item.copyWith(uploading: true)..applyId(item)));
+    emit(CloudPersistanceState.creatingItem(item));
     final result = await repo.create(item);
     emit(
       result.fold(
@@ -82,6 +111,20 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   }
 
   Future<void> _uploadAndCreate(ClipboardItem item) async {
+    if (!appConfig.canUploadFile(item.fileSize!) && !item.userIntent) {
+      logger.i("Auto upload is disabled for files over the limit.");
+      emit(
+        CloudPersistanceState.error(
+          const Failure(
+            message: "Auto upload is disabled for files over the limit.",
+            code: "auto-upload-restriction",
+          ),
+          item,
+        ),
+      );
+      return;
+    }
+
     emit(
       CloudPersistanceState.uploadingFile(
         item.copyWith(uploading: true)..applyId(item),
@@ -110,20 +153,28 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     }
 
     drive.accessToken = accessToken;
-    final updatedItem = await drive.upload(item.assignUserId(session.user.id),
-        onProgress: (uploaded, total) {
-      emit(
-        CloudPersistanceState.uploadingFile(
-          item.copyWith(uploading: true, uploadProgress: uploaded / total)
-            ..applyId(item),
-        ),
-      );
-    });
-    await _create(updatedItem);
+    final updatedItem = await drive.upload(
+      item.assignUserId(session.user.id),
+      onProgress: (uploaded, total) {
+        emit(
+          CloudPersistanceState.uploadingFile(
+            item.copyWith(
+              uploading: true,
+              uploadProgress: uploaded / total,
+            )..applyId(item),
+          ),
+        );
+      },
+    );
+
+    if (updatedItem.driveFileId != null) {
+      await _create(updatedItem);
+    }
   }
 
   Future<void> delete(ClipboardItem item) async {
     emit(CloudPersistanceState.deletingItem(item));
+    drive.cancelOperation(item);
     if (item.driveFileId != null) {
       final accessToken = await driveCubit.accessToken;
 

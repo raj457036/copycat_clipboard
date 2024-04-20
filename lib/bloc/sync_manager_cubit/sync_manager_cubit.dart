@@ -65,7 +65,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       await result.fold((l) async => emit(SyncManagerState.failed(l)),
           (r) async {
         hasMore = r.hasMore;
-        offset = r.results.length;
+        offset += r.results.length;
         // Apply changes to local db
         final items = r.results;
 

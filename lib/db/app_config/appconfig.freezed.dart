@@ -25,6 +25,15 @@ mixin _$AppConfig {
   bool get enableSync => throw _privateConstructorUsedError;
   bool get enableFileSync => throw _privateConstructorUsedError;
 
+  /// will prevent auto upload for files over 10 MB
+  int get dontUploadOver => throw _privateConstructorUsedError;
+
+  /// will prevent auto copy for files over 10 MB
+  int get dontCopyOver => throw _privateConstructorUsedError;
+
+  /// Pause auto copy for till pausedTill is reached.
+  DateTime? get pausedTill => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $AppConfigCopyWith<AppConfig> get copyWith =>
@@ -39,7 +48,10 @@ abstract class $AppConfigCopyWith<$Res> {
   $Res call(
       {@Enumerated(EnumType.name) ThemeMode themeMode,
       bool enableSync,
-      bool enableFileSync});
+      bool enableFileSync,
+      int dontUploadOver,
+      int dontCopyOver,
+      DateTime? pausedTill});
 }
 
 /// @nodoc
@@ -58,6 +70,9 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? themeMode = null,
     Object? enableSync = null,
     Object? enableFileSync = null,
+    Object? dontUploadOver = null,
+    Object? dontCopyOver = null,
+    Object? pausedTill = freezed,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -72,6 +87,18 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.enableFileSync
           : enableFileSync // ignore: cast_nullable_to_non_nullable
               as bool,
+      dontUploadOver: null == dontUploadOver
+          ? _value.dontUploadOver
+          : dontUploadOver // ignore: cast_nullable_to_non_nullable
+              as int,
+      dontCopyOver: null == dontCopyOver
+          ? _value.dontCopyOver
+          : dontCopyOver // ignore: cast_nullable_to_non_nullable
+              as int,
+      pausedTill: freezed == pausedTill
+          ? _value.pausedTill
+          : pausedTill // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -87,7 +114,10 @@ abstract class _$$AppConfigImplCopyWith<$Res>
   $Res call(
       {@Enumerated(EnumType.name) ThemeMode themeMode,
       bool enableSync,
-      bool enableFileSync});
+      bool enableFileSync,
+      int dontUploadOver,
+      int dontCopyOver,
+      DateTime? pausedTill});
 }
 
 /// @nodoc
@@ -104,6 +134,9 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? themeMode = null,
     Object? enableSync = null,
     Object? enableFileSync = null,
+    Object? dontUploadOver = null,
+    Object? dontCopyOver = null,
+    Object? pausedTill = freezed,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
@@ -118,6 +151,18 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.enableFileSync
           : enableFileSync // ignore: cast_nullable_to_non_nullable
               as bool,
+      dontUploadOver: null == dontUploadOver
+          ? _value.dontUploadOver
+          : dontUploadOver // ignore: cast_nullable_to_non_nullable
+              as int,
+      dontCopyOver: null == dontCopyOver
+          ? _value.dontCopyOver
+          : dontCopyOver // ignore: cast_nullable_to_non_nullable
+              as int,
+      pausedTill: freezed == pausedTill
+          ? _value.pausedTill
+          : pausedTill // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -128,7 +173,10 @@ class _$AppConfigImpl extends _AppConfig {
   _$AppConfigImpl(
       {@Enumerated(EnumType.name) this.themeMode = ThemeMode.system,
       this.enableSync = true,
-      this.enableFileSync = true})
+      this.enableFileSync = true,
+      this.dontUploadOver = $10MB,
+      this.dontCopyOver = $10MB,
+      this.pausedTill})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -145,9 +193,23 @@ class _$AppConfigImpl extends _AppConfig {
   @JsonKey()
   final bool enableFileSync;
 
+  /// will prevent auto upload for files over 10 MB
+  @override
+  @JsonKey()
+  final int dontUploadOver;
+
+  /// will prevent auto copy for files over 10 MB
+  @override
+  @JsonKey()
+  final int dontCopyOver;
+
+  /// Pause auto copy for till pausedTill is reached.
+  @override
+  final DateTime? pausedTill;
+
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill)';
   }
 
   @override
@@ -160,13 +222,19 @@ class _$AppConfigImpl extends _AppConfig {
             (identical(other.enableSync, enableSync) ||
                 other.enableSync == enableSync) &&
             (identical(other.enableFileSync, enableFileSync) ||
-                other.enableFileSync == enableFileSync));
+                other.enableFileSync == enableFileSync) &&
+            (identical(other.dontUploadOver, dontUploadOver) ||
+                other.dontUploadOver == dontUploadOver) &&
+            (identical(other.dontCopyOver, dontCopyOver) ||
+                other.dontCopyOver == dontCopyOver) &&
+            (identical(other.pausedTill, pausedTill) ||
+                other.pausedTill == pausedTill));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, themeMode, enableSync, enableFileSync);
+  int get hashCode => Object.hash(runtimeType, themeMode, enableSync,
+      enableFileSync, dontUploadOver, dontCopyOver, pausedTill);
 
   @JsonKey(ignore: true)
   @override
@@ -186,7 +254,10 @@ abstract class _AppConfig extends AppConfig {
   factory _AppConfig(
       {@Enumerated(EnumType.name) final ThemeMode themeMode,
       final bool enableSync,
-      final bool enableFileSync}) = _$AppConfigImpl;
+      final bool enableFileSync,
+      final int dontUploadOver,
+      final int dontCopyOver,
+      final DateTime? pausedTill}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -199,6 +270,18 @@ abstract class _AppConfig extends AppConfig {
   bool get enableSync;
   @override
   bool get enableFileSync;
+  @override
+
+  /// will prevent auto upload for files over 10 MB
+  int get dontUploadOver;
+  @override
+
+  /// will prevent auto copy for files over 10 MB
+  int get dontCopyOver;
+  @override
+
+  /// Pause auto copy for till pausedTill is reached.
+  DateTime? get pausedTill;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>

@@ -19,6 +19,24 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final colors = context.colors;
+
+    String buttonText;
+
+    if (item.isSyncing) {
+      if (item.uploading) {
+        if (item.uploadProgress != null && item.uploadProgress! > 0) {
+          final percent = ((item.uploadProgress ?? 0) * 100) ~/ 1;
+          buttonText = '↑ $percent%';
+        } else {
+          buttonText = 'Uploading...';
+        }
+      } else {
+        buttonText = 'Syncing';
+      }
+    } else {
+      buttonText = 'Sync';
+    }
+
     return SizedBox.fromSize(
       size: const Size.fromHeight(35),
       child: DecoratedBox(
@@ -48,12 +66,12 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                   onPressed: item.isSyncing
                       ? null
                       : () {
-                          context.read<CloudPersistanceCubit>().persist(item);
+                          context.read<CloudPersistanceCubit>().persist(
+                                item.copyWith(userIntent: true)..applyId(item),
+                              );
                         },
                   child: Text(
-                    item.isSyncing
-                        ? "Syncing (${((item.uploadProgress ?? 0) * 100) ~/ 1}%)"
-                        : "Sync Now",
+                    buttonText,
                     style: context.textTheme.labelMedium
                         ?.copyWith(color: colors.tertiary),
                   ),

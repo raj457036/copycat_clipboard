@@ -17,9 +17,9 @@ class _AnimatedSyncingIconState extends State<AnimatedSyncingIcon>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: Durations.extralong4,
       vsync: this,
-    )..repeat(reverse: true); // repeat the animation indefinitely
+    )..repeat();
   }
 
   @override

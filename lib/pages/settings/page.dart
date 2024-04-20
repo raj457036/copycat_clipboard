@@ -1,6 +1,8 @@
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
+import 'package:clipboard/pages/settings/widgets/pause_till.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
@@ -22,16 +24,22 @@ class SettingsPage extends StatelessWidget {
       body: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480),
         child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: padding16),
           children: const [
-            SettingHeader(name: "Basic"),
+            SettingHeader(
+              name: "Basic • Local",
+              tooltip: "These settings are applicable to this device only.",
+            ),
             height10,
             ListTile(
               title: Text("Theme"),
               trailing: ThemeDropdown(),
             ),
+            DontAutoCopyOver(),
+            PauseTill(),
             height20,
             SettingHeader(
-              name: "Sync ( Local )",
+              name: "Sync • Local",
               tooltip: "These settings are applicable to this device only.",
             ),
             height10,
