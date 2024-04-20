@@ -1,19 +1,27 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/sync_clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/db/sync_status/syncstatus.dart';
 import 'package:clipboard/utils/network_status.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 
 part 'sync_manager_cubit.freezed.dart';
 part 'sync_manager_state.dart';
+
+Future<void> syncChanges(BuildContext context) async {
+  showTextSnackbar("Syncing...", isLoading: true, closePrevious: true);
+  await context.read<SyncManagerCubit>().syncChanges();
+  showTextSnackbar("✅ Changes are synced", closePrevious: true);
+}
 
 @singleton
 class SyncManagerCubit extends Cubit<SyncManagerState> {

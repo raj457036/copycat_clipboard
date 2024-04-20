@@ -1,7 +1,6 @@
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -43,13 +42,21 @@ class _NavBarPageState extends State<NavBarPage> {
     }
   }
 
-  Widget? getFloatingActionButton() {
+  Widget? getFloatingActionButton({bool isMobile = false}) {
     if (widget.navbarActiveIndex == 0) {
-      return FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Paste',
-        heroTag: "paste-fab",
-        child: const Icon(Icons.content_paste_go_rounded),
+      final actions = [
+        FloatingActionButton(
+          onPressed: () {},
+          tooltip: 'Paste',
+          heroTag: "paste-fab",
+          child: const Icon(Icons.content_paste_go_rounded),
+        ),
+        height8,
+        const SyncStatusButton()
+      ];
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: isMobile ? actions.reversed.toList() : actions,
       );
     }
     return null;
@@ -61,7 +68,8 @@ class _NavBarPageState extends State<NavBarPage> {
     final smallScreen = width <= 576;
     final scaffold = Scaffold(
       body: widget.child,
-      floatingActionButton: smallScreen ? getFloatingActionButton() : null,
+      floatingActionButton:
+          smallScreen ? getFloatingActionButton(isMobile: smallScreen) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: smallScreen
           ? NavigationBar(
@@ -118,15 +126,7 @@ class _NavBarPageState extends State<NavBarPage> {
             label: Text("Settings"),
           ),
         ],
-        leading: Column(
-          children: [
-            if (floatingButton != null) floatingButton,
-            height8,
-            const SyncStatusButton(),
-            height8,
-            const LogoutButton(),
-          ],
-        ),
+        leading: floatingButton,
         labelType: NavigationRailLabelType.all,
         groupAlignment: 0,
         selectedIndex: widget.navbarActiveIndex,

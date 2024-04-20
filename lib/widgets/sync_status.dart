@@ -1,7 +1,6 @@
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
-import 'package:clipboard/utils/snackbar.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/syncing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,28 +8,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SyncStatusButton extends StatelessWidget {
   const SyncStatusButton({super.key});
 
-  Future<void> syncNow(BuildContext context, DateTime? lastSync) async {
-    final now_ = now();
-    if (lastSync != null && now_.difference(lastSync).inSeconds < 60) {
-      showTextSnackbar(
-        '✋ Last sync was less than 1 minutes ago.',
-      );
-      return;
-    }
-
-    final syncManagerCubit = BlocProvider.of<SyncManagerCubit>(context);
-    await syncManagerCubit.syncChanges();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return BlocBuilder<SyncManagerCubit, SyncManagerState>(
       builder: (context, state) {
         bool disabled = false;
         IconData icon = Icons.sync_rounded;
         bool isSyncing = false;
         String message = "Sync now";
-        DateTime? lastSync;
 
         switch (state) {
           case UnknownSyncState():
@@ -58,16 +44,16 @@ class SyncStatusButton extends StatelessWidget {
           case SyncedState(:final lastSynced):
             disabled = false;
             isSyncing = false;
-            lastSync = lastSynced;
             icon = Icons.sync_rounded;
             message = "Last synced at ${dateTimeFormatter.format(lastSynced)}";
             break;
         }
 
-        return IconButton(
-          onPressed: disabled ? null : () => syncNow(context, lastSync),
-          icon: isSyncing ? const AnimatedSyncingIcon() : Icon(icon),
+        return FloatingActionButton.small(
+          onPressed: disabled ? null : () => syncChanges(context),
           tooltip: message,
+          backgroundColor: colors.secondaryContainer,
+          child: isSyncing ? const AnimatedSyncingIcon() : Icon(icon),
         );
       },
     );

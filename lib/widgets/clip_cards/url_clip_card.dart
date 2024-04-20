@@ -11,19 +11,22 @@ class UrlPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final textTheme = context.textTheme;
     return Material(
       color: colors.surfaceVariant,
-      borderRadius: item.isSynced ? radiusBottom12 : null,
+      borderRadius: radius8,
       child: InkWell(
-        borderRadius: item.isSynced ? radiusBottom12 : null,
+        borderRadius: radius8,
         onTap: () {},
         child: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.all(padding8),
-            child: Text(
-              item.url!,
-              overflow: TextOverflow.fade,
-              maxLines: 10,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(padding8),
+              child: Text(
+                item.url!,
+                overflow: TextOverflow.fade,
+                style: textTheme.bodySmall,
+              ),
             ),
           ),
         ),

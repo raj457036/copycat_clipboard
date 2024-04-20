@@ -1,6 +1,8 @@
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
 import 'package:clipboard/widgets/clip_cards/file_clip_card.dart';
@@ -50,44 +52,73 @@ class ClipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          ClipCardOptionsHeader(item: item),
-          Expanded(
-            child: Menu(
-              items: [
-                MenuItem(
-                  icon: Icons.copy,
-                  text: 'Copy to clipboard',
-                  onPressed: () => copyToClipboard(context, item),
-                ),
-                if (item.type == ClipItemType.url)
-                  MenuItem(
-                    icon: Icons.open_in_new,
-                    text: 'Open in browser',
-                    onPressed: launchUrl,
-                  ),
-                if (item.type == ClipItemType.file ||
-                    item.type == ClipItemType.media && item.inCache)
-                  MenuItem(
-                    icon: Icons.save_as_outlined,
-                    text: 'Save to files',
-                    onPressed: () {},
-                  ),
-                if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
-                if (deleteAllowed)
-                  MenuItem(
-                    icon: Icons.delete_outline,
-                    text: 'Delete',
-                    onPressed: () => deleteItem(context),
-                  ),
-              ],
-              child: getPreview(),
-            ),
+    final colors = context.colors;
+    final textTheme = context.textTheme;
+    return Menu(
+      items: [
+        MenuItem(
+          icon: Icons.copy,
+          text: 'Copy to clipboard',
+          onPressed: () => copyToClipboard(context, item),
+        ),
+        if (item.type == ClipItemType.url)
+          MenuItem(
+            icon: Icons.open_in_new,
+            text: 'Open in browser',
+            onPressed: launchUrl,
           ),
-          ClipCardSyncStatusFooter(item: item),
-        ],
+        if (item.type == ClipItemType.file ||
+            item.type == ClipItemType.media && item.inCache)
+          MenuItem(
+            icon: Icons.save_as_outlined,
+            text: 'Save to files',
+            onPressed: () {},
+          ),
+        if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
+        if (deleteAllowed)
+          MenuItem(
+            icon: Icons.delete_outline,
+            text: 'Delete',
+            onPressed: () => deleteItem(context),
+          ),
+      ],
+      child: Card.outlined(
+        child: Column(
+          children: [
+            ClipCardOptionsHeader(item: item),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: padding8,
+                      right: padding8,
+                      bottom: padding10,
+                    ),
+                    child: Text(
+                      "How to solve the great problem.",
+                      style: textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                    ),
+                  ),
+                  Expanded(
+                    child: Card.filled(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: radius8,
+                      ),
+                      child: getPreview(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ClipCardSyncStatusFooter(item: item),
+          ],
+        ),
       ),
     );
   }
