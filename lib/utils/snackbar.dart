@@ -29,10 +29,14 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
             color: colors.errorContainer,
           ),
           width8,
-          Text(
-            failure.message,
-            style: TextStyle(
-              color: colors.errorContainer,
+          Expanded(
+            child: Text(
+              failure.message,
+              maxLines: 10,
+              overflow: TextOverflow.clip,
+              style: TextStyle(
+                color: colors.errorContainer,
+              ),
             ),
           )
         ],

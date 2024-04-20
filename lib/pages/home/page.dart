@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
           ? AppBar(
               title: const Text("Clipboard"),
               titleTextStyle: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
               ),
             )
           : null,

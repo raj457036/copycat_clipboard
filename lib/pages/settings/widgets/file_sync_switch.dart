@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/pages/settings/widgets/dont_upload_over.dart';
 import 'package:clipboard/pages/settings/widgets/google_drive_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +36,7 @@ class EnableFileSyncSwitch extends StatelessWidget {
               ),
             ),
             if (enableFileSync && enableSync) const GoogleDriveSetup(),
+            if (enableFileSync && enableSync) const DontAutoUploadOver(),
           ],
         );
       },

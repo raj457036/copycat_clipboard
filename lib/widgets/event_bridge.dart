@@ -51,7 +51,7 @@ class EventBridge extends StatelessWidget {
                 }
                 break;
               case OfflinePersistanceError(:final failure):
-                // showFailureSnackbar(failure);
+                showFailureSnackbar(failure);
                 break;
               case _:
             }
@@ -88,8 +88,6 @@ class EventBridge extends StatelessWidget {
                 context.read<OfflinePersistanceCubit>().delete(item);
                 break;
               case CloudPersistanceError(:final item, :final failure):
-                // showToastMessage(
-                //     scaffoldMessengerKey.currentContext!, failure.message);
                 showFailureSnackbar(failure);
                 context.read<ClipboardCubit>().put(item);
                 break;

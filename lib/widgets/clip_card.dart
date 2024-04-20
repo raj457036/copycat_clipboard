@@ -52,13 +52,12 @@ class ClipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     final textTheme = context.textTheme;
     return Menu(
       items: [
         MenuItem(
           icon: Icons.copy,
-          text: 'Copy to clipboard',
+          text: 'Copy',
           onPressed: () => copyToClipboard(context, item),
         ),
         if (item.type == ClipItemType.url)
@@ -91,20 +90,21 @@ class ClipCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: padding8,
-                      right: padding8,
-                      bottom: padding10,
-                    ),
-                    child: Text(
-                      "How to solve the great problem.",
-                      style: textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                  if (item.title != null)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: padding8,
+                        right: padding8,
+                        bottom: padding10,
                       ),
-                      maxLines: 2,
+                      child: Text(
+                        item.title!,
+                        style: textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                      ),
                     ),
-                  ),
                   Expanded(
                     child: Card.filled(
                       shape: const RoundedRectangleBorder(

@@ -23,9 +23,11 @@ Future<void> copyToClipboard(
         fileContent: copyFileContent,
       )
       .then((value) {
-    showTextSnackbar("📝 Copied to clipboard");
+    showTextSnackbar(
+      "📝 Successfully copied",
+    );
   }).catchError((_) {
-    showTextSnackbar("❌ Failed to copy to clipboard");
+    showTextSnackbar("❌ Failed to copy");
   });
 }
 
@@ -150,7 +152,7 @@ class ClipCardOptionsHeader extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: () => copyToClipboard(context, item),
-                tooltip: "Copy to clipboard",
+                tooltip: "Copy",
                 style: IconButton.styleFrom(
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(

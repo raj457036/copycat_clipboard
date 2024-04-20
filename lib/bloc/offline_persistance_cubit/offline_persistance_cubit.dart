@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -21,6 +23,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final ClipboardRepository repo;
   final ClipboardService clipboard;
   final CopyToClipboard copy;
+  final AppConfigCubit appConfig;
 
   bool _listening = false;
 
@@ -30,12 +33,30 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     this.auth,
     @Named("offline") this.repo,
     this.clipboard,
+    this.appConfig,
   )   : copy = CopyToClipboard(clipboard),
         super(const OfflinePersistanceState.initial());
 
+  onCaptureClipboard() {
+    emit(const OfflinePersistanceState.initial());
+    if (appConfig.isCopyingPaused) {
+      logger.i("Copying is paused!");
+      emit(
+        const OfflinePersistanceState.error(
+          Failure(
+            message: "Copying is paused!",
+            code: "copy-paused",
+          ),
+        ),
+      );
+      return;
+    }
+    clipboard.readClipboard();
+  }
+
   void startListners() {
     if (_listening) return;
-    clipboard.start();
+    clipboard.start(onCaptureClipboard);
     copySub = clipboard.onCopy.listen(onClips);
     _listening = true;
   }
@@ -50,6 +71,13 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   Future<void> reset() async {
     await repo.deleteAll();
     await clearPersistedRootDir();
+  }
+
+  Future<void> paste() async {
+    final clips = await clipboard.readClipboard(manual: true);
+    if (clips != null) {
+      await onClips(clips);
+    }
   }
 
   Future<bool> copyToClipboard(
@@ -101,21 +129,20 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
         );
       case ClipItemType.media:
         {
-          final path = await getPesistedPath("medias", clip.file!);
+          final path = clip.file!.path;
           return ClipboardItem.fromMedia(
             path,
             userId: userId,
             fileName: clip.fileName,
             fileMimeType: clip.fileMimeType,
             fileExtension: clip.fileExtension,
-            fileSize:
-                clip.fileSize != null ? clip.fileSize! ~/ 1024 : null, // in KB
+            fileSize: clip.fileSize,
             blurHash: clip.blurHash,
           );
         }
       case ClipItemType.file:
         {
-          final path = await getPesistedPath("files", clip.file!);
+          final path = clip.file!.path;
 
           return ClipboardItem.fromFile(
             path,
@@ -124,8 +151,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
             fileName: clip.fileName,
             fileMimeType: clip.fileMimeType,
             fileExtension: clip.fileExtension,
-            fileSize:
-                clip.fileSize != null ? clip.fileSize! ~/ 1024 : null, // in KB
+            fileSize: clip.fileSize,
           );
         }
       case ClipItemType.url:
@@ -136,12 +162,37 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     }
   }
 
-  Future<void> onClips(List<Clip?> clips) async {
+  Future<void> onClips(List<Clip?> clips, {bool manualPaste = false}) async {
     if (clips.isEmpty) return;
 
     for (final clip in clips) {
       if (clip == null) continue;
+
+      if (!manualPaste &&
+          clip.fileSize != null &&
+          !appConfig.canCopyFile(clip.fileSize!)) {
+        logger.i("Auto copy is disabled for files over the limit.");
+        clip.cleanup();
+
+        emit(
+          const OfflinePersistanceState.error(
+            Failure(
+              message: "Auto copy is disabled for files over the limit",
+              code: "auto-copy-restrictions",
+            ),
+          ),
+        );
+        return;
+      }
+
       final item = await _convertToClipboardItem(clip);
+
+      if (manualPaste) {
+        final userItem = item.copyWith(userIntent: manualPaste)..applyId(item);
+        await persist(userItem);
+        return;
+      }
+
       await persist(item);
     }
   }

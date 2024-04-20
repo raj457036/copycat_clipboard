@@ -79,6 +79,12 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
     Failure? failure,
+
+    /// This clip is manually triggered to upload, sync or persist.
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(false)
+    bool userIntent,
   }) = _ClipboardItem;
 
   factory ClipboardItem.fromJson(Map<String, dynamic> json) =>
@@ -102,6 +108,12 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
   @Index()
   String get textCategoryWord => textCategory?.name ?? "";
+
+  @Index()
+  String get typeWord => type.name;
+
+  @Index()
+  String get mimetypeWord => fileMimeType ?? 'text';
 
   factory ClipboardItem.fromText(
     String text, {
@@ -129,7 +141,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String? fileName,
     String? fileMimeType,
     String? fileExtension,
-    int? fileSize, // in KB
+    int? fileSize, // in Bytes
     String? blurHash, // only for image
     String? sourceUrl,
     String? sourceApp,

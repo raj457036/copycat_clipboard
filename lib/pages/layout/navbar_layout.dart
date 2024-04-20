@@ -1,8 +1,11 @@
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class NavBarPage extends StatefulWidget {
@@ -46,7 +49,12 @@ class _NavBarPageState extends State<NavBarPage> {
     if (widget.navbarActiveIndex == 0) {
       final actions = [
         FloatingActionButton(
-          onPressed: () {},
+          onPressed: () async {
+            showTextSnackbar("Pasting to clipboard",
+                isLoading: true, closePrevious: true);
+            await context.read<OfflinePersistanceCubit>().paste();
+            showTextSnackbar("Paste success", closePrevious: true);
+          },
           tooltip: 'Paste',
           heroTag: "paste-fab",
           child: const Icon(Icons.content_paste_go_rounded),

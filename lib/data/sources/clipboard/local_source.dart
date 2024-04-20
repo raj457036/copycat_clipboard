@@ -67,7 +67,11 @@ class LocalClipboardSource implements ClipboardSource {
               .or()
               .textContains(word, caseSensitive: false)
               .or()
-              .textCategoryContains(word, caseSensitive: false);
+              .mimetypeWordContains(word, caseSensitive: false)
+              .or()
+              .textCategoryContains(word, caseSensitive: false)
+              .or()
+              .typeWordContains(word, caseSensitive: false);
         }
 
         var query = filter

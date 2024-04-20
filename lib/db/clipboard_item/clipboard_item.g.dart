@@ -102,81 +102,91 @@ const ClipboardItemSchema = CollectionSchema(
       name: r'localPath',
       type: IsarType.string,
     ),
-    r'modified': PropertySchema(
+    r'mimetypeWord': PropertySchema(
       id: 17,
+      name: r'mimetypeWord',
+      type: IsarType.string,
+    ),
+    r'modified': PropertySchema(
+      id: 18,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'os': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'os',
       type: IsarType.string,
       enumMap: _ClipboardItemosEnumValueMap,
     ),
     r'serverId': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'serverId',
       type: IsarType.long,
     ),
     r'sourceApp': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'sourceApp',
       type: IsarType.string,
     ),
     r'sourceUrl': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'sourceUrl',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'text',
       type: IsarType.string,
     ),
     r'textCategory': PropertySchema(
-      id: 23,
+      id: 24,
       name: r'textCategory',
       type: IsarType.string,
       enumMap: _ClipboardItemtextCategoryEnumValueMap,
     ),
     r'textCategoryWord': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'textCategoryWord',
       type: IsarType.string,
     ),
     r'textWord': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'textWord',
       type: IsarType.stringList,
     ),
     r'title': PropertySchema(
-      id: 26,
+      id: 27,
       name: r'title',
       type: IsarType.string,
     ),
     r'titleWords': PropertySchema(
-      id: 27,
+      id: 28,
       name: r'titleWords',
       type: IsarType.stringList,
     ),
     r'type': PropertySchema(
-      id: 28,
+      id: 29,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
+    r'typeWord': PropertySchema(
+      id: 30,
+      name: r'typeWord',
+      type: IsarType.string,
+    ),
     r'url': PropertySchema(
-      id: 29,
+      id: 31,
       name: r'url',
       type: IsarType.string,
     ),
     r'urlWords': PropertySchema(
-      id: 30,
+      id: 32,
       name: r'urlWords',
       type: IsarType.stringList,
     ),
     r'userId': PropertySchema(
-      id: 31,
+      id: 33,
       name: r'userId',
       type: IsarType.string,
     )
@@ -251,6 +261,32 @@ const ClipboardItemSchema = CollectionSchema(
           caseSensitive: true,
         )
       ],
+    ),
+    r'typeWord': IndexSchema(
+      id: -4087530792576011872,
+      name: r'typeWord',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'typeWord',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'mimetypeWord': IndexSchema(
+      id: -8755781823862921620,
+      name: r'mimetypeWord',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'mimetypeWord',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
     )
   },
   links: {},
@@ -316,6 +352,7 @@ int _clipboardItemEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.mimetypeWord.length * 3;
   bytesCount += 3 + object.os.name.length * 3;
   {
     final value = object.sourceApp;
@@ -363,6 +400,7 @@ int _clipboardItemEstimateSize(
     }
   }
   bytesCount += 3 + object.type.name.length * 3;
+  bytesCount += 3 + object.typeWord.length * 3;
   {
     final value = object.url;
     if (value != null) {
@@ -403,21 +441,23 @@ void _clipboardItemSerialize(
   writer.writeDateTime(offsets[14], object.lastSynced);
   writer.writeBool(offsets[15], object.localOnly);
   writer.writeString(offsets[16], object.localPath);
-  writer.writeDateTime(offsets[17], object.modified);
-  writer.writeString(offsets[18], object.os.name);
-  writer.writeLong(offsets[19], object.serverId);
-  writer.writeString(offsets[20], object.sourceApp);
-  writer.writeString(offsets[21], object.sourceUrl);
-  writer.writeString(offsets[22], object.text);
-  writer.writeString(offsets[23], object.textCategory?.name);
-  writer.writeString(offsets[24], object.textCategoryWord);
-  writer.writeStringList(offsets[25], object.textWord);
-  writer.writeString(offsets[26], object.title);
-  writer.writeStringList(offsets[27], object.titleWords);
-  writer.writeString(offsets[28], object.type.name);
-  writer.writeString(offsets[29], object.url);
-  writer.writeStringList(offsets[30], object.urlWords);
-  writer.writeString(offsets[31], object.userId);
+  writer.writeString(offsets[17], object.mimetypeWord);
+  writer.writeDateTime(offsets[18], object.modified);
+  writer.writeString(offsets[19], object.os.name);
+  writer.writeLong(offsets[20], object.serverId);
+  writer.writeString(offsets[21], object.sourceApp);
+  writer.writeString(offsets[22], object.sourceUrl);
+  writer.writeString(offsets[23], object.text);
+  writer.writeString(offsets[24], object.textCategory?.name);
+  writer.writeString(offsets[25], object.textCategoryWord);
+  writer.writeStringList(offsets[26], object.textWord);
+  writer.writeString(offsets[27], object.title);
+  writer.writeStringList(offsets[28], object.titleWords);
+  writer.writeString(offsets[29], object.type.name);
+  writer.writeString(offsets[30], object.typeWord);
+  writer.writeString(offsets[31], object.url);
+  writer.writeStringList(offsets[32], object.urlWords);
+  writer.writeString(offsets[33], object.userId);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -442,21 +482,21 @@ ClipboardItem _clipboardItemDeserialize(
     lastSynced: reader.readDateTimeOrNull(offsets[14]),
     localOnly: reader.readBool(offsets[15]),
     localPath: reader.readStringOrNull(offsets[16]),
-    modified: reader.readDateTime(offsets[17]),
-    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[18])] ??
+    modified: reader.readDateTime(offsets[18]),
+    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[19])] ??
         PlatformOS.android,
-    serverId: reader.readLongOrNull(offsets[19]),
-    sourceApp: reader.readStringOrNull(offsets[20]),
-    sourceUrl: reader.readStringOrNull(offsets[21]),
-    text: reader.readStringOrNull(offsets[22]),
+    serverId: reader.readLongOrNull(offsets[20]),
+    sourceApp: reader.readStringOrNull(offsets[21]),
+    sourceUrl: reader.readStringOrNull(offsets[22]),
+    text: reader.readStringOrNull(offsets[23]),
     textCategory: _ClipboardItemtextCategoryValueEnumMap[
-        reader.readStringOrNull(offsets[23])],
-    title: reader.readStringOrNull(offsets[26]),
+        reader.readStringOrNull(offsets[24])],
+    title: reader.readStringOrNull(offsets[27]),
     type:
-        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[28])] ??
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[29])] ??
             ClipItemType.text,
-    url: reader.readStringOrNull(offsets[29]),
-    userId: reader.readString(offsets[31]),
+    url: reader.readStringOrNull(offsets[31]),
+    userId: reader.readString(offsets[33]),
   );
   object.id = id;
   return object;
@@ -504,37 +544,41 @@ P _clipboardItemDeserializeProp<P>(
     case 16:
       return (reader.readStringOrNull(offset)) as P;
     case 17:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 18:
+      return (reader.readDateTime(offset)) as P;
+    case 19:
       return (_ClipboardItemosValueEnumMap[reader.readStringOrNull(offset)] ??
           PlatformOS.android) as P;
-    case 19:
-      return (reader.readLongOrNull(offset)) as P;
     case 20:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 21:
       return (reader.readStringOrNull(offset)) as P;
     case 22:
       return (reader.readStringOrNull(offset)) as P;
     case 23:
+      return (reader.readStringOrNull(offset)) as P;
+    case 24:
       return (_ClipboardItemtextCategoryValueEnumMap[
           reader.readStringOrNull(offset)]) as P;
-    case 24:
-      return (reader.readString(offset)) as P;
     case 25:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 26:
-      return (reader.readStringOrNull(offset)) as P;
-    case 27:
       return (reader.readStringList(offset) ?? []) as P;
+    case 27:
+      return (reader.readStringOrNull(offset)) as P;
     case 28:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 29:
       return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
           ClipItemType.text) as P;
-    case 29:
-      return (reader.readStringOrNull(offset)) as P;
     case 30:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 31:
+      return (reader.readStringOrNull(offset)) as P;
+    case 32:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 33:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1306,6 +1350,96 @@ extension ClipboardItemQueryWhere
               indexName: r'textCategoryWord',
               lower: [],
               upper: [textCategoryWord],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterWhereClause> typeWordEqualTo(
+      String typeWord) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'typeWord',
+        value: [typeWord],
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterWhereClause>
+      typeWordNotEqualTo(String typeWord) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'typeWord',
+              lower: [],
+              upper: [typeWord],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'typeWord',
+              lower: [typeWord],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'typeWord',
+              lower: [typeWord],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'typeWord',
+              lower: [],
+              upper: [typeWord],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterWhereClause>
+      mimetypeWordEqualTo(String mimetypeWord) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'mimetypeWord',
+        value: [mimetypeWord],
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterWhereClause>
+      mimetypeWordNotEqualTo(String mimetypeWord) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mimetypeWord',
+              lower: [],
+              upper: [mimetypeWord],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mimetypeWord',
+              lower: [mimetypeWord],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mimetypeWord',
+              lower: [mimetypeWord],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mimetypeWord',
+              lower: [],
+              upper: [mimetypeWord],
               includeUpper: false,
             ));
       }
@@ -3113,6 +3247,142 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'mimetypeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'mimetypeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'mimetypeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'mimetypeWord',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'mimetypeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'mimetypeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'mimetypeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'mimetypeWord',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'mimetypeWord',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      mimetypeWordIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'mimetypeWord',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       modifiedEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -4867,6 +5137,142 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'typeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'typeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'typeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'typeWord',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'typeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'typeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'typeWord',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'typeWord',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'typeWord',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      typeWordIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'typeWord',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       urlIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -5597,6 +6003,20 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByMimetypeWord() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mimetypeWord', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByMimetypeWordDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mimetypeWord', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'modified', Sort.asc);
@@ -5722,6 +6142,19 @@ extension ClipboardItemQuerySortBy
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'type', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByTypeWord() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'typeWord', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByTypeWordDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'typeWord', Sort.desc);
     });
   }
 
@@ -5973,6 +6406,20 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByMimetypeWord() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mimetypeWord', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByMimetypeWordDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mimetypeWord', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'modified', Sort.asc);
@@ -6098,6 +6545,19 @@ extension ClipboardItemQuerySortThenBy
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'type', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByTypeWord() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'typeWord', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByTypeWordDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'typeWord', Sort.desc);
     });
   }
 
@@ -6241,6 +6701,13 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByMimetypeWord(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'mimetypeWord', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'modified');
@@ -6319,6 +6786,13 @@ extension ClipboardItemQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'type', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByTypeWord(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'typeWord', caseSensitive: caseSensitive);
     });
   }
 
@@ -6458,6 +6932,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, String, QQueryOperations> mimetypeWordProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'mimetypeWord');
+    });
+  }
+
   QueryBuilder<ClipboardItem, DateTime, QQueryOperations> modifiedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'modified');
@@ -6531,6 +7011,12 @@ extension ClipboardItemQueryProperty
   QueryBuilder<ClipboardItem, ClipItemType, QQueryOperations> typeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'type');
+    });
+  }
+
+  QueryBuilder<ClipboardItem, String, QQueryOperations> typeWordProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'typeWord');
     });
   }
 

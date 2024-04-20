@@ -14,7 +14,6 @@ import 'package:image/image.dart' as img;
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime;
 import "package:path/path.dart" as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
@@ -81,6 +80,12 @@ class Clip {
   bool get isText => type == ClipItemType.text;
   bool get isUri => type == ClipItemType.url;
   bool get isFile => type == ClipItemType.file;
+
+  Future<void> cleanup() async {
+    if (file != null && await file!.exists()) {
+      await file!.delete();
+    }
+  }
 
   factory Clip.text({
     required String text,
@@ -226,7 +231,7 @@ class ClipboardFormatProcessor {
     return await c.future;
   }
 
-  Future<(File?, String?, int)> _writeTempFile({
+  Future<(File?, String?, int)> _writeFile({
     required String folder,
     required String ext,
     String? fileName,
@@ -240,9 +245,9 @@ class ClipboardFormatProcessor {
       "Provide atleast one of content, textContent or file",
     );
 
-    final appDir = await getTemporaryDirectory();
+    final appDirPath = await getPersistedRootDirPath();
 
-    final directory = p.join(appDir.path, folder);
+    final directory = p.join(appDirPath, folder);
     await createDirectoryIfNotExists(directory);
     final path = p.join(directory, "${getId()}_${fileName ?? ''}.$ext");
     final file_ = File(path);
@@ -298,8 +303,8 @@ class ClipboardFormatProcessor {
       return Clip.text(text: text);
     }
 
-    final (file, mimeType, size) = await _writeTempFile(
-      folder: "texts",
+    final (file, mimeType, size) = await _writeFile(
+      folder: "files",
       ext: "txt",
       fileName: fileName,
       textContent: text,
@@ -331,8 +336,8 @@ class ClipboardFormatProcessor {
       return null;
     }
 
-    final (file, mimeType, size) = await _writeTempFile(
-      folder: "images",
+    final (file, mimeType, size) = await _writeFile(
+      folder: "medias",
       ext: ext,
       fileName: fileName,
       content: binary,
@@ -383,17 +388,17 @@ class ClipboardFormatProcessor {
 
     final ext = p.extension(file.path).substring(1);
     final fileName = p.basenameWithoutExtension(file.path);
-    final (tempFile, mimeType, size) = await _writeTempFile(
+    final (cacheFile, mimeType, size) = await _writeFile(
       folder: "files",
       ext: ext,
       file: file,
       fileName: fileName,
     );
 
-    if (tempFile == null) return null;
+    if (cacheFile == null) return null;
 
     return Clip.file(
-      file: tempFile,
+      file: cacheFile,
       mimeType: mimeType ?? "application/octet-stream",
       fileName: fileName,
       fileSize: size,
@@ -468,10 +473,12 @@ class ClipboardFormatProcessor {
   }
 }
 
-@injectable
+@singleton
 class ClipboardService with ClipboardListener {
   bool _writing = false;
   bool _started = false;
+
+  void Function()? onRead;
   late final BehaviorSubject<List<Clip?>> onCopy;
   final ClipboardFormatProcessor processor = ClipboardFormatProcessor();
   ClipboardWatcher get watcher => clipboardWatcher;
@@ -489,17 +496,21 @@ class ClipboardService with ClipboardListener {
     await Future.delayed(Durations.short3, () => setWriting(false));
   }
 
-  Future<void> start() async {
+  Future<void> start([void Function()? onRead]) async {
     if (_started) return;
     _started = true;
-    watcher.addListener(this);
+    this.onRead = onRead;
     onCopy = BehaviorSubject<List<Clip?>>();
-    await watcher.start();
+    if (!(Platform.isAndroid || Platform.isIOS)) {
+      watcher.addListener(this);
+      await watcher.start();
+    }
   }
 
   Future<void> dispose() async {
     if (!_started) return;
     _started = false;
+    onRead = null;
     watcher.removeListener(this);
     await watcher.stop();
     await onCopy.close();
@@ -508,22 +519,27 @@ class ClipboardService with ClipboardListener {
   @override
   void onClipboardChanged() {
     if (_writing) return;
-    readClipboard();
+
+    if (onRead != null) {
+      onRead!();
+    } else {
+      readClipboard();
+    }
   }
 
-  Future<void> readClipboard() async {
+  Future<List<Clip?>?> readClipboard({bool manual = false}) async {
     logger.i("Reading clipboard");
     await Future.delayed(Durations.short4);
     final reader = await getReader();
 
     if (reader == null) {
       logger.e("Clipboard is not available!");
-      return;
+      return null;
     }
 
     if (reader.items.isEmpty) {
       logger.w("No item in clipboard");
-      return;
+      return null;
     }
 
     final res = <DataFormat>{};
@@ -558,7 +574,12 @@ class ClipboardService with ClipboardListener {
       ),
     );
 
+    if (manual) {
+      return clips;
+    }
+
     onCopy.add(clips);
+    return null;
   }
 }
 

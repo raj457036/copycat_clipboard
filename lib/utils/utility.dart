@@ -51,6 +51,18 @@ DateTime nowUTC() {
   return DateTime.now().toUtc();
 }
 
+String formatBytes(int sizeInBytes, {bool precise = true}) {
+  const mb = 1024 * 1024;
+  const gb = mb * 1024;
+  if (sizeInBytes < 1024) {
+    return '$sizeInBytes bytes';
+  } else if (sizeInBytes < gb) {
+    return '${(sizeInBytes / mb).toStringAsFixed(precise ? 2 : 0)} MB';
+  } else {
+    return '${(sizeInBytes / gb).toStringAsFixed(precise ? 2 : 0)} GB';
+  }
+}
+
 Future<void> createDirectoryIfNotExists(String path) async {
   final dir = Directory(path);
   if (!await dir.exists()) {
@@ -69,20 +81,26 @@ Future<void> deleteTempFile(File file) async {
   }
 }
 
-Future<String> getPersistedRootDirPath(String root) async {
+Future<String> getPersistedRootDirPath([String? root]) async {
   final docDir = await getApplicationDocumentsDirectory();
   final dirPath = p.join(docDir.path, "offline", root);
   await createDirectoryIfNotExists(dirPath);
   return dirPath;
 }
 
-Future<String> getPesistedPath(String root, File file) async {
-  final basename = p.basename(file.path);
+Future<void> clearPersistedRootDirPath([String? root]) async {
   final dirPath = await getPersistedRootDirPath(root);
-  final filePath = p.join(dirPath, basename);
-  await file.copy(filePath);
-  deleteTempFile(file);
-  return filePath;
+  final dir = Directory(dirPath);
+  try {
+    if (await dir.exists()) {
+      await dir.delete(recursive: true);
+    }
+  } catch (e) {
+    logger.e(
+      "Couldn't delete directory from cache storage.",
+      error: e,
+    );
+  }
 }
 
 Future<void> clearPersistedRootDir() async {
