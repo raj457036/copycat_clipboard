@@ -63,13 +63,13 @@ mixin _$ClipboardItem {
       throw _privateConstructorUsedError; // non persistant state
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? get downloading => throw _privateConstructorUsedError;
+  bool get downloading => throw _privateConstructorUsedError;
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get downloadProgress => throw _privateConstructorUsedError;
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? get uploading => throw _privateConstructorUsedError;
+  bool get uploading => throw _privateConstructorUsedError;
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get uploadProgress => throw _privateConstructorUsedError;
@@ -119,13 +119,13 @@ abstract class $ClipboardItemCopyWith<$Res> {
       DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      bool? downloading,
+      bool downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       double? downloadProgress,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      bool? uploading,
+      bool uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       double? uploadProgress,
@@ -173,9 +173,9 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? localOnly = null,
     Object? copiedCount = null,
     Object? lastCopied = freezed,
-    Object? downloading = freezed,
+    Object? downloading = null,
     Object? downloadProgress = freezed,
-    Object? uploading = freezed,
+    Object? uploading = null,
     Object? uploadProgress = freezed,
     Object? failure = freezed,
   }) {
@@ -284,18 +284,18 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.lastCopied
           : lastCopied // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      downloading: freezed == downloading
+      downloading: null == downloading
           ? _value.downloading
           : downloading // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       downloadProgress: freezed == downloadProgress
           ? _value.downloadProgress
           : downloadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
-      uploading: freezed == uploading
+      uploading: null == uploading
           ? _value.uploading
           : uploading // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       uploadProgress: freezed == uploadProgress
           ? _value.uploadProgress
           : uploadProgress // ignore: cast_nullable_to_non_nullable
@@ -346,13 +346,13 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      bool? downloading,
+      bool downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       double? downloadProgress,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      bool? uploading,
+      bool uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       double? uploadProgress,
@@ -398,9 +398,9 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? localOnly = null,
     Object? copiedCount = null,
     Object? lastCopied = freezed,
-    Object? downloading = freezed,
+    Object? downloading = null,
     Object? downloadProgress = freezed,
-    Object? uploading = freezed,
+    Object? uploading = null,
     Object? uploadProgress = freezed,
     Object? failure = freezed,
   }) {
@@ -509,18 +509,18 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.lastCopied
           : lastCopied // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      downloading: freezed == downloading
+      downloading: null == downloading
           ? _value.downloading
           : downloading // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       downloadProgress: freezed == downloadProgress
           ? _value.downloadProgress
           : downloadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
-      uploading: freezed == uploading
+      uploading: null == uploading
           ? _value.uploading
           : uploading // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       uploadProgress: freezed == uploadProgress
           ? _value.uploadProgress
           : uploadProgress // ignore: cast_nullable_to_non_nullable
@@ -566,13 +566,13 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.downloading,
+      this.downloading = false,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.downloadProgress,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.uploading,
+      this.uploading = false,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.uploadProgress,
@@ -661,7 +661,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  final bool? downloading;
+  final bool downloading;
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -669,7 +669,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  final bool? uploading;
+  final bool uploading;
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -833,13 +833,13 @@ abstract class _ClipboardItem extends ClipboardItem {
       final DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final bool? downloading,
+      final bool downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       final double? downloadProgress,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final bool? uploading,
+      final bool uploading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       final double? uploadProgress,
@@ -918,7 +918,7 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override // non persistant state
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? get downloading;
+  bool get downloading;
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -926,7 +926,7 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? get uploading;
+  bool get uploading;
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)

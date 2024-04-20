@@ -3,7 +3,7 @@ import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
-import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -11,11 +11,13 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;
-    final colors = context.colors;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
+        actions: const [
+          LogoutButton(),
+          width12,
+        ],
       ),
       body: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480),
@@ -28,7 +30,10 @@ class SettingsPage extends StatelessWidget {
               trailing: ThemeDropdown(),
             ),
             height20,
-            SettingHeader(name: "Sync"),
+            SettingHeader(
+              name: "Sync ( Local )",
+              tooltip: "These settings are applicable to this device only.",
+            ),
             height10,
             EnableSyncSwitch(),
             EnableFileSyncSwitch(),

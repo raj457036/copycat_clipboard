@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = GoogleFonts.robotoTextTheme();
+    final textTheme = GoogleFonts.poppinsTextTheme();
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(

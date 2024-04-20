@@ -64,13 +64,15 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     // non persistant state
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
-    bool? downloading,
+    @Default(false)
+    bool downloading,
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
     double? downloadProgress,
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
-    bool? uploading,
+    @Default(false)
+    bool uploading,
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
     double? uploadProgress,
@@ -247,8 +249,11 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
   @ignore
   bool get needDownload =>
-      serverId != null && driveFileId != null && localPath == null;
+      (type == ClipItemType.file || type == ClipItemType.media) &&
+      serverId != null &&
+      driveFileId != null &&
+      localPath == null;
 
   @ignore
-  bool get isSyncing => uploading ?? downloading ?? false;
+  bool get isSyncing => uploading || downloading;
 }

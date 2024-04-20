@@ -12,5 +12,5 @@ extension DateStartAndEndExtension on DateTime {
   }
 }
 
-final dateFormatter = DateFormat.yMMMd();
+final dateFormatter = DateFormat("d MMM yy");
 final dateTimeFormatter = DateFormat.yMMMd().add_jm();

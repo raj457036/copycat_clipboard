@@ -60,7 +60,8 @@ class EventBridge extends StatelessWidget {
         BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
           listener: (context, state) {
             switch (state) {
-              case CloudPersistanceUploadingFile(:final item):
+              case CloudPersistanceUploadingFile(:final item) ||
+                    CloudPersistanceDownloadingFile(:final item):
                 context.read<ClipboardCubit>().put(item);
                 break;
               case CloudPersistanceCreating(:final item) ||

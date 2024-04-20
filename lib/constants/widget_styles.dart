@@ -35,6 +35,9 @@ const height32 = SizedBox(height: 32);
 const height54 = SizedBox(height: 54);
 
 // radius
+const radius8 = BorderRadius.all(
+  Radius.circular(8),
+);
 const radius12 = BorderRadius.all(
   Radius.circular(12),
 );

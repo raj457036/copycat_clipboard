@@ -80,5 +80,9 @@ extension DateTimeExtension on DateTime {
     return other.year == year && other.month == month && other.day == day;
   }
 
+  bool isToday() {
+    return isSameDate(DateTime.now());
+  }
+
   String ago([String? locale]) => timeago.format(this, locale: locale);
 }

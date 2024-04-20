@@ -1,7 +1,9 @@
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -25,6 +27,13 @@ Future<void> copyToClipboard(
   }).catchError((_) {
     showTextSnackbar("❌ Failed to copy to clipboard");
   });
+}
+
+Future<void> downloadFile(
+  BuildContext context,
+  ClipboardItem item,
+) async {
+  context.read<CloudPersistanceCubit>().download(item);
 }
 
 class ClipCardOptionsHeader extends StatelessWidget {
@@ -79,61 +88,80 @@ class ClipCardOptionsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final textTheme = context.textTheme;
+    final created = item.created.isToday()
+        ? item.created.ago(context.locale.localeName)
+        : dateFormatter.format(item.created.toLocal());
     return SizedBox.fromSize(
-      size: const Size.fromHeight(44),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: padding6,
-        ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          return Row(
-            children: [
-              CircleAvatar(
-                maxRadius: 16,
-                child: getType(),
+      size: const Size.fromHeight(42),
+      child: LayoutBuilder(builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        return Row(
+          children: [
+            width8,
+            Expanded(
+              child: Text(
+                created,
+                style: textTheme.labelSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: colors.outline,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.clip,
               ),
-              width8,
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getTitle(),
-                      style: textTheme.titleSmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.clip,
+            ),
+            width8,
+            if (width > 100 && item.type == ClipItemType.url)
+              IconButton(
+                onPressed: launchUrl,
+                icon: const Icon(
+                  Icons.open_in_new,
+                ),
+                tooltip: "Open in browser",
+                style: IconButton.styleFrom(
+                  shape: const RoundedRectangleBorder(),
+                ),
+              ),
+            if (item.needDownload)
+              IconButton(
+                icon: item.downloading
+                    ? SizedBox.square(
+                        dimension: 20,
+                        child: CircularProgressIndicator(
+                          value: item.downloadProgress,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Icon(Icons.download_for_offline_outlined),
+                onPressed:
+                    item.downloading ? null : () => downloadFile(context, item),
+                tooltip:
+                    item.downloading ? "Downloading" : "Download for offline",
+                style: IconButton.styleFrom(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12),
                     ),
-                    Text(
-                      dateTimeFormatter.format(item.created.toLocal()),
-                      style: textTheme.labelSmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.clip,
-                    )
-                  ],
+                  ),
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: () => copyToClipboard(context, item),
+                tooltip: "Copy to clipboard",
+                style: IconButton.styleFrom(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12),
+                    ),
+                  ),
                 ),
               ),
-              width8,
-              if (width > 100 && item.type == ClipItemType.url)
-                IconButton(
-                  onPressed: launchUrl,
-                  icon: const Icon(
-                    Icons.open_in_new,
-                  ),
-                  tooltip: "Open in browser",
-                ),
-              if (width > 100 && !item.needDownload)
-                IconButton(
-                  icon: const Icon(Icons.copy),
-                  onPressed: () => copyToClipboard(context, item),
-                  tooltip: "Copy to clipboard",
-                ),
-            ],
-          );
-        }),
-      ),
+          ],
+        );
+      }),
     );
   }
 }
