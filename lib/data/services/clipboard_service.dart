@@ -439,7 +439,14 @@ class ClipboardFormatProcessor {
       return await getFile(reader, fileUri);
     }
 
-    final uri = await uriFuture;
+    NamedUri? uri;
+
+    try {
+      uri = await uriFuture;
+    } catch (e) {
+      return await _getPlainText(reader);
+    }
+
     if (uri != null) {
       return await getUrl(reader, uri);
     }
