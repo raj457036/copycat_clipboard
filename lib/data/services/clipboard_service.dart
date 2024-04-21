@@ -10,6 +10,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' as service;
 import 'package:image/image.dart' as img;
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime;
@@ -273,7 +274,17 @@ class ClipboardFormatProcessor {
   }
 
   Future<Clip?> _getPlainText(ClipboardDataReader reader) async {
-    var text = await reader.readValue(Formats.plainText);
+    String? text;
+
+    try {
+      text = await reader.readValue(Formats.plainText);
+    } catch (e) {
+      final data = await service.Clipboard.getData("text/plain");
+
+      if (data != null) {
+        text = data.text;
+      }
+    }
     if (text == null) {
       logger.w("Text is null");
       return null;
@@ -544,6 +555,7 @@ class ClipboardService with ClipboardListener {
 
     final res = <DataFormat>{};
     int selectedPref = -1;
+
     for (final item in reader.items) {
       DataFormat? selectedFormat;
       final itemFormats = item.getFormats(Formats.standardFormats);
