@@ -13,6 +13,7 @@ import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
+import 'package:clipboard/widgets/share_listener.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,59 +60,61 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: EventBridge(
-        child: AppLinkListener(
-          child: DevicePreview(
-            enabled: false,
-            builder: (context) =>
-                BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
-              selector: (state) {
-                return state.maybeWhen(
-                  orElse: () => ThemeMode.system,
-                  loaded: (config) => config.themeMode,
-                );
-              },
-              builder: (context, state) {
-                return MaterialApp.router(
-                  scaffoldMessengerKey: scaffoldMessengerKey,
-                  routeInformationParser: router.routeInformationParser,
-                  routeInformationProvider: router.routeInformationProvider,
-                  routerDelegate: router.routerDelegate,
-                  backButtonDispatcher: router.backButtonDispatcher,
-                  themeMode: state,
-                  theme: ThemeData(
-                    useMaterial3: true,
-                    textTheme: textTheme.apply(
-                      bodyColor: lightColorScheme.onSurface,
-                      displayColor: lightColorScheme.onSurface,
-                    ),
-                    colorScheme: lightColorScheme,
-                    brightness: Brightness.light,
-                    inputDecorationTheme: const InputDecorationTheme(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+        child: ShareListener.forPlatform(
+          child: AppLinkListener(
+            child: DevicePreview(
+              enabled: false,
+              builder: (context) =>
+                  BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
+                selector: (state) {
+                  return state.maybeWhen(
+                    orElse: () => ThemeMode.system,
+                    loaded: (config) => config.themeMode,
+                  );
+                },
+                builder: (context, state) {
+                  return MaterialApp.router(
+                    scaffoldMessengerKey: scaffoldMessengerKey,
+                    routeInformationParser: router.routeInformationParser,
+                    routeInformationProvider: router.routeInformationProvider,
+                    routerDelegate: router.routerDelegate,
+                    backButtonDispatcher: router.backButtonDispatcher,
+                    themeMode: state,
+                    theme: ThemeData(
+                      useMaterial3: true,
+                      textTheme: textTheme.apply(
+                        bodyColor: lightColorScheme.onSurface,
+                        displayColor: lightColorScheme.onSurface,
+                      ),
+                      colorScheme: lightColorScheme,
+                      brightness: Brightness.light,
+                      inputDecorationTheme: const InputDecorationTheme(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
                       ),
                     ),
-                  ),
-                  darkTheme: ThemeData(
-                    useMaterial3: true,
-                    textTheme: textTheme.apply(
-                      bodyColor: darkColorScheme.onSurface,
-                      displayColor: darkColorScheme.onSurface,
-                    ),
-                    colorScheme: darkColorScheme,
-                    brightness: Brightness.dark,
-                    inputDecorationTheme: const InputDecorationTheme(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    darkTheme: ThemeData(
+                      useMaterial3: true,
+                      textTheme: textTheme.apply(
+                        bodyColor: darkColorScheme.onSurface,
+                        displayColor: darkColorScheme.onSurface,
+                      ),
+                      colorScheme: darkColorScheme,
+                      brightness: Brightness.dark,
+                      inputDecorationTheme: const InputDecorationTheme(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
                       ),
                     ),
-                  ),
-                  debugShowCheckedModeBanner: false,
-                  localizationsDelegates:
-                      AppLocalizations.localizationsDelegates,
-                  supportedLocales: AppLocalizations.supportedLocales,
-                );
-              },
+                    debugShowCheckedModeBanner: false,
+                    localizationsDelegates:
+                        AppLocalizations.localizationsDelegates,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                  );
+                },
+              ),
             ),
           ),
         ),

@@ -27,7 +27,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
 
   bool _listening = false;
 
-  late StreamSubscription<List<Clip?>> copySub;
+  late StreamSubscription<List<ClipItem?>> copySub;
 
   OfflinePersistanceCubit(
     this.auth,
@@ -117,7 +117,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     return copied;
   }
 
-  Future<ClipboardItem> _convertToClipboardItem(Clip clip) async {
+  Future<ClipboardItem> _convertToClipboardItem(ClipItem clip) async {
     final userId = auth.userId;
 
     switch (clip.type) {
@@ -162,7 +162,8 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     }
   }
 
-  Future<void> onClips(List<Clip?> clips, {bool manualPaste = false}) async {
+  Future<void> onClips(List<ClipItem?> clips,
+      {bool manualPaste = false}) async {
     if (clips.isEmpty) return;
 
     for (final clip in clips) {
