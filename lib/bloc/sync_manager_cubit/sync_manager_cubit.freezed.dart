@@ -22,6 +22,7 @@ mixin _$SyncManagerState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) =>
@@ -32,6 +33,7 @@ mixin _$SyncManagerState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) =>
       throw _privateConstructorUsedError;
@@ -41,6 +43,7 @@ mixin _$SyncManagerState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) =>
@@ -51,6 +54,7 @@ mixin _$SyncManagerState {
     required TResult Function(CheckingSyncState value) checking,
     required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
     required TResult Function(SyncedState value) synced,
   }) =>
       throw _privateConstructorUsedError;
@@ -60,6 +64,7 @@ mixin _$SyncManagerState {
     TResult? Function(CheckingSyncState value)? checking,
     TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
     TResult? Function(SyncedState value)? synced,
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +74,7 @@ mixin _$SyncManagerState {
     TResult Function(CheckingSyncState value)? checking,
     TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
   }) =>
@@ -135,6 +141,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -148,6 +155,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return unknown?.call();
@@ -160,6 +168,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -176,6 +185,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     required TResult Function(CheckingSyncState value) checking,
     required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
     required TResult Function(SyncedState value) synced,
   }) {
     return unknown(this);
@@ -188,6 +198,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult? Function(CheckingSyncState value)? checking,
     TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
     TResult? Function(SyncedState value)? synced,
   }) {
     return unknown?.call(this);
@@ -200,6 +211,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult Function(CheckingSyncState value)? checking,
     TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
   }) {
@@ -256,6 +268,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -269,6 +282,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return checking?.call();
@@ -281,6 +295,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -297,6 +312,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     required TResult Function(CheckingSyncState value) checking,
     required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
     required TResult Function(SyncedState value) synced,
   }) {
     return checking(this);
@@ -309,6 +325,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult? Function(CheckingSyncState value)? checking,
     TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
     TResult? Function(SyncedState value)? synced,
   }) {
     return checking?.call(this);
@@ -321,6 +338,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult Function(CheckingSyncState value)? checking,
     TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
   }) {
@@ -405,6 +423,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -418,6 +437,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return failed?.call(failure);
@@ -430,6 +450,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -446,6 +467,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     required TResult Function(CheckingSyncState value) checking,
     required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
     required TResult Function(SyncedState value) synced,
   }) {
     return failed(this);
@@ -458,6 +480,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult? Function(CheckingSyncState value)? checking,
     TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
     TResult? Function(SyncedState value)? synced,
   }) {
     return failed?.call(this);
@@ -470,6 +493,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult Function(CheckingSyncState value)? checking,
     TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
   }) {
@@ -567,6 +591,7 @@ class _$SyncingStateImpl implements SyncingState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -580,6 +605,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return syncing?.call(progress, total);
@@ -592,6 +618,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -608,6 +635,7 @@ class _$SyncingStateImpl implements SyncingState {
     required TResult Function(CheckingSyncState value) checking,
     required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
     required TResult Function(SyncedState value) synced,
   }) {
     return syncing(this);
@@ -620,6 +648,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult? Function(CheckingSyncState value)? checking,
     TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
     TResult? Function(SyncedState value)? synced,
   }) {
     return syncing?.call(this);
@@ -632,6 +661,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult Function(CheckingSyncState value)? checking,
     TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
   }) {
@@ -652,6 +682,135 @@ abstract class SyncingState implements SyncManagerState {
   @JsonKey(ignore: true)
   _$$SyncingStateImplCopyWith<_$SyncingStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PartlySyncedSyncStateImplCopyWith<$Res> {
+  factory _$$PartlySyncedSyncStateImplCopyWith(
+          _$PartlySyncedSyncStateImpl value,
+          $Res Function(_$PartlySyncedSyncStateImpl) then) =
+      __$$PartlySyncedSyncStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$PartlySyncedSyncStateImplCopyWithImpl<$Res>
+    extends _$SyncManagerStateCopyWithImpl<$Res, _$PartlySyncedSyncStateImpl>
+    implements _$$PartlySyncedSyncStateImplCopyWith<$Res> {
+  __$$PartlySyncedSyncStateImplCopyWithImpl(_$PartlySyncedSyncStateImpl _value,
+      $Res Function(_$PartlySyncedSyncStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
+  const _$PartlySyncedSyncStateImpl();
+
+  @override
+  String toString() {
+    return 'SyncManagerState.partlySynced()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PartlySyncedSyncStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() unknown,
+    required TResult Function() checking,
+    required TResult Function(Failure failure) failed,
+    required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
+    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+        synced,
+  }) {
+    return partlySynced();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unknown,
+    TResult? Function()? checking,
+    TResult? Function(Failure failure)? failed,
+    TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
+    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+  }) {
+    return partlySynced?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unknown,
+    TResult Function()? checking,
+    TResult Function(Failure failure)? failed,
+    TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
+    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    required TResult orElse(),
+  }) {
+    if (partlySynced != null) {
+      return partlySynced();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UnknownSyncState value) unknown,
+    required TResult Function(CheckingSyncState value) checking,
+    required TResult Function(SyncCheckFailedState value) failed,
+    required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
+    required TResult Function(SyncedState value) synced,
+  }) {
+    return partlySynced(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UnknownSyncState value)? unknown,
+    TResult? Function(CheckingSyncState value)? checking,
+    TResult? Function(SyncCheckFailedState value)? failed,
+    TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
+    TResult? Function(SyncedState value)? synced,
+  }) {
+    return partlySynced?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UnknownSyncState value)? unknown,
+    TResult Function(CheckingSyncState value)? checking,
+    TResult Function(SyncCheckFailedState value)? failed,
+    TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
+    TResult Function(SyncedState value)? synced,
+    required TResult orElse(),
+  }) {
+    if (partlySynced != null) {
+      return partlySynced(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PartlySyncedSyncState implements SyncManagerState {
+  const factory PartlySyncedSyncState() = _$PartlySyncedSyncStateImpl;
 }
 
 /// @nodoc
@@ -734,6 +893,7 @@ class _$SyncedStateImpl implements SyncedState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
+    required TResult Function() partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -747,6 +907,7 @@ class _$SyncedStateImpl implements SyncedState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
+    TResult? Function()? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return synced?.call(lastSynced, refreshLocalCache);
@@ -759,6 +920,7 @@ class _$SyncedStateImpl implements SyncedState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
+    TResult Function()? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -775,6 +937,7 @@ class _$SyncedStateImpl implements SyncedState {
     required TResult Function(CheckingSyncState value) checking,
     required TResult Function(SyncCheckFailedState value) failed,
     required TResult Function(SyncingState value) syncing,
+    required TResult Function(PartlySyncedSyncState value) partlySynced,
     required TResult Function(SyncedState value) synced,
   }) {
     return synced(this);
@@ -787,6 +950,7 @@ class _$SyncedStateImpl implements SyncedState {
     TResult? Function(CheckingSyncState value)? checking,
     TResult? Function(SyncCheckFailedState value)? failed,
     TResult? Function(SyncingState value)? syncing,
+    TResult? Function(PartlySyncedSyncState value)? partlySynced,
     TResult? Function(SyncedState value)? synced,
   }) {
     return synced?.call(this);
@@ -799,6 +963,7 @@ class _$SyncedStateImpl implements SyncedState {
     TResult Function(CheckingSyncState value)? checking,
     TResult Function(SyncCheckFailedState value)? failed,
     TResult Function(SyncingState value)? syncing,
+    TResult Function(PartlySyncedSyncState value)? partlySynced,
     TResult Function(SyncedState value)? synced,
     required TResult orElse(),
   }) {

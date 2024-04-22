@@ -21,6 +21,9 @@ class EventBridge extends StatelessWidget {
         BlocListener<SyncManagerCubit, SyncManagerState>(
           listener: (context, state) {
             switch (state) {
+              case PartlySyncedSyncState():
+                context.read<ClipboardCubit>().fetch(fromTop: true);
+                break;
               case SyncedState(refreshLocalCache: true):
                 context.read<ClipboardCubit>().fetch(fromTop: true);
                 break;

@@ -76,7 +76,7 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
           isoDate,
         );
       }
-      final docs = await query.range(offset, offset + limit);
+      final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
       return Right(
         PaginatedResult(
