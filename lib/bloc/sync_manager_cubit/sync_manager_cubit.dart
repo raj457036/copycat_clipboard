@@ -60,7 +60,11 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     // Fetch changes from server
     bool hasMore = true;
     int offset = 0;
+
+    /// when the app can show the clips to the user.
+    bool partlySynced = false;
     while (hasMore) {
+      emit(const SyncManagerState.checking());
       final result = await syncRepo.getLatestItems(
         userId: auth.userId!,
         lastSynced: lastSync?.lastSync,
@@ -91,6 +95,11 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         }
 
         await db.writeTxn(() async => await db.clipboardItems.putAll(items));
+
+        if (!partlySynced) {
+          emit(const SyncManagerState.partlySynced());
+          partlySynced = true;
+        }
       });
 
       if (result.isLeft()) return;

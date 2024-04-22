@@ -10,6 +10,8 @@ class SyncManagerState with _$SyncManagerState {
     required int total,
   }) = SyncingState;
 
+  const factory SyncManagerState.partlySynced() = PartlySyncedSyncState;
+
   const factory SyncManagerState.synced({
     required DateTime lastSynced,
     @Default(false) bool refreshLocalCache,

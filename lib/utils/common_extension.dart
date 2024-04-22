@@ -1,3 +1,5 @@
+import 'dart:math' show min;
+
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -5,6 +7,13 @@ import 'package:timeago/timeago.dart' as timeago;
 extension MaterialStateExtension<T> on T {
   /// Convert into material state property
   MaterialStateProperty<T> get msp => MaterialStateProperty.all(this);
+}
+
+extension StringExtension on String {
+  String sub({int start = 0, int? end}) {
+    final end_ = min(end ?? length, length);
+    return substring(start, end_);
+  }
 }
 
 extension BuildContextExtension on BuildContext {

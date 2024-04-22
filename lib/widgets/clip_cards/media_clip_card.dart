@@ -21,9 +21,28 @@ class MediaPreview extends StatelessWidget {
     if (item.imgBlurHash == null) {
       return const AssetImage(AssetConstants.placeholderImage);
     }
-    final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
-    final bin = Uint8List.fromList(img.encodeJpg(image_));
-    return MemoryImage(bin);
+    try {
+      final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
+      final bin = Uint8List.fromList(img.encodeJpg(image_, quality: 80));
+      return MemoryImage(bin);
+    } catch (e) {
+      return const AssetImage(AssetConstants.placeholderImage);
+    }
+  }
+
+  Icon getIcon() {
+    if (item.fileMimeType != null) {
+      if (item.fileMimeType!.startsWith("image")) {
+        return const Icon(Icons.image);
+      }
+      if (item.fileMimeType!.startsWith("video")) {
+        return const Icon(Icons.ondemand_video_rounded);
+      }
+      if (item.fileMimeType!.startsWith("audio")) {
+        return const Icon(Icons.audiotrack);
+      }
+    }
+    return const Icon(Icons.image);
   }
 
   @override
@@ -34,7 +53,7 @@ class MediaPreview extends StatelessWidget {
       borderRadius: radius8,
       child: InkWell(
         borderRadius: radius8,
-        onTap: () {},
+        // onTap: () {},
         child: ClipRRect(
           borderRadius: radius8,
           child: SizedBox.expand(
@@ -44,6 +63,10 @@ class MediaPreview extends StatelessWidget {
                   image: getPreview(),
                   fit: BoxFit.cover,
                 ),
+              ),
+              child: Align(
+                alignment: const Alignment(0.95, 0.95),
+                child: getIcon(),
               ),
             ),
           ),
