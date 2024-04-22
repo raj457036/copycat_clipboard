@@ -49,7 +49,10 @@ class GoogleDriveSetup extends StatelessWidget {
               title: const Text("Google Drive"),
               trailing: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(165, 40),
+                  fixedSize: const Size(185, 40),
+                  textStyle: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 onPressed: noClick
                     ? null

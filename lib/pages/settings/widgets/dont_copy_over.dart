@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/numbers/file_sizes.dart';
 import 'package:clipboard/constants/widget_styles.dart';
@@ -11,6 +13,7 @@ class DontAutoCopyOver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Platform.isAndroid || Platform.isIOS) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, int>(

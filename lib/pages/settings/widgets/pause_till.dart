@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
@@ -31,6 +33,7 @@ class PauseTill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Platform.isAndroid || Platform.isIOS) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, DateTime?>(
@@ -45,10 +48,10 @@ class PauseTill extends StatelessWidget {
       builder: (context, state) {
         final isActive = state != null && now().isBefore(state);
         return SwitchListTile(
-          title: const Text("Pause Copying"),
+          title: const Text("Is Paused?"),
           subtitle: Text(
             !isActive
-                ? "Not Paused"
+                ? "Auto copy is not paused"
                 : "Auto Copy is paused until ${dateTimeFormatter.format(state)}",
             style: textTheme.bodySmall?.copyWith(
               color: colors.outline,
