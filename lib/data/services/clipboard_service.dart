@@ -50,7 +50,7 @@ const _supportedUriSchemas = {
   "news"
 };
 
-class Clip {
+class ClipItem {
   final ClipItemType type;
   final File? file;
   final String? fileName;
@@ -62,7 +62,7 @@ class Clip {
   final Uri? uri;
   final TextCategory? textCategory;
 
-  Clip({
+  ClipItem({
     required this.type,
     required this.file,
     required this.fileName,
@@ -88,11 +88,11 @@ class Clip {
     }
   }
 
-  factory Clip.text({
+  factory ClipItem.text({
     required String text,
     TextCategory? textCategory,
   }) =>
-      Clip(
+      ClipItem(
         file: null,
         fileName: null,
         uri: null,
@@ -104,10 +104,10 @@ class Clip {
         textCategory: textCategory,
       );
 
-  factory Clip.uri({
+  factory ClipItem.uri({
     required Uri uri,
   }) =>
-      Clip(
+      ClipItem(
         file: null,
         fileName: null,
         uri: uri,
@@ -118,14 +118,14 @@ class Clip {
         fileSize: null,
       );
 
-  factory Clip.imageFile({
+  factory ClipItem.imageFile({
     required File file,
     String? fileName,
     required String mimeType,
     required int fileSize,
     String? blurHash,
   }) =>
-      Clip(
+      ClipItem(
         fileName: fileName,
         file: file,
         uri: null,
@@ -137,14 +137,14 @@ class Clip {
         blurHash: blurHash,
       );
 
-  factory Clip.file({
+  factory ClipItem.file({
     required File file,
     String? textPreview,
     String? fileName,
     required String mimeType,
     required int fileSize,
   }) =>
-      Clip(
+      ClipItem(
         file: file,
         fileName: fileName,
         uri: null,
@@ -162,54 +162,95 @@ final emailRegex = RegExp(
     r"^([a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9\-\_]+(\.[a-zA-Z]+)*)$");
 final phoneRegex = RegExp(r'^\d{7,15}$');
 
+(bool, String) parseColor(String value) {
+  final rgb = rgbRegex.stringMatch(value);
+  if (rgb != null) {
+    return (true, rgb);
+  }
+  final rgba = rgbaRegex.stringMatch(value);
+  if (rgba != null) {
+    return (true, rgba);
+  }
+  return (false, value);
+}
+
+(bool, String) parseEmail(String value) {
+  final email = emailRegex.stringMatch(value);
+  if (email != null) {
+    return (true, email);
+  }
+  return (false, value);
+}
+
+(bool, String) parsePhone(String value) {
+  final phone = phoneRegex.stringMatch(value);
+  if (phone != null) {
+    return (true, phone);
+  }
+  return (false, value);
+}
+
+(TextCategory?, String) getTextCategory(String value) {
+  final (isColor, color) = parseColor(value);
+  if (isColor) return (TextCategory.color, color);
+
+  final (isEmail, email) = parseEmail(value);
+  if (isEmail) return (TextCategory.email, email);
+
+  final (isPhone, phone) = parsePhone(value);
+  if (isPhone) return (TextCategory.phone, phone);
+
+  return (null, value);
+}
+
+Future<(File?, String?, int)> writeToClipboardCacheFile({
+  required String folder,
+  required String ext,
+  String? fileName,
+  Uint8List? content,
+  String? textContent,
+  File? file,
+}) async {
+  /// returns file, mimetype and size
+  assert(
+    !(file == null && content == null && textContent == null),
+    "Provide atleast one of content, textContent or file",
+  );
+
+  final appDirPath = await getPersistedRootDirPath();
+
+  final directory = p.join(appDirPath, folder);
+  await createDirectoryIfNotExists(directory);
+  final path = p.join(directory, "${getId()}_${fileName ?? ''}.$ext");
+  final file_ = File(path);
+
+  if (file != null) {
+    await file.copy(path);
+    return (file_, mime.lookupMimeType(file.path), await file.length());
+  } else if (textContent != null) {
+    await file_.writeAsString(textContent);
+    return (file_, "text/plain", textContent.length);
+  } else if (content != null) {
+    await file_.writeAsBytes(content);
+    return (
+      file_,
+      mime.lookupMimeType(
+        path,
+        headerBytes: content.sublist(0, 100),
+      ),
+      content.length,
+    );
+  }
+  return (null, null, 0);
+}
+
 class ClipboardFormatProcessor {
-  (bool, String) parseColor(String value) {
-    final rgb = rgbRegex.stringMatch(value);
-    if (rgb != null) {
-      return (true, rgb);
-    }
-    final rgba = rgbaRegex.stringMatch(value);
-    if (rgba != null) {
-      return (true, rgba);
-    }
-    return (false, value);
-  }
-
-  (bool, String) parseEmail(String value) {
-    final email = emailRegex.stringMatch(value);
-    if (email != null) {
-      return (true, email);
-    }
-    return (false, value);
-  }
-
-  (bool, String) parsePhone(String value) {
-    final phone = phoneRegex.stringMatch(value);
-    if (phone != null) {
-      return (true, phone);
-    }
-    return (false, value);
-  }
-
   String cleanText(String text) {
     try {
       return Uri.decodeComponent(text);
     } catch (e) {
       return text;
     }
-  }
-
-  (TextCategory?, String) getTextCategory(String value) {
-    final (isColor, color) = parseColor(value);
-    if (isColor) return (TextCategory.color, color);
-
-    final (isEmail, email) = parseEmail(value);
-    if (isEmail) return (TextCategory.email, email);
-
-    final (isPhone, phone) = parsePhone(value);
-    if (isPhone) return (TextCategory.phone, phone);
-
-    return (null, value);
   }
 
   Future<(String?, Uint8List?)> readFile(
@@ -232,48 +273,7 @@ class ClipboardFormatProcessor {
     return await c.future;
   }
 
-  Future<(File?, String?, int)> _writeFile({
-    required String folder,
-    required String ext,
-    String? fileName,
-    Uint8List? content,
-    String? textContent,
-    File? file,
-  }) async {
-    /// returns file, mimetype and size
-    assert(
-      !(file == null && content == null && textContent == null),
-      "Provide atleast one of content, textContent or file",
-    );
-
-    final appDirPath = await getPersistedRootDirPath();
-
-    final directory = p.join(appDirPath, folder);
-    await createDirectoryIfNotExists(directory);
-    final path = p.join(directory, "${getId()}_${fileName ?? ''}.$ext");
-    final file_ = File(path);
-
-    if (file != null) {
-      await file.copy(path);
-      return (file_, mime.lookupMimeType(file.path), await file.length());
-    } else if (textContent != null) {
-      await file_.writeAsString(textContent);
-      return (file_, "text/plain", textContent.length);
-    } else if (content != null) {
-      await file_.writeAsBytes(content);
-      return (
-        file_,
-        mime.lookupMimeType(
-          path,
-          headerBytes: content.sublist(0, 100),
-        ),
-        content.length,
-      );
-    }
-    return (null, null, 0);
-  }
-
-  Future<Clip?> _getPlainText(ClipboardDataReader reader) async {
+  Future<ClipItem?> _getPlainText(ClipboardDataReader reader) async {
     String? text;
 
     try {
@@ -292,14 +292,14 @@ class ClipboardFormatProcessor {
       text = text.replaceAll(RegExp('\r[\n]?'), '\n');
       text = cleanText(text);
       final (textCategory, parsedText) = getTextCategory(text);
-      return Clip.text(
+      return ClipItem.text(
         text: parsedText,
         textCategory: textCategory,
       );
     }
   }
 
-  Future<Clip?> _getPlainTextFile(ClipboardDataReader reader) async {
+  Future<ClipItem?> _getPlainTextFile(ClipboardDataReader reader) async {
     final (fileName, binary) = await readFile(reader, Formats.plainTextFile);
 
     if (binary == null) {
@@ -311,10 +311,10 @@ class ClipboardFormatProcessor {
     // TODO check file name if it ends with anything other then txt or "blank"
     // Todo: then its a file.
     if (text.length <= 1024) {
-      return Clip.text(text: text);
+      return ClipItem.text(text: text);
     }
 
-    final (file, mimeType, size) = await _writeFile(
+    final (file, mimeType, size) = await writeToClipboardCacheFile(
       folder: "files",
       ext: "txt",
       fileName: fileName,
@@ -323,7 +323,7 @@ class ClipboardFormatProcessor {
 
     if (file == null) return null;
 
-    return Clip.file(
+    return ClipItem.file(
       file: file,
       mimeType: mimeType ?? "application/octet-stream",
       textPreview: text,
@@ -332,7 +332,7 @@ class ClipboardFormatProcessor {
     );
   }
 
-  Future<Clip?> getImage(
+  Future<ClipItem?> getImage(
     ClipboardDataReader reader,
     String ext,
     DataFormat format,
@@ -347,7 +347,7 @@ class ClipboardFormatProcessor {
       return null;
     }
 
-    final (file, mimeType, size) = await _writeFile(
+    final (file, mimeType, size) = await writeToClipboardCacheFile(
       folder: "medias",
       ext: ext,
       fileName: fileName,
@@ -368,7 +368,7 @@ class ClipboardFormatProcessor {
       );
     }
 
-    return Clip.imageFile(
+    return ClipItem.imageFile(
       file: file,
       mimeType: mimeType ?? "application/octet-stream",
       fileName: fileName,
@@ -377,7 +377,7 @@ class ClipboardFormatProcessor {
     );
   }
 
-  Future<Clip?> getFile(
+  Future<ClipItem?> getFile(
     ClipboardDataReader reader,
     Uri uri,
   ) async {
@@ -399,7 +399,7 @@ class ClipboardFormatProcessor {
 
     final ext = p.extension(file.path).substring(1);
     final fileName = p.basenameWithoutExtension(file.path);
-    final (cacheFile, mimeType, size) = await _writeFile(
+    final (cacheFile, mimeType, size) = await writeToClipboardCacheFile(
       folder: "files",
       ext: ext,
       file: file,
@@ -408,7 +408,7 @@ class ClipboardFormatProcessor {
 
     if (cacheFile == null) return null;
 
-    return Clip.file(
+    return ClipItem.file(
       file: cacheFile,
       mimeType: mimeType ?? "application/octet-stream",
       fileName: fileName,
@@ -416,18 +416,18 @@ class ClipboardFormatProcessor {
     );
   }
 
-  Future<Clip> getUrl(ClipboardDataReader reader, NamedUri uri) async {
+  Future<ClipItem> getUrl(ClipboardDataReader reader, NamedUri uri) async {
     final schema = uri.uri.scheme;
     final isSupported = _supportedUriSchemas.contains(schema);
     if (isSupported) {
-      return Clip.uri(uri: uri.uri);
+      return ClipItem.uri(uri: uri.uri);
     } else {
       logger.w("Unsupported uri schema: $schema. Converting to text.");
-      return Clip.text(text: cleanText(uri.uri.toString()));
+      return ClipItem.text(text: cleanText(uri.uri.toString()));
     }
   }
 
-  Future<Clip?> processUri(ClipboardDataReader reader) async {
+  Future<ClipItem?> processUri(ClipboardDataReader reader) async {
     // Make sure to request both values before awaiting
     final fileUriFuture = reader.readValue(Formats.fileUri);
     final uriFuture = reader.readValue(Formats.uri);
@@ -456,7 +456,7 @@ class ClipboardFormatProcessor {
     return await _getPlainText(reader);
   }
 
-  Future<Clip?> process(
+  Future<ClipItem?> process(
     ClipboardDataReader reader,
     DataFormat format,
   ) async {
@@ -497,7 +497,7 @@ class ClipboardService with ClipboardListener {
   bool _started = false;
 
   void Function()? onRead;
-  late final BehaviorSubject<List<Clip?>> onCopy;
+  late final BehaviorSubject<List<ClipItem?>> onCopy;
   final ClipboardFormatProcessor processor = ClipboardFormatProcessor();
   ClipboardWatcher get watcher => clipboardWatcher;
 
@@ -518,7 +518,7 @@ class ClipboardService with ClipboardListener {
     if (_started) return;
     _started = true;
     this.onRead = onRead;
-    onCopy = BehaviorSubject<List<Clip?>>();
+    onCopy = BehaviorSubject<List<ClipItem?>>();
     if (!(Platform.isAndroid || Platform.isIOS)) {
       watcher.addListener(this);
       await watcher.start();
@@ -545,7 +545,7 @@ class ClipboardService with ClipboardListener {
     }
   }
 
-  Future<List<Clip?>?> readClipboard({bool manual = false}) async {
+  Future<List<ClipItem?>?> readClipboard({bool manual = false}) async {
     logger.i("Reading clipboard");
     await Future.delayed(Durations.short4);
     final reader = await getReader();
