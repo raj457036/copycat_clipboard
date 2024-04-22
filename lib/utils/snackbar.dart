@@ -47,6 +47,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
       showCloseIcon: !isMobile,
       backgroundColor: colors.error,
     ),
+    closePrevious: true,
   );
 }
 

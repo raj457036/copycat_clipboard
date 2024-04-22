@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/numbers/file_sizes.dart';
 import 'package:clipboard/constants/widget_styles.dart';
@@ -7,6 +5,7 @@ import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import "package:universal_io/io.dart";
 
 class DontAutoCopyOver extends StatelessWidget {
   const DontAutoCopyOver({super.key});

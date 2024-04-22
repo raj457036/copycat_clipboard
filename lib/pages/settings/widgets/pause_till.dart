@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import "package:universal_io/io.dart";
 
 class PauseTill extends StatelessWidget {
   const PauseTill({super.key});

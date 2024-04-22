@@ -1,4 +1,4 @@
-import 'dart:io';
+import "package:universal_io/io.dart";
 
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
