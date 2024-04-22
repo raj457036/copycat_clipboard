@@ -54,6 +54,7 @@ dependencies:
   async: ^2.11.0
   win32_registry: ^1.1.3
   share_handler: ^0.0.21
+  share_plus: ^8.0.3
 
 dev_dependencies:
   flutter_test:
