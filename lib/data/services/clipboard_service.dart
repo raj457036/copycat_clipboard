@@ -1,22 +1,21 @@
 import 'dart:async' show Completer, FutureOr;
 import 'dart:convert' show utf8;
-import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
+import 'package:easy_worker/easy_worker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as service;
-import 'package:image/image.dart' as img;
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime;
 import "package:path/path.dart" as p;
 import 'package:rxdart/rxdart.dart';
 import 'package:super_clipboard/super_clipboard.dart';
+import "package:universal_io/io.dart";
 
 const _clipTypePriority = [
   Formats.png,
@@ -203,17 +202,10 @@ final phoneRegex = RegExp(r'^\d{7,15}$');
   return (null, value);
 }
 
-String? getBlurHash(Uint8List bin) {
-  try {
-    final image = img.decodeImage(bin);
-    return BlurHash.encode(image!, numCompX: 4, numCompY: 3).hash;
-  } catch (e) {
-    logger.e(
-      "Couldn't get blur hash from the image!",
-      error: e,
-    );
-    return null;
-  }
+void copyFile((String, String) paths, Sender sender) {
+  final fromFile = File(paths.$1);
+  fromFile.copySync(paths.$2);
+  sender(null);
 }
 
 Future<(File?, String?, int)> writeToClipboardCacheFile({
@@ -238,7 +230,8 @@ Future<(File?, String?, int)> writeToClipboardCacheFile({
   final file_ = File(path);
 
   if (file != null) {
-    await file.copy(path);
+    // await copyFile(file.path, path);
+    await EasyWorker.compute(copyFile, (file.path, path), name: "Copy File");
     return (file_, mime.lookupMimeType(file.path), await file.length());
   } else if (textContent != null) {
     await file_.writeAsString(textContent);
@@ -369,14 +362,11 @@ class ClipboardFormatProcessor {
 
     if (file == null) return null;
 
-    String? blurHash = getBlurHash(binary);
-
     return ClipItem.imageFile(
       file: file,
       mimeType: mimeType ?? "application/octet-stream",
       fileName: fileName,
       fileSize: size,
-      blurHash: blurHash,
     );
   }
 

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
@@ -14,6 +13,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:share_plus/share_plus.dart';
+import "package:universal_io/io.dart";
 
 part 'offline_persistance_cubit.freezed.dart';
 part 'offline_persistance_state.dart';

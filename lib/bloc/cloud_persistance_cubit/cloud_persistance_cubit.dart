@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
@@ -11,9 +10,11 @@ import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/google_services.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/utils/blur_hash.dart';
 import 'package:clipboard/utils/network_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import "package:universal_io/io.dart";
 
 part 'cloud_persistance_cubit.freezed.dart';
 part 'cloud_persistance_state.dart';
@@ -111,6 +112,16 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     );
   }
 
+  Future<String?> _getBlurHashIfNeeded(ClipboardItem item) async {
+    if (item.fileMimeType == null ||
+        !item.fileMimeType!.startsWith("image/") ||
+        item.imgBlurHash != null ||
+        item.localPath == null) return null;
+
+    final blurHash = await getBlurHash(item.localPath!);
+    return blurHash;
+  }
+
   Future<void> _uploadAndCreate(ClipboardItem item) async {
     if (!appConfig.canUploadFile(item.fileSize!) && !item.userIntent) {
       logger.i("Auto upload is disabled for files over the limit.");
@@ -154,19 +165,31 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     }
 
     drive.accessToken = accessToken;
-    final updatedItem = await drive.upload(
-      item.assignUserId(session.user.id),
-      onProgress: (uploaded, total) {
-        emit(
-          CloudPersistanceState.uploadingFile(
-            item.copyWith(
-              uploading: true,
-              uploadProgress: uploaded / total,
-            )..applyId(item),
-          ),
-        );
-      },
-    );
+
+    final results = await Future.wait([
+      drive.upload(
+        item.assignUserId(session.user.id),
+        onProgress: (uploaded, total) {
+          emit(
+            CloudPersistanceState.uploadingFile(
+              item.copyWith(
+                uploading: true,
+                uploadProgress: uploaded / total,
+              )..applyId(item),
+            ),
+          );
+        },
+      ),
+      _getBlurHashIfNeeded(item)
+    ]);
+
+    ClipboardItem updatedItem = results[0] as ClipboardItem;
+    final blurhash = results[1] as String?;
+
+    if (blurhash != null) {
+      updatedItem = updatedItem.copyWith(imgBlurHash: blurhash)
+        ..applyId(updatedItem);
+    }
 
     if (updatedItem.driveFileId != null) {
       await _create(updatedItem);

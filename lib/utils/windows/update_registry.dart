@@ -1,4 +1,4 @@
-import 'dart:io';
+import "package:universal_io/io.dart";
 
 import 'package:win32_registry/win32_registry.dart';
 

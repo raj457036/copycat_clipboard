@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import "package:universal_io/io.dart";
 
 class ConfirmDialog extends StatelessWidget {
   final String title;

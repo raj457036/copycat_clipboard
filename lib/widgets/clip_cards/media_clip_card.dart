@@ -1,12 +1,13 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import "package:universal_io/io.dart";
 
 class MediaPreview extends StatelessWidget {
   final ClipboardItem item;
@@ -16,6 +17,9 @@ class MediaPreview extends StatelessWidget {
   ImageProvider getPreview() {
     if (item.localPath != null) {
       return FileImage(File(item.localPath!));
+    }
+    if (item.imgBlurHash == null) {
+      return const AssetImage(AssetConstants.placeholderImage);
     }
     final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
     final bin = Uint8List.fromList(img.encodeJpg(image_));

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_handler/share_handler.dart';
+import "package:universal_io/io.dart";
 
 class ShareListener extends StatefulWidget {
   final Widget child;
@@ -40,17 +40,20 @@ class _ShareListenerState extends State<ShareListener> {
 
     if (media != null) {
       logger.i("Received initial shared media!");
-      putMediaToClipboard(media);
+      // putMediaToClipboard(media);
     }
 
-    handler.sharedMediaStream.listen((SharedMedia media) {
+    handler.sharedMediaStream.listen((SharedMedia media) async {
       if (!mounted) return;
       logger.i("Received shared media: $media");
       showTextSnackbar(
         "Pasting the shared content to clipboard",
         isLoading: true,
       );
-      putMediaToClipboard(media);
+      putMediaToClipboard(media)
+          .then((value) => showTextSnackbar("Done", closePrevious: true));
+    }, onError: (error) {
+      showFailureSnackbar(Failure.fromException(error));
     });
     if (!mounted) return;
   }
@@ -72,7 +75,6 @@ class _ShareListenerState extends State<ShareListener> {
           mimeType: mimeType ?? "application/octet-stream",
           fileName: fileName,
           fileSize: size,
-          blurHash: getBlurHash(await file.readAsBytes()),
         );
       } else {
         clip = ClipItem.file(
@@ -119,7 +121,9 @@ class _ShareListenerState extends State<ShareListener> {
     }
 
     if (mounted) {
-      await context.read<OfflinePersistanceCubit>().onClips(clips);
+      await context
+          .read<OfflinePersistanceCubit>()
+          .onClips(clips, manualPaste: true);
     }
   }
 
