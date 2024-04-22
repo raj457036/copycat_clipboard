@@ -27,6 +27,10 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
     return token?.accessToken;
   }
 
+  void reset() {
+    emit(const DriveSetupState.unknown());
+  }
+
   Future<void> fetch() async {
     emit(const DriveSetupState.fetching());
     final result = await repo.getDriveCredentials();

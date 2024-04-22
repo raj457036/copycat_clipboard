@@ -203,6 +203,19 @@ final phoneRegex = RegExp(r'^\d{7,15}$');
   return (null, value);
 }
 
+String? getBlurHash(Uint8List bin) {
+  try {
+    final image = img.decodeImage(bin);
+    return BlurHash.encode(image!, numCompX: 4, numCompY: 3).hash;
+  } catch (e) {
+    logger.e(
+      "Couldn't get blur hash from the image!",
+      error: e,
+    );
+    return null;
+  }
+}
+
 Future<(File?, String?, int)> writeToClipboardCacheFile({
   required String folder,
   required String ext,
@@ -356,17 +369,7 @@ class ClipboardFormatProcessor {
 
     if (file == null) return null;
 
-    String? blurHash;
-
-    try {
-      final image = img.decodeImage(binary);
-      blurHash = BlurHash.encode(image!, numCompX: 4, numCompY: 3).hash;
-    } catch (e) {
-      logger.e(
-        "Couldn't get blur hash from the image!",
-        error: e,
-      );
-    }
+    String? blurHash = getBlurHash(binary);
 
     return ClipItem.imageFile(
       file: file,

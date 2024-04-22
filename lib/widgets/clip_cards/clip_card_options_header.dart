@@ -31,6 +31,20 @@ Future<void> copyToClipboard(
   });
 }
 
+Future<void> shareClipboardItem(
+    BuildContext context, ClipboardItem item) async {
+  context
+      .read<OfflinePersistanceCubit>()
+      .shareClipboardItem(item)
+      .then((value) {
+    showTextSnackbar(
+      "📝 Successfully shared",
+    );
+  }).catchError((_) {
+    showTextSnackbar("❌ Failed to share");
+  });
+}
+
 Future<void> downloadFile(
   BuildContext context,
   ClipboardItem item,

@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
@@ -15,10 +16,10 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
+    final isMobile = width <= 576;
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(width <= 568 ? 65 : 100),
+          preferredSize: Size.fromHeight(width <= 576 ? 65 : 100),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -38,66 +39,76 @@ class SearchPage extends StatelessWidget {
               ),
             ),
           )),
-      body: BlocBuilder<SearchCubit, SearchState>(
-        builder: (context, state) {
+      body: BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
+        listenWhen: (previous, current) => current is OfflinePersistanceDeleted,
+        listener: (context, state) {
           switch (state) {
-            case InitialSearchState():
-              return const Center(
-                child: Text("Search something in your clipboard."),
-              );
-            case SearchingState():
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            case SearchErrorState(:final failure):
-              return Center(
-                child: Text(failure.message),
-              );
-            case SearchResultState(:final results, :final hasMore):
-              {
-                if (results.isEmpty) {
-                  return const Center(
-                    child: Text("No clipboard item found for the query!"),
-                  );
-                }
-
-                final hasMoreResult = hasMore ? 1 : 0;
-
-                return GridView.builder(
-                  padding: const EdgeInsets.all(padding16),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 250,
-                    crossAxisSpacing: padding6,
-                    mainAxisSpacing: padding6,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: results.length + hasMoreResult,
-                  itemBuilder: (context, index) {
-                    if (index == results.length) {
-                      return Card.outlined(
-                        child: Center(
-                          child: TextButton.icon(
-                            onPressed: () => loadMore(context),
-                            label: const Text(
-                              "Load More",
-                            ),
-                            icon: const Icon(Icons.read_more),
-                          ),
-                        ),
-                      );
-                    }
-
-                    final item = results[index];
-                    return ClipCard(
-                      key: ValueKey("clipboard-item-${item.id}"),
-                      item: item,
-                      deleteAllowed: false,
-                    );
-                  },
-                );
-              }
+            case OfflinePersistanceDeleted(:final item):
+              context.read<SearchCubit>().deleteItem(item);
+            case _:
           }
         },
+        child: BlocBuilder<SearchCubit, SearchState>(
+          builder: (context, state) {
+            switch (state) {
+              case InitialSearchState():
+                return const Center(
+                  child: Text("Search something in your clipboard."),
+                );
+              case SearchingState():
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case SearchErrorState(:final failure):
+                return Center(
+                  child: Text(failure.message),
+                );
+              case SearchResultState(:final results, :final hasMore):
+                {
+                  if (results.isEmpty) {
+                    return const Center(
+                      child: Text("No clipboard item found for the query!"),
+                    );
+                  }
+
+                  final hasMoreResult = hasMore ? 1 : 0;
+
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(padding16),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 250,
+                      crossAxisSpacing: padding6,
+                      mainAxisSpacing: padding6,
+                      childAspectRatio: isMobile ? 3 / 4 : 1,
+                    ),
+                    itemCount: results.length + hasMoreResult,
+                    itemBuilder: (context, index) {
+                      if (index == results.length) {
+                        return Card.outlined(
+                          child: Center(
+                            child: TextButton.icon(
+                              onPressed: () => loadMore(context),
+                              label: const Text(
+                                "Load More",
+                              ),
+                              icon: const Icon(Icons.read_more),
+                            ),
+                          ),
+                        );
+                      }
+
+                      final item = results[index];
+                      return ClipCard(
+                        key: ValueKey("clipboard-item-${item.id}"),
+                        item: item,
+                        // deleteAllowed: false,
+                      );
+                    },
+                  );
+                }
+            }
+          },
+        ),
       ),
     );
   }

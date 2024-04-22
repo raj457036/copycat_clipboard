@@ -5,7 +5,6 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -14,7 +13,7 @@ part 'clipboard_cubit.freezed.dart';
 part 'clipboard_state.dart';
 
 @singleton
-class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
+class ClipboardCubit extends Cubit<ClipboardState> {
   final ClipboardRepository repo;
   final Isar db;
 
@@ -26,6 +25,10 @@ class ClipboardCubit extends Cubit<ClipboardState> with ClipboardListener {
   Future<void> fixDatabase() async {
     // await db
     //     .writeTxn(() async => await .deleteAll([77, 87, 79]));
+  }
+
+  void reset() {
+    emit(const ClipboardState.loaded(items: []));
   }
 
   void put(ClipboardItem item, {bool isNew = false}) {

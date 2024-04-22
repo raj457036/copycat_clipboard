@@ -56,13 +56,13 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                   size: 18,
                 ),
                 width6,
-                if (width > 150)
+                if (width > 200)
                   Text(
                     "Local",
                     style: context.textTheme.labelMedium,
                   ),
                 const Spacer(),
-                TextButton(
+                ElevatedButton(
                   onPressed: item.isSyncing
                       ? null
                       : () {
@@ -72,8 +72,9 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                         },
                   child: Text(
                     buttonText,
-                    style: context.textTheme.labelMedium
-                        ?.copyWith(color: colors.tertiary),
+                    style: context.textTheme.labelSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

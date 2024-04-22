@@ -13,6 +13,7 @@ import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:share_plus/share_plus.dart';
 
 part 'offline_persistance_cubit.freezed.dart';
 part 'offline_persistance_state.dart';
@@ -69,14 +70,38 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   }
 
   Future<void> reset() async {
-    await repo.deleteAll();
-    await clearPersistedRootDir();
+    await Future.wait([
+      repo.deleteAll(),
+      clearPersistedRootDir(),
+    ]);
   }
 
   Future<void> paste() async {
     final clips = await clipboard.readClipboard(manual: true);
     if (clips != null) {
       await onClips(clips);
+    }
+  }
+
+  Future<void> shareClipboardItem(ClipboardItem item) async {
+    switch (item.type) {
+      case ClipItemType.text:
+        await Share.share(
+          item.text!,
+          subject: item.title,
+        );
+      case ClipItemType.url:
+        await Share.shareUri(
+          Uri.parse(item.url!),
+        );
+      case ClipItemType.media:
+      case ClipItemType.file:
+        if (item.localPath == null) return;
+        await Share.shareXFiles(
+          [XFile(item.localPath!)],
+          subject: item.title,
+          text: item.description,
+        );
     }
   }
 

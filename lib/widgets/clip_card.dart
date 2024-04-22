@@ -60,6 +60,11 @@ class ClipCard extends StatelessWidget {
           text: 'Copy',
           onPressed: () => copyToClipboard(context, item),
         ),
+        MenuItem(
+          icon: Icons.ios_share,
+          text: 'Share',
+          onPressed: () => shareClipboardItem(context, item),
+        ),
         if (item.type == ClipItemType.url)
           MenuItem(
             icon: Icons.open_in_new,

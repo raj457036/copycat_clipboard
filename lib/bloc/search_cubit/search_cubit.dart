@@ -77,4 +77,14 @@ class SearchCubit extends Cubit<SearchState> {
       case _:
     }
   }
+
+  Future<void> deleteItem(ClipboardItem item) async {
+    state.mapOrNull(results: (result) {
+      emit(
+        result.copyWith(
+          results: result.results.where((it) => it.id != item.id).toList(),
+        ),
+      );
+    });
+  }
 }

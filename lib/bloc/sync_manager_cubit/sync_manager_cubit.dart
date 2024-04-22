@@ -43,6 +43,11 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     return lastSync;
   }
 
+  Future<void> reset() async {
+    await db.writeTxn(() => db.syncStatus.clear());
+    emit(const SyncManagerState.unknown());
+  }
+
   Future<void> syncChanges() async {
     emit(const SyncManagerState.checking());
     final lastSync = await getSyncInfo();
