@@ -1,0 +1,15 @@
+{
+  "hosting": [
+    {
+      "target": "drive-redirect",
+      "public": "redirect_webpage/public",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
