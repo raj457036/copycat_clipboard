@@ -78,6 +78,8 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         // Apply changes to local db
         final items = r.results;
 
+        if (items.isEmpty) return;
+
         for (var i = 0; i < items.length; i++) {
           final item = items[i];
           final result = await db.txn(() async => await db.clipboardItems

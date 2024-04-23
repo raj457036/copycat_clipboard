@@ -40,7 +40,7 @@ class _ShareListenerState extends State<ShareListener> {
 
     if (media != null) {
       logger.i("Received initial shared media!");
-      // putMediaToClipboard(media);
+      putMediaToClipboard(media);
     }
 
     handler.sharedMediaStream.listen((SharedMedia media) async {
@@ -50,8 +50,12 @@ class _ShareListenerState extends State<ShareListener> {
         "Pasting the shared content to clipboard",
         isLoading: true,
       );
-      putMediaToClipboard(media)
-          .then((value) => showTextSnackbar("Done", closePrevious: true));
+      try {
+        await putMediaToClipboard(media);
+        showTextSnackbar("Done", closePrevious: true);
+      } catch (e) {
+        showTextSnackbar("Failed", closePrevious: true);
+      }
     }, onError: (error) {
       showFailureSnackbar(Failure.fromException(error));
     });
@@ -59,7 +63,7 @@ class _ShareListenerState extends State<ShareListener> {
   }
 
   Future<ClipItem?> getFileClipItem(String path, String category) async {
-    final ext = p.extension(path).substring(1);
+    final ext = p.extension(path).replaceFirst(".", "");
     final fileName = p.basenameWithoutExtension(path);
     final (file, mimeType, size) = await writeToClipboardCacheFile(
       folder: category,

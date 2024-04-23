@@ -33,16 +33,28 @@ class MediaPreview extends StatelessWidget {
   Icon getIcon() {
     if (item.fileMimeType != null) {
       if (item.fileMimeType!.startsWith("image")) {
-        return const Icon(Icons.image);
+        return const Icon(
+          Icons.image,
+          color: Colors.white,
+        );
       }
       if (item.fileMimeType!.startsWith("video")) {
-        return const Icon(Icons.ondemand_video_rounded);
+        return const Icon(
+          Icons.ondemand_video_rounded,
+          color: Colors.white,
+        );
       }
       if (item.fileMimeType!.startsWith("audio")) {
-        return const Icon(Icons.audiotrack);
+        return const Icon(
+          Icons.audiotrack,
+          color: Colors.white,
+        );
       }
     }
-    return const Icon(Icons.image);
+    return const Icon(
+      Icons.image,
+      color: Colors.white,
+    );
   }
 
   @override
