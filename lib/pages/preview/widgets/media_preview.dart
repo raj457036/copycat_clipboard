@@ -6,12 +6,16 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
-import "package:universal_io/io.dart";
+import 'package:universal_io/io.dart';
 
-class MediaClipCard extends StatelessWidget {
+class MediaClipPreviewCard extends StatelessWidget {
   final ClipboardItem item;
-
-  const MediaClipCard({super.key, required this.item});
+  final bool isMobile;
+  const MediaClipPreviewCard({
+    super.key,
+    required this.item,
+    required this.isMobile,
+  });
 
   ImageProvider getPreview() {
     if (item.localPath != null) {
@@ -58,20 +62,36 @@ class MediaClipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: radius8,
-      child: SizedBox.expand(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: getPreview(),
-              fit: BoxFit.cover,
+    return Card.filled(
+      margin: isMobile
+          ? const EdgeInsets.only(
+              left: padding16,
+              right: padding16,
+              top: padding16,
+            )
+          : EdgeInsets.zero,
+      shape: isMobile
+          ? null
+          : const RoundedRectangleBorder(
+              borderRadius: BorderRadius.horizontal(
+                left: Radius.circular(12),
+              ),
             ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: getPreview(),
+            fit: BoxFit.cover,
           ),
-          child: Align(
-            alignment: const Alignment(0.95, 0.95),
-            child: getIcon(),
-          ),
+          borderRadius: isMobile
+              ? radius12
+              : const BorderRadius.horizontal(
+                  left: Radius.circular(12),
+                ),
+        ),
+        child: Align(
+          alignment: const Alignment(0.95, 0.95),
+          child: getIcon(),
         ),
       ),
     );

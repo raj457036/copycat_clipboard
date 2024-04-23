@@ -16,15 +16,11 @@ class TextPreviewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final body = InkWell(
-      borderRadius: radius8,
-      onTap: () {},
-      child: SizedBox.expand(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(padding8),
-            child: child,
-          ),
+    final body = SizedBox.expand(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(padding8),
+          child: child,
         ),
       ),
     );
@@ -39,10 +35,10 @@ class TextPreviewBody extends StatelessWidget {
   }
 }
 
-class TextPreview extends StatelessWidget {
+class TextClipCard extends StatelessWidget {
   final ClipboardItem item;
 
-  const TextPreview({
+  const TextClipCard({
     super.key,
     required this.item,
   });

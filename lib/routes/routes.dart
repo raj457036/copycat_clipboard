@@ -1,3 +1,4 @@
+import "package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart";
 import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
@@ -8,9 +9,12 @@ import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
+import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/search/page.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
+import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
+import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
 
@@ -44,6 +48,26 @@ final router = GoRouter(
         context.read<DriveSetupCubit>().verifyAuthCodeAndSetup(code, scopes);
         return DriveSetupPage(
           key: state.pageKey,
+        );
+      },
+    ),
+    GoRoute(
+      name: RouteConstants.preview,
+      path: "/preview/:id",
+      pageBuilder: (context, state) {
+        final id = int.parse(state.pathParameters["id"]!);
+        final item = context.read<ClipboardCubit>().getItem(id: id);
+        if (item == null) {
+          return const MaterialPage(
+            child: NotFoundPage(),
+          );
+        }
+        return DynamicPage(
+          key: state.pageKey,
+          builder: (context, isDialog) => ClipboardItemPreviewPage(
+            item: item,
+            isDialog: isDialog,
+          ),
         );
       },
     ),

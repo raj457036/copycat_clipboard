@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
@@ -13,6 +14,7 @@ import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ClipCard extends StatelessWidget {
@@ -26,10 +28,10 @@ class ClipCard extends StatelessWidget {
 
   Widget getPreview() {
     return switch (item.type) {
-      ClipItemType.text => TextPreview(item: item),
-      ClipItemType.media => MediaPreview(item: item),
-      ClipItemType.url => UrlPreview(item: item),
-      ClipItemType.file => FilePreview(item: item),
+      ClipItemType.text => TextClipCard(item: item),
+      ClipItemType.media => MediaClipCard(item: item),
+      ClipItemType.url => UrlClipCard(item: item),
+      ClipItemType.file => FileClipCard(item: item),
     };
   }
 
@@ -50,6 +52,15 @@ class ClipCard extends StatelessWidget {
     }
   }
 
+  Future<void> preview(BuildContext context) async {
+    context.pushNamed(
+      RouteConstants.preview,
+      pathParameters: {
+        "id": item.id.toString(),
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
@@ -64,6 +75,11 @@ class ClipCard extends StatelessWidget {
           icon: Icons.ios_share,
           text: 'Share',
           onPressed: () => shareClipboardItem(context, item),
+        ),
+        MenuItem(
+          icon: Icons.preview,
+          text: 'Preview',
+          onPressed: () => preview(context),
         ),
         if (item.type == ClipItemType.url)
           MenuItem(
@@ -87,42 +103,46 @@ class ClipCard extends StatelessWidget {
           ),
       ],
       child: Card.outlined(
-        child: Column(
-          children: [
-            ClipCardOptionsHeader(item: item),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (item.title != null)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: padding8,
-                        right: padding8,
-                        bottom: padding10,
-                      ),
-                      child: Text(
-                        item.title!,
-                        style: textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+        child: InkWell(
+          borderRadius: radius8,
+          onTap: () => preview(context),
+          child: Column(
+            children: [
+              ClipCardOptionsHeader(item: item),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (item.title != null)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: padding8,
+                          right: padding8,
+                          bottom: padding10,
                         ),
-                        maxLines: 2,
+                        child: Text(
+                          item.title!,
+                          style: textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                    Expanded(
+                      child: Card.filled(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: radius8,
+                        ),
+                        child: getPreview(),
                       ),
                     ),
-                  Expanded(
-                    child: Card.filled(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: radius8,
-                      ),
-                      child: getPreview(),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ClipCardSyncStatusFooter(item: item),
-          ],
+              ClipCardSyncStatusFooter(item: item),
+            ],
+          ),
         ),
       ),
     );
