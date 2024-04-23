@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final textTheme = context.textTheme;
-    final isMobile = width <= 576;
+    final isMobile = Breakpoints.isMobile(width);
     return Scaffold(
       appBar: isMobile
           ? AppBar(

@@ -1,5 +1,6 @@
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/constants/key.dart';
+import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
   final context = scaffoldMessengerKey.currentContext!;
   final mq = MediaQuery.of(context);
   final colors = context.colors;
-  final isMobile = mq.size.width < 480;
+  final isMobile = Breakpoints.isMobile(mq.size.width);
   return showSnackbar(
     SnackBar(
       content: Row(
@@ -59,7 +60,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
 }) {
   final context = scaffoldMessengerKey.currentContext!;
   final mq = MediaQuery.of(context);
-  final isMobile = mq.size.width < 480;
+  final isMobile = Breakpoints.isMobile(mq.size.width);
 
   return showSnackbar(
     SnackBar(

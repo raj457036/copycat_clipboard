@@ -291,10 +291,12 @@ class ClipboardFormatProcessor {
         text = data.text;
       }
     }
+
     if (text == null) {
       logger.w("Text is null");
       return null;
     } else {
+      if (text.trim().isEmpty) return null;
       text = text.replaceAll(RegExp('\r[\n]?'), '\n');
       text = cleanText(text);
       final (textCategory, parsedText) = getTextCategory(text);

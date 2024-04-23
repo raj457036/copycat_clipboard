@@ -31,6 +31,10 @@ class ClipboardCubit extends Cubit<ClipboardState> {
     emit(const ClipboardState.loaded(items: []));
   }
 
+  ClipboardItem? getItem({required int id}) {
+    return state.items.findFirst((item) => item.id == id);
+  }
+
   void put(ClipboardItem item, {bool isNew = false}) {
     if (isNew) {
       emit(state.copyWith(items: [item, ...state.items]));
