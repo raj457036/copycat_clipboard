@@ -55,7 +55,11 @@ mixin _$ClipboardItem {
   String? get sourceUrl => throw _privateConstructorUsedError;
   String? get sourceApp => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
-  PlatformOS get os => throw _privateConstructorUsedError; // local only
+  PlatformOS get os => throw _privateConstructorUsedError; // Collection
+  @JsonKey(name: "collection_id", includeToJson: false)
+  String? get serverCollectionId => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get collectionId => throw _privateConstructorUsedError; // local only
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get localOnly => throw _privateConstructorUsedError; // Stats
   int get copiedCount => throw _privateConstructorUsedError;
@@ -119,6 +123,9 @@ abstract class $ClipboardItemCopyWith<$Res> {
       String? sourceUrl,
       String? sourceApp,
       @Enumerated(EnumType.name) PlatformOS os,
+      @JsonKey(name: "collection_id", includeToJson: false)
+      String? serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
       DateTime? lastCopied,
@@ -178,6 +185,8 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? sourceUrl = freezed,
     Object? sourceApp = freezed,
     Object? os = null,
+    Object? serverCollectionId = freezed,
+    Object? collectionId = freezed,
     Object? localOnly = null,
     Object? copiedCount = null,
     Object? lastCopied = freezed,
@@ -281,6 +290,14 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.os
           : os // ignore: cast_nullable_to_non_nullable
               as PlatformOS,
+      serverCollectionId: freezed == serverCollectionId
+          ? _value.serverCollectionId
+          : serverCollectionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      collectionId: freezed == collectionId
+          ? _value.collectionId
+          : collectionId // ignore: cast_nullable_to_non_nullable
+              as int?,
       localOnly: null == localOnly
           ? _value.localOnly
           : localOnly // ignore: cast_nullable_to_non_nullable
@@ -354,6 +371,9 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       String? sourceUrl,
       String? sourceApp,
       @Enumerated(EnumType.name) PlatformOS os,
+      @JsonKey(name: "collection_id", includeToJson: false)
+      String? serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
       DateTime? lastCopied,
@@ -411,6 +431,8 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? sourceUrl = freezed,
     Object? sourceApp = freezed,
     Object? os = null,
+    Object? serverCollectionId = freezed,
+    Object? collectionId = freezed,
     Object? localOnly = null,
     Object? copiedCount = null,
     Object? lastCopied = freezed,
@@ -514,6 +536,14 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.os
           : os // ignore: cast_nullable_to_non_nullable
               as PlatformOS,
+      serverCollectionId: freezed == serverCollectionId
+          ? _value.serverCollectionId
+          : serverCollectionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      collectionId: freezed == collectionId
+          ? _value.collectionId
+          : collectionId // ignore: cast_nullable_to_non_nullable
+              as int?,
       localOnly: null == localOnly
           ? _value.localOnly
           : localOnly // ignore: cast_nullable_to_non_nullable
@@ -581,6 +611,9 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.sourceUrl,
       this.sourceApp,
       @Enumerated(EnumType.name) required this.os,
+      @JsonKey(name: "collection_id", includeToJson: false)
+      this.serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false) this.collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.localOnly = false,
       this.copiedCount = 0,
@@ -671,6 +704,13 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   @Enumerated(EnumType.name)
   final PlatformOS os;
+// Collection
+  @override
+  @JsonKey(name: "collection_id", includeToJson: false)
+  final String? serverCollectionId;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final int? collectionId;
 // local only
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -711,7 +751,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, textCategory: $textCategory, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress, failure: $failure, userIntent: $userIntent)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, textCategory: $textCategory, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, serverCollectionId: $serverCollectionId, collectionId: $collectionId, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress, failure: $failure, userIntent: $userIntent)';
   }
 
   @override
@@ -758,6 +798,10 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.sourceApp, sourceApp) ||
                 other.sourceApp == sourceApp) &&
             (identical(other.os, os) || other.os == os) &&
+            (identical(other.serverCollectionId, serverCollectionId) ||
+                other.serverCollectionId == serverCollectionId) &&
+            (identical(other.collectionId, collectionId) ||
+                other.collectionId == collectionId) &&
             (identical(other.localOnly, localOnly) ||
                 other.localOnly == localOnly) &&
             (identical(other.copiedCount, copiedCount) ||
@@ -804,6 +848,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         sourceUrl,
         sourceApp,
         os,
+        serverCollectionId,
+        collectionId,
         localOnly,
         copiedCount,
         lastCopied,
@@ -860,6 +906,10 @@ abstract class _ClipboardItem extends ClipboardItem {
       final String? sourceUrl,
       final String? sourceApp,
       @Enumerated(EnumType.name) required final PlatformOS os,
+      @JsonKey(name: "collection_id", includeToJson: false)
+      final String? serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final bool localOnly,
       final int copiedCount,
@@ -944,6 +994,12 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   @Enumerated(EnumType.name)
   PlatformOS get os;
+  @override // Collection
+  @JsonKey(name: "collection_id", includeToJson: false)
+  String? get serverCollectionId;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get collectionId;
   @override // local only
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get localOnly;

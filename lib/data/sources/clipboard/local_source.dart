@@ -99,7 +99,7 @@ class LocalClipboardSource implements ClipboardSource {
     await db.writeTxn(
       () => db.clipboardItems.put(updated),
     );
-    return item;
+    return updated;
   }
 
   @override

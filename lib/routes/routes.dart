@@ -4,6 +4,7 @@ import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
 import "package:clipboard/di/di.dart";
+import "package:clipboard/pages/collections/page.dart";
 import "package:clipboard/pages/drive_setup/page.dart";
 import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
@@ -76,6 +77,7 @@ final router = GoRouter(
         final activeIndex = switch (state.fullPath) {
           "/home" => 0,
           "/search" => 1,
+          "/collections" => 2,
           "/settings" => 3,
           _ => 0,
         };
@@ -105,6 +107,14 @@ final router = GoRouter(
               create: (context) => sl(),
               child: const SearchPage(),
             ),
+          ),
+        ),
+        GoRoute(
+          name: RouteConstants.collections,
+          path: '/collections',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const CollectionsPage(),
           ),
         ),
         GoRoute(

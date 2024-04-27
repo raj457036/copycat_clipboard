@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
+import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/clip_card.dart';
@@ -15,30 +16,25 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final width = MediaQuery.of(context).size.width;
-    final isMobile = width <= 576;
+    final isMobile = Breakpoints.isMobile(width);
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(width <= 576 ? 65 : 100),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: padding16,
-                right: padding16,
-                top: padding38,
-              ),
-              child: SearchBar(
-                padding: const EdgeInsets.symmetric(horizontal: padding16).msp,
-                leading: const Icon(Icons.search_rounded),
-                hintText: "Search in clipboard",
-                autoFocus: true,
-                textInputAction: TextInputAction.search,
-                onSubmitted: (value) {
-                  context.read<SearchCubit>().search(value);
-                },
-              ),
-            ),
-          )),
+      appBar: AppBar(
+        toolbarHeight: kToolbarHeight + (isMobile ? 15 : 30),
+        centerTitle: true,
+        title: SearchBar(
+          elevation: 1.0.msp,
+          padding: const EdgeInsets.symmetric(horizontal: padding16).msp,
+          leading: const Icon(Icons.search_rounded),
+          hintText: "Search in clipboard",
+          autoFocus: true,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (value) {
+            context.read<SearchCubit>().search(value);
+          },
+        ),
+      ),
       body: BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
         listenWhen: (previous, current) => current is OfflinePersistanceDeleted,
         listener: (context, state) {
@@ -53,7 +49,7 @@ class SearchPage extends StatelessWidget {
             switch (state) {
               case InitialSearchState():
                 return const Center(
-                  child: Text("Search something in your clipboard."),
+                  child: Text("Search in clipboard"),
                 );
               case SearchingState():
                 return const Center(
@@ -67,19 +63,19 @@ class SearchPage extends StatelessWidget {
                 {
                   if (results.isEmpty) {
                     return const Center(
-                      child: Text("No clipboard item found for the query!"),
+                      child: Text("No results were found."),
                     );
                   }
 
                   final hasMoreResult = hasMore ? 1 : 0;
 
                   return GridView.builder(
-                    padding: const EdgeInsets.all(padding16),
+                    padding: isMobile ? insetLTR16 : insetAll16,
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 250,
-                      crossAxisSpacing: padding6,
-                      mainAxisSpacing: padding6,
-                      childAspectRatio: isMobile ? 3 / 4 : 1,
+                      crossAxisSpacing: padding8,
+                      mainAxisSpacing: padding8,
+                      childAspectRatio: isMobile ? 2 / 3 : 1,
                     ),
                     itemCount: results.length + hasMoreResult,
                     itemBuilder: (context, index) {

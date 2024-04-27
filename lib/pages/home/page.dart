@@ -47,17 +47,18 @@ class HomePage extends StatelessWidget {
             }
 
             return GridView.builder(
-              padding: const EdgeInsets.all(padding16),
+              padding: isMobile ? insetLTR16 : insetAll16,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
-                crossAxisSpacing: padding4,
-                mainAxisSpacing: padding4,
-                childAspectRatio: isMobile ? 3 / 4 : 1,
+                crossAxisSpacing: padding8,
+                mainAxisSpacing: padding8,
+                childAspectRatio: isMobile ? 2 / 3 : 1,
               ),
               itemCount: items.length + hasMore,
               itemBuilder: (context, index) {
                 if (index == items.length) {
                   return Card.outlined(
+                    margin: EdgeInsets.zero,
                     child: Center(
                       child: TextButton.icon(
                         onPressed: () => _loadMore(context),

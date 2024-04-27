@@ -1,5 +1,3 @@
-import "package:universal_io/io.dart";
-
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/base.dart';
@@ -10,6 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 import 'package:path/path.dart' as p;
+import "package:universal_io/io.dart";
 
 part 'clipboard_item.freezed.dart';
 part 'clipboard_item.g.dart';
@@ -51,6 +50,11 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String? sourceUrl,
     String? sourceApp,
     @Enumerated(EnumType.name) required PlatformOS os,
+
+    // Collection
+    @JsonKey(name: "collection_id", includeToJson: false)
+    String? serverCollectionId,
+    @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
 
     // local only
     @JsonKey(includeFromJson: false, includeToJson: false)

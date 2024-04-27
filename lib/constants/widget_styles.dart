@@ -45,3 +45,12 @@ const radius12 = BorderRadius.all(
 const radiusBottom12 = BorderRadius.vertical(
   bottom: Radius.circular(12),
 );
+
+// edge insets
+const insetLTR16 = EdgeInsets.only(
+  left: padding16,
+  right: padding16,
+  bottom: padding16,
+);
+
+const insetAll16 = EdgeInsets.all(padding16);

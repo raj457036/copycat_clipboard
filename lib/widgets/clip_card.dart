@@ -103,6 +103,7 @@ class ClipCard extends StatelessWidget {
           ),
       ],
       child: Card.outlined(
+        margin: EdgeInsets.zero,
         child: InkWell(
           borderRadius: radius8,
           onTap: () => preview(context),
@@ -116,10 +117,9 @@ class ClipCard extends StatelessWidget {
                   children: [
                     if (item.title != null)
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: padding8,
-                          right: padding8,
-                          bottom: padding10,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: padding8,
+                          vertical: padding2,
                         ),
                         child: Text(
                           item.title!,
