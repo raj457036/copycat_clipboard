@@ -23,7 +23,6 @@ class RemoteClipboardSource implements ClipboardSource {
 
   @override
   Future<ClipboardItem> create(ClipboardItem item) async {
-    if (!await network.isConnected) return item;
     final docs = await db.from(table).insert(item.toJson()).select();
 
     final createdItem = item.copyWith(
@@ -41,10 +40,6 @@ class RemoteClipboardSource implements ClipboardSource {
     DateTime? afterDate,
     String? search,
   }) async {
-    if (!await network.isConnected) {
-      return PaginatedResult(results: [], hasMore: false);
-    }
-
     final items = await db
         .from(table)
         .select()
@@ -58,8 +53,6 @@ class RemoteClipboardSource implements ClipboardSource {
 
   @override
   Future<ClipboardItem> update(ClipboardItem item) async {
-    if (!await network.isConnected) return item;
-
     if (item.serverId == null) {
       return await create(item);
     }
@@ -73,8 +66,6 @@ class RemoteClipboardSource implements ClipboardSource {
 
   @override
   Future<bool> delete(ClipboardItem item) async {
-    if (!await network.isConnected) return false;
-
     if (item.serverId == null) {
       return true;
     }

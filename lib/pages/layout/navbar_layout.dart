@@ -33,10 +33,8 @@ class _NavBarPageState extends State<NavBarPage> {
       case 1:
         context.goNamed(RouteConstants.search);
         break;
-      // case 2:
-      //   context.goNamed(RouteConstants.journal);
-      //   break;
       case 2:
+        context.goNamed(RouteConstants.collections);
         break;
       case 3:
         context.goNamed(RouteConstants.settings);
@@ -67,6 +65,13 @@ class _NavBarPageState extends State<NavBarPage> {
         children: isMobile ? actions.reversed.toList() : actions,
       );
     }
+    if (widget.navbarActiveIndex == 2) {
+      return FloatingActionButton(
+        onPressed: () {},
+        tooltip: "Create a new collection",
+        child: const Icon(Icons.library_add_rounded),
+      );
+    }
     return null;
   }
 
@@ -95,9 +100,9 @@ class _NavBarPageState extends State<NavBarPage> {
                   tooltip: "Search Clipboard",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.workspaces_rounded),
-                  label: "Workspaces",
-                  tooltip: "Workspaces",
+                  icon: Icon(Icons.collections_bookmark),
+                  label: "Collections",
+                  tooltip: "Collections",
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.settings),
@@ -126,8 +131,8 @@ class _NavBarPageState extends State<NavBarPage> {
             label: Text("Search"),
           ),
           NavigationRailDestination(
-            icon: Icon(Icons.workspaces_rounded),
-            label: Text("Workspaces"),
+            icon: Icon(Icons.collections_bookmark),
+            label: Text("Collections"),
           ),
           NavigationRailDestination(
             icon: Icon(Icons.settings),
@@ -143,7 +148,14 @@ class _NavBarPageState extends State<NavBarPage> {
 
       child = Row(
         children: [
-          navRail,
+          LayoutBuilder(builder: (context, constraint) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(child: navRail),
+              ),
+            );
+          }),
           Expanded(child: scaffold),
         ],
       );

@@ -18,6 +18,7 @@ class FileClipCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(padding8),
         child: FittedBox(
+          fit: BoxFit.scaleDown,
           child: Center(
             child: Text.rich(
               TextSpan(text: item.fileName?.sub(end: 10), children: [

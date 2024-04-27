@@ -51,9 +51,9 @@ class ClipDetailForm extends StatelessWidget {
         ),
         height12,
         ListTile(
-          title: const Text("Change Workspace"),
-          subtitle: const Text("No workspace selected"),
-          leading: const Icon(Icons.workspaces),
+          title: const Text("Change Collection"),
+          subtitle: const Text("No collection selected"),
+          leading: const Icon(Icons.library_add),
           trailing: const Icon(Icons.chevron_right),
           shape: const RoundedRectangleBorder(borderRadius: radius8),
           onTap: () {},
