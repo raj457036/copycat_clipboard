@@ -20,7 +20,7 @@ mixin _$ClipCollectionState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(Failure failure) error,
-    required TResult Function(List<ClipCollection> collection, bool hasMore,
+    required TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)
         loaded,
   }) =>
@@ -29,7 +29,7 @@ mixin _$ClipCollectionState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(Failure failure)? error,
-    TResult? Function(List<ClipCollection> collection, bool hasMore,
+    TResult? Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
   }) =>
@@ -38,7 +38,7 @@ mixin _$ClipCollectionState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(Failure failure)? error,
-    TResult Function(List<ClipCollection> collection, bool hasMore,
+    TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
     required TResult orElse(),
@@ -128,7 +128,7 @@ class _$ClipCollectionInitialImpl implements ClipCollectionInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(Failure failure) error,
-    required TResult Function(List<ClipCollection> collection, bool hasMore,
+    required TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)
         loaded,
   }) {
@@ -140,7 +140,7 @@ class _$ClipCollectionInitialImpl implements ClipCollectionInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(Failure failure)? error,
-    TResult? Function(List<ClipCollection> collection, bool hasMore,
+    TResult? Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
   }) {
@@ -152,7 +152,7 @@ class _$ClipCollectionInitialImpl implements ClipCollectionInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(Failure failure)? error,
-    TResult Function(List<ClipCollection> collection, bool hasMore,
+    TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
     required TResult orElse(),
@@ -269,7 +269,7 @@ class _$ClipCollectionErrorImpl implements ClipCollectionError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(Failure failure) error,
-    required TResult Function(List<ClipCollection> collection, bool hasMore,
+    required TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)
         loaded,
   }) {
@@ -281,7 +281,7 @@ class _$ClipCollectionErrorImpl implements ClipCollectionError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(Failure failure)? error,
-    TResult? Function(List<ClipCollection> collection, bool hasMore,
+    TResult? Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
   }) {
@@ -293,7 +293,7 @@ class _$ClipCollectionErrorImpl implements ClipCollectionError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(Failure failure)? error,
-    TResult Function(List<ClipCollection> collection, bool hasMore,
+    TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
     required TResult orElse(),
@@ -356,7 +356,7 @@ abstract class _$$ClipCollectionLoadedImplCopyWith<$Res> {
       __$$ClipCollectionLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {List<ClipCollection> collection,
+      {List<ClipCollection> collections,
       bool hasMore,
       bool isLoading,
       int limit,
@@ -374,16 +374,16 @@ class __$$ClipCollectionLoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? collection = null,
+    Object? collections = null,
     Object? hasMore = null,
     Object? isLoading = null,
     Object? limit = null,
     Object? offset = null,
   }) {
     return _then(_$ClipCollectionLoadedImpl(
-      collection: null == collection
-          ? _value._collection
-          : collection // ignore: cast_nullable_to_non_nullable
+      collections: null == collections
+          ? _value._collections
+          : collections // ignore: cast_nullable_to_non_nullable
               as List<ClipCollection>,
       hasMore: null == hasMore
           ? _value.hasMore
@@ -409,19 +409,19 @@ class __$$ClipCollectionLoadedImplCopyWithImpl<$Res>
 
 class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
   const _$ClipCollectionLoadedImpl(
-      {required final List<ClipCollection> collection,
+      {required final List<ClipCollection> collections,
       this.hasMore = true,
       this.isLoading = false,
       this.limit = 50,
       this.offset = 0})
-      : _collection = collection;
+      : _collections = collections;
 
-  final List<ClipCollection> _collection;
+  final List<ClipCollection> _collections;
   @override
-  List<ClipCollection> get collection {
-    if (_collection is EqualUnmodifiableListView) return _collection;
+  List<ClipCollection> get collections {
+    if (_collections is EqualUnmodifiableListView) return _collections;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_collection);
+    return EqualUnmodifiableListView(_collections);
   }
 
   @override
@@ -439,7 +439,7 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
 
   @override
   String toString() {
-    return 'ClipCollectionState.loaded(collection: $collection, hasMore: $hasMore, isLoading: $isLoading, limit: $limit, offset: $offset)';
+    return 'ClipCollectionState.loaded(collections: $collections, hasMore: $hasMore, isLoading: $isLoading, limit: $limit, offset: $offset)';
   }
 
   @override
@@ -448,7 +448,7 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
         (other.runtimeType == runtimeType &&
             other is _$ClipCollectionLoadedImpl &&
             const DeepCollectionEquality()
-                .equals(other._collection, _collection) &&
+                .equals(other._collections, _collections) &&
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -459,7 +459,7 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_collection),
+      const DeepCollectionEquality().hash(_collections),
       hasMore,
       isLoading,
       limit,
@@ -478,11 +478,11 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(Failure failure) error,
-    required TResult Function(List<ClipCollection> collection, bool hasMore,
+    required TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)
         loaded,
   }) {
-    return loaded(collection, hasMore, isLoading, limit, offset);
+    return loaded(collections, hasMore, isLoading, limit, offset);
   }
 
   @override
@@ -490,11 +490,11 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(Failure failure)? error,
-    TResult? Function(List<ClipCollection> collection, bool hasMore,
+    TResult? Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
   }) {
-    return loaded?.call(collection, hasMore, isLoading, limit, offset);
+    return loaded?.call(collections, hasMore, isLoading, limit, offset);
   }
 
   @override
@@ -502,13 +502,13 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(Failure failure)? error,
-    TResult Function(List<ClipCollection> collection, bool hasMore,
+    TResult Function(List<ClipCollection> collections, bool hasMore,
             bool isLoading, int limit, int offset)?
         loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(collection, hasMore, isLoading, limit, offset);
+      return loaded(collections, hasMore, isLoading, limit, offset);
     }
     return orElse();
   }
@@ -550,13 +550,13 @@ class _$ClipCollectionLoadedImpl implements ClipCollectionLoaded {
 
 abstract class ClipCollectionLoaded implements ClipCollectionState {
   const factory ClipCollectionLoaded(
-      {required final List<ClipCollection> collection,
+      {required final List<ClipCollection> collections,
       final bool hasMore,
       final bool isLoading,
       final int limit,
       final int offset}) = _$ClipCollectionLoadedImpl;
 
-  List<ClipCollection> get collection;
+  List<ClipCollection> get collections;
   bool get hasMore;
   bool get isLoading;
   int get limit;

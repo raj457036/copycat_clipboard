@@ -18,7 +18,8 @@ import '../bloc/app_config_cubit/app_config_cubit.dart' as _i13;
 import '../bloc/auth_cubit/auth_cubit.dart' as _i20;
 import '../bloc/clip_collection_cubit/clip_collection_cubit.dart' as _i24;
 import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i22;
-import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i29;
+import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i31;
+import '../bloc/collection_clips_cubit/collection_clips_cubit.dart' as _i29;
 import '../bloc/drive_setup_cubit/drive_setup_cubit.dart' as _i28;
 import '../bloc/offline_persistance_cubit/offline_persistance_cubit.dart'
     as _i25;
@@ -37,6 +38,7 @@ import '../data/sources/clip_collection/remote_source.dart' as _i18;
 import '../data/sources/clipboard/clipboard.dart' as _i9;
 import '../data/sources/clipboard/local_source.dart' as _i10;
 import '../data/sources/clipboard/remote_source.dart' as _i17;
+import '../db/clip_collection/clipcollection.dart' as _i30;
 import '../utils/network_status.dart' as _i6;
 import 'modules.dart' as _i5;
 
@@ -154,13 +156,21 @@ extension GetItInjectableX on _i1.GetIt {
         gh<_i16.ClipboardRepository>(instanceName: 'offline')));
     gh.lazySingleton<_i28.DriveSetupCubit>(
         () => _i28.DriveSetupCubit(gh<_i23.DriveCredentialRepository>()));
+    gh.factoryParam<_i29.CollectionClipsCubit, _i30.ClipCollection, dynamic>((
+      collection,
+      _,
+    ) =>
+        _i29.CollectionClipsCubit(
+          gh<_i16.ClipboardRepository>(instanceName: 'offline'),
+          collection: collection,
+        ));
     gh.lazySingleton<_i15.ClipCollectionRepository>(
       () => _i15.ClipCollectionRepositoryCloudImpl(
           gh<_i11.ClipCollectionSource>(instanceName: 'remote')),
       instanceName: 'cloud',
     );
-    gh.lazySingleton<_i29.CloudPersistanceCubit>(
-        () => _i29.CloudPersistanceCubit(
+    gh.lazySingleton<_i31.CloudPersistanceCubit>(
+        () => _i31.CloudPersistanceCubit(
               gh<_i6.NetworkStatus>(),
               gh<_i20.AuthCubit>(),
               gh<_i28.DriveSetupCubit>(),

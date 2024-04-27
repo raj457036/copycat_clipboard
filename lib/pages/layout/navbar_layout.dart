@@ -12,12 +12,14 @@ class NavBarPage extends StatefulWidget {
   final Widget child;
   final int navbarActiveIndex;
   final int drawerActiveIndex;
+  final int depth;
 
   const NavBarPage({
     super.key,
     required this.child,
     this.navbarActiveIndex = 0,
     this.drawerActiveIndex = 0,
+    this.depth = 0,
   });
 
   @override
@@ -67,8 +69,15 @@ class _NavBarPageState extends State<NavBarPage> {
     }
     if (widget.navbarActiveIndex == 2) {
       return FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Create a new collection",
+        onPressed: () {
+          context.goNamed(
+            RouteConstants.createEditCollection,
+            pathParameters: {
+              "id": "new",
+            },
+          );
+        },
+        tooltip: "Create a collection",
         child: const Icon(Icons.library_add_rounded),
       );
     }
@@ -81,10 +90,11 @@ class _NavBarPageState extends State<NavBarPage> {
     final smallScreen = width <= 576;
     final scaffold = Scaffold(
       body: widget.child,
-      floatingActionButton:
-          smallScreen ? getFloatingActionButton(isMobile: smallScreen) : null,
+      floatingActionButton: smallScreen && widget.depth == 1
+          ? getFloatingActionButton(isMobile: smallScreen)
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: smallScreen
+      bottomNavigationBar: smallScreen && widget.depth == 1
           ? NavigationBar(
               selectedIndex: widget.navbarActiveIndex,
               onDestinationSelected: _onNavItemTapped,

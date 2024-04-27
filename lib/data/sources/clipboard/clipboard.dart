@@ -8,6 +8,7 @@ abstract class ClipboardSource {
     int limit = 50,
     int offset = 0,
     String? search,
+    int? collectionId,
   });
 
   Future<ClipboardItem> update(ClipboardItem item);

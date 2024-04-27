@@ -16,7 +16,6 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
     return Scaffold(

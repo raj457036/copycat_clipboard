@@ -75,8 +75,7 @@ class LocalClipCollectionSource implements ClipCollectionSource {
   Future<ClipCollection> update(ClipCollection collection) async {
     final updated = collection.copyWith(
       modified: now(),
-    );
-    updated.id = collection.id;
+    )..applyId(collection);
     await db.writeTxn(
       () => db.clipCollections.put(updated),
     );

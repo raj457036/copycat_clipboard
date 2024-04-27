@@ -12,6 +12,7 @@ abstract class ClipboardRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    int? collectionId,
   });
 
   FailureOr<ClipboardItem> update(ClipboardItem item);
@@ -45,9 +46,14 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    int? collectionId,
   }) async {
     try {
-      final result = await remote.getList(limit: limit, offset: offset);
+      final result = await remote.getList(
+        limit: limit,
+        offset: offset,
+        collectionId: collectionId,
+      );
 
       return Right(result);
     } catch (e) {
@@ -106,10 +112,15 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    int? collectionId,
   }) async {
     try {
-      final result =
-          await local.getList(limit: limit, offset: offset, search: search);
+      final result = await local.getList(
+        limit: limit,
+        offset: offset,
+        search: search,
+        collectionId: collectionId,
+      );
 
       return Right(result);
     } catch (e) {
