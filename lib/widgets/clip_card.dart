@@ -37,8 +37,9 @@ class ClipCard extends StatelessWidget {
 
   Future<void> deleteItem(BuildContext context) async {
     final confirmation = await const ConfirmDialog(
-            title: "Delete Item", message: "Are you sure to delete this item?")
-        .open(context);
+      title: "Delete Item",
+      message: "Are you sure to delete this item?",
+    ).open(context);
 
     if (!confirmation) return;
 

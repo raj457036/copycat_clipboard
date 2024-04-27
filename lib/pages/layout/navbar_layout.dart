@@ -68,17 +68,22 @@ class _NavBarPageState extends State<NavBarPage> {
       );
     }
     if (widget.navbarActiveIndex == 2) {
-      return FloatingActionButton(
-        onPressed: () {
-          context.goNamed(
-            RouteConstants.createEditCollection,
-            pathParameters: {
-              "id": "new",
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              context.goNamed(
+                RouteConstants.createEditCollection,
+                pathParameters: {
+                  "id": "new",
+                },
+              );
             },
-          );
-        },
-        tooltip: "Create a collection",
-        child: const Icon(Icons.library_add_rounded),
+            tooltip: "Create a collection",
+            child: const Icon(Icons.library_add_rounded),
+          )
+        ],
       );
     }
     return null;
@@ -130,35 +135,38 @@ class _NavBarPageState extends State<NavBarPage> {
       child = scaffold;
     } else {
       final floatingButton = getFloatingActionButton();
-      final navRail = NavigationRail(
-        destinations: const [
-          NavigationRailDestination(
-            icon: Icon(Icons.paste_rounded),
-            label: Text("Clipboard"),
-          ),
-          NavigationRailDestination(
-            icon: Icon(Icons.content_paste_search_rounded),
-            label: Text("Search"),
-          ),
-          NavigationRailDestination(
-            icon: Icon(Icons.collections_bookmark),
-            label: Text("Collections"),
-          ),
-          NavigationRailDestination(
-            icon: Icon(Icons.settings),
-            label: Text("Settings"),
-          ),
-        ],
-        leading: floatingButton,
-        labelType: NavigationRailLabelType.all,
-        groupAlignment: 0,
-        selectedIndex: widget.navbarActiveIndex,
-        onDestinationSelected: _onNavItemTapped,
-      );
 
       child = Row(
         children: [
           LayoutBuilder(builder: (context, constraint) {
+            final navRail = NavigationRail(
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.paste_rounded),
+                  label: Text("Clipboard"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.content_paste_search_rounded),
+                  label: Text("Search"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.collections_bookmark),
+                  label: Text("Collections"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.settings),
+                  label: Text("Settings"),
+                ),
+              ],
+              leading: ConstrainedBox(
+                constraints: const BoxConstraints.tightFor(height: 120),
+                child: floatingButton,
+              ),
+              labelType: NavigationRailLabelType.all,
+              groupAlignment: 0,
+              selectedIndex: widget.navbarActiveIndex,
+              onDestinationSelected: _onNavItemTapped,
+            );
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraint.maxHeight),

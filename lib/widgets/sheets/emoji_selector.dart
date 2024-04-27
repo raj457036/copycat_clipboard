@@ -1,7 +1,6 @@
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class EmojiSelectorSheet extends StatelessWidget {
   const EmojiSelectorSheet({super.key});
@@ -20,7 +19,7 @@ class EmojiSelectorSheet extends StatelessWidget {
 
           return EmojiPicker(
             onEmojiSelected: (Category? category, Emoji emoji) {
-              context.pop(emoji);
+              Navigator.pop(context, emoji);
             },
             config: Config(
               checkPlatformCompatibility: true,
