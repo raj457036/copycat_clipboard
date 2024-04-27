@@ -10,6 +10,7 @@
 #include <awesome_notifications/awesome_notifications_plugin_c_api.h>
 #include <clipboard_watcher/clipboard_watcher_plugin.h>
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
+#include <emoji_picker_flutter/emoji_picker_flutter_plugin_c_api.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
 #include <isar_flutter_libs/isar_flutter_libs_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
@@ -27,6 +28,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ClipboardWatcherPlugin"));
   ConnectivityPlusWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
+  EmojiPickerFlutterPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("EmojiPickerFlutterPluginCApi"));
   IrondashEngineContextPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IrondashEngineContextPluginCApi"));
   IsarFlutterLibsPluginRegisterWithRegistrar(

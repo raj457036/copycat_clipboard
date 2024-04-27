@@ -16,14 +16,23 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
     @Named("offline") this.repo,
   ) : super(const ClipCollectionState.initial());
 
+  ClipCollection? get(int id) {
+    return state.mapOrNull(
+      loaded: (loaded) => loaded.collections.findFirst((e) => e.id == id),
+    );
+  }
+
   Future<void> delete(ClipCollection collection) async {
     await state.mapOrNull(
       loaded: (loaded) async {
         await repo.delete(collection);
         emit(
           loaded.copyWith(
-            collection:
-                loaded.collection.where((c) => c.id != collection.id).toList(),
+            collections: loaded.collections
+                .where(
+                  (c) => c.id != collection.id,
+                )
+                .toList(),
           ),
         );
       },
@@ -32,18 +41,34 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
 
   Future<Failure?> upsert(ClipCollection collection) async {
     return await state.mapOrNull<Future<Failure?>>(loaded: (loaded) async {
-      final upserted = collection.isPersisted
-          ? await repo.update(collection)
-          : await repo.create(collection);
-      return upserted.fold((l) => l, (r) {
-        emit(
-          loaded.copyWith(
-            collection:
-                loaded.collection.replaceWhere((value) => value.id == r.id, r),
-          ),
+      if (collection.isPersisted) {
+        final updated = await repo.update(collection);
+        return updated.fold(
+          (l) => l,
+          (r) {
+            emit(
+              loaded.copyWith(
+                collections: loaded.collections.replaceWhere(
+                  (value) => value.id == r.id,
+                  r,
+                ),
+              ),
+            );
+            return null;
+          },
         );
-        return null;
-      });
+      } else {
+        final created = await repo.create(collection);
+        return created.fold(
+          (l) => l,
+          (r) {
+            emit(
+              loaded.copyWith(collections: [r, ...loaded.collections]),
+            );
+            return null;
+          },
+        );
+      }
     });
   }
 
@@ -56,7 +81,7 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
       final next = result.fold(
         (l) => ClipCollectionState.error(l),
         (r) => ClipCollectionState.loaded(
-          collection: r.results,
+          collections: r.results,
           hasMore: r.hasMore,
           offset: r.results.length,
         ),
@@ -73,7 +98,7 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
       final next = result.fold(
         (l) => ClipCollectionState.error(l),
         (r) => ClipCollectionState.loaded(
-          collection: [...state_.collection, ...r.results],
+          collections: [...state_.collections, ...r.results],
           hasMore: r.hasMore,
           offset: r.results.length + state_.offset,
         ),

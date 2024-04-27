@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
   clipboard_watcher
+  emoji_picker_flutter
   gtk
   irondash_engine_context
   isar_flutter_libs

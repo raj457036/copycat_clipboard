@@ -26,10 +26,11 @@ class LocalClipboardSource implements ClipboardSource {
     int limit = 50,
     int offset = 0,
     String? search,
+    int? collectionId,
   }) async {
     List<ClipboardItem> results;
 
-    if (search == null) {
+    if (search == null && collectionId == null) {
       results = await db.txn(() async => await db.clipboardItems
           .filter()
           .deletedAtIsNull()
@@ -41,7 +42,11 @@ class LocalClipboardSource implements ClipboardSource {
       results = await db.txn(() async {
         var filter = db.clipboardItems.filter();
 
-        for (final word in Isar.splitWords(search)) {
+        if (collectionId != null) {
+          filter = filter.collectionIdEqualTo(collectionId);
+        }
+
+        for (final word in Isar.splitWords(search ?? "")) {
           filter = filter
               .titleWordsElementContains(word, caseSensitive: false)
               .or()

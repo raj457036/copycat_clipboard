@@ -39,6 +39,7 @@ class RemoteClipboardSource implements ClipboardSource {
     int offset = 0,
     DateTime? afterDate,
     String? search,
+    int? collectionId,
   }) async {
     final items = await db
         .from(table)
