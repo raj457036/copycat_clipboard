@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -24,6 +25,7 @@ class SplashPage extends StatelessWidget {
         switch (state) {
           case AuthenticatedAuthState() || OfflineAuthState():
             context.read<ClipboardCubit>().fetch();
+            context.read<ClipCollectionCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();
             context.read<OfflinePersistanceCubit>().startListners();
             context.read<DriveSetupCubit>().fetch();
