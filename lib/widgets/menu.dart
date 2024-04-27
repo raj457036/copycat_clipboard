@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 enum MenuItemType { option, divider }
 
@@ -66,7 +65,7 @@ class Menu extends StatelessWidget {
                         leading: Icon(menuItem.icon),
                         title: Text(menuItem.text!),
                         onTap: () {
-                          context.pop();
+                          Navigator.pop(context);
                           menuItem.onPressed?.call();
                         },
                       ),

@@ -20,8 +20,8 @@ class RemoteClipboardSource implements ClipboardSource {
     final docs = await db.from(table).insert(item.toJson()).select();
 
     final createdItem = item.copyWith(
+      serverId: docs.first["id"],
       lastSynced: now(),
-      serverId: docs.first['id'],
     )..applyId(item);
 
     return createdItem;

@@ -5,7 +5,6 @@ import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ClipCollectionSelectionDialog extends StatelessWidget {
   const ClipCollectionSelectionDialog({super.key});
@@ -67,7 +66,7 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
                     subtitle: collection.description != null
                         ? Text(collection.description!)
                         : null,
-                    onTap: () => context.pop(collection),
+                    onTap: () => Navigator.pop(context, collection),
                   );
                 },
               );

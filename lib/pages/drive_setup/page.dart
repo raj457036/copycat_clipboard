@@ -3,7 +3,6 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class DriveSetupPage extends StatelessWidget {
   const DriveSetupPage({super.key});
@@ -22,7 +21,7 @@ class DriveSetupPage extends StatelessWidget {
         listener: (context, state) {
           switch (state) {
             case DriveSetupDone():
-              context.pop();
+              Navigator.pop(context);
               showTextSnackbar("Drive setup done 🥳");
           }
         },
