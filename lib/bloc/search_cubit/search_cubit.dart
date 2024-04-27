@@ -90,9 +90,12 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> deleteItem(ClipboardItem item) async {
     state.mapOrNull(results: (result) {
+      final items = result.results.where((it) => it.id != item.id).toList();
+      final isDeleted = items.length < result.results.length;
       emit(
         result.copyWith(
-          results: result.results.where((it) => it.id != item.id).toList(),
+          results: items,
+          offset: isDeleted ? result.offset - 1 : result.offset,
         ),
       );
     });

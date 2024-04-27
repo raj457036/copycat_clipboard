@@ -85,9 +85,12 @@ class ClipboardCubit extends Cubit<ClipboardState> {
   }
 
   Future<void> deleteItem(ClipboardItem item) async {
+    final result = state.items.where((it) => it.id != item.id).toList();
+    final isDeleted = result.length < state.items.length;
     emit(
       state.copyWith(
-        items: state.items.where((it) => it.id != item.id).toList(),
+        items: result,
+        offset: isDeleted ? state.offset - 1 : state.offset,
       ),
     );
   }
