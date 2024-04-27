@@ -35,14 +35,16 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
   Future<void> delete(ClipCollection collection) async {
     await state.mapOrNull(
       loaded: (loaded) async {
+        emit(loaded.copyWith(isLoading: true));
         await repo.delete(collection);
+        final items =
+            loaded.collections.where((c) => c.id != collection.id).toList();
+        final isDeleted = items.length < loaded.collections.length;
         emit(
           loaded.copyWith(
-            collections: loaded.collections
-                .where(
-                  (c) => c.id != collection.id,
-                )
-                .toList(),
+            collections: items,
+            offset: isDeleted ? loaded.offset - 1 : loaded.offset,
+            isLoading: false,
           ),
         );
       },
