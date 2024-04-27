@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
@@ -31,8 +32,14 @@ class ClipboardCubit extends Cubit<ClipboardState> {
     emit(const ClipboardState.loaded(items: []));
   }
 
-  ClipboardItem? getItem({required int id}) {
-    return state.items.findFirst((item) => item.id == id);
+  Future<ClipboardItem?> getItem({required int id}) async {
+    ClipboardItem? item = state.items.findFirst((item) => item.id == id);
+
+    if (item == null) {
+      final result = await repo.get(id: id);
+      result.fold((l) => logger.e(l), (r) => item = r);
+    }
+    return item;
   }
 
   void put(ClipboardItem item, {bool isNew = false}) {

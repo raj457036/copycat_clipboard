@@ -3,6 +3,7 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clip_collection/clip_collection.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -84,13 +85,34 @@ class LocalClipCollectionSource implements ClipCollectionSource {
 
   @override
   Future<bool> delete(ClipCollection collection) async {
-    final result =
-        await db.writeTxn(() => db.clipCollections.delete(collection.id));
+    final result = await db.writeTxn(() async {
+      final items = await db.clipboardItems
+          .filter()
+          .collectionIdEqualTo(collection.id)
+          .findAll();
+      final updates = items
+          .map(
+            (e) => e.copyWith(
+              collectionId: null,
+              modified: now(),
+            )..applyId(e),
+          )
+          .toList();
+      await db.clipboardItems.putAll(updates);
+      await db.clipCollections.delete(collection.id);
+    });
     return result;
   }
 
   @override
   Future<void> deleteAll() async {
     await db.writeTxn(() => db.clipCollections.clear());
+  }
+
+  @override
+  Future<ClipCollection?> get({int? id, int? serverId}) async {
+    if (id == null) return null;
+    final result = await db.txn(() => db.clipCollections.get(id));
+    return result;
   }
 }

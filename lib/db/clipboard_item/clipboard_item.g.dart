@@ -126,7 +126,7 @@ const ClipboardItemSchema = CollectionSchema(
     r'serverCollectionId': PropertySchema(
       id: 21,
       name: r'serverCollectionId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'serverId': PropertySchema(
       id: 22,
@@ -365,12 +365,6 @@ int _clipboardItemEstimateSize(
   bytesCount += 3 + object.mimetypeWord.length * 3;
   bytesCount += 3 + object.os.name.length * 3;
   {
-    final value = object.serverCollectionId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.sourceApp;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -461,7 +455,7 @@ void _clipboardItemSerialize(
   writer.writeString(offsets[18], object.mimetypeWord);
   writer.writeDateTime(offsets[19], object.modified);
   writer.writeString(offsets[20], object.os.name);
-  writer.writeString(offsets[21], object.serverCollectionId);
+  writer.writeLong(offsets[21], object.serverCollectionId);
   writer.writeLong(offsets[22], object.serverId);
   writer.writeString(offsets[23], object.sourceApp);
   writer.writeString(offsets[24], object.sourceUrl);
@@ -504,7 +498,7 @@ ClipboardItem _clipboardItemDeserialize(
     modified: reader.readDateTime(offsets[19]),
     os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[20])] ??
         PlatformOS.android,
-    serverCollectionId: reader.readStringOrNull(offsets[21]),
+    serverCollectionId: reader.readLongOrNull(offsets[21]),
     serverId: reader.readLongOrNull(offsets[22]),
     sourceApp: reader.readStringOrNull(offsets[23]),
     sourceUrl: reader.readStringOrNull(offsets[24]),
@@ -573,7 +567,7 @@ P _clipboardItemDeserializeProp<P>(
       return (_ClipboardItemosValueEnumMap[reader.readStringOrNull(offset)] ??
           PlatformOS.android) as P;
     case 21:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 22:
       return (reader.readLongOrNull(offset)) as P;
     case 23:
@@ -3689,58 +3683,49 @@ extension ClipboardItemQueryFilter
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      serverCollectionIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'serverCollectionId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverCollectionIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'serverCollectionId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverCollectionIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'serverCollectionId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
       serverCollectionIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -3749,77 +3734,6 @@ extension ClipboardItemQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'serverCollectionId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'serverCollectionId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'serverCollectionId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'serverCollectionId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'serverCollectionId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
-      serverCollectionIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'serverCollectionId',
-        value: '',
       ));
     });
   }
@@ -7037,10 +6951,9 @@ extension ClipboardItemQueryWhereDistinct
   }
 
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct>
-      distinctByServerCollectionId({bool caseSensitive = true}) {
+      distinctByServerCollectionId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'serverCollectionId',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'serverCollectionId');
     });
   }
 
@@ -7279,7 +7192,7 @@ extension ClipboardItemQueryProperty
     });
   }
 
-  QueryBuilder<ClipboardItem, String?, QQueryOperations>
+  QueryBuilder<ClipboardItem, int?, QQueryOperations>
       serverCollectionIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'serverCollectionId');
@@ -7406,7 +7319,7 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       sourceUrl: json['sourceUrl'] as String?,
       sourceApp: json['sourceApp'] as String?,
       os: $enumDecode(_$PlatformOSEnumMap, json['os']),
-      serverCollectionId: json['collection_id'] as String?,
+      serverCollectionId: json['collectionId'] as int?,
       copiedCount: json['copiedCount'] as int? ?? 0,
       lastCopied: json['lastCopied'] == null
           ? null
@@ -7435,6 +7348,7 @@ Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
       'sourceUrl': instance.sourceUrl,
       'sourceApp': instance.sourceApp,
       'os': _$PlatformOSEnumMap[instance.os]!,
+      'collectionId': instance.serverCollectionId,
       'copiedCount': instance.copiedCount,
       'lastCopied': instance.lastCopied?.toIso8601String(),
     };

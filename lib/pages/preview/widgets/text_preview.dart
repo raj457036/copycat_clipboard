@@ -28,9 +28,11 @@ class TextClipPreviewCard extends StatelessWidget {
                 left: Radius.circular(12),
               ),
             ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(padding16),
-        child: SelectableText(item.text ?? "Nothing here"),
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(padding16),
+          child: SelectableText(item.text ?? "Nothing here"),
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/common_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -76,6 +77,15 @@ class SearchCubit extends Cubit<SearchState> {
         }
       case _:
     }
+  }
+
+  void put(ClipboardItem item) {
+    state.mapOrNull(results: (result) {
+      final items = result.results.replaceWhere((it) => it.id == item.id, item);
+      emit(
+        result.copyWith(results: items),
+      );
+    });
   }
 
   Future<void> deleteItem(ClipboardItem item) async {

@@ -1,3 +1,4 @@
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:clipboard/db/json_converters/datetime_converters.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,9 +13,10 @@ class ClipCollection with _$ClipCollection, IsarIdMixin {
   ClipCollection._();
 
   factory ClipCollection({
-    @JsonKey(name: "id", includeToJson: false) String? serverId,
+    @JsonKey(name: "id", includeToJson: false) int? serverId,
     @JsonKey(name: "created") @DateTimeConverter() required DateTime created,
     @JsonKey(name: "modified") @DateTimeConverter() required DateTime modified,
+    @Default(kLocalUserId) String userId,
     required String title,
     String? description,
     required String emoji,

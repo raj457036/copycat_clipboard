@@ -1,11 +1,16 @@
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/widgets/collection_selector_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 
-class ClipDetailForm extends StatelessWidget {
+class ClipDetailForm extends StatefulWidget {
   final bool isMobile;
   final ClipboardItem item;
   const ClipDetailForm({
@@ -13,6 +18,64 @@ class ClipDetailForm extends StatelessWidget {
     required this.item,
     required this.isMobile,
   });
+
+  @override
+  State<ClipDetailForm> createState() => _ClipDetailFormState();
+}
+
+class _ClipDetailFormState extends State<ClipDetailForm> {
+  late final OfflinePersistanceCubit cubit;
+  late final GlobalKey<FormState> formKey;
+  (int?, int?)? collectionId;
+
+  late final TextEditingController titleController, descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = context.read<OfflinePersistanceCubit>();
+    formKey = GlobalKey<FormState>();
+    collectionId = (widget.item.collectionId, widget.item.serverCollectionId);
+    titleController = TextEditingController(text: widget.item.title);
+    descriptionController =
+        TextEditingController(text: widget.item.description);
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  void setCollection(ClipCollection? collection) {
+    if (collection != null) {
+      setState(() {
+        collectionId = (collection.id, collection.serverId);
+      });
+    }
+  }
+
+  Future<void> submit() async {
+    if (!formKey.currentState!.validate()) return;
+    formKey.currentState?.save();
+
+    final title = titleController.text.trim().isEmpty
+        ? null
+        : titleController.text.trim();
+    final description = descriptionController.text.trim().isEmpty
+        ? null
+        : descriptionController.text.trim();
+
+    final updatedItem = widget.item.copyWith(
+      title: title,
+      description: description,
+      collectionId: collectionId?.$1,
+      serverCollectionId: collectionId?.$2,
+    )..applyId(widget.item);
+    cubit.persist(updatedItem);
+    GoRouter.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +86,50 @@ class ClipDetailForm extends StatelessWidget {
         child: const Text("Cancel"),
       ),
       ElevatedButton(
-        onPressed: () {},
+        onPressed: submit,
         child: const Text("Save"),
       ),
     ];
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Edit Details",
-          style: textTheme.titleMedium,
-        ),
-        height12,
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: "Title",
+    return Form(
+      key: formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Edit Details",
+            style: textTheme.titleMedium,
           ),
-        ),
-        height12,
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: "Description",
+          height16,
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: "Title",
+            ),
+            controller: titleController,
+            validator: ValidationBuilder(optional: true).maxLength(100).build(),
           ),
-          minLines: 2,
-          maxLines: 6,
-        ),
-        height12,
-        ListTile(
-          title: const Text("Change Collection"),
-          subtitle: const Text("No collection selected"),
-          leading: const Icon(Icons.library_add),
-          trailing: const Icon(Icons.chevron_right),
-          shape: const RoundedRectangleBorder(borderRadius: radius8),
-          onTap: () {},
-        ),
-        if (!isMobile) const Spacer() else height16,
-        ButtonBar(
-          children: Platform.isWindows ? options.reversed.toList() : options,
-        )
-      ],
+          height12,
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: "Description",
+            ),
+            minLines: 2,
+            maxLines: 6,
+            controller: descriptionController,
+            validator: ValidationBuilder(optional: true).maxLength(255).build(),
+          ),
+          height12,
+          ClipCollectionSelectorTile(
+            onChange: setCollection,
+            collectionId: collectionId?.$1,
+          ),
+          if (!widget.isMobile) const Spacer() else height16,
+          ButtonBar(
+            children: Platform.isWindows ? options.reversed.toList() : options,
+          )
+        ],
+      ),
     );
   }
 }

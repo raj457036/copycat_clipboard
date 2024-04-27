@@ -21,13 +21,14 @@ ClipCollection _$ClipCollectionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ClipCollection {
   @JsonKey(name: "id", includeToJson: false)
-  String? get serverId => throw _privateConstructorUsedError;
+  int? get serverId => throw _privateConstructorUsedError;
   @JsonKey(name: "created")
   @DateTimeConverter()
   DateTime get created => throw _privateConstructorUsedError;
   @JsonKey(name: "modified")
   @DateTimeConverter()
   DateTime get modified => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get emoji => throw _privateConstructorUsedError;
@@ -45,9 +46,10 @@ abstract class $ClipCollectionCopyWith<$Res> {
       _$ClipCollectionCopyWithImpl<$Res, ClipCollection>;
   @useResult
   $Res call(
-      {@JsonKey(name: "id", includeToJson: false) String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) int? serverId,
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
       @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
+      String userId,
       String title,
       String? description,
       String emoji});
@@ -69,6 +71,7 @@ class _$ClipCollectionCopyWithImpl<$Res, $Val extends ClipCollection>
     Object? serverId = freezed,
     Object? created = null,
     Object? modified = null,
+    Object? userId = null,
     Object? title = null,
     Object? description = freezed,
     Object? emoji = null,
@@ -77,7 +80,7 @@ class _$ClipCollectionCopyWithImpl<$Res, $Val extends ClipCollection>
       serverId: freezed == serverId
           ? _value.serverId
           : serverId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -86,6 +89,10 @@ class _$ClipCollectionCopyWithImpl<$Res, $Val extends ClipCollection>
           ? _value.modified
           : modified // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -111,9 +118,10 @@ abstract class _$$ClipCollectionImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "id", includeToJson: false) String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) int? serverId,
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
       @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
+      String userId,
       String title,
       String? description,
       String emoji});
@@ -133,6 +141,7 @@ class __$$ClipCollectionImplCopyWithImpl<$Res>
     Object? serverId = freezed,
     Object? created = null,
     Object? modified = null,
+    Object? userId = null,
     Object? title = null,
     Object? description = freezed,
     Object? emoji = null,
@@ -141,7 +150,7 @@ class __$$ClipCollectionImplCopyWithImpl<$Res>
       serverId: freezed == serverId
           ? _value.serverId
           : serverId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -150,6 +159,10 @@ class __$$ClipCollectionImplCopyWithImpl<$Res>
           ? _value.modified
           : modified // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -173,6 +186,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
       {@JsonKey(name: "id", includeToJson: false) this.serverId,
       @JsonKey(name: "created") @DateTimeConverter() required this.created,
       @JsonKey(name: "modified") @DateTimeConverter() required this.modified,
+      this.userId = kLocalUserId,
       required this.title,
       this.description,
       required this.emoji})
@@ -183,7 +197,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
   @override
   @JsonKey(name: "id", includeToJson: false)
-  final String? serverId;
+  final int? serverId;
   @override
   @JsonKey(name: "created")
   @DateTimeConverter()
@@ -193,6 +207,9 @@ class _$ClipCollectionImpl extends _ClipCollection {
   @DateTimeConverter()
   final DateTime modified;
   @override
+  @JsonKey()
+  final String userId;
+  @override
   final String title;
   @override
   final String? description;
@@ -201,7 +218,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
   @override
   String toString() {
-    return 'ClipCollection(serverId: $serverId, created: $created, modified: $modified, title: $title, description: $description, emoji: $emoji)';
+    return 'ClipCollection(serverId: $serverId, created: $created, modified: $modified, userId: $userId, title: $title, description: $description, emoji: $emoji)';
   }
 
   @override
@@ -214,6 +231,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
             (identical(other.created, created) || other.created == created) &&
             (identical(other.modified, modified) ||
                 other.modified == modified) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -222,8 +240,8 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, serverId, created, modified, title, description, emoji);
+  int get hashCode => Object.hash(runtimeType, serverId, created, modified,
+      userId, title, description, emoji);
 
   @JsonKey(ignore: true)
   @override
@@ -242,13 +260,14 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
 abstract class _ClipCollection extends ClipCollection {
   factory _ClipCollection(
-      {@JsonKey(name: "id", includeToJson: false) final String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) final int? serverId,
       @JsonKey(name: "created")
       @DateTimeConverter()
       required final DateTime created,
       @JsonKey(name: "modified")
       @DateTimeConverter()
       required final DateTime modified,
+      final String userId,
       required final String title,
       final String? description,
       required final String emoji}) = _$ClipCollectionImpl;
@@ -259,7 +278,7 @@ abstract class _ClipCollection extends ClipCollection {
 
   @override
   @JsonKey(name: "id", includeToJson: false)
-  String? get serverId;
+  int? get serverId;
   @override
   @JsonKey(name: "created")
   @DateTimeConverter()
@@ -268,6 +287,8 @@ abstract class _ClipCollection extends ClipCollection {
   @JsonKey(name: "modified")
   @DateTimeConverter()
   DateTime get modified;
+  @override
+  String get userId;
   @override
   String get title;
   @override

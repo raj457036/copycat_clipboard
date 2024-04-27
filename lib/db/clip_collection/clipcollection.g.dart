@@ -50,7 +50,7 @@ const ClipCollectionSchema = CollectionSchema(
     r'serverId': PropertySchema(
       id: 6,
       name: r'serverId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'title': PropertySchema(
       id: 7,
@@ -61,6 +61,11 @@ const ClipCollectionSchema = CollectionSchema(
       id: 8,
       name: r'titleWords',
       type: IsarType.stringList,
+    ),
+    r'userId': PropertySchema(
+      id: 9,
+      name: r'userId',
+      type: IsarType.string,
     )
   },
   estimateSize: _clipCollectionEstimateSize,
@@ -124,12 +129,6 @@ int _clipCollectionEstimateSize(
     }
   }
   bytesCount += 3 + object.emoji.length * 3;
-  {
-    final value = object.serverId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   bytesCount += 3 + object.title.length * 3;
   bytesCount += 3 + object.titleWords.length * 3;
   {
@@ -138,6 +137,7 @@ int _clipCollectionEstimateSize(
       bytesCount += value.length * 3;
     }
   }
+  bytesCount += 3 + object.userId.length * 3;
   return bytesCount;
 }
 
@@ -153,9 +153,10 @@ void _clipCollectionSerialize(
   writer.writeString(offsets[3], object.emoji);
   writer.writeBool(offsets[4], object.isPersisted);
   writer.writeDateTime(offsets[5], object.modified);
-  writer.writeString(offsets[6], object.serverId);
+  writer.writeLong(offsets[6], object.serverId);
   writer.writeString(offsets[7], object.title);
   writer.writeStringList(offsets[8], object.titleWords);
+  writer.writeString(offsets[9], object.userId);
 }
 
 ClipCollection _clipCollectionDeserialize(
@@ -169,8 +170,9 @@ ClipCollection _clipCollectionDeserialize(
     description: reader.readStringOrNull(offsets[1]),
     emoji: reader.readString(offsets[3]),
     modified: reader.readDateTime(offsets[5]),
-    serverId: reader.readStringOrNull(offsets[6]),
+    serverId: reader.readLongOrNull(offsets[6]),
     title: reader.readString(offsets[7]),
+    userId: reader.readString(offsets[9]),
   );
   object.id = id;
   return object;
@@ -196,11 +198,13 @@ P _clipCollectionDeserializeProp<P>(
     case 5:
       return (reader.readDateTime(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
       return (reader.readStringList(offset) ?? []) as P;
+    case 9:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1315,58 +1319,49 @@ extension ClipCollectionQueryFilter
   }
 
   QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      serverIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'serverId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
       serverIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'serverId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
       serverIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'serverId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
       serverIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1375,77 +1370,6 @@ extension ClipCollectionQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'serverId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'serverId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'serverId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'serverId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'serverId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
-      serverIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'serverId',
-        value: '',
       ));
     });
   }
@@ -1810,6 +1734,142 @@ extension ClipCollectionQueryFilter
       );
     });
   }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'userId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'userId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      userIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'userId',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension ClipCollectionQueryObject
@@ -1908,6 +1968,19 @@ extension ClipCollectionQuerySortBy
   QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> sortByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> sortByUserId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      sortByUserIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.desc);
     });
   }
 }
@@ -2016,6 +2089,19 @@ extension ClipCollectionQuerySortThenBy
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> thenByUserId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      thenByUserIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.desc);
+    });
+  }
 }
 
 extension ClipCollectionQueryWhereDistinct
@@ -2060,10 +2146,9 @@ extension ClipCollectionQueryWhereDistinct
     });
   }
 
-  QueryBuilder<ClipCollection, ClipCollection, QDistinct> distinctByServerId(
-      {bool caseSensitive = true}) {
+  QueryBuilder<ClipCollection, ClipCollection, QDistinct> distinctByServerId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'serverId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'serverId');
     });
   }
 
@@ -2078,6 +2163,13 @@ extension ClipCollectionQueryWhereDistinct
       distinctByTitleWords() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'titleWords');
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QDistinct> distinctByUserId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'userId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -2128,7 +2220,7 @@ extension ClipCollectionQueryProperty
     });
   }
 
-  QueryBuilder<ClipCollection, String?, QQueryOperations> serverIdProperty() {
+  QueryBuilder<ClipCollection, int?, QQueryOperations> serverIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'serverId');
     });
@@ -2146,6 +2238,12 @@ extension ClipCollectionQueryProperty
       return query.addPropertyName(r'titleWords');
     });
   }
+
+  QueryBuilder<ClipCollection, String, QQueryOperations> userIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'userId');
+    });
+  }
 }
 
 // **************************************************************************
@@ -2154,9 +2252,10 @@ extension ClipCollectionQueryProperty
 
 _$ClipCollectionImpl _$$ClipCollectionImplFromJson(Map<String, dynamic> json) =>
     _$ClipCollectionImpl(
-      serverId: json['id'] as String?,
+      serverId: json['id'] as int?,
       created: const DateTimeConverter().fromJson(json['created'] as String),
       modified: const DateTimeConverter().fromJson(json['modified'] as String),
+      userId: json['userId'] as String? ?? kLocalUserId,
       title: json['title'] as String,
       description: json['description'] as String?,
       emoji: json['emoji'] as String,
@@ -2167,6 +2266,7 @@ Map<String, dynamic> _$$ClipCollectionImplToJson(
     <String, dynamic>{
       'created': const DateTimeConverter().toJson(instance.created),
       'modified': const DateTimeConverter().toJson(instance.modified),
+      'userId': instance.userId,
       'title': instance.title,
       'description': instance.description,
       'emoji': instance.emoji,
