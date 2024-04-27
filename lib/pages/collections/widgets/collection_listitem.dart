@@ -1,8 +1,10 @@
+import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ClipCollectionListItem extends StatelessWidget {
@@ -24,6 +26,10 @@ class ClipCollectionListItem extends StatelessWidget {
     );
   }
 
+  Future<void> delete(BuildContext context) async {
+    context.read<ClipCollectionCubit>().delete(collection);
+  }
+
   void showDetail(BuildContext context) {
     context.goNamed(
       RouteConstants.collectionDetail,
@@ -39,10 +45,16 @@ class ClipCollectionListItem extends StatelessWidget {
     return Menu(
       items: [
         MenuItem(
-          icon: Icons.delete,
+          icon: Icons.edit,
           text: 'Edit',
           onPressed: () => edit(context),
-        )
+        ),
+        const MenuItem(type: MenuItemType.divider),
+        MenuItem(
+          icon: Icons.delete,
+          text: 'Delete',
+          onPressed: () => delete(context),
+        ),
       ],
       child: ListTile(
         shape: shape,

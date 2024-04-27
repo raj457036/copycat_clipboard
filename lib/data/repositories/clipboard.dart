@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ClipboardRepository {
+  FailureOr<ClipboardItem?> get({int? id, String? serverId});
   FailureOr<ClipboardItem> create(ClipboardItem item);
 
   FailureOr<PaginatedResult<ClipboardItem>> getList({
@@ -86,6 +87,16 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
     // no-op
     return const Right(null);
   }
+
+  @override
+  FailureOr<ClipboardItem?> get({int? id, String? serverId}) async {
+    try {
+      final result = await remote.get(serverId: serverId);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
 }
 
 @Named("offline")
@@ -153,6 +164,16 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     try {
       await local.deleteAll();
       return const Right(null);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<ClipboardItem?> get({int? id, String? serverId}) async {
+    try {
+      final result = await local.get(id: id);
+      return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));
     }

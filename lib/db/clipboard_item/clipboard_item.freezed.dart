@@ -56,8 +56,8 @@ mixin _$ClipboardItem {
   String? get sourceApp => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   PlatformOS get os => throw _privateConstructorUsedError; // Collection
-  @JsonKey(name: "collection_id", includeToJson: false)
-  String? get serverCollectionId => throw _privateConstructorUsedError;
+  @JsonKey(name: "collectionId")
+  int? get serverCollectionId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   int? get collectionId => throw _privateConstructorUsedError; // local only
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -123,8 +123,7 @@ abstract class $ClipboardItemCopyWith<$Res> {
       String? sourceUrl,
       String? sourceApp,
       @Enumerated(EnumType.name) PlatformOS os,
-      @JsonKey(name: "collection_id", includeToJson: false)
-      String? serverCollectionId,
+      @JsonKey(name: "collectionId") int? serverCollectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
@@ -293,7 +292,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
       serverCollectionId: freezed == serverCollectionId
           ? _value.serverCollectionId
           : serverCollectionId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       collectionId: freezed == collectionId
           ? _value.collectionId
           : collectionId // ignore: cast_nullable_to_non_nullable
@@ -371,8 +370,7 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       String? sourceUrl,
       String? sourceApp,
       @Enumerated(EnumType.name) PlatformOS os,
-      @JsonKey(name: "collection_id", includeToJson: false)
-      String? serverCollectionId,
+      @JsonKey(name: "collectionId") int? serverCollectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
@@ -539,7 +537,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
       serverCollectionId: freezed == serverCollectionId
           ? _value.serverCollectionId
           : serverCollectionId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       collectionId: freezed == collectionId
           ? _value.collectionId
           : collectionId // ignore: cast_nullable_to_non_nullable
@@ -611,8 +609,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.sourceUrl,
       this.sourceApp,
       @Enumerated(EnumType.name) required this.os,
-      @JsonKey(name: "collection_id", includeToJson: false)
-      this.serverCollectionId,
+      @JsonKey(name: "collectionId") this.serverCollectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.localOnly = false,
@@ -706,8 +703,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   final PlatformOS os;
 // Collection
   @override
-  @JsonKey(name: "collection_id", includeToJson: false)
-  final String? serverCollectionId;
+  @JsonKey(name: "collectionId")
+  final int? serverCollectionId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   final int? collectionId;
@@ -906,8 +903,7 @@ abstract class _ClipboardItem extends ClipboardItem {
       final String? sourceUrl,
       final String? sourceApp,
       @Enumerated(EnumType.name) required final PlatformOS os,
-      @JsonKey(name: "collection_id", includeToJson: false)
-      final String? serverCollectionId,
+      @JsonKey(name: "collectionId") final int? serverCollectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -995,8 +991,8 @@ abstract class _ClipboardItem extends ClipboardItem {
   @Enumerated(EnumType.name)
   PlatformOS get os;
   @override // Collection
-  @JsonKey(name: "collection_id", includeToJson: false)
-  String? get serverCollectionId;
+  @JsonKey(name: "collectionId")
+  int? get serverCollectionId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   int? get collectionId;

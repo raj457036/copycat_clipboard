@@ -1,5 +1,6 @@
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:clipboard/db/json_converters/datetime_converters.dart';
 import 'package:clipboard/enums/clip_type.dart';
@@ -12,8 +13,6 @@ import "package:universal_io/io.dart";
 
 part 'clipboard_item.freezed.dart';
 part 'clipboard_item.g.dart';
-
-const kLocalUserId = "local_user";
 
 final specialSymbols = RegExp(r"[-_|]");
 
@@ -52,8 +51,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @Enumerated(EnumType.name) required PlatformOS os,
 
     // Collection
-    @JsonKey(name: "collection_id", includeToJson: false)
-    String? serverCollectionId,
+    @JsonKey(name: "collectionId") int? serverCollectionId,
     @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
 
     // local only

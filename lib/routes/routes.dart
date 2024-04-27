@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart";
 import "package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart";
 import "package:clipboard/bloc/collection_clips_cubit/collection_clips_cubit.dart";
@@ -5,7 +7,6 @@ import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
-import "package:clipboard/db/clip_collection/clipcollection.dart";
 import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/collections/page.dart";
 import "package:clipboard/pages/collections/pages/create_edit/page.dart";
@@ -60,19 +61,25 @@ final router = GoRouter(
     GoRoute(
       name: RouteConstants.preview,
       path: "/preview/:id",
+      redirect: idPresentOrRedirect,
       pageBuilder: (context, state) {
         final id = int.parse(state.pathParameters["id"]!);
         final item = context.read<ClipboardCubit>().getItem(id: id);
-        if (item == null) {
-          return const MaterialPage(
-            child: NotFoundPage(),
-          );
-        }
         return DynamicPage(
           key: state.pageKey,
-          builder: (context, isDialog) => ClipboardItemPreviewPage(
-            item: item,
-            isDialog: isDialog,
+          builder: (context, isDialog) => FutureBuilder(
+            future: item,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ClipboardItemPreviewPage(
+                item: snapshot.data,
+                isDialog: isDialog,
+              );
+            },
           ),
         );
       },
@@ -128,43 +135,62 @@ final router = GoRouter(
             GoRoute(
               name: RouteConstants.collectionDetail,
               path: ":id",
+              redirect: idPresentOrRedirect,
               pageBuilder: (context, state) {
                 final id = int.parse(state.pathParameters["id"]!);
 
                 final collection = context.read<ClipCollectionCubit>().get(id);
 
-                if (collection == null) {
-                  return const MaterialPage(child: NotFoundPage());
-                }
                 return NoTransitionPage(
                   key: state.pageKey,
-                  child: BlocProvider<CollectionClipsCubit>(
-                    create: (context) => sl(param1: collection)..search(),
-                    child: CollectionDetailPage(collection: collection),
-                  ),
+                  child: FutureBuilder(
+                      future: collection,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return BlocProvider<CollectionClipsCubit>(
+                          create: (context) =>
+                              sl(param1: snapshot.data)..search(),
+                          child: CollectionDetailPage(
+                            collection: snapshot.data,
+                          ),
+                        );
+                      }),
                 );
               },
             ),
             GoRoute(
               name: RouteConstants.createEditCollection,
               path: 'write/:id',
+              // redirect: (context, state) =>
+              //     idPresentOrRedirect(context, state, "new"),
               pageBuilder: (context, state) {
                 final id = state.pathParameters["id"] ?? "new";
-                ClipCollection? collection;
-
-                if (id != "new") {
-                  final id_ = int.tryParse(id);
-                  if (id_ != null) {
-                    collection = context.read<ClipCollectionCubit>().get(id_);
-                  }
-                }
 
                 return DynamicPage(
                   key: state.pageKey,
                   builder: (context, isDialog) {
-                    return ClipCollectionCreateEditPage(
-                      isDialog: isDialog,
-                      collection: collection,
+                    if (id == "new") {
+                      return ClipCollectionCreateEditPage(isDialog: isDialog);
+                    }
+                    final id_ = int.parse(id);
+
+                    return FutureBuilder(
+                      future: context.read<ClipCollectionCubit>().get(id_),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return ClipCollectionCreateEditPage(
+                          isDialog: isDialog,
+                          collection: snapshot.data,
+                        );
+                      },
                     );
                   },
                 );
@@ -184,3 +210,15 @@ final router = GoRouter(
     )
   ],
 );
+
+FutureOr<String?> idPresentOrRedirect(context, state, [String? validValue]) {
+  final id = state.pathParameters["id"];
+
+  if (validValue != null && id == validValue) return null;
+
+  final id_ = int.tryParse(id ?? "");
+  if (id_ == null) {
+    return "/not-found";
+  }
+  return null;
+}

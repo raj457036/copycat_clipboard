@@ -1,7 +1,6 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/utils/network_status.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,12 +11,7 @@ class RemoteClipboardSource implements ClipboardSource {
   final SupabaseClient client;
   final String table = "clipboard_items";
 
-  final NetworkStatus network;
-
-  RemoteClipboardSource(
-    this.client,
-    this.network,
-  );
+  RemoteClipboardSource(this.client);
 
   PostgrestClient get db => client.rest;
 
@@ -78,5 +72,13 @@ class RemoteClipboardSource implements ClipboardSource {
   @override
   Future<bool> deleteAll() {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<ClipboardItem?> get({int? id, String? serverId}) async {
+    if (serverId == null) return null;
+    final item = await db.from(table).select().eq("id", serverId);
+    if (item.isEmpty) return null;
+    return ClipboardItem.fromJson(item.first);
   }
 }

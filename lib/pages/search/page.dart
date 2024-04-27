@@ -35,11 +35,21 @@ class SearchPage extends StatelessWidget {
         ),
       ),
       body: BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
-        listenWhen: (previous, current) => current is OfflinePersistanceDeleted,
+        listenWhen: (previous, current) {
+          switch (current) {
+            case OfflinePersistanceDeleted() ||
+                  OfflinePersistanceSaved(synced: false):
+              return true;
+            case _:
+              return false;
+          }
+        },
         listener: (context, state) {
           switch (state) {
             case OfflinePersistanceDeleted(:final item):
               context.read<SearchCubit>().deleteItem(item);
+            case OfflinePersistanceSaved(:final item):
+              context.read<SearchCubit>().put(item);
             case _:
           }
         },

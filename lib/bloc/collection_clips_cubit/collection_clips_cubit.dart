@@ -3,6 +3,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/common_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -90,6 +91,20 @@ class CollectionClipsCubit extends Cubit<CollectionClipsState> {
         result.copyWith(
           results: result.results.where((it) => it.id != item.id).toList(),
         ),
+      );
+    });
+  }
+
+  void put(ClipboardItem item) {
+    if (item.collectionId != collection.id) {
+      deleteItem(item);
+      return;
+    }
+
+    state.mapOrNull(results: (result) {
+      final items = result.results.replaceWhere((it) => it.id == item.id, item);
+      emit(
+        result.copyWith(results: items),
       );
     });
   }

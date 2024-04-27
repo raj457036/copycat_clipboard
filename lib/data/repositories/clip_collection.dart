@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ClipCollectionRepository {
+  FailureOr<ClipCollection?> get({int? id, int? serverId});
   FailureOr<ClipCollection> create(ClipCollection collection);
 
   FailureOr<PaginatedResult<ClipCollection>> getList({
@@ -21,60 +22,21 @@ abstract class ClipCollectionRepository {
   FailureOr<void> deleteAll();
 }
 
-@Named("cloud")
 @LazySingleton(as: ClipCollectionRepository)
-class ClipCollectionRepositoryCloudImpl implements ClipCollectionRepository {
+class ClipCollectionRepositoryImpl implements ClipCollectionRepository {
   final ClipCollectionSource remote;
-
-  ClipCollectionRepositoryCloudImpl(
-    @Named("remote") this.remote,
-  );
-
-  @override
-  FailureOr<ClipCollection> create(ClipCollection collection) {
-    // TODO: implement create
-    throw UnimplementedError();
-  }
-
-  @override
-  FailureOr<bool> delete(ClipCollection collection) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
-
-  @override
-  FailureOr<void> deleteAll() {
-    // TODO: implement deleteAll
-    throw UnimplementedError();
-  }
-
-  @override
-  FailureOr<PaginatedResult<ClipCollection>> getList(
-      {int limit = 50, int offset = 0, String? search}) {
-    // TODO: implement getList
-    throw UnimplementedError();
-  }
-
-  @override
-  FailureOr<ClipCollection> update(ClipCollection collection) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
-}
-
-@Named("offline")
-@LazySingleton(as: ClipCollectionRepository)
-class ClipCollectionRepositoryOfflineImpl implements ClipCollectionRepository {
   final ClipCollectionSource local;
 
-  ClipCollectionRepositoryOfflineImpl(
+  ClipCollectionRepositoryImpl(
+    @Named("remote") this.remote,
     @Named("local") this.local,
   );
 
   @override
   FailureOr<ClipCollection> create(ClipCollection collection) async {
     try {
-      final result = await local.create(collection);
+      ClipCollection result = await remote.create(collection);
+      result = await local.create(result);
       return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));
@@ -84,8 +46,9 @@ class ClipCollectionRepositoryOfflineImpl implements ClipCollectionRepository {
   @override
   FailureOr<bool> delete(ClipCollection collection) async {
     try {
-      final result = await local.delete(collection);
-      return Right(result);
+      await remote.delete(collection);
+      await local.delete(collection);
+      return const Right(true);
     } catch (e) {
       return Left(Failure.fromException(e));
     }
@@ -122,7 +85,19 @@ class ClipCollectionRepositoryOfflineImpl implements ClipCollectionRepository {
   @override
   FailureOr<ClipCollection> update(ClipCollection collection) async {
     try {
-      final result = await local.update(collection);
+      ClipCollection result = await remote.update(collection);
+      result = await local.update(collection);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<ClipCollection?> get({int? id, int? serverId}) async {
+    try {
+      ClipCollection? result = await local.get(id: id, serverId: serverId);
+      result ??= await remote.get(id: id, serverId: serverId);
       return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));

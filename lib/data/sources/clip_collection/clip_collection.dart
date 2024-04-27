@@ -2,6 +2,7 @@ import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 
 abstract class ClipCollectionSource {
+  Future<ClipCollection?> get({int? id, int? serverId});
   Future<ClipCollection> create(ClipCollection collection);
 
   Future<PaginatedResult<ClipCollection>> getList({

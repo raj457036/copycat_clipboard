@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clip_collection.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/utils/common_extension.dart';
@@ -11,15 +13,23 @@ part 'clip_collection_state.dart';
 
 @lazySingleton
 class ClipCollectionCubit extends Cubit<ClipCollectionState> {
+  final AuthCubit auth;
   final ClipCollectionRepository repo;
   ClipCollectionCubit(
-    @Named("offline") this.repo,
+    this.auth,
+    this.repo,
   ) : super(const ClipCollectionState.initial());
 
-  ClipCollection? get(int id) {
-    return state.mapOrNull(
+  Future<ClipCollection?> get(int id) async {
+    ClipCollection? collection = state.mapOrNull(
       loaded: (loaded) => loaded.collections.findFirst((e) => e.id == id),
     );
+
+    if (collection == null) {
+      final result = await repo.get(id: id);
+      result.fold((l) => logger.e(l), (r) => collection = r);
+    }
+    return collection;
   }
 
   Future<void> delete(ClipCollection collection) async {
@@ -40,6 +50,14 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
   }
 
   Future<Failure?> upsert(ClipCollection collection) async {
+    final userId = auth.userId;
+
+    if (userId == null) {
+      return authFailure;
+    }
+
+    collection = collection.copyWith(userId: userId)..applyId(collection);
+
     return await state.mapOrNull<Future<Failure?>>(loaded: (loaded) async {
       if (collection.isPersisted) {
         final updated = await repo.update(collection);

@@ -2,6 +2,7 @@ import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 
 abstract class ClipboardSource {
+  Future<ClipboardItem?> get({int? id, String? serverId});
   Future<ClipboardItem> create(ClipboardItem item);
 
   Future<PaginatedResult<ClipboardItem>> getList({

@@ -102,6 +102,7 @@ class _ClipCollectionCreateEditFormState
       padding: const EdgeInsets.all(padding16),
       child: Form(
         key: formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
