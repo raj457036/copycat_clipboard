@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/widgets.dart';
@@ -98,7 +99,10 @@ class _ShareListenerState extends State<ShareListener> {
 
     if (media.content != null) {
       final uri = Uri.tryParse(media.content!);
-      if (uri != null) {
+      final schema = uri?.scheme;
+      final isSupported = supportedUriSchemas.contains(schema);
+
+      if (isSupported && uri != null) {
         final clip = ClipItem.uri(
           uri: uri,
         );
