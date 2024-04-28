@@ -4,6 +4,7 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
 import 'package:clipboard/widgets/clip_cards/file_clip_card.dart';
@@ -67,8 +68,25 @@ class ClipCard extends StatelessWidget {
 
   Future<void> openFile() async {
     if (item.localPath != null) {
-      await OpenFilex.open(item.localPath!);
+      final result = await OpenFilex.open(item.localPath!);
+
+      switch (result.type) {
+        case ResultType.error:
+        case ResultType.noAppToOpen:
+          showTextSnackbar("No application knows how to open this file.");
+          break;
+        case ResultType.permissionDenied:
+          showTextSnackbar("You don't have permission to open this file.");
+          break;
+        case _:
+      }
     }
+  }
+
+  Future<void> downloadFile(
+    BuildContext context,
+  ) async {
+    context.read<CloudPersistanceCubit>().download(item);
   }
 
   @override
@@ -76,16 +94,24 @@ class ClipCard extends StatelessWidget {
     final textTheme = context.textTheme;
     return Menu(
       items: [
-        MenuItem(
-          icon: Icons.copy,
-          text: 'Copy to clipboard',
-          onPressed: () => copyToClipboard(context, item),
-        ),
-        MenuItem(
-          icon: Icons.ios_share,
-          text: 'Share',
-          onPressed: () => shareClipboardItem(context, item),
-        ),
+        if (!item.inCache)
+          MenuItem(
+            icon: Icons.download_for_offline_outlined,
+            text: 'Download for offline',
+            onPressed: () => downloadFile(context),
+          ),
+        if (item.inCache)
+          MenuItem(
+            icon: Icons.copy,
+            text: 'Copy to clipboard',
+            onPressed: () => copyToClipboard(context, item),
+          ),
+        if (item.inCache)
+          MenuItem(
+            icon: Icons.ios_share,
+            text: 'Share',
+            onPressed: () => shareClipboardItem(context, item),
+          ),
         MenuItem(
           icon: Icons.edit_note_rounded,
           text: 'Preview & Edit',
@@ -97,15 +123,17 @@ class ClipCard extends StatelessWidget {
             text: 'Open in browser',
             onPressed: launchUrl,
           ),
-        if (item.type == ClipItemType.file ||
-            item.type == ClipItemType.media && item.inCache)
+        if ((item.type == ClipItemType.file ||
+                item.type == ClipItemType.media) &&
+            item.inCache)
           MenuItem(
             icon: Icons.save_alt_rounded,
             text: 'Export',
             onPressed: () => copyToClipboard(context, item, saveFile: true),
           ),
-        if (item.type == ClipItemType.file ||
-            item.type == ClipItemType.media && item.inCache)
+        if ((item.type == ClipItemType.file ||
+                item.type == ClipItemType.media) &&
+            item.inCache)
           MenuItem(
             icon: Icons.open_in_new,
             text: "Open",

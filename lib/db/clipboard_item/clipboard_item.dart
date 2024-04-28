@@ -239,7 +239,9 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   @ignore
   bool get inCache =>
       ((type == ClipItemType.file || type == ClipItemType.media) &&
-          localPath != null);
+          localPath != null) ||
+      type == ClipItemType.text ||
+      type == ClipItemType.url;
 
   @ignore
   String? get rootDir => type == ClipItemType.file || type == ClipItemType.media
