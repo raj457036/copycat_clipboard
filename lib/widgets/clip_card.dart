@@ -15,6 +15,7 @@ import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ClipCard extends StatelessWidget {
@@ -64,6 +65,12 @@ class ClipCard extends StatelessWidget {
     );
   }
 
+  Future<void> openFile() async {
+    if (item.localPath != null) {
+      await OpenFilex.open(item.localPath!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
@@ -71,7 +78,7 @@ class ClipCard extends StatelessWidget {
       items: [
         MenuItem(
           icon: Icons.copy,
-          text: 'Copy',
+          text: 'Copy to clipboard',
           onPressed: () => copyToClipboard(context, item),
         ),
         MenuItem(
@@ -80,8 +87,8 @@ class ClipCard extends StatelessWidget {
           onPressed: () => shareClipboardItem(context, item),
         ),
         MenuItem(
-          icon: Icons.preview,
-          text: 'Preview',
+          icon: Icons.edit_note_rounded,
+          text: 'Preview & Edit',
           onPressed: () => preview(context),
         ),
         if (item.type == ClipItemType.url)
@@ -93,9 +100,16 @@ class ClipCard extends StatelessWidget {
         if (item.type == ClipItemType.file ||
             item.type == ClipItemType.media && item.inCache)
           MenuItem(
-            icon: Icons.save_as_outlined,
-            text: 'Save to files',
-            onPressed: () {},
+            icon: Icons.save_alt_rounded,
+            text: 'Export',
+            onPressed: () => copyToClipboard(context, item, saveFile: true),
+          ),
+        if (item.type == ClipItemType.file ||
+            item.type == ClipItemType.media && item.inCache)
+          MenuItem(
+            icon: Icons.open_in_new,
+            text: "Open",
+            onPressed: openFile,
           ),
         if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
         if (deleteAllowed)

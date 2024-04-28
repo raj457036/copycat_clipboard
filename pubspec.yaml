@@ -58,6 +58,7 @@ dependencies:
   easy_worker: ^0.0.3
   emoji_picker_flutter: ^2.2.0
   duration: ^3.0.13
+  open_filex: ^4.4.0
 
 dev_dependencies:
   flutter_test:
