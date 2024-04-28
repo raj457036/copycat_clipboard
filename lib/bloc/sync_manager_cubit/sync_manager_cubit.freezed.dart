@@ -22,7 +22,7 @@ mixin _$SyncManagerState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) =>
@@ -33,7 +33,7 @@ mixin _$SyncManagerState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) =>
       throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ mixin _$SyncManagerState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) =>
@@ -141,7 +141,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -155,7 +155,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return unknown?.call();
@@ -168,7 +168,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -268,7 +268,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -282,7 +282,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return checking?.call();
@@ -295,7 +295,7 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -423,7 +423,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -437,7 +437,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return failed?.call(failure);
@@ -450,7 +450,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -591,7 +591,7 @@ class _$SyncingStateImpl implements SyncingState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -605,7 +605,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return syncing?.call(progress, total);
@@ -618,7 +618,7 @@ class _$SyncingStateImpl implements SyncingState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
@@ -690,6 +690,8 @@ abstract class _$$PartlySyncedSyncStateImplCopyWith<$Res> {
           _$PartlySyncedSyncStateImpl value,
           $Res Function(_$PartlySyncedSyncStateImpl) then) =
       __$$PartlySyncedSyncStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool clipboard, bool collections});
 }
 
 /// @nodoc
@@ -699,27 +701,64 @@ class __$$PartlySyncedSyncStateImplCopyWithImpl<$Res>
   __$$PartlySyncedSyncStateImplCopyWithImpl(_$PartlySyncedSyncStateImpl _value,
       $Res Function(_$PartlySyncedSyncStateImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clipboard = null,
+    Object? collections = null,
+  }) {
+    return _then(_$PartlySyncedSyncStateImpl(
+      clipboard: null == clipboard
+          ? _value.clipboard
+          : clipboard // ignore: cast_nullable_to_non_nullable
+              as bool,
+      collections: null == collections
+          ? _value.collections
+          : collections // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
-  const _$PartlySyncedSyncStateImpl();
+  const _$PartlySyncedSyncStateImpl(
+      {this.clipboard = false, this.collections = false});
+
+  @override
+  @JsonKey()
+  final bool clipboard;
+  @override
+  @JsonKey()
+  final bool collections;
 
   @override
   String toString() {
-    return 'SyncManagerState.partlySynced()';
+    return 'SyncManagerState.partlySynced(clipboard: $clipboard, collections: $collections)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartlySyncedSyncStateImpl);
+            other is _$PartlySyncedSyncStateImpl &&
+            (identical(other.clipboard, clipboard) ||
+                other.clipboard == clipboard) &&
+            (identical(other.collections, collections) ||
+                other.collections == collections));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, clipboard, collections);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PartlySyncedSyncStateImplCopyWith<_$PartlySyncedSyncStateImpl>
+      get copyWith => __$$PartlySyncedSyncStateImplCopyWithImpl<
+          _$PartlySyncedSyncStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -728,11 +767,11 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
-    return partlySynced();
+    return partlySynced(clipboard, collections);
   }
 
   @override
@@ -742,10 +781,10 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
-    return partlySynced?.call();
+    return partlySynced?.call(clipboard, collections);
   }
 
   @override
@@ -755,12 +794,12 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
     if (partlySynced != null) {
-      return partlySynced();
+      return partlySynced(clipboard, collections);
     }
     return orElse();
   }
@@ -810,7 +849,15 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
 }
 
 abstract class PartlySyncedSyncState implements SyncManagerState {
-  const factory PartlySyncedSyncState() = _$PartlySyncedSyncStateImpl;
+  const factory PartlySyncedSyncState(
+      {final bool clipboard,
+      final bool collections}) = _$PartlySyncedSyncStateImpl;
+
+  bool get clipboard;
+  bool get collections;
+  @JsonKey(ignore: true)
+  _$$PartlySyncedSyncStateImplCopyWith<_$PartlySyncedSyncStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -893,7 +940,7 @@ class _$SyncedStateImpl implements SyncedState {
     required TResult Function() checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
-    required TResult Function() partlySynced,
+    required TResult Function(bool clipboard, bool collections) partlySynced,
     required TResult Function(DateTime lastSynced, bool refreshLocalCache)
         synced,
   }) {
@@ -907,7 +954,7 @@ class _$SyncedStateImpl implements SyncedState {
     TResult? Function()? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
-    TResult? Function()? partlySynced,
+    TResult? Function(bool clipboard, bool collections)? partlySynced,
     TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
   }) {
     return synced?.call(lastSynced, refreshLocalCache);
@@ -920,7 +967,7 @@ class _$SyncedStateImpl implements SyncedState {
     TResult Function()? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
-    TResult Function()? partlySynced,
+    TResult Function(bool clipboard, bool collections)? partlySynced,
     TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
     required TResult orElse(),
   }) {
