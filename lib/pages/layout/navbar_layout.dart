@@ -3,6 +3,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/keyboard_shortcuts.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -190,7 +191,7 @@ class _NavBarPageState extends State<NavBarPage> {
       onPopInvoked: (didPop) {
         logger.i("DID POP: $didPop");
       },
-      child: child,
+      child: KeyboardShortcuts(child: child),
     );
   }
 }
