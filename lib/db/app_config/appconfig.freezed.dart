@@ -32,7 +32,9 @@ mixin _$AppConfig {
   int get dontCopyOver => throw _privateConstructorUsedError;
 
   /// Pause auto copy for till pausedTill is reached.
-  DateTime? get pausedTill => throw _privateConstructorUsedError;
+  DateTime? get pausedTill =>
+      throw _privateConstructorUsedError; // Auto Sync Interval
+  int get autoSyncInterval => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +53,8 @@ abstract class $AppConfigCopyWith<$Res> {
       bool enableFileSync,
       int dontUploadOver,
       int dontCopyOver,
-      DateTime? pausedTill});
+      DateTime? pausedTill,
+      int autoSyncInterval});
 }
 
 /// @nodoc
@@ -73,6 +76,7 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? dontUploadOver = null,
     Object? dontCopyOver = null,
     Object? pausedTill = freezed,
+    Object? autoSyncInterval = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -99,6 +103,10 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.pausedTill
           : pausedTill // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      autoSyncInterval: null == autoSyncInterval
+          ? _value.autoSyncInterval
+          : autoSyncInterval // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -117,7 +125,8 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       bool enableFileSync,
       int dontUploadOver,
       int dontCopyOver,
-      DateTime? pausedTill});
+      DateTime? pausedTill,
+      int autoSyncInterval});
 }
 
 /// @nodoc
@@ -137,6 +146,7 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? dontUploadOver = null,
     Object? dontCopyOver = null,
     Object? pausedTill = freezed,
+    Object? autoSyncInterval = null,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
@@ -163,6 +173,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.pausedTill
           : pausedTill // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      autoSyncInterval: null == autoSyncInterval
+          ? _value.autoSyncInterval
+          : autoSyncInterval // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -176,7 +190,8 @@ class _$AppConfigImpl extends _AppConfig {
       this.enableFileSync = true,
       this.dontUploadOver = $10MB,
       this.dontCopyOver = $10MB,
-      this.pausedTill})
+      this.pausedTill,
+      this.autoSyncInterval = $90S})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -206,10 +221,14 @@ class _$AppConfigImpl extends _AppConfig {
   /// Pause auto copy for till pausedTill is reached.
   @override
   final DateTime? pausedTill;
+// Auto Sync Interval
+  @override
+  @JsonKey()
+  final int autoSyncInterval;
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval)';
   }
 
   @override
@@ -228,13 +247,22 @@ class _$AppConfigImpl extends _AppConfig {
             (identical(other.dontCopyOver, dontCopyOver) ||
                 other.dontCopyOver == dontCopyOver) &&
             (identical(other.pausedTill, pausedTill) ||
-                other.pausedTill == pausedTill));
+                other.pausedTill == pausedTill) &&
+            (identical(other.autoSyncInterval, autoSyncInterval) ||
+                other.autoSyncInterval == autoSyncInterval));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, themeMode, enableSync,
-      enableFileSync, dontUploadOver, dontCopyOver, pausedTill);
+  int get hashCode => Object.hash(
+      runtimeType,
+      themeMode,
+      enableSync,
+      enableFileSync,
+      dontUploadOver,
+      dontCopyOver,
+      pausedTill,
+      autoSyncInterval);
 
   @JsonKey(ignore: true)
   @override
@@ -257,7 +285,8 @@ abstract class _AppConfig extends AppConfig {
       final bool enableFileSync,
       final int dontUploadOver,
       final int dontCopyOver,
-      final DateTime? pausedTill}) = _$AppConfigImpl;
+      final DateTime? pausedTill,
+      final int autoSyncInterval}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -282,6 +311,8 @@ abstract class _AppConfig extends AppConfig {
 
   /// Pause auto copy for till pausedTill is reached.
   DateTime? get pausedTill;
+  @override // Auto Sync Interval
+  int get autoSyncInterval;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>

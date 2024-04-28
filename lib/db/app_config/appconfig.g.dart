@@ -17,38 +17,43 @@ const AppConfigSchema = CollectionSchema(
   name: r'AppConfig',
   id: -7085420701237142207,
   properties: {
-    r'dontCopyOver': PropertySchema(
+    r'autoSyncInterval': PropertySchema(
       id: 0,
+      name: r'autoSyncInterval',
+      type: IsarType.long,
+    ),
+    r'dontCopyOver': PropertySchema(
+      id: 1,
       name: r'dontCopyOver',
       type: IsarType.long,
     ),
     r'dontUploadOver': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'dontUploadOver',
       type: IsarType.long,
     ),
     r'enableFileSync': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'enableFileSync',
       type: IsarType.bool,
     ),
     r'enableSync': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'enableSync',
       type: IsarType.bool,
     ),
     r'isPersisted': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'pausedTill': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'pausedTill',
       type: IsarType.dateTime,
     ),
     r'themeMode': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
@@ -84,13 +89,14 @@ void _appConfigSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.dontCopyOver);
-  writer.writeLong(offsets[1], object.dontUploadOver);
-  writer.writeBool(offsets[2], object.enableFileSync);
-  writer.writeBool(offsets[3], object.enableSync);
-  writer.writeBool(offsets[4], object.isPersisted);
-  writer.writeDateTime(offsets[5], object.pausedTill);
-  writer.writeString(offsets[6], object.themeMode.name);
+  writer.writeLong(offsets[0], object.autoSyncInterval);
+  writer.writeLong(offsets[1], object.dontCopyOver);
+  writer.writeLong(offsets[2], object.dontUploadOver);
+  writer.writeBool(offsets[3], object.enableFileSync);
+  writer.writeBool(offsets[4], object.enableSync);
+  writer.writeBool(offsets[5], object.isPersisted);
+  writer.writeDateTime(offsets[6], object.pausedTill);
+  writer.writeString(offsets[7], object.themeMode.name);
 }
 
 AppConfig _appConfigDeserialize(
@@ -100,13 +106,14 @@ AppConfig _appConfigDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AppConfig(
-    dontCopyOver: reader.readLong(offsets[0]),
-    dontUploadOver: reader.readLong(offsets[1]),
-    enableFileSync: reader.readBool(offsets[2]),
-    enableSync: reader.readBool(offsets[3]),
-    pausedTill: reader.readDateTimeOrNull(offsets[5]),
+    autoSyncInterval: reader.readLong(offsets[0]),
+    dontCopyOver: reader.readLong(offsets[1]),
+    dontUploadOver: reader.readLong(offsets[2]),
+    enableFileSync: reader.readBool(offsets[3]),
+    enableSync: reader.readBool(offsets[4]),
+    pausedTill: reader.readDateTimeOrNull(offsets[6]),
     themeMode:
-        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[6])] ??
+        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[7])] ??
             ThemeMode.system,
   );
   object.id = id;
@@ -125,14 +132,16 @@ P _appConfigDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 7:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
@@ -243,6 +252,62 @@ extension AppConfigQueryWhere
 
 extension AppConfigQueryFilter
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      autoSyncIntervalEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'autoSyncInterval',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      autoSyncIntervalGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'autoSyncInterval',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      autoSyncIntervalLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'autoSyncInterval',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      autoSyncIntervalBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'autoSyncInterval',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> dontCopyOverEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -648,6 +713,19 @@ extension AppConfigQueryLinks
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {}
 
 extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByAutoSyncInterval() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'autoSyncInterval', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy>
+      sortByAutoSyncIntervalDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'autoSyncInterval', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByDontCopyOver() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dontCopyOver', Sort.asc);
@@ -735,6 +813,19 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
 
 extension AppConfigQuerySortThenBy
     on QueryBuilder<AppConfig, AppConfig, QSortThenBy> {
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByAutoSyncInterval() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'autoSyncInterval', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy>
+      thenByAutoSyncIntervalDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'autoSyncInterval', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByDontCopyOver() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dontCopyOver', Sort.asc);
@@ -834,6 +925,12 @@ extension AppConfigQuerySortThenBy
 
 extension AppConfigQueryWhereDistinct
     on QueryBuilder<AppConfig, AppConfig, QDistinct> {
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByAutoSyncInterval() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'autoSyncInterval');
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByDontCopyOver() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dontCopyOver');
@@ -883,6 +980,12 @@ extension AppConfigQueryProperty
   QueryBuilder<AppConfig, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<AppConfig, int, QQueryOperations> autoSyncIntervalProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'autoSyncInterval');
     });
   }
 
@@ -944,6 +1047,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
       pausedTill: json['pausedTill'] == null
           ? null
           : DateTime.parse(json['pausedTill'] as String),
+      autoSyncInterval: json['autoSyncInterval'] as int? ?? $90S,
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
@@ -954,6 +1058,7 @@ Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
       'dontUploadOver': instance.dontUploadOver,
       'dontCopyOver': instance.dontCopyOver,
       'pausedTill': instance.pausedTill?.toIso8601String(),
+      'autoSyncInterval': instance.autoSyncInterval,
     };
 
 const _$ThemeModeEnumMap = {

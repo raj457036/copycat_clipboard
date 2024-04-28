@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
@@ -19,6 +20,20 @@ class EventBridge extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<AppConfigCubit, AppConfigState>(
+            listenWhen: (previous, current) =>
+                previous.config.autoSyncInterval !=
+                current.config.autoSyncInterval,
+            listener: (context, state) {
+              switch (state) {
+                case AppConfigLoaded(:final config):
+                  context.read<SyncManagerCubit>().setupAutoSync(
+                        Duration(seconds: config.autoSyncInterval),
+                      );
+                  break;
+                case _:
+              }
+            }),
         BlocListener<SyncManagerCubit, SyncManagerState>(
           listener: (context, state) {
             switch (state) {

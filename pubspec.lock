@@ -329,6 +329,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  duration:
+    dependency: "direct main"
+    description:
+      name: duration
+      sha256: "0548a12d235dab185c677ef660995f23fdc06a02a2b984aa23805f6a03d82815"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.13"
   easy_worker:
     dependency: "direct main"
     description:

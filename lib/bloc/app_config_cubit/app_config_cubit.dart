@@ -13,90 +13,78 @@ part 'app_config_state.dart';
 @singleton
 class AppConfigCubit extends Cubit<AppConfigState> {
   final AppConfigRepository repo;
-  AppConfigCubit(this.repo) : super(const AppConfigState.initial());
+  AppConfigCubit(this.repo)
+      : super(AppConfigState.loaded(isLoading: true, config: AppConfig()));
 
   Future<void> load() async {
-    emit(const AppConfigState.initial());
+    emit(state.copyWith(isLoading: true));
     final appConfig = await repo.get();
 
     emit(appConfig.fold(
-      (l) => AppConfigState.error(failure: l),
-      (r) => AppConfigState.loaded(config: r),
+      (l) => state.copyWith(failure: l),
+      (r) => state.copyWith(config: r),
     ));
   }
 
-  bool get isCopyingPaused => state.maybeWhen(
-        loaded: (config) =>
-            config.pausedTill != null && config.pausedTill!.isAfter(now()),
-        orElse: () => true,
-      );
+  bool get isCopyingPaused =>
+      state.config.pausedTill != null &&
+      state.config.pausedTill!.isAfter(now());
 
-  bool canUploadFile(int size) => state.maybeWhen(
-        loaded: (config) => config.dontUploadOver >= size,
-        orElse: () => false,
-      );
+  bool canUploadFile(int size) => state.config.dontUploadOver >= size;
 
-  bool canCopyFile(int size) => state.maybeWhen(
-        loaded: (config) => config.dontCopyOver >= size,
-        orElse: () => false,
-      );
+  bool canCopyFile(int size) => state.config.dontCopyOver >= size;
 
-  bool get isSyncEnabled => state.maybeWhen(
-        loaded: (config) => config.enableSync,
-        orElse: () => false,
-      );
+  bool get isSyncEnabled => state.config.enableSync;
 
-  bool get isFileSyncEnabled => state.maybeWhen(
-        loaded: (config) => config.enableSync && config.enableFileSync,
-        orElse: () => false,
-      );
+  bool get isFileSyncEnabled =>
+      state.config.enableSync && state.config.enableFileSync;
 
   Future<void> changePausedTill(DateTime? pausedTill) async {
-    state.whenOrNull(loaded: (config) {
-      final newConfig = config.copyWith(pausedTill: pausedTill)
-        ..applyId(config);
-      emit(AppConfigState.loaded(config: newConfig));
-      repo.update(newConfig);
-    });
+    final newConfig = state.config.copyWith(pausedTill: pausedTill)
+      ..applyId(state.config);
+    emit(AppConfigState.loaded(config: newConfig));
+    repo.update(newConfig);
+  }
+
+  Future<void> changeAutoSyncDuration(int seconds) async {
+    final newConfig = state.config.copyWith(autoSyncInterval: seconds)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    repo.update(newConfig);
   }
 
   Future<void> changeDontCopyOver(int size) async {
-    state.whenOrNull(loaded: (config) {
-      final newConfig = config.copyWith(dontCopyOver: size)..applyId(config);
-      emit(AppConfigState.loaded(config: newConfig));
-      repo.update(newConfig);
-    });
+    final newConfig = state.config.copyWith(dontCopyOver: size)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    repo.update(newConfig);
   }
 
   Future<void> changeDontUploadOver(int size) async {
-    state.whenOrNull(loaded: (config) {
-      final newConfig = config.copyWith(dontUploadOver: size)..applyId(config);
-      emit(AppConfigState.loaded(config: newConfig));
-      repo.update(newConfig);
-    });
+    final newConfig = state.config.copyWith(dontUploadOver: size)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    repo.update(newConfig);
   }
 
   Future<void> changeThemeMode(ThemeMode mode) async {
-    state.whenOrNull(loaded: (config) {
-      final newConfig = config.copyWith(themeMode: mode)..applyId(config);
-      emit(AppConfigState.loaded(config: newConfig));
-      repo.update(newConfig);
-    });
+    final newConfig = state.config.copyWith(themeMode: mode)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    repo.update(newConfig);
   }
 
   Future<void> changeSync(bool value) async {
-    state.whenOrNull(loaded: (config) {
-      final newConfig = config.copyWith(enableSync: value)..applyId(config);
-      emit(AppConfigState.loaded(config: newConfig));
-      repo.update(newConfig);
-    });
+    final newConfig = state.config.copyWith(enableSync: value)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    repo.update(newConfig);
   }
 
   Future<void> changeFileSync(bool value) async {
-    state.whenOrNull(loaded: (config) {
-      final newConfig = config.copyWith(enableFileSync: value)..applyId(config);
-      emit(AppConfigState.loaded(config: newConfig));
-      repo.update(newConfig);
-    });
+    final newConfig = state.config.copyWith(enableFileSync: value)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    repo.update(newConfig);
   }
 }
