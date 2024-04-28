@@ -13,6 +13,7 @@ abstract class ClipCollectionRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    bool fromServer = false,
   });
 
   FailureOr<ClipCollection> update(ClipCollection collection);
@@ -69,14 +70,24 @@ class ClipCollectionRepositoryImpl implements ClipCollectionRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    bool fromServer = false,
   }) async {
     try {
-      final result = await local.getList(
-        limit: limit,
-        offset: offset,
-        search: search,
-      );
-      return Right(result);
+      if (fromServer) {
+        final result = await remote.getList(
+          limit: limit,
+          offset: offset,
+          search: search,
+        );
+        return Right(result);
+      } else {
+        final result = await local.getList(
+          limit: limit,
+          offset: offset,
+          search: search,
+        );
+        return Right(result);
+      }
     } catch (e) {
       return Left(Failure.fromException(e));
     }
