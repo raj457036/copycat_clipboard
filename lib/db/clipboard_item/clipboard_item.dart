@@ -205,7 +205,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     String? sourceApp,
   }) {
     return ClipboardItem(
-      url: uri.toString(),
+      url: Uri.decodeFull(uri.toString()),
       created: now(),
       modified: now(),
       title: title,

@@ -72,10 +72,7 @@ class MainApp extends StatelessWidget {
               builder: (context) =>
                   BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
                 selector: (state) {
-                  return state.maybeWhen(
-                    orElse: () => ThemeMode.system,
-                    loaded: (config) => config.themeMode,
-                  );
+                  return state.config.themeMode;
                 },
                 builder: (context, state) {
                   return MaterialApp.router(

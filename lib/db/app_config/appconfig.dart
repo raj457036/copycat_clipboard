@@ -1,3 +1,4 @@
+import 'package:clipboard/constants/numbers/duration.dart';
 import 'package:clipboard/constants/numbers/file_sizes.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,9 @@ class AppConfig with _$AppConfig, IsarIdMixin {
 
     /// Pause auto copy for till pausedTill is reached.
     DateTime? pausedTill,
+
+    // Auto Sync Interval
+    @Default($90S) int autoSyncInterval,
   }) = _AppConfig;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>

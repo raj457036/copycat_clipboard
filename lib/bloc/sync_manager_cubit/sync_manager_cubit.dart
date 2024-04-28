@@ -32,12 +32,24 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final NetworkStatus network;
   final int _syncId = 1;
 
+  Timer? autoSyncTimer;
+
   SyncManagerCubit(
     this.db,
     this.auth,
     this.syncRepo,
     this.network,
   ) : super(const SyncManagerState.unknown());
+
+  void setupAutoSync(Duration duration) {
+    autoSyncTimer?.cancel();
+
+    if (duration == Duration.zero) {
+      return;
+    }
+
+    autoSyncTimer = Timer.periodic(duration, (timer) => syncChanges());
+  }
 
   Future<SyncStatus?> getSyncInfo() async {
     final lastSync = await db.syncStatus.get(_syncId);
@@ -50,6 +62,17 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   }
 
   Future<void> repairLocalClipboardAndCollectionRelations() async {
+    final needRepairing = await db.txn(
+          () => db.clipboardItems
+              .filter()
+              .collectionIdIsNull()
+              .serverCollectionIdIsNotNull()
+              .count(),
+        ) >
+        0;
+
+    if (!needRepairing) return;
+
     final collections =
         await db.clipCollections.filter().serverIdIsNotNull().findAll();
 
