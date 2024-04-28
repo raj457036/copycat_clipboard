@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -14,7 +12,7 @@ import 'package:isar/isar.dart';
 part 'clipboard_cubit.freezed.dart';
 part 'clipboard_state.dart';
 
-@singleton
+@injectable
 class ClipboardCubit extends Cubit<ClipboardState> {
   final ClipboardRepository repo;
   final Isar db;
@@ -31,16 +29,6 @@ class ClipboardCubit extends Cubit<ClipboardState> {
 
   void reset() {
     emit(const ClipboardState.loaded(items: []));
-  }
-
-  Future<ClipboardItem?> getItem({required int id}) async {
-    ClipboardItem? item = state.items.findFirst((item) => item.id == id);
-
-    if (item == null) {
-      final result = await repo.get(id: id);
-      result.fold((l) => logger.e(l), (r) => item = r);
-    }
-    return item;
   }
 
   void put(ClipboardItem item, {bool isNew = false}) {
@@ -62,8 +50,6 @@ class ClipboardCubit extends Cubit<ClipboardState> {
         offset: fromTop ? 0 : state.offset,
       ),
     );
-
-    await Future.delayed(Durations.long1);
 
     final items = await repo.getList(
       limit: state.limit,

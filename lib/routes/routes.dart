@@ -4,6 +4,7 @@ import "package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart"
 import "package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart";
 import "package:clipboard/bloc/collection_clips_cubit/collection_clips_cubit.dart";
 import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
+import "package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
 import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
@@ -64,7 +65,7 @@ final router = GoRouter(
       redirect: idPresentOrRedirect,
       pageBuilder: (context, state) {
         final id = int.parse(state.pathParameters["id"]!);
-        final item = context.read<ClipboardCubit>().getItem(id: id);
+        final item = context.read<OfflinePersistanceCubit>().getItem(id: id);
         return DynamicPage(
           key: state.pageKey,
           builder: (context, isDialog) => FutureBuilder(
@@ -109,7 +110,10 @@ final router = GoRouter(
           pageBuilder: (context, state) {
             return NoTransitionPage(
               key: state.pageKey,
-              child: const HomePage(),
+              child: BlocProvider<ClipboardCubit>(
+                create: (context) => sl()..fetch(),
+                child: const HomePage(),
+              ),
             );
           },
         ),

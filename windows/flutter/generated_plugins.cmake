@@ -10,7 +10,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   emoji_picker_flutter
   irondash_engine_context
   isar_flutter_libs
-  platform_device_id_windows
   screen_retriever
   share_plus
   super_native_extensions

@@ -36,6 +36,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> create(ClipboardItem item) async {
     try {
+      item = item.copyWith(modified: now())..applyId(item);
       final result = await remote.create(item);
       return Right(result);
     } catch (e) {
@@ -66,6 +67,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
+      item = item.copyWith(modified: now())..applyId(item);
       final result = await remote.update(item);
       return Right(result);
     } catch (e) {
@@ -143,7 +145,6 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
-      item = item.copyWith(modified: now())..applyId(item);
       final result = await local.update(item);
       return Right(result);
     } catch (e) {

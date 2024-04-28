@@ -38,6 +38,17 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   )   : copy = CopyToClipboard(clipboard),
         super(const OfflinePersistanceState.initial());
 
+  Future<ClipboardItem?> getItem({required int id}) async {
+    final result = await repo.get(id: id);
+    final item = result.fold((l) {
+      logger.e(l);
+      return null;
+    }, (r) {
+      return r;
+    });
+    return item;
+  }
+
   onCaptureClipboard() {
     emit(const OfflinePersistanceState.initial());
     if (appConfig.isCopyingPaused) {

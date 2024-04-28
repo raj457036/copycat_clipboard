@@ -37,6 +37,7 @@ class ClipCollectionRepositoryImpl implements ClipCollectionRepository {
   @override
   FailureOr<ClipCollection> create(ClipCollection collection) async {
     try {
+      collection = collection.copyWith(modified: now())..applyId(collection);
       ClipCollection result = await remote.create(collection);
       result = await local.create(result);
       return Right(result);

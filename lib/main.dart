@@ -1,7 +1,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -52,9 +51,6 @@ class MainApp extends StatelessWidget {
           create: (context) => sl(),
         ),
         BlocProvider<CloudPersistanceCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<ClipboardCubit>(
           create: (context) => sl(),
         ),
         BlocProvider<ClipCollectionCubit>(

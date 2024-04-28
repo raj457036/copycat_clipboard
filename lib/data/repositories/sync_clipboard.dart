@@ -81,8 +81,8 @@ class SyncRepositoryImpl implements SyncRepository {
 
       if (lastSynced != null) {
         final isoDate = lastSynced
+            .subtract(const Duration(seconds: 5))
             .toUtc()
-            .subtract(const Duration(seconds: 4))
             .toIso8601String();
         query = query.gt(
           "modified",
