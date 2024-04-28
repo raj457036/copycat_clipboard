@@ -26,8 +26,6 @@ class HomePage extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocListener<SyncManagerCubit, SyncManagerState>(
-          listenWhen: (previous, current) =>
-              current is ClipboardSyncedSyncState,
           listener: (context, state) {
             switch (state) {
               case PartlySyncedSyncState(clipboard: true):
@@ -61,14 +59,6 @@ class HomePage extends StatelessWidget {
           },
         ),
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
-          listenWhen: (previous, current) {
-            switch (current) {
-              case OfflinePersistanceDeleted() || OfflinePersistanceSaved():
-                return true;
-              case _:
-                return false;
-            }
-          },
           listener: (context, state) {
             switch (state) {
               case OfflinePersistanceDeleted(:final item):
