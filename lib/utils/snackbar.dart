@@ -57,6 +57,8 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   bool isLoading = false,
   bool success = false,
   bool closePrevious = false,
+  int? duration,
+  SnackBarAction? action,
 }) {
   final context = scaffoldMessengerKey.currentContext!;
   final mq = MediaQuery.of(context);
@@ -79,8 +81,12 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
       showCloseIcon: !isMobile && !isLoading,
       behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
       width: isMobile ? null : 480,
-      duration:
-          isLoading ? const Duration(seconds: 30) : const Duration(seconds: 2),
+      duration: duration != null
+          ? Duration(seconds: duration)
+          : isLoading
+              ? const Duration(seconds: 30)
+              : const Duration(seconds: 2),
+      action: action,
     ),
     closePrevious: closePrevious,
   );

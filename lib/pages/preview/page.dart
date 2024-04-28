@@ -2,8 +2,10 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/pages/preview/widgets/clip_detail_form.dart';
+import 'package:clipboard/pages/preview/widgets/file_preview.dart';
 import 'package:clipboard/pages/preview/widgets/media_preview.dart';
 import 'package:clipboard/pages/preview/widgets/text_preview.dart';
+import 'package:clipboard/pages/preview/widgets/url_preview.dart';
 import 'package:flutter/material.dart';
 
 Widget previewWidget({required ClipboardItem item, required bool isMobile}) {
@@ -13,8 +15,9 @@ Widget previewWidget({required ClipboardItem item, required bool isMobile}) {
     case ClipItemType.media:
       return MediaClipPreviewCard(item: item, isMobile: isMobile);
     case ClipItemType.url:
+      return URLClipPreviewCard(item: item, isMobile: isMobile);
     case ClipItemType.file:
-      return TextClipPreviewCard(item: item, isMobile: isMobile);
+      return FileClipPreviewCard(item: item, isMobile: isMobile);
   }
 }
 
