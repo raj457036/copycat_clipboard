@@ -2,6 +2,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clip_collection/clip_collection.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -96,8 +97,9 @@ class ClipCollectionRepositoryImpl implements ClipCollectionRepository {
   @override
   FailureOr<ClipCollection> update(ClipCollection collection) async {
     try {
+      collection = collection.copyWith(modified: now())..applyId(collection);
       ClipCollection result = await remote.update(collection);
-      result = await local.update(collection);
+      result = await local.update(result);
       return Right(result);
     } catch (e) {
       return Left(Failure.fromException(e));

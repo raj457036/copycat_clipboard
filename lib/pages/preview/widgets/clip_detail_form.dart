@@ -48,7 +48,14 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
     super.dispose();
   }
 
-  void setCollection(ClipCollection? collection) {
+  void setCollection(ClipCollection? collection, {bool removed = false}) {
+    if (removed) {
+      setState(() {
+        collectionId = (null, null);
+      });
+      return;
+    }
+
     if (collection != null) {
       setState(() {
         collectionId = (collection.id, collection.serverId);

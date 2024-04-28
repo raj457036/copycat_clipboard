@@ -79,9 +79,9 @@ class EventBridge extends StatelessWidget {
                 context
                     .read<OfflinePersistanceCubit>()
                     .persist(item, synced: true);
-                context
-                    .read<SyncManagerCubit>()
-                    .updateSyncTime(refreshLocalCache: false);
+                // context
+                //     .read<SyncManagerCubit>()
+                //     .updateSyncTime(refreshLocalCache: false);
                 break;
               case CloudPersistanceDeleting(:final item):
                 context.read<ClipboardCubit>().put(item);

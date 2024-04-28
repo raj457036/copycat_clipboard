@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ClipCollectionSelectorTile extends StatefulWidget {
   final int? collectionId;
   final bool removalAllowed;
-  final void Function(ClipCollection? collection) onChange;
+  final void Function(ClipCollection? collection, {bool removed}) onChange;
 
   const ClipCollectionSelectorTile({
     super.key,
@@ -54,12 +54,19 @@ class ClipCollectionSelectorStateTile
     setState(() {
       collection = selected;
     });
-    widget.onChange(selected);
+    widget.onChange(selected, removed: false);
+  }
+
+  void clear() {
+    setState(() {
+      collection = null;
+    });
+    widget.onChange(null, removed: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    final tile = ListTile(
       title: collection == null
           ? const Text("No Collection")
           : Text(collection!.title),
@@ -71,5 +78,27 @@ class ClipCollectionSelectorStateTile
       shape: const RoundedRectangleBorder(borderRadius: radius8),
       onTap: isLoading ? null : selectCollection,
     );
+
+    if (widget.removalAllowed) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(child: tile),
+          if (collection != null)
+            Padding(
+              padding: const EdgeInsets.only(left: padding12),
+              child: IconButton.filledTonal(
+                onPressed: clear,
+                icon: const Icon(
+                  Icons.remove_circle,
+                ),
+                tooltip: "Remove from collection",
+              ),
+            ),
+        ],
+      );
+    }
+
+    return tile;
   }
 }

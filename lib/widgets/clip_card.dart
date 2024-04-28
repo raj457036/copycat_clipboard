@@ -20,10 +20,12 @@ import 'package:url_launcher/url_launcher_string.dart';
 class ClipCard extends StatelessWidget {
   final ClipboardItem item;
   final bool deleteAllowed;
+  final List<MenuItem> customMenuItems;
   const ClipCard({
     super.key,
     required this.item,
     this.deleteAllowed = true,
+    this.customMenuItems = const [],
   });
 
   Widget getPreview() {
@@ -102,6 +104,7 @@ class ClipCard extends StatelessWidget {
             text: 'Delete',
             onPressed: () => deleteItem(context),
           ),
+        ...customMenuItems,
       ],
       child: Card.outlined(
         margin: EdgeInsets.zero,
