@@ -2,6 +2,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -142,6 +143,7 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
+      item = item.copyWith(modified: now())..applyId(item);
       final result = await local.update(item);
       return Right(result);
     } catch (e) {

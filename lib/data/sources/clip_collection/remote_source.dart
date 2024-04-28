@@ -1,6 +1,7 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clip_collection/clip_collection.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,8 +19,10 @@ class RemoteClipCollectionSource implements ClipCollectionSource {
   Future<ClipCollection> create(ClipCollection collection) async {
     final result = await db.from(table).insert(collection.toJson()).select();
 
-    return collection.copyWith(serverId: result.first["id"])
-      ..applyId(collection);
+    return collection.copyWith(
+      serverId: result.first["id"],
+      lastSynced: now(),
+    )..applyId(collection);
   }
 
   @override
@@ -61,11 +64,12 @@ class RemoteClipCollectionSource implements ClipCollectionSource {
     if (collection.serverId == null) {
       return collection;
     }
-    await db
-        .from(table)
-        .update(collection.toJson())
-        .eq("id", collection.serverId!);
-    return collection;
+    final payload = collection.toJson();
+    await db.from(table).update(payload).eq("id", collection.serverId!);
+    final updatedCollection = collection.copyWith(
+      lastSynced: now(),
+    )..applyId(collection);
+    return updatedCollection;
   }
 
   @override
