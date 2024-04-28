@@ -14,6 +14,7 @@ class ClipCollection with _$ClipCollection, IsarIdMixin {
 
   factory ClipCollection({
     @JsonKey(name: "id", includeToJson: false) int? serverId,
+    @JsonKey(includeFromJson: false, includeToJson: false) DateTime? lastSynced,
     @JsonKey(name: "created") @DateTimeConverter() required DateTime created,
     @JsonKey(name: "modified") @DateTimeConverter() required DateTime modified,
     @Default(kLocalUserId) String userId,

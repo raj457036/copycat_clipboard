@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -21,7 +22,10 @@ class EventBridge extends StatelessWidget {
         BlocListener<SyncManagerCubit, SyncManagerState>(
           listener: (context, state) {
             switch (state) {
-              case PartlySyncedSyncState():
+              case PartlySyncedSyncState(collections: true):
+                context.read<ClipCollectionCubit>().fetch(fromTop: true);
+                break;
+              case PartlySyncedSyncState(clipboard: true):
                 context.read<ClipboardCubit>().fetch(fromTop: true);
                 break;
               case SyncedState(refreshLocalCache: true):

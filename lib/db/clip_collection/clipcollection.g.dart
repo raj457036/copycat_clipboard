@@ -42,28 +42,33 @@ const ClipCollectionSchema = CollectionSchema(
       name: r'isPersisted',
       type: IsarType.bool,
     ),
-    r'modified': PropertySchema(
+    r'lastSynced': PropertySchema(
       id: 5,
+      name: r'lastSynced',
+      type: IsarType.dateTime,
+    ),
+    r'modified': PropertySchema(
+      id: 6,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'serverId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'serverId',
       type: IsarType.long,
     ),
     r'title': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'title',
       type: IsarType.string,
     ),
     r'titleWords': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'titleWords',
       type: IsarType.stringList,
     ),
     r'userId': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'userId',
       type: IsarType.string,
     )
@@ -152,11 +157,12 @@ void _clipCollectionSerialize(
   writer.writeStringList(offsets[2], object.descriptionWords);
   writer.writeString(offsets[3], object.emoji);
   writer.writeBool(offsets[4], object.isPersisted);
-  writer.writeDateTime(offsets[5], object.modified);
-  writer.writeLong(offsets[6], object.serverId);
-  writer.writeString(offsets[7], object.title);
-  writer.writeStringList(offsets[8], object.titleWords);
-  writer.writeString(offsets[9], object.userId);
+  writer.writeDateTime(offsets[5], object.lastSynced);
+  writer.writeDateTime(offsets[6], object.modified);
+  writer.writeLong(offsets[7], object.serverId);
+  writer.writeString(offsets[8], object.title);
+  writer.writeStringList(offsets[9], object.titleWords);
+  writer.writeString(offsets[10], object.userId);
 }
 
 ClipCollection _clipCollectionDeserialize(
@@ -169,10 +175,11 @@ ClipCollection _clipCollectionDeserialize(
     created: reader.readDateTime(offsets[0]),
     description: reader.readStringOrNull(offsets[1]),
     emoji: reader.readString(offsets[3]),
-    modified: reader.readDateTime(offsets[5]),
-    serverId: reader.readLongOrNull(offsets[6]),
-    title: reader.readString(offsets[7]),
-    userId: reader.readString(offsets[9]),
+    lastSynced: reader.readDateTimeOrNull(offsets[5]),
+    modified: reader.readDateTime(offsets[6]),
+    serverId: reader.readLongOrNull(offsets[7]),
+    title: reader.readString(offsets[8]),
+    userId: reader.readString(offsets[10]),
   );
   object.id = id;
   return object;
@@ -196,14 +203,16 @@ P _clipCollectionDeserializeProp<P>(
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 8:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 9:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 10:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1245,6 +1254,80 @@ extension ClipCollectionQueryFilter
   }
 
   QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      lastSyncedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastSynced',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      lastSyncedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastSynced',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      lastSyncedEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastSynced',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      lastSyncedGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastSynced',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      lastSyncedLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastSynced',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      lastSyncedBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastSynced',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
       modifiedEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1933,6 +2016,20 @@ extension ClipCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      sortByLastSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastSynced', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      sortByLastSyncedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastSynced', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> sortByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'modified', Sort.asc);
@@ -2052,6 +2149,20 @@ extension ClipCollectionQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      thenByLastSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastSynced', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      thenByLastSyncedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastSynced', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> thenByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'modified', Sort.asc);
@@ -2140,6 +2251,13 @@ extension ClipCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipCollection, ClipCollection, QDistinct>
+      distinctByLastSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastSynced');
+    });
+  }
+
   QueryBuilder<ClipCollection, ClipCollection, QDistinct> distinctByModified() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'modified');
@@ -2211,6 +2329,13 @@ extension ClipCollectionQueryProperty
   QueryBuilder<ClipCollection, bool, QQueryOperations> isPersistedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isPersisted');
+    });
+  }
+
+  QueryBuilder<ClipCollection, DateTime?, QQueryOperations>
+      lastSyncedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastSynced');
     });
   }
 

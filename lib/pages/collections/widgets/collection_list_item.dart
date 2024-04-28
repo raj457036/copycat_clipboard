@@ -69,6 +69,7 @@ class ClipCollectionListItem extends StatelessWidget {
         subtitle: Text(
           collection.description ?? "No Description",
           maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         trailing: const Icon(Icons.chevron_right),
         onTap: () => showDetail(context),

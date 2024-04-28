@@ -10,7 +10,10 @@ class SyncManagerState with _$SyncManagerState {
     required int total,
   }) = SyncingState;
 
-  const factory SyncManagerState.partlySynced() = PartlySyncedSyncState;
+  const factory SyncManagerState.partlySynced({
+    @Default(false) bool clipboard,
+    @Default(false) bool collections,
+  }) = PartlySyncedSyncState;
 
   const factory SyncManagerState.synced({
     required DateTime lastSynced,

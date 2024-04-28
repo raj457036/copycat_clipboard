@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/sync_clipboard.dart';
+import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/db/sync_status/syncstatus.dart';
 import 'package:clipboard/utils/network_status.dart';
@@ -48,6 +49,76 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     emit(const SyncManagerState.unknown());
   }
 
+  Future<void> repairLocalClipboardAndCollectionRelations() async {
+    final collections =
+        await db.clipCollections.filter().serverIdIsNotNull().findAll();
+
+    for (final collection in collections) {
+      await db.writeTxn(() async {
+        final items = await db.clipboardItems
+            .filter()
+            .serverCollectionIdEqualTo(collection.serverId)
+            .collectionIdIsNull()
+            .findAll();
+        final updated = items
+            .map((e) => e.copyWith(collectionId: collection.id)..applyId(e))
+            .toList();
+        await db.clipboardItems.putAll(updated);
+      });
+    }
+  }
+
+  Future<void> syncClipCollections(SyncStatus? lastSync) async {
+    // Fetch changes from server
+    bool hasMore = true;
+    int offset = 0;
+    bool partlySynced = false;
+
+    /// when the app can show the clips to the user.
+    while (hasMore) {
+      emit(const SyncManagerState.checking());
+      final result = await syncRepo.getLatestClipCollections(
+        userId: auth.userId!,
+        lastSynced: lastSync?.lastSync,
+        offset: offset,
+      );
+
+      await result.fold((l) async => emit(SyncManagerState.failed(l)),
+          (r) async {
+        hasMore = r.hasMore;
+        offset += r.results.length;
+        // Apply changes to local db
+        final items = r.results;
+
+        if (items.isEmpty) return;
+
+        for (var i = 0; i < items.length; i++) {
+          final item = items[i];
+          final result = await db.txn(() async => await db.clipCollections
+              .filter()
+              .serverIdEqualTo(item.serverId)
+              .findFirst());
+          if (result == null) {
+            items[i] = item.copyWith(lastSynced: now());
+          } else {
+            items[i] = item.copyWith(
+              lastSynced: result.lastSynced,
+            )..applyId(result);
+          }
+        }
+
+        await db.writeTxn(() async => await db.clipCollections.putAll(items));
+
+        if (!partlySynced) {
+          emit(const SyncManagerState.partlySynced(collections: true));
+          partlySynced = true;
+        }
+      });
+
+      if (result.isLeft()) return;
+    }
+  }
+
   Future<void> syncClipboardItems(SyncStatus? lastSync) async {
     // Fetch changes from server
     bool hasMore = true;
@@ -91,7 +162,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         await db.writeTxn(() async => await db.clipboardItems.putAll(items));
 
         if (!partlySynced) {
-          emit(const SyncManagerState.partlySynced());
+          emit(const SyncManagerState.partlySynced(clipboard: true));
           partlySynced = true;
         }
       });
@@ -100,7 +171,11 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     }
   }
 
-  Future<void> syncChanges() async {
+  Future<void> syncChanges({
+    bool clipboard = true,
+    bool collections = true,
+    bool repairRelations = true,
+  }) async {
     emit(const SyncManagerState.checking());
     final lastSync = await getSyncInfo();
 
@@ -110,8 +185,13 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     }
 
     await Future.wait([
-      syncClipboardItems(lastSync),
+      if (clipboard) syncClipboardItems(lastSync),
+      if (collections) syncClipCollections(lastSync),
     ]);
+
+    if (repairRelations) {
+      await repairLocalClipboardAndCollectionRelations();
+    }
 
     // Fetch unsynced changes from local db
     // Sync local changes with server
