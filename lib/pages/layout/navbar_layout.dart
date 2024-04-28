@@ -3,7 +3,6 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/snackbar.dart';
-import 'package:clipboard/widgets/current_time.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,12 +94,13 @@ class _NavBarPageState extends State<NavBarPage> {
     final width = MediaQuery.of(context).size.width;
     final smallScreen = width <= 576;
     final scaffold = Scaffold(
-      body: Column(
-        children: [
-          const CurentTime(),
-          Expanded(child: widget.child),
-        ],
-      ),
+      // body: Column(
+      //   children: [
+      //     const CurentTime(),
+      //     Expanded(child: widget.child),
+      //   ],
+      // ),
+      body: widget.child,
       floatingActionButton: smallScreen && widget.depth == 1
           ? getFloatingActionButton(isMobile: smallScreen)
           : null,
