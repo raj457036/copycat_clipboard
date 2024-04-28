@@ -14,22 +14,25 @@ class MediaClipCard extends StatelessWidget {
   const MediaClipCard({super.key, required this.item});
 
   ImageProvider getPreview() {
-    if (item.localPath != null) {
-      return FileImage(File(item.localPath!));
+    if (item.fileMimeType!.startsWith("image")) {
+      if (item.localPath != null) {
+        return FileImage(File(item.localPath!));
+      }
+      if (item.imgBlurHash == null) {
+        return const AssetImage(AssetConstants.placeholderImage);
+      }
+      try {
+        final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
+        final bin = Uint8List.fromList(img.encodeJpg(image_));
+        return MemoryImage(bin);
+      } catch (e) {
+        return const AssetImage(AssetConstants.placeholderImage);
+      }
     }
-    if (item.imgBlurHash == null) {
-      return const AssetImage(AssetConstants.placeholderImage);
-    }
-    try {
-      final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
-      final bin = Uint8List.fromList(img.encodeJpg(image_));
-      return MemoryImage(bin);
-    } catch (e) {
-      return const AssetImage(AssetConstants.placeholderImage);
-    }
+    return const AssetImage(AssetConstants.placeholderImage);
   }
 
-  Icon getIcon() {
+  Widget getIcon() {
     if (item.fileMimeType != null) {
       if (item.fileMimeType!.startsWith("image")) {
         return const Icon(
@@ -38,10 +41,27 @@ class MediaClipCard extends StatelessWidget {
         );
       }
       if (item.fileMimeType!.startsWith("video")) {
-        return const Icon(
-          Icons.ondemand_video_rounded,
-          color: Colors.white,
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              item.fileMimeType!,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            width8,
+            const Icon(
+              Icons.ondemand_video_rounded,
+              color: Colors.white,
+            ),
+            width2,
+          ],
         );
+        // return const Icon(
+        //   Icons.ondemand_video_rounded,
+        //   color: Colors.white,
+        // );
       }
       if (item.fileMimeType!.startsWith("audio")) {
         return const Icon(

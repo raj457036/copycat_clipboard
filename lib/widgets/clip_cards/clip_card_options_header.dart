@@ -14,21 +14,24 @@ import 'package:url_launcher/url_launcher_string.dart';
 Future<void> copyToClipboard(
   BuildContext context,
   ClipboardItem item, {
-  bool copyFileContent = false,
+  bool saveFile = false,
 }) async {
-  context
-      .read<OfflinePersistanceCubit>()
-      .copyToClipboard(
-        item,
-        fileContent: copyFileContent,
-      )
-      .then((value) {
-    showTextSnackbar(
-      "📝 Successfully copied",
-    );
-  }).catchError((_) {
-    showTextSnackbar("❌ Failed to copy");
-  });
+  try {
+    final result =
+        await context.read<OfflinePersistanceCubit>().copyToClipboard(
+              item,
+              saveFile: saveFile,
+            );
+    if (result) {
+      showTextSnackbar("Copied");
+    } else {
+      showTextSnackbar(
+        "⚠️ Copy failed or cancelled",
+      );
+    }
+  } catch (e) {
+    showTextSnackbar("⭕️ Failed to copy. Something went wrong!");
+  }
 }
 
 Future<void> shareClipboardItem(

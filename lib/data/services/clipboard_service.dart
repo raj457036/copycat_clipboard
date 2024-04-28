@@ -186,9 +186,15 @@ final phoneRegex = RegExp(r'^\d{7,15}$');
 }
 
 void copyFile((String, String) paths, Sender sender) {
-  final fromFile = File(paths.$1);
-  fromFile.copySync(paths.$2);
-  sender(null);
+  final (from, to) = paths;
+  final fromFile = File(from);
+  try {
+    fromFile.copySync(to);
+    sender(true);
+  } catch (e) {
+    logger.e("Failed to copy file in isolate", error: e);
+    sender(false);
+  }
 }
 
 Future<(File?, String?, int)> writeToClipboardCacheFile({
@@ -609,7 +615,6 @@ class CopyToClipboard {
   }
 
   Future<bool> fileContent(File file, {String? mimeType}) async {
-    final bytes = await file.readAsBytes();
     FutureOr<EncodedData>? format;
 
     for (final f in Formats.standardFormats) {
@@ -617,7 +622,7 @@ class CopyToClipboard {
         final mime_ = mimeType ?? mime.lookupMimeType(file.path);
         final isThis = f.mimeTypes?.contains(mime_);
         if (isThis != null && isThis) {
-          format = f(bytes);
+          format = f.lazy(() => file.readAsBytes());
           break;
         }
       }
@@ -627,32 +632,31 @@ class CopyToClipboard {
       logger.w(
         "Couldn't determine mime type for file ${file.path} with mime type $mimeType",
       );
-      return false;
+
+      return await saveFile(file);
     }
 
     final item = DataWriterItem()..add(format);
     return writeToClipboard(item);
   }
 
-  Future<bool> file(File file, {bool copyTo = false}) async {
-    if (Platform.isAndroid || Platform.isIOS || copyTo) {
-      String? outputFile = await FilePicker.platform.saveFile(
-        dialogTitle: 'Save to',
-        fileName: "clipboard_item${p.extension(file.path)}",
-        bytes: await file.readAsBytes(),
+  Future<bool> saveFile(File file) async {
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: 'Save to',
+      fileName: p.basename(file.path),
+      bytes: await file.readAsBytes(),
+    );
+
+    if (outputFile == null) return false;
+
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+      final result = await EasyWorker.compute<bool, (String, String)>(
+        copyFile,
+        (file.path, outputFile),
+        name: "Copy File",
       );
-
-      if (outputFile == null) return false;
-
-      if (copyTo &&
-          (Platform.isLinux || Platform.isMacOS || Platform.isWindows)) {
-        await file.copy(outputFile);
-      }
-      return true;
+      return result;
     }
-
-    final item = DataWriterItem();
-    item.add(Formats.fileUri(file.uri));
-    return writeToClipboard(item);
+    return true;
   }
 }

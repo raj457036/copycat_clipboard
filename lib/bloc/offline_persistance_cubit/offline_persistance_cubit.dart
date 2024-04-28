@@ -118,7 +118,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
 
   Future<bool> copyToClipboard(
     ClipboardItem item, {
-    bool fileContent = false,
+    bool saveFile = false,
   }) async {
     bool copied = false;
     switch (item.type) {
@@ -129,14 +129,14 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       case ClipItemType.media:
       case ClipItemType.file:
         if (item.localPath == null) return false;
-        if (fileContent) {
-          final result = await copy.fileContent(
+        if (saveFile) {
+          copied = await copy.saveFile(File(item.localPath!));
+        } else {
+          copied = await copy.fileContent(
             File(item.localPath!),
             mimeType: item.fileMimeType,
           );
-          if (result) copied = true;
         }
-        copied = await copy.file(File(item.localPath!));
       default:
         copied = false;
     }
