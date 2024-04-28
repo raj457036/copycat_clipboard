@@ -27,7 +27,7 @@ Future<void> syncChanges(BuildContext context) async {
 class SyncManagerCubit extends Cubit<SyncManagerState> {
   final Isar db;
   final AuthCubit auth;
-  final SyncClipboardRepository syncRepo;
+  final SyncRepository syncRepo;
   final NetworkStatus network;
   final int _syncId = 1;
 
@@ -48,15 +48,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     emit(const SyncManagerState.unknown());
   }
 
-  Future<void> syncChanges() async {
-    emit(const SyncManagerState.checking());
-    final lastSync = await getSyncInfo();
-
-    if (!await network.isConnected) {
-      emit(const SyncManagerState.failed(noInternetConnectionFailure));
-      return;
-    }
-
+  Future<void> syncClipboardItems(SyncStatus? lastSync) async {
     // Fetch changes from server
     bool hasMore = true;
     int offset = 0;
@@ -65,7 +57,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     bool partlySynced = false;
     while (hasMore) {
       emit(const SyncManagerState.checking());
-      final result = await syncRepo.getLatestItems(
+      final result = await syncRepo.getLatestClipboardItems(
         userId: auth.userId!,
         lastSynced: lastSync?.lastSync,
         offset: offset,
@@ -106,6 +98,20 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
       if (result.isLeft()) return;
     }
+  }
+
+  Future<void> syncChanges() async {
+    emit(const SyncManagerState.checking());
+    final lastSync = await getSyncInfo();
+
+    if (!await network.isConnected) {
+      emit(const SyncManagerState.failed(noInternetConnectionFailure));
+      return;
+    }
+
+    await Future.wait([
+      syncClipboardItems(lastSync),
+    ]);
 
     // Fetch unsynced changes from local db
     // Sync local changes with server

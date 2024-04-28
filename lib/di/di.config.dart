@@ -105,8 +105,8 @@ extension GetItInjectableX on _i1.GetIt {
       () => _i16.RemoteClipboardSource(gh<_i14.SupabaseClient>()),
       instanceName: 'remote',
     );
-    gh.lazySingleton<_i17.SyncClipboardRepository>(
-        () => _i17.SyncClipboardRepositoryImpl(gh<_i14.SupabaseClient>()));
+    gh.lazySingleton<_i17.SyncRepository>(
+        () => _i17.SyncRepositoryImpl(gh<_i14.SupabaseClient>()));
     gh.singleton<_i18.AuthCubit>(() => _i18.AuthCubit(
           gh<_i19.SupabaseClient>(),
           gh<_i6.NetworkStatus>(),
@@ -136,7 +136,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i24.SyncManagerCubit>(() => _i24.SyncManagerCubit(
           gh<_i4.Isar>(),
           gh<_i18.AuthCubit>(),
-          gh<_i17.SyncClipboardRepository>(),
+          gh<_i17.SyncRepository>(),
           gh<_i6.NetworkStatus>(),
         ));
     gh.factory<_i25.SearchCubit>(() => _i25.SearchCubit(
