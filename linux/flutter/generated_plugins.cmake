@@ -9,7 +9,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   gtk
   irondash_engine_context
   isar_flutter_libs
-  platform_device_id_linux
   screen_retriever
   super_native_extensions
   url_launcher_linux

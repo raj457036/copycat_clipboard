@@ -3,7 +3,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
@@ -27,7 +26,6 @@ class LoginPage extends StatelessWidget {
         switch (state) {
           case AuthenticatedAuthState() || OfflineAuthState():
             await context.read<AppConfigCubit>().load();
-            context.read<ClipboardCubit>().fetch();
             context.read<ClipCollectionCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();
             context.read<OfflinePersistanceCubit>().startListners();

@@ -1,4 +1,6 @@
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
@@ -21,33 +23,94 @@ class HomePage extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final textTheme = context.textTheme;
     final isMobile = Breakpoints.isMobile(width);
-    return BlocListener<SyncManagerCubit, SyncManagerState>(
-      listenWhen: (previous, current) => current is ClipboardSyncedSyncState,
-      listener: (context, state) {
-        switch (state) {
-          case ClipboardSyncedSyncState(
-              :final added,
-              :final updated,
-              silent: true
-            ):
-            {
-              if (added > 0 || updated > 0) {
-                showTextSnackbar(
-                  'Found $added new items and $updated updates',
-                  duration: 10,
-                  closePrevious: true,
-                  action: SnackBarAction(
-                    label: "Sync All",
-                    onPressed: () {
-                      context.read<ClipboardCubit>().fetch(fromTop: true);
-                    },
-                  ),
-                );
-              }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SyncManagerCubit, SyncManagerState>(
+          listenWhen: (previous, current) =>
+              current is ClipboardSyncedSyncState,
+          listener: (context, state) {
+            switch (state) {
+              case PartlySyncedSyncState(clipboard: true):
+                context.read<ClipboardCubit>().fetch(fromTop: true);
+                break;
+              case SyncedState(refreshLocalCache: true):
+                context.read<ClipboardCubit>().fetch(fromTop: true);
+                break;
+              case ClipboardSyncedSyncState(
+                  :final added,
+                  :final updated,
+                  silent: true
+                ):
+                {
+                  if (added > 0 || updated > 0) {
+                    showTextSnackbar(
+                      '$added new clips${updated > 0 ? " and $updated updated clips " : " "}available now.',
+                      duration: 30,
+                      closePrevious: true,
+                      action: SnackBarAction(
+                        label: "Refresh Now",
+                        onPressed: () {
+                          context.read<ClipboardCubit>().fetch(fromTop: true);
+                        },
+                      ),
+                    );
+                  }
+                }
+                break;
             }
-            break;
-        }
-      },
+          },
+        ),
+        BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
+          listenWhen: (previous, current) {
+            switch (current) {
+              case OfflinePersistanceDeleted() || OfflinePersistanceSaved():
+                return true;
+              case _:
+                return false;
+            }
+          },
+          listener: (context, state) {
+            switch (state) {
+              case OfflinePersistanceDeleted(:final item):
+                context.read<ClipboardCubit>().deleteItem(item);
+                showTextSnackbar("Item Deleted", closePrevious: true);
+              case OfflinePersistanceSaved(
+                  :final item,
+                  :final created,
+                ):
+                context.read<ClipboardCubit>().put(item, isNew: created);
+              case _:
+            }
+          },
+        ),
+        BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
+          listener: (context, state) {
+            switch (state) {
+              case CloudPersistanceUploadingFile(:final item) ||
+                    CloudPersistanceDownloadingFile(:final item):
+                context.read<ClipboardCubit>().put(item);
+                break;
+              case CloudPersistanceCreating(:final item) ||
+                    CloudPersistanceUpdating(:final item):
+                context.read<ClipboardCubit>().put(item);
+                break;
+              case CloudPersistanceDeleting(:final item):
+                context.read<ClipboardCubit>().put(item);
+                showTextSnackbar(
+                  "Deleting from cloud",
+                  isLoading: true,
+                  closePrevious: true,
+                );
+                break;
+              case CloudPersistanceError(:final item, :final failure):
+                showFailureSnackbar(failure);
+                context.read<ClipboardCubit>().put(item);
+                break;
+              case _:
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: isMobile
             ? AppBar(
@@ -65,17 +128,14 @@ class HomePage extends StatelessWidget {
               return (state.items, state.hasMore, state.loading);
             },
             builder: (context, state) {
-              final items = state.$1;
-              final hasMore = state.$2 ? 1 : 0;
-              final loading = state.$3;
-
-              if (loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+              final (items, hasMore, loading) = state; //Subject;
 
               if (items.isEmpty) {
+                if (loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return const Center(
                   child: Text("Your clipboard is empty."),
                 );
@@ -89,7 +149,7 @@ class HomePage extends StatelessWidget {
                   mainAxisSpacing: padding8,
                   childAspectRatio: isMobile ? 2 / 3 : 1,
                 ),
-                itemCount: items.length + hasMore,
+                itemCount: items.length + (hasMore ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == items.length) {
                     return Card.outlined(
@@ -106,7 +166,7 @@ class HomePage extends StatelessWidget {
                     );
                   }
 
-                  final item = state.$1[index];
+                  final item = items[index];
                   return ClipCard(
                     key: ValueKey("clipboard-item-${item.id}"),
                     item: item,

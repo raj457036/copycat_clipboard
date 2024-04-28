@@ -115,7 +115,7 @@ extension GetItInjectableX on _i1.GetIt {
       () => _i20.RemoteClipCollectionSource(gh<_i14.SupabaseClient>()),
       instanceName: 'remote',
     );
-    gh.singleton<_i21.ClipboardCubit>(() => _i21.ClipboardCubit(
+    gh.factory<_i21.ClipboardCubit>(() => _i21.ClipboardCubit(
           gh<_i15.ClipboardRepository>(instanceName: 'offline'),
           gh<_i4.Isar>(),
         ));
