@@ -2,6 +2,7 @@ import 'dart:async' show Completer, FutureOr;
 import 'dart:convert' show utf8;
 
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
@@ -30,24 +31,6 @@ const _clipTypePriority = [
   Formats.plainTextFile,
   Formats.plainText,
 ];
-
-const _supportedUriSchemas = {
-  "http",
-  "https",
-  "ftp",
-  "file",
-  "mailto",
-  "tel",
-  "data",
-  "ws",
-  "wss",
-  "ldap",
-  "urn",
-  "git",
-  "ssh",
-  "irc",
-  "news"
-};
 
 class ClipItem {
   final ClipItemType type;
@@ -413,7 +396,7 @@ class ClipboardFormatProcessor {
 
   Future<ClipItem> getUrl(ClipboardDataReader reader, NamedUri uri) async {
     final schema = uri.uri.scheme;
-    final isSupported = _supportedUriSchemas.contains(schema);
+    final isSupported = supportedUriSchemas.contains(schema);
     if (isSupported) {
       return ClipItem.uri(uri: uri.uri);
     } else {
