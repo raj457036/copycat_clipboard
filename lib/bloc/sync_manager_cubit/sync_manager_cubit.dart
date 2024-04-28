@@ -32,6 +32,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final NetworkStatus network;
   final int _syncId = 1;
 
+  bool syncing = false;
   Timer? autoSyncTimer;
 
   SyncManagerCubit(
@@ -48,7 +49,8 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       return;
     }
 
-    autoSyncTimer = Timer.periodic(duration, (timer) => syncChanges());
+    autoSyncTimer =
+        Timer.periodic(duration, (timer) => syncChanges(silent: true));
   }
 
   Future<SyncStatus?> getSyncInfo() async {
@@ -91,11 +93,16 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     }
   }
 
-  Future<void> syncClipCollections(SyncStatus? lastSync) async {
+  Future<void> syncClipCollections(
+    SyncStatus? lastSync, {
+    bool silent = false,
+  }) async {
     // Fetch changes from server
     bool hasMore = true;
     int offset = 0;
     bool partlySynced = false;
+    int added = 0;
+    int updated = 0;
 
     /// when the app can show the clips to the user.
     while (hasMore) {
@@ -123,29 +130,44 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
               .findFirst());
           if (result == null) {
             items[i] = item.copyWith(lastSynced: now());
+            added++;
           } else {
             items[i] = item.copyWith(
               lastSynced: result.lastSynced,
             )..applyId(result);
+            updated++;
           }
         }
 
-        await db.writeTxn(() async => await db.clipCollections.putAll(items));
+        await db.writeTxn(() async {
+          await db.clipCollections.putAll(items);
+        });
 
-        if (!partlySynced) {
+        if (!partlySynced && !silent) {
           emit(const SyncManagerState.partlySynced(collections: true));
           partlySynced = true;
         }
       });
 
-      if (result.isLeft()) return;
+      if (result.isLeft()) break;
     }
+
+    emit(SyncManagerState.collectionSynced(
+      silent: silent,
+      added: added,
+      updated: updated,
+    ));
   }
 
-  Future<void> syncClipboardItems(SyncStatus? lastSync) async {
+  Future<void> syncClipboardItems(
+    SyncStatus? lastSync, {
+    bool silent = false,
+  }) async {
     // Fetch changes from server
     bool hasMore = true;
     int offset = 0;
+    int added = 0;
+    int updated = 0;
 
     /// when the app can show the clips to the user.
     bool partlySynced = false;
@@ -174,17 +196,21 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
               .findFirst());
           if (result == null) {
             items[i] = item.copyWith(lastSynced: now());
+            added++;
           } else {
             items[i] = item.copyWith(
               lastSynced: result.lastSynced,
               localPath: result.localPath,
             )..applyId(result);
+            updated++;
           }
         }
 
-        await db.writeTxn(() async => await db.clipboardItems.putAll(items));
+        await db.writeTxn(() async {
+          await db.clipboardItems.putAll(items);
+        });
 
-        if (!partlySynced) {
+        if (!silent && !partlySynced) {
           emit(const SyncManagerState.partlySynced(clipboard: true));
           partlySynced = true;
         }
@@ -192,37 +218,56 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
       if (result.isLeft()) return;
     }
+
+    if (added > 0 || updated > 0) {
+      emit(SyncManagerState.clipboardSynced(
+        silent: silent,
+        added: added,
+        updated: updated,
+      ));
+    }
   }
 
   Future<void> syncChanges({
     bool clipboard = true,
     bool collections = true,
     bool repairRelations = true,
+    bool silent = false,
   }) async {
-    emit(const SyncManagerState.checking());
-    final lastSync = await getSyncInfo();
+    if (syncing) return;
+    syncing = true;
+    try {
+      emit(const SyncManagerState.checking());
+      final lastSync = await getSyncInfo();
 
-    if (!await network.isConnected) {
-      emit(const SyncManagerState.failed(noInternetConnectionFailure));
-      return;
+      if (!await network.isConnected) {
+        emit(const SyncManagerState.failed(noInternetConnectionFailure));
+        return;
+      }
+
+      await Future.wait([
+        if (clipboard) syncClipboardItems(lastSync, silent: silent),
+        if (collections) syncClipCollections(lastSync, silent: silent),
+      ]);
+
+      if (repairRelations) {
+        await repairLocalClipboardAndCollectionRelations();
+      }
+
+      // Fetch unsynced changes from local db
+      // Sync local changes with server
+      // ? Has to be done manually!
+      await updateSyncTime(refreshLocalCache: !silent);
+    } finally {
+      syncing = false;
     }
-
-    await Future.wait([
-      if (clipboard) syncClipboardItems(lastSync),
-      if (collections) syncClipCollections(lastSync),
-    ]);
-
-    if (repairRelations) {
-      await repairLocalClipboardAndCollectionRelations();
-    }
-
-    // Fetch unsynced changes from local db
-    // Sync local changes with server
-    // ? Has to be done manually!
-    await updateSyncTime(refreshLocalCache: true);
   }
 
-  Future<void> updateSyncTime({bool refreshLocalCache = false}) async {
+  Future<void> updateSyncTime({
+    bool refreshLocalCache = false,
+    int added = 0,
+    int removed = 0,
+  }) async {
     final lastSync0 = await getSyncInfo();
     final syncTime = now();
     final updatedSyncStatus =

@@ -6,6 +6,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -61,6 +62,8 @@ class ClipboardCubit extends Cubit<ClipboardState> {
         offset: fromTop ? 0 : state.offset,
       ),
     );
+
+    await Future.delayed(Durations.long1);
 
     final items = await repo.getList(
       limit: state.limit,

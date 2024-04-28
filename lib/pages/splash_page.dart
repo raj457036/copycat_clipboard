@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
@@ -21,9 +24,10 @@ class SplashPage extends StatelessWidget {
       context.read<AuthCubit>().checkForAuthentication,
     );
     return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         switch (state) {
           case AuthenticatedAuthState() || OfflineAuthState():
+            await context.read<AppConfigCubit>().load();
             context.read<ClipboardCubit>().fetch();
             context.read<ClipCollectionCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();

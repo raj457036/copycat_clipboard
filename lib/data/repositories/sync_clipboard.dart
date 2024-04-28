@@ -80,7 +80,10 @@ class SyncRepositoryImpl implements SyncRepository {
       var query = db.from(clipboardItemsTable).select().eq("userId", userId);
 
       if (lastSynced != null) {
-        final isoDate = lastSynced.toUtc().toIso8601String();
+        final isoDate = lastSynced
+            .toUtc()
+            .subtract(const Duration(seconds: 4))
+            .toIso8601String();
         query = query.gt(
           "modified",
           isoDate,
