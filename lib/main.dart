@@ -10,12 +10,14 @@ import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/generated/app_localizations.dart';
 import 'package:clipboard/routes/routes.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,32 +28,36 @@ import 'common/bloc_config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
 
-  // TODO: remove for production version
-  // ? this is only for hot reload support.
-  await hotKeyManager.unregisterAll();
+  if (isDesktop) {
+    await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions(
-    size: Size(900, 600),
-    minimumSize: Size(365, 420),
-    center: true,
-    // backgroundColor: Colors.white,
-    skipTaskbar: false,
-    // windowButtonVisibility: false,
-    titleBarStyle: TitleBarStyle.normal,
-  );
+    if (kDebugMode) {
+      // TODO: remove for non hot reload version
+      // ? this is only for hot reload support.
+      await hotKeyManager.unregisterAll();
+    }
+
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(900, 600),
+      minimumSize: Size(365, 420),
+      center: true,
+      // backgroundColor: Colors.white,
+      skipTaskbar: false,
+      // windowButtonVisibility: false,
+      titleBarStyle: TitleBarStyle.normal,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
+      // await windowManager.setAsFrameless();
+      await windowManager.show();
+      await windowManager.focus();
+    });
+    await updateWindowsRegistry();
+  }
 
   Bloc.observer = CustomBlocObserver();
-  await updateWindowsRegistry();
   await configureDependencies();
   runApp(const MainApp());
-
-  windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    // await windowManager.setAsFrameless();
-    await windowManager.show();
-    await windowManager.focus();
-  });
 }
 
 class MainApp extends StatelessWidget {
