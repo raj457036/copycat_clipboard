@@ -1,18 +1,18 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/record_keyboard_shortcut.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:universal_io/io.dart';
 
 class SetupToggleHotKey extends StatelessWidget {
   const SetupToggleHotKey({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid || Platform.isIOS) return const SizedBox.shrink();
+    if (isMobile) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, HotKey?>(

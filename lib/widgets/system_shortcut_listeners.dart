@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
@@ -12,7 +13,7 @@ class SystemShortcutListener extends StatelessWidget {
   });
 
   Future<void> toggleWindow() async {
-    if (await windowManager.isFocused() || await windowManager.isVisible()) {
+    if (await windowManager.isFocused()) {
       await windowManager.hide();
     } else {
       await windowManager.show();
@@ -22,6 +23,7 @@ class SystemShortcutListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isMobile) return child;
     return BlocListener<AppConfigCubit, AppConfigState>(
       listenWhen: (previous, current) =>
           previous.config.toggleHotkey != current.config.toggleHotkey,

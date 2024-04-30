@@ -5,14 +5,13 @@ import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import "package:universal_io/io.dart";
 
 class DontAutoCopyOver extends StatelessWidget {
   const DontAutoCopyOver({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid || Platform.isIOS) return const SizedBox.shrink();
+    if (isMobile) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, int>(
