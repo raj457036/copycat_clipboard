@@ -5,6 +5,7 @@ import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/pause_till.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
+import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class SettingsPage extends StatelessWidget {
               title: Text("Theme"),
               trailing: ThemeDropdown(),
             ),
+            SetupToggleHotKey(),
             DontAutoCopyOver(),
             PauseTill(),
             height20,

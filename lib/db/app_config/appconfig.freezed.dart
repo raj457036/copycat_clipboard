@@ -34,7 +34,9 @@ mixin _$AppConfig {
   /// Pause auto copy for till pausedTill is reached.
   DateTime? get pausedTill =>
       throw _privateConstructorUsedError; // Auto Sync Interval
-  int get autoSyncInterval => throw _privateConstructorUsedError;
+  int get autoSyncInterval =>
+      throw _privateConstructorUsedError; // System show/hide toggle hotkey
+  String? get toggleHotkey => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -54,7 +56,8 @@ abstract class $AppConfigCopyWith<$Res> {
       int dontUploadOver,
       int dontCopyOver,
       DateTime? pausedTill,
-      int autoSyncInterval});
+      int autoSyncInterval,
+      String? toggleHotkey});
 }
 
 /// @nodoc
@@ -77,6 +80,7 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? dontCopyOver = null,
     Object? pausedTill = freezed,
     Object? autoSyncInterval = null,
+    Object? toggleHotkey = freezed,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -107,6 +111,10 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.autoSyncInterval
           : autoSyncInterval // ignore: cast_nullable_to_non_nullable
               as int,
+      toggleHotkey: freezed == toggleHotkey
+          ? _value.toggleHotkey
+          : toggleHotkey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -126,7 +134,8 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       int dontUploadOver,
       int dontCopyOver,
       DateTime? pausedTill,
-      int autoSyncInterval});
+      int autoSyncInterval,
+      String? toggleHotkey});
 }
 
 /// @nodoc
@@ -147,6 +156,7 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? dontCopyOver = null,
     Object? pausedTill = freezed,
     Object? autoSyncInterval = null,
+    Object? toggleHotkey = freezed,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
@@ -177,6 +187,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.autoSyncInterval
           : autoSyncInterval // ignore: cast_nullable_to_non_nullable
               as int,
+      toggleHotkey: freezed == toggleHotkey
+          ? _value.toggleHotkey
+          : toggleHotkey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -191,7 +205,8 @@ class _$AppConfigImpl extends _AppConfig {
       this.dontUploadOver = $10MB,
       this.dontCopyOver = $10MB,
       this.pausedTill,
-      this.autoSyncInterval = $90S})
+      this.autoSyncInterval = $90S,
+      this.toggleHotkey})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -225,10 +240,13 @@ class _$AppConfigImpl extends _AppConfig {
   @override
   @JsonKey()
   final int autoSyncInterval;
+// System show/hide toggle hotkey
+  @override
+  final String? toggleHotkey;
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey)';
   }
 
   @override
@@ -249,7 +267,9 @@ class _$AppConfigImpl extends _AppConfig {
             (identical(other.pausedTill, pausedTill) ||
                 other.pausedTill == pausedTill) &&
             (identical(other.autoSyncInterval, autoSyncInterval) ||
-                other.autoSyncInterval == autoSyncInterval));
+                other.autoSyncInterval == autoSyncInterval) &&
+            (identical(other.toggleHotkey, toggleHotkey) ||
+                other.toggleHotkey == toggleHotkey));
   }
 
   @JsonKey(ignore: true)
@@ -262,7 +282,8 @@ class _$AppConfigImpl extends _AppConfig {
       dontUploadOver,
       dontCopyOver,
       pausedTill,
-      autoSyncInterval);
+      autoSyncInterval,
+      toggleHotkey);
 
   @JsonKey(ignore: true)
   @override
@@ -286,7 +307,8 @@ abstract class _AppConfig extends AppConfig {
       final int dontUploadOver,
       final int dontCopyOver,
       final DateTime? pausedTill,
-      final int autoSyncInterval}) = _$AppConfigImpl;
+      final int autoSyncInterval,
+      final String? toggleHotkey}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -313,6 +335,8 @@ abstract class _AppConfig extends AppConfig {
   DateTime? get pausedTill;
   @override // Auto Sync Interval
   int get autoSyncInterval;
+  @override // System show/hide toggle hotkey
+  String? get toggleHotkey;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>

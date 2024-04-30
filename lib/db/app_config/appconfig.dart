@@ -1,8 +1,11 @@
+import 'dart:convert' show jsonDecode;
+
 import 'package:clipboard/constants/numbers/duration.dart';
 import 'package:clipboard/constants/numbers/file_sizes.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:isar/isar.dart';
 
 part 'appconfig.freezed.dart';
@@ -29,8 +32,15 @@ class AppConfig with _$AppConfig, IsarIdMixin {
 
     // Auto Sync Interval
     @Default($90S) int autoSyncInterval,
+
+    // System show/hide toggle hotkey
+    String? toggleHotkey,
   }) = _AppConfig;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>
       _$AppConfigFromJson(json);
+
+  @ignore
+  HotKey? get getToggleHotkey =>
+      toggleHotkey != null ? HotKey.fromJson(jsonDecode(toggleHotkey!)) : null;
 }

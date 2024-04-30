@@ -59,6 +59,8 @@ dependencies:
   emoji_picker_flutter: ^2.2.0
   duration: ^3.0.13
   open_filex: ^4.4.0
+  hotkey_manager: ^0.2.2
+  launch_at_startup: ^0.2.2
 
 dev_dependencies:
   flutter_test:

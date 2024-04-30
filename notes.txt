@@ -1,0 +1,2 @@
+Linux:
+1. hotkey_manager needs "sudo apt-get install keybinder-3.0" for hot key shortcut implementations.

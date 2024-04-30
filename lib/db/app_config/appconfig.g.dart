@@ -57,6 +57,11 @@ const AppConfigSchema = CollectionSchema(
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
+    ),
+    r'toggleHotkey': PropertySchema(
+      id: 8,
+      name: r'toggleHotkey',
+      type: IsarType.string,
     )
   },
   estimateSize: _appConfigEstimateSize,
@@ -80,6 +85,12 @@ int _appConfigEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.themeMode.name.length * 3;
+  {
+    final value = object.toggleHotkey;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -97,6 +108,7 @@ void _appConfigSerialize(
   writer.writeBool(offsets[5], object.isPersisted);
   writer.writeDateTime(offsets[6], object.pausedTill);
   writer.writeString(offsets[7], object.themeMode.name);
+  writer.writeString(offsets[8], object.toggleHotkey);
 }
 
 AppConfig _appConfigDeserialize(
@@ -115,6 +127,7 @@ AppConfig _appConfigDeserialize(
     themeMode:
         _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[7])] ??
             ThemeMode.system,
+    toggleHotkey: reader.readStringOrNull(offsets[8]),
   );
   object.id = id;
   return object;
@@ -145,6 +158,8 @@ P _appConfigDeserializeProp<P>(
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -704,6 +719,159 @@ extension AppConfigQueryFilter
       ));
     });
   }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'toggleHotkey',
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'toggleHotkey',
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> toggleHotkeyEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'toggleHotkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'toggleHotkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'toggleHotkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> toggleHotkeyBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'toggleHotkey',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'toggleHotkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'toggleHotkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'toggleHotkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> toggleHotkeyMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'toggleHotkey',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'toggleHotkey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      toggleHotkeyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'toggleHotkey',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension AppConfigQueryObject
@@ -807,6 +975,18 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByThemeModeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByToggleHotkey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toggleHotkey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByToggleHotkeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toggleHotkey', Sort.desc);
     });
   }
 }
@@ -921,6 +1101,18 @@ extension AppConfigQuerySortThenBy
       return query.addSortBy(r'themeMode', Sort.desc);
     });
   }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByToggleHotkey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toggleHotkey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByToggleHotkeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toggleHotkey', Sort.desc);
+    });
+  }
 }
 
 extension AppConfigQueryWhereDistinct
@@ -971,6 +1163,13 @@ extension AppConfigQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'themeMode', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByToggleHotkey(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'toggleHotkey', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1030,6 +1229,12 @@ extension AppConfigQueryProperty
       return query.addPropertyName(r'themeMode');
     });
   }
+
+  QueryBuilder<AppConfig, String?, QQueryOperations> toggleHotkeyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'toggleHotkey');
+    });
+  }
 }
 
 // **************************************************************************
@@ -1048,6 +1253,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['pausedTill'] as String),
       autoSyncInterval: json['autoSyncInterval'] as int? ?? $90S,
+      toggleHotkey: json['toggleHotkey'] as String?,
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
@@ -1059,6 +1265,7 @@ Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
       'dontCopyOver': instance.dontCopyOver,
       'pausedTill': instance.pausedTill?.toIso8601String(),
       'autoSyncInterval': instance.autoSyncInterval,
+      'toggleHotkey': instance.toggleHotkey,
     };
 
 const _$ThemeModeEnumMap = {
