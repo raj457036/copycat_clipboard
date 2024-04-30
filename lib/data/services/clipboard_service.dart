@@ -503,7 +503,7 @@ class ClipboardService with ClipboardListener {
     _started = true;
     this.onRead = onRead;
     onCopy = BehaviorSubject<List<ClipItem?>>();
-    if (!(Platform.isAndroid || Platform.isIOS)) {
+    if (isDesktop) {
       watcher.addListener(this);
       await watcher.start();
     }

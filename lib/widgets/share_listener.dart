@@ -4,6 +4,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' as p;
@@ -18,7 +19,7 @@ class ShareListener extends StatefulWidget {
   });
 
   static Widget forPlatform({required Widget child}) {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (isMobile) {
       return ShareListener(child: child);
     }
     return child;

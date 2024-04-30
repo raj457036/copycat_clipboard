@@ -1,9 +1,9 @@
-import "package:universal_io/io.dart";
 import 'dart:math' as math;
 
 import 'package:clipboard/common/logging.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import "package:universal_io/io.dart";
 import 'package:uuid/v4.dart';
 
 /// Simple wrapper around [Future.delayed] to wait for few seconds.
@@ -111,3 +111,8 @@ Future<void> clearPersistedRootDir() async {
     await dir.delete(recursive: true);
   }
 }
+
+bool get isDesktop =>
+    Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+
+bool get isMobile => Platform.isIOS || Platform.isAndroid;

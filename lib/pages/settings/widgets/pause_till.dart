@@ -4,7 +4,6 @@ import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import "package:universal_io/io.dart";
 
 class PauseTill extends StatelessWidget {
   const PauseTill({super.key});
@@ -32,7 +31,7 @@ class PauseTill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid || Platform.isIOS) return const SizedBox.shrink();
+    if (isMobile) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, DateTime?>(

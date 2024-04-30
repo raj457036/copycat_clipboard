@@ -1,6 +1,5 @@
-import "package:universal_io/io.dart";
-
 import 'package:freezed_annotation/freezed_annotation.dart';
+import "package:universal_io/io.dart";
 
 enum PlatformOS {
   @JsonValue("android")
@@ -11,6 +10,8 @@ enum PlatformOS {
   macos,
   @JsonValue("windows")
   windows,
+  @JsonValue("linux")
+  linux,
 }
 
 PlatformOS currentPlatformOS() {
@@ -25,6 +26,9 @@ PlatformOS currentPlatformOS() {
   }
   if (Platform.isWindows) {
     return PlatformOS.windows;
+  }
+  if (Platform.isLinux) {
+    return PlatformOS.linux;
   }
   throw UnsupportedError("Unsupported platform");
 }
