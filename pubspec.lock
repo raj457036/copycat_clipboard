@@ -621,6 +621,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  hotkey_manager:
+    dependency: "direct main"
+    description:
+      name: hotkey_manager
+      sha256: c3c497b784c7538eb67bb1c9df0446d9ba65af76e6758677dde5ecc730d44d21
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
+  hotkey_manager_linux:
+    dependency: transitive
+    description:
+      name: hotkey_manager_linux
+      sha256: "83676bda8210a3377bc6f1977f193bc1dbdd4c46f1bdd02875f44b6eff9a8473"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  hotkey_manager_macos:
+    dependency: transitive
+    description:
+      name: hotkey_manager_macos
+      sha256: "03b5967e64357b9ac05188ea4a5df6fe4ed4205762cb80aaccf8916ee1713c96"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  hotkey_manager_platform_interface:
+    dependency: transitive
+    description:
+      name: hotkey_manager_platform_interface
+      sha256: "98ffca25b8cc9081552902747b2942e3bc37855389a4218c9d50ca316b653b13"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  hotkey_manager_windows:
+    dependency: transitive
+    description:
+      name: hotkey_manager_windows
+      sha256: "0d03ced9fe563ed0b68f0a0e1b22c9ffe26eb8053cb960e401f68a4f070e0117"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   http:
     dependency: "direct main"
     description:
@@ -773,6 +813,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  launch_at_startup:
+    dependency: "direct main"
+    description:
+      name: launch_at_startup
+      sha256: "93fc5638e088290004fae358bae691486673d469957d461d9dae5b12248593eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   leak_tracker:
     dependency: transitive
     description:
@@ -1394,6 +1442,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  uni_platform:
+    dependency: transitive
+    description:
+      name: uni_platform
+      sha256: e02213a7ee5352212412ca026afd41d269eb00d982faa552f419ffc2debfad84
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.3"
   universal_io:
     dependency: "direct main"
     description:

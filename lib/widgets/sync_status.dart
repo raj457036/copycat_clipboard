@@ -52,6 +52,7 @@ class SyncStatusButton extends StatelessWidget {
         return FloatingActionButton.small(
           onPressed: disabled ? null : () => syncChanges(context),
           tooltip: message,
+          heroTag: "sync-fab",
           backgroundColor: colors.secondary,
           foregroundColor: colors.onSecondary,
           child: isSyncing ? const AnimatedSyncingIcon() : Icon(icon),

@@ -73,6 +73,7 @@ class _NavBarPageState extends State<NavBarPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
+            heroTag: "collection-fab",
             onPressed: () {
               context.goNamed(
                 RouteConstants.createEditCollection,
@@ -167,7 +168,10 @@ class _NavBarPageState extends State<NavBarPage> {
               ],
               leading: ConstrainedBox(
                 constraints: const BoxConstraints.tightFor(height: 120),
-                child: floatingButton,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: padding8),
+                  child: floatingButton,
+                ),
               ),
               labelType: NavigationRailLabelType.all,
               groupAlignment: 0,

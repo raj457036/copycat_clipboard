@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   clipboard_watcher
   emoji_picker_flutter
   gtk
+  hotkey_manager_linux
   irondash_engine_context
   isar_flutter_libs
   screen_retriever
