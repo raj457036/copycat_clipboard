@@ -1,7 +1,7 @@
 name: clipboard
 description: "A universal clipboard"
 publish_to: 'none'
-version: 0.1.4+9
+version: 0.1.4+10
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -61,7 +61,11 @@ dependencies:
   open_filex: ^4.4.0
   hotkey_manager: ^0.2.2
   launch_at_startup: ^0.2.2
-  platform_device_id: ^1.0.1
+  platform_device_id:
+    git:
+      url: https://github.com/raj457036/platform_device_id.git
+      ref: master
+      path: "platform_device_id"
 
 dev_dependencies:
   flutter_test:

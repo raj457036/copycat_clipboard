@@ -1040,10 +1040,11 @@ packages:
   platform_device_id:
     dependency: "direct main"
     description:
-      name: platform_device_id
-      sha256: "7a12ec84de4a823bb10eba2f0e1ad29e2365abba17790489a0d78029904f562e"
-      url: "https://pub.dev"
-    source: hosted
+      path: platform_device_id
+      ref: master
+      resolved-ref: "1807ffcb265799dbaae03299df9af1f0c8d3693a"
+      url: "https://github.com/raj457036/platform_device_id.git"
+    source: git
     version: "1.0.1"
   platform_device_id_linux:
     dependency: transitive

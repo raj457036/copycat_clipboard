@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
@@ -34,25 +35,38 @@ class SearchPage extends StatelessWidget {
           },
         ),
       ),
-      body: BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
-        listenWhen: (previous, current) {
-          switch (current) {
-            case OfflinePersistanceDeleted() ||
-                  OfflinePersistanceSaved(synced: false):
-              return true;
-            case _:
-              return false;
-          }
-        },
-        listener: (context, state) {
-          switch (state) {
-            case OfflinePersistanceDeleted(:final item):
-              context.read<SearchCubit>().deleteItem(item);
-            case OfflinePersistanceSaved(:final item):
-              context.read<SearchCubit>().put(item);
-            case _:
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
+            listenWhen: (previous, current) {
+              switch (current) {
+                case OfflinePersistanceDeleted() ||
+                      OfflinePersistanceSaved(synced: false):
+                  return true;
+                case _:
+                  return false;
+              }
+            },
+            listener: (context, state) {
+              switch (state) {
+                case OfflinePersistanceDeleted(:final item):
+                  context.read<SearchCubit>().deleteItem(item);
+                case OfflinePersistanceSaved(:final item):
+                  context.read<SearchCubit>().put(item);
+                case _:
+              }
+            },
+          ),
+          BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
+              listener: (context, state) {
+            switch (state) {
+              case CloudPersistanceUploadingFile(:final item) ||
+                    CloudPersistanceDownloadingFile(:final item):
+                context.read<SearchCubit>().put(item);
+                break;
+            }
+          }),
+        ],
         child: BlocBuilder<SearchCubit, SearchState>(
           builder: (context, state) {
             switch (state) {
@@ -104,7 +118,7 @@ class SearchPage extends StatelessWidget {
 
                       final item = results[index];
                       return ClipCard(
-                        key: ValueKey("clipboard-item-${item.id}"),
+                        key: ValueKey("clipboard-item-//${item.id}"),
                         item: item,
                         // deleteAllowed: false,
                       );

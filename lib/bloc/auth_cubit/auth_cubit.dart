@@ -21,7 +21,6 @@ class AuthCubit extends Cubit<AuthState> {
   Session? get session => sbClient.auth.currentSession;
 
   checkForAuthentication() {
-    print(session?.accessToken);
     if (session != null) {
       authenticated(
         session!,

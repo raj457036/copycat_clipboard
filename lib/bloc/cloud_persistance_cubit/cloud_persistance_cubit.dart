@@ -251,6 +251,9 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   }
 
   Future<void> download(ClipboardItem item) async {
+    final isDownloading = drive.isDownloading(item);
+    if (isDownloading) return;
+
     if (item.localPath != null) {
       final exists = await File(item.localPath!).exists();
       if (exists) return;

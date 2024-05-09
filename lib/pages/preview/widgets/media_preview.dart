@@ -81,7 +81,7 @@ class MediaClipPreviewCard extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: getPreview(),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
           borderRadius: isMobile
               ? radius12
