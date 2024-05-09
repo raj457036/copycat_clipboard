@@ -26,6 +26,8 @@ abstract class DriveService {
   });
   Future<void> delete(ClipboardItem item);
 
+  bool isDownloading(ClipboardItem item);
+
   void cancelOperation(ClipboardItem item);
 }
 
@@ -249,5 +251,10 @@ class GoogleDriveService implements DriveService {
     _downloadOperations[item.id]?.complete();
     _uploadOperations.remove(item.id);
     _downloadOperations.remove(item.id);
+  }
+
+  @override
+  bool isDownloading(ClipboardItem item) {
+    return _downloadOperations.containsKey(item.id);
   }
 }

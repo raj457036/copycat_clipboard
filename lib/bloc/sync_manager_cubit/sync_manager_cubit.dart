@@ -113,7 +113,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         userId: auth.userId!,
         lastSynced: lastSync?.lastSync,
         offset: offset,
-        deviceId: lastSync?.lastSync != null ? deviceId : null,
+        excludeDeviceId: lastSync?.lastSync != null ? deviceId : null,
       );
 
       await result.fold((l) async => emit(SyncManagerState.failed(l)),
@@ -180,7 +180,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         userId: auth.userId!,
         lastSynced: lastSync?.lastSync,
         offset: offset,
-        deviceId: lastSync?.lastSync != null ? deviceId : null,
+        excludeDeviceId: lastSync?.lastSync != null ? deviceId : null,
       );
 
       await result.fold((l) async => emit(SyncManagerState.failed(l)),

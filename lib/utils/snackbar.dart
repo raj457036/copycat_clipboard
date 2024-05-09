@@ -7,16 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
-    SnackBar snackBar,
-    {bool closePrevious = false}) {
+  SnackBar snackBar, {
+  bool closePrevious = false,
+}) {
+  ScaffoldMessengerState? state = scaffoldMessengerKey.currentState;
+
   if (closePrevious) {
-    scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
+    state?.removeCurrentSnackBar();
   }
-  return scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+  return state?.showSnackBar(snackBar);
 }
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
-    Failure failure) {
+  Failure failure,
+) {
   final context = scaffoldMessengerKey.currentContext!;
   final mq = MediaQuery.of(context);
   final colors = context.colors;

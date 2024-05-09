@@ -11,7 +11,7 @@ abstract class SyncRepository {
     required String userId,
     int limit = 100,
     int offset = 0,
-    String? deviceId,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   });
 
@@ -19,7 +19,7 @@ abstract class SyncRepository {
     required String userId,
     int limit = 100,
     int offset = 0,
-    String? deviceId,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   });
 
@@ -27,7 +27,7 @@ abstract class SyncRepository {
     required String userId,
     int limit = 100,
     int offset = 0,
-    String? deviceId,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   });
 }
@@ -47,7 +47,7 @@ class SyncRepositoryImpl implements SyncRepository {
     required String userId,
     int limit = 100,
     int offset = 0,
-    String? deviceId,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   }) async {
     try {
@@ -60,8 +60,8 @@ class SyncRepositoryImpl implements SyncRepository {
       if (lastSynced != null) {
         query = query.gte("deletedAt", lastSynced.toIso8601String());
       }
-      if (deviceId != null || deviceId != "") {
-        query = query.neq("deviceId", deviceId!);
+      if (excludeDeviceId != null || excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId!);
       }
       final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
@@ -81,7 +81,7 @@ class SyncRepositoryImpl implements SyncRepository {
     required String userId,
     int limit = 100,
     int offset = 0,
-    String? deviceId,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   }) async {
     try {
@@ -98,8 +98,8 @@ class SyncRepositoryImpl implements SyncRepository {
         );
       }
 
-      if (deviceId != null || deviceId != "") {
-        query = query.neq("deviceId", deviceId!);
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
       }
 
       final docs = await query.order("modified").range(offset, offset + limit);
@@ -120,7 +120,7 @@ class SyncRepositoryImpl implements SyncRepository {
     required String userId,
     int limit = 100,
     int offset = 0,
-    String? deviceId,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   }) async {
     try {
@@ -133,8 +133,8 @@ class SyncRepositoryImpl implements SyncRepository {
           isoDate,
         );
       }
-      if (deviceId != null || deviceId != "") {
-        query = query.neq("deviceId", deviceId!);
+      if (excludeDeviceId != null || excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId!);
       }
       final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipCollection.fromJson(e)).toList();
