@@ -31,6 +31,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final SyncRepository syncRepo;
   final NetworkStatus network;
   final int _syncId = 1;
+  final String deviceId;
 
   bool syncing = false;
   Timer? autoSyncTimer;
@@ -40,6 +41,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     this.auth,
     this.syncRepo,
     this.network,
+    @Named("device_id") this.deviceId,
   ) : super(const SyncManagerState.unknown());
 
   void setupAutoSync(Duration duration) {
@@ -111,6 +113,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         userId: auth.userId!,
         lastSynced: lastSync?.lastSync,
         offset: offset,
+        deviceId: lastSync?.lastSync != null ? deviceId : null,
       );
 
       await result.fold((l) async => emit(SyncManagerState.failed(l)),
@@ -177,6 +180,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         userId: auth.userId!,
         lastSynced: lastSync?.lastSync,
         offset: offset,
+        deviceId: lastSync?.lastSync != null ? deviceId : null,
       );
 
       await result.fold((l) async => emit(SyncManagerState.failed(l)),

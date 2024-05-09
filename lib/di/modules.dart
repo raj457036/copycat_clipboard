@@ -6,6 +6,7 @@ import "package:flutter/foundation.dart";
 import "package:injectable/injectable.dart";
 import "package:isar/isar.dart";
 import "package:path_provider/path_provider.dart";
+import "package:platform_device_id/platform_device_id.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 
 @module
@@ -28,6 +29,11 @@ abstract class RegisterModule {
     );
     return isar;
   }
+
+  @preResolve
+  @Named("device_id")
+  Future<String> get deviceId async =>
+      (await PlatformDeviceId.getDeviceId) ?? "";
 
   @Named("supabase_url")
   String get supabaseUrl => "https://jyawrokzkzfjturwttte.supabase.co";

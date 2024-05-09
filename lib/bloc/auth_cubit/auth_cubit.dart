@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/utils/network_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
@@ -11,12 +10,10 @@ part 'auth_state.dart';
 
 @singleton
 class AuthCubit extends Cubit<AuthState> {
-  final NetworkStatus network;
   SupabaseClient sbClient;
 
   AuthCubit(
     this.sbClient,
-    this.network,
   ) : super(const AuthState.unknown());
 
   String? get userId => state.whenOrNull(authenticated: (_, user) => user.id);
