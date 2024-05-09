@@ -25,6 +25,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final ClipboardService clipboard;
   final CopyToClipboard copy;
   final AppConfigCubit appConfig;
+  final String deviceId;
 
   bool _listening = false;
 
@@ -35,6 +36,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     @Named("offline") this.repo,
     this.clipboard,
     this.appConfig,
+    @Named("device_id") this.deviceId,
   )   : copy = CopyToClipboard(clipboard),
         super(const OfflinePersistanceState.initial());
 
@@ -235,6 +237,8 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   }
 
   Future<void> persist(ClipboardItem item, {bool synced = false}) async {
+    item = item.copyWith(deviceId: deviceId)..applyId(item);
+
     if (!item.isPersisted) {
       emit(OfflinePersistanceState.creatingItem(item));
       final created = await repo.create(item);

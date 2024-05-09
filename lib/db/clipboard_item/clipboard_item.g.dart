@@ -47,156 +47,161 @@ const ClipboardItemSchema = CollectionSchema(
       name: r'descriptionWords',
       type: IsarType.stringList,
     ),
-    r'driveFileId': PropertySchema(
+    r'deviceId': PropertySchema(
       id: 6,
+      name: r'deviceId',
+      type: IsarType.string,
+    ),
+    r'driveFileId': PropertySchema(
+      id: 7,
       name: r'driveFileId',
       type: IsarType.string,
     ),
     r'encrypted': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'encrypted',
       type: IsarType.bool,
     ),
     r'fileExtension': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'fileExtension',
       type: IsarType.string,
     ),
     r'fileMimeType': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'fileMimeType',
       type: IsarType.string,
     ),
     r'fileName': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'fileName',
       type: IsarType.string,
     ),
     r'fileSize': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'fileSize',
       type: IsarType.long,
     ),
     r'imgBlurHash': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'imgBlurHash',
       type: IsarType.string,
     ),
     r'isPersisted': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'lastCopied': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'lastCopied',
       type: IsarType.dateTime,
     ),
     r'lastSynced': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
     r'localOnly': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'localOnly',
       type: IsarType.bool,
     ),
     r'localPath': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'localPath',
       type: IsarType.string,
     ),
     r'mimetypeWord': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'mimetypeWord',
       type: IsarType.string,
     ),
     r'modified': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'os': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'os',
       type: IsarType.string,
       enumMap: _ClipboardItemosEnumValueMap,
     ),
     r'serverCollectionId': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'serverCollectionId',
       type: IsarType.long,
     ),
     r'serverId': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'serverId',
       type: IsarType.long,
     ),
     r'sourceApp': PropertySchema(
-      id: 23,
+      id: 24,
       name: r'sourceApp',
       type: IsarType.string,
     ),
     r'sourceUrl': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'sourceUrl',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'text',
       type: IsarType.string,
     ),
     r'textCategory': PropertySchema(
-      id: 26,
+      id: 27,
       name: r'textCategory',
       type: IsarType.string,
       enumMap: _ClipboardItemtextCategoryEnumValueMap,
     ),
     r'textCategoryWord': PropertySchema(
-      id: 27,
+      id: 28,
       name: r'textCategoryWord',
       type: IsarType.string,
     ),
     r'textWord': PropertySchema(
-      id: 28,
+      id: 29,
       name: r'textWord',
       type: IsarType.stringList,
     ),
     r'title': PropertySchema(
-      id: 29,
+      id: 30,
       name: r'title',
       type: IsarType.string,
     ),
     r'titleWords': PropertySchema(
-      id: 30,
+      id: 31,
       name: r'titleWords',
       type: IsarType.stringList,
     ),
     r'type': PropertySchema(
-      id: 31,
+      id: 32,
       name: r'type',
       type: IsarType.string,
       enumMap: _ClipboardItemtypeEnumValueMap,
     ),
     r'typeWord': PropertySchema(
-      id: 32,
+      id: 33,
       name: r'typeWord',
       type: IsarType.string,
     ),
     r'url': PropertySchema(
-      id: 33,
+      id: 34,
       name: r'url',
       type: IsarType.string,
     ),
     r'urlWords': PropertySchema(
-      id: 34,
+      id: 35,
       name: r'urlWords',
       type: IsarType.stringList,
     ),
     r'userId': PropertySchema(
-      id: 35,
+      id: 36,
       name: r'userId',
       type: IsarType.string,
     )
@@ -327,6 +332,12 @@ int _clipboardItemEstimateSize(
     }
   }
   {
+    final value = object.deviceId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.driveFileId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -440,36 +451,37 @@ void _clipboardItemSerialize(
   writer.writeDateTime(offsets[3], object.deletedAt);
   writer.writeString(offsets[4], object.description);
   writer.writeStringList(offsets[5], object.descriptionWords);
-  writer.writeString(offsets[6], object.driveFileId);
-  writer.writeBool(offsets[7], object.encrypted);
-  writer.writeString(offsets[8], object.fileExtension);
-  writer.writeString(offsets[9], object.fileMimeType);
-  writer.writeString(offsets[10], object.fileName);
-  writer.writeLong(offsets[11], object.fileSize);
-  writer.writeString(offsets[12], object.imgBlurHash);
-  writer.writeBool(offsets[13], object.isPersisted);
-  writer.writeDateTime(offsets[14], object.lastCopied);
-  writer.writeDateTime(offsets[15], object.lastSynced);
-  writer.writeBool(offsets[16], object.localOnly);
-  writer.writeString(offsets[17], object.localPath);
-  writer.writeString(offsets[18], object.mimetypeWord);
-  writer.writeDateTime(offsets[19], object.modified);
-  writer.writeString(offsets[20], object.os.name);
-  writer.writeLong(offsets[21], object.serverCollectionId);
-  writer.writeLong(offsets[22], object.serverId);
-  writer.writeString(offsets[23], object.sourceApp);
-  writer.writeString(offsets[24], object.sourceUrl);
-  writer.writeString(offsets[25], object.text);
-  writer.writeString(offsets[26], object.textCategory?.name);
-  writer.writeString(offsets[27], object.textCategoryWord);
-  writer.writeStringList(offsets[28], object.textWord);
-  writer.writeString(offsets[29], object.title);
-  writer.writeStringList(offsets[30], object.titleWords);
-  writer.writeString(offsets[31], object.type.name);
-  writer.writeString(offsets[32], object.typeWord);
-  writer.writeString(offsets[33], object.url);
-  writer.writeStringList(offsets[34], object.urlWords);
-  writer.writeString(offsets[35], object.userId);
+  writer.writeString(offsets[6], object.deviceId);
+  writer.writeString(offsets[7], object.driveFileId);
+  writer.writeBool(offsets[8], object.encrypted);
+  writer.writeString(offsets[9], object.fileExtension);
+  writer.writeString(offsets[10], object.fileMimeType);
+  writer.writeString(offsets[11], object.fileName);
+  writer.writeLong(offsets[12], object.fileSize);
+  writer.writeString(offsets[13], object.imgBlurHash);
+  writer.writeBool(offsets[14], object.isPersisted);
+  writer.writeDateTime(offsets[15], object.lastCopied);
+  writer.writeDateTime(offsets[16], object.lastSynced);
+  writer.writeBool(offsets[17], object.localOnly);
+  writer.writeString(offsets[18], object.localPath);
+  writer.writeString(offsets[19], object.mimetypeWord);
+  writer.writeDateTime(offsets[20], object.modified);
+  writer.writeString(offsets[21], object.os.name);
+  writer.writeLong(offsets[22], object.serverCollectionId);
+  writer.writeLong(offsets[23], object.serverId);
+  writer.writeString(offsets[24], object.sourceApp);
+  writer.writeString(offsets[25], object.sourceUrl);
+  writer.writeString(offsets[26], object.text);
+  writer.writeString(offsets[27], object.textCategory?.name);
+  writer.writeString(offsets[28], object.textCategoryWord);
+  writer.writeStringList(offsets[29], object.textWord);
+  writer.writeString(offsets[30], object.title);
+  writer.writeStringList(offsets[31], object.titleWords);
+  writer.writeString(offsets[32], object.type.name);
+  writer.writeString(offsets[33], object.typeWord);
+  writer.writeString(offsets[34], object.url);
+  writer.writeStringList(offsets[35], object.urlWords);
+  writer.writeString(offsets[36], object.userId);
 }
 
 ClipboardItem _clipboardItemDeserialize(
@@ -484,33 +496,34 @@ ClipboardItem _clipboardItemDeserialize(
     created: reader.readDateTime(offsets[2]),
     deletedAt: reader.readDateTimeOrNull(offsets[3]),
     description: reader.readStringOrNull(offsets[4]),
-    driveFileId: reader.readStringOrNull(offsets[6]),
-    encrypted: reader.readBool(offsets[7]),
-    fileExtension: reader.readStringOrNull(offsets[8]),
-    fileMimeType: reader.readStringOrNull(offsets[9]),
-    fileName: reader.readStringOrNull(offsets[10]),
-    fileSize: reader.readLongOrNull(offsets[11]),
-    imgBlurHash: reader.readStringOrNull(offsets[12]),
-    lastCopied: reader.readDateTimeOrNull(offsets[14]),
-    lastSynced: reader.readDateTimeOrNull(offsets[15]),
-    localOnly: reader.readBool(offsets[16]),
-    localPath: reader.readStringOrNull(offsets[17]),
-    modified: reader.readDateTime(offsets[19]),
-    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[20])] ??
+    deviceId: reader.readStringOrNull(offsets[6]),
+    driveFileId: reader.readStringOrNull(offsets[7]),
+    encrypted: reader.readBool(offsets[8]),
+    fileExtension: reader.readStringOrNull(offsets[9]),
+    fileMimeType: reader.readStringOrNull(offsets[10]),
+    fileName: reader.readStringOrNull(offsets[11]),
+    fileSize: reader.readLongOrNull(offsets[12]),
+    imgBlurHash: reader.readStringOrNull(offsets[13]),
+    lastCopied: reader.readDateTimeOrNull(offsets[15]),
+    lastSynced: reader.readDateTimeOrNull(offsets[16]),
+    localOnly: reader.readBool(offsets[17]),
+    localPath: reader.readStringOrNull(offsets[18]),
+    modified: reader.readDateTime(offsets[20]),
+    os: _ClipboardItemosValueEnumMap[reader.readStringOrNull(offsets[21])] ??
         PlatformOS.android,
-    serverCollectionId: reader.readLongOrNull(offsets[21]),
-    serverId: reader.readLongOrNull(offsets[22]),
-    sourceApp: reader.readStringOrNull(offsets[23]),
-    sourceUrl: reader.readStringOrNull(offsets[24]),
-    text: reader.readStringOrNull(offsets[25]),
+    serverCollectionId: reader.readLongOrNull(offsets[22]),
+    serverId: reader.readLongOrNull(offsets[23]),
+    sourceApp: reader.readStringOrNull(offsets[24]),
+    sourceUrl: reader.readStringOrNull(offsets[25]),
+    text: reader.readStringOrNull(offsets[26]),
     textCategory: _ClipboardItemtextCategoryValueEnumMap[
-        reader.readStringOrNull(offsets[26])],
-    title: reader.readStringOrNull(offsets[29]),
+        reader.readStringOrNull(offsets[27])],
+    title: reader.readStringOrNull(offsets[30]),
     type:
-        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[31])] ??
+        _ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offsets[32])] ??
             ClipItemType.text,
-    url: reader.readStringOrNull(offsets[33]),
-    userId: reader.readString(offsets[35]),
+    url: reader.readStringOrNull(offsets[34]),
+    userId: reader.readString(offsets[36]),
   );
   object.id = id;
   return object;
@@ -538,65 +551,67 @@ P _clipboardItemDeserializeProp<P>(
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readBool(offset)) as P;
-    case 8:
       return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readBool(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (reader.readLongOrNull(offset)) as P;
-    case 12:
       return (reader.readStringOrNull(offset)) as P;
+    case 12:
+      return (reader.readLongOrNull(offset)) as P;
     case 13:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 14:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 15:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 16:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 17:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 18:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 19:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 20:
+      return (reader.readDateTime(offset)) as P;
+    case 21:
       return (_ClipboardItemosValueEnumMap[reader.readStringOrNull(offset)] ??
           PlatformOS.android) as P;
-    case 21:
-      return (reader.readLongOrNull(offset)) as P;
     case 22:
       return (reader.readLongOrNull(offset)) as P;
     case 23:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 24:
       return (reader.readStringOrNull(offset)) as P;
     case 25:
       return (reader.readStringOrNull(offset)) as P;
     case 26:
+      return (reader.readStringOrNull(offset)) as P;
+    case 27:
       return (_ClipboardItemtextCategoryValueEnumMap[
           reader.readStringOrNull(offset)]) as P;
-    case 27:
-      return (reader.readString(offset)) as P;
     case 28:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 29:
-      return (reader.readStringOrNull(offset)) as P;
-    case 30:
       return (reader.readStringList(offset) ?? []) as P;
+    case 30:
+      return (reader.readStringOrNull(offset)) as P;
     case 31:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 32:
       return (_ClipboardItemtypeValueEnumMap[reader.readStringOrNull(offset)] ??
           ClipItemType.text) as P;
-    case 32:
-      return (reader.readString(offset)) as P;
     case 33:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 34:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 35:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 36:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -608,12 +623,14 @@ const _ClipboardItemosEnumValueMap = {
   r'ios': r'ios',
   r'macos': r'macos',
   r'windows': r'windows',
+  r'linux': r'linux',
 };
 const _ClipboardItemosValueEnumMap = {
   r'android': PlatformOS.android,
   r'ios': PlatformOS.ios,
   r'macos': PlatformOS.macos,
   r'windows': PlatformOS.windows,
+  r'linux': PlatformOS.linux,
 };
 const _ClipboardItemtextCategoryEnumValueMap = {
   r'color': r'color',
@@ -2105,6 +2122,160 @@ extension ClipboardItemQueryFilter
         upper,
         includeUpper,
       );
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'deviceId',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'deviceId',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'deviceId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'deviceId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deviceId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterFilterCondition>
+      deviceIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'deviceId',
+        value: '',
+      ));
     });
   }
 
@@ -6025,6 +6196,19 @@ extension ClipboardItemQuerySortBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByDeviceId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      sortByDeviceIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> sortByDriveFileId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'driveFileId', Sort.asc);
@@ -6444,6 +6628,19 @@ extension ClipboardItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByDeviceId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy>
+      thenByDeviceIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QAfterSortBy> thenByDriveFileId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'driveFileId', Sort.asc);
@@ -6850,6 +7047,13 @@ extension ClipboardItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByDeviceId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'deviceId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipboardItem, ClipboardItem, QDistinct> distinctByDriveFileId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -7098,6 +7302,12 @@ extension ClipboardItemQueryProperty
     });
   }
 
+  QueryBuilder<ClipboardItem, String?, QQueryOperations> deviceIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'deviceId');
+    });
+  }
+
   QueryBuilder<ClipboardItem, String?, QQueryOperations> driveFileIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'driveFileId');
@@ -7298,6 +7508,7 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       serverId: json['id'] as int?,
       created: const DateTimeConverter().fromJson(json['created'] as String),
       modified: const DateTimeConverter().fromJson(json['modified'] as String),
+      deviceId: json['deviceId'] as String?,
       type: $enumDecode(_$ClipItemTypeEnumMap, json['type']),
       userId: json['userId'] as String? ?? kLocalUserId,
       title: json['title'] as String?,
@@ -7330,6 +7541,7 @@ Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
     <String, dynamic>{
       'created': const DateTimeConverter().toJson(instance.created),
       'modified': const DateTimeConverter().toJson(instance.modified),
+      'deviceId': instance.deviceId,
       'type': _$ClipItemTypeEnumMap[instance.type]!,
       'userId': instance.userId,
       'title': instance.title,
@@ -7371,4 +7583,5 @@ const _$PlatformOSEnumMap = {
   PlatformOS.ios: 'ios',
   PlatformOS.macos: 'macos',
   PlatformOS.windows: 'windows',
+  PlatformOS.linux: 'linux',
 };

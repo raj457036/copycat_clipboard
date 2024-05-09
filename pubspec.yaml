@@ -61,6 +61,7 @@ dependencies:
   open_filex: ^4.4.0
   hotkey_manager: ^0.2.2
   launch_at_startup: ^0.2.2
+  platform_device_id: ^1.0.1
 
 dev_dependencies:
   flutter_test:

@@ -32,43 +32,48 @@ const ClipCollectionSchema = CollectionSchema(
       name: r'descriptionWords',
       type: IsarType.stringList,
     ),
-    r'emoji': PropertySchema(
+    r'deviceId': PropertySchema(
       id: 3,
+      name: r'deviceId',
+      type: IsarType.string,
+    ),
+    r'emoji': PropertySchema(
+      id: 4,
       name: r'emoji',
       type: IsarType.string,
     ),
     r'isPersisted': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'lastSynced': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'lastSynced',
       type: IsarType.dateTime,
     ),
     r'modified': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'serverId': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'serverId',
       type: IsarType.long,
     ),
     r'title': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'title',
       type: IsarType.string,
     ),
     r'titleWords': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'titleWords',
       type: IsarType.stringList,
     ),
     r'userId': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'userId',
       type: IsarType.string,
     )
@@ -133,6 +138,12 @@ int _clipCollectionEstimateSize(
       bytesCount += value.length * 3;
     }
   }
+  {
+    final value = object.deviceId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.emoji.length * 3;
   bytesCount += 3 + object.title.length * 3;
   bytesCount += 3 + object.titleWords.length * 3;
@@ -155,14 +166,15 @@ void _clipCollectionSerialize(
   writer.writeDateTime(offsets[0], object.created);
   writer.writeString(offsets[1], object.description);
   writer.writeStringList(offsets[2], object.descriptionWords);
-  writer.writeString(offsets[3], object.emoji);
-  writer.writeBool(offsets[4], object.isPersisted);
-  writer.writeDateTime(offsets[5], object.lastSynced);
-  writer.writeDateTime(offsets[6], object.modified);
-  writer.writeLong(offsets[7], object.serverId);
-  writer.writeString(offsets[8], object.title);
-  writer.writeStringList(offsets[9], object.titleWords);
-  writer.writeString(offsets[10], object.userId);
+  writer.writeString(offsets[3], object.deviceId);
+  writer.writeString(offsets[4], object.emoji);
+  writer.writeBool(offsets[5], object.isPersisted);
+  writer.writeDateTime(offsets[6], object.lastSynced);
+  writer.writeDateTime(offsets[7], object.modified);
+  writer.writeLong(offsets[8], object.serverId);
+  writer.writeString(offsets[9], object.title);
+  writer.writeStringList(offsets[10], object.titleWords);
+  writer.writeString(offsets[11], object.userId);
 }
 
 ClipCollection _clipCollectionDeserialize(
@@ -174,12 +186,13 @@ ClipCollection _clipCollectionDeserialize(
   final object = ClipCollection(
     created: reader.readDateTime(offsets[0]),
     description: reader.readStringOrNull(offsets[1]),
-    emoji: reader.readString(offsets[3]),
-    lastSynced: reader.readDateTimeOrNull(offsets[5]),
-    modified: reader.readDateTime(offsets[6]),
-    serverId: reader.readLongOrNull(offsets[7]),
-    title: reader.readString(offsets[8]),
-    userId: reader.readString(offsets[10]),
+    deviceId: reader.readStringOrNull(offsets[3]),
+    emoji: reader.readString(offsets[4]),
+    lastSynced: reader.readDateTimeOrNull(offsets[6]),
+    modified: reader.readDateTime(offsets[7]),
+    serverId: reader.readLongOrNull(offsets[8]),
+    title: reader.readString(offsets[9]),
+    userId: reader.readString(offsets[11]),
   );
   object.id = id;
   return object;
@@ -199,20 +212,22 @@ P _clipCollectionDeserializeProp<P>(
     case 2:
       return (reader.readStringList(offset) ?? []) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readBool(offset)) as P;
-    case 5:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 6:
-      return (reader.readDateTime(offset)) as P;
-    case 7:
-      return (reader.readLongOrNull(offset)) as P;
-    case 8:
       return (reader.readString(offset)) as P;
+    case 5:
+      return (reader.readBool(offset)) as P;
+    case 6:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 7:
+      return (reader.readDateTime(offset)) as P;
+    case 8:
+      return (reader.readLongOrNull(offset)) as P;
     case 9:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 10:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 11:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1049,6 +1064,160 @@ extension ClipCollectionQueryFilter
         upper,
         includeUpper,
       );
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'deviceId',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'deviceId',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'deviceId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'deviceId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'deviceId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deviceId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterFilterCondition>
+      deviceIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'deviceId',
+        value: '',
+      ));
     });
   }
 
@@ -1990,6 +2159,19 @@ extension ClipCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> sortByDeviceId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      sortByDeviceIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.desc);
+    });
+  }
+
   QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> sortByEmoji() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'emoji', Sort.asc);
@@ -2108,6 +2290,19 @@ extension ClipCollectionQuerySortThenBy
       thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy> thenByDeviceId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterSortBy>
+      thenByDeviceIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deviceId', Sort.desc);
     });
   }
 
@@ -2237,6 +2432,13 @@ extension ClipCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ClipCollection, ClipCollection, QDistinct> distinctByDeviceId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'deviceId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ClipCollection, ClipCollection, QDistinct> distinctByEmoji(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2320,6 +2522,12 @@ extension ClipCollectionQueryProperty
     });
   }
 
+  QueryBuilder<ClipCollection, String?, QQueryOperations> deviceIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'deviceId');
+    });
+  }
+
   QueryBuilder<ClipCollection, String, QQueryOperations> emojiProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'emoji');
@@ -2381,6 +2589,7 @@ _$ClipCollectionImpl _$$ClipCollectionImplFromJson(Map<String, dynamic> json) =>
       created: const DateTimeConverter().fromJson(json['created'] as String),
       modified: const DateTimeConverter().fromJson(json['modified'] as String),
       userId: json['userId'] as String? ?? kLocalUserId,
+      deviceId: json['deviceId'] as String?,
       title: json['title'] as String,
       description: json['description'] as String?,
       emoji: json['emoji'] as String,
@@ -2392,6 +2601,7 @@ Map<String, dynamic> _$$ClipCollectionImplToJson(
       'created': const DateTimeConverter().toJson(instance.created),
       'modified': const DateTimeConverter().toJson(instance.modified),
       'userId': instance.userId,
+      'deviceId': instance.deviceId,
       'title': instance.title,
       'description': instance.description,
       'emoji': instance.emoji,

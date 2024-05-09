@@ -15,9 +15,12 @@ part 'clip_collection_state.dart';
 class ClipCollectionCubit extends Cubit<ClipCollectionState> {
   final AuthCubit auth;
   final ClipCollectionRepository repo;
+  final String deviceId;
+
   ClipCollectionCubit(
     this.auth,
     this.repo,
+    @Named("device_id") this.deviceId,
   ) : super(const ClipCollectionState.initial());
 
   Future<ClipCollection?> get(int id) async {
@@ -52,6 +55,7 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
   }
 
   Future<Failure?> upsert(ClipCollection collection) async {
+    collection = collection.copyWith(deviceId: deviceId)..applyId(collection);
     final userId = auth.userId;
 
     if (userId == null) {

@@ -27,6 +27,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
     @JsonKey(name: "created") @DateTimeConverter() required DateTime created,
     @JsonKey(name: "modified") @DateTimeConverter() required DateTime modified,
+    String? deviceId,
     @Enumerated(EnumType.name) required ClipItemType type,
     @Default(kLocalUserId) String userId,
     String? title,
