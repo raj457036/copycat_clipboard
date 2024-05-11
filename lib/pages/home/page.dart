@@ -37,12 +37,13 @@ class HomePage extends StatelessWidget {
               case ClipboardSyncedSyncState(
                   :final added,
                   :final updated,
+                  :final deleted,
                   silent: true
                 ):
                 {
-                  if (added > 0 || updated > 0) {
+                  if (added > 0 || updated > 0 || deleted > 0) {
                     showTextSnackbar(
-                      '$added new clips${updated > 0 ? " and $updated updated clips " : " "}available now.',
+                      'Changes Available:\n $added Added, $updated Updated and $deleted Deleted',
                       duration: 30,
                       closePrevious: true,
                       action: SnackBarAction(

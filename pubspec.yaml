@@ -1,7 +1,7 @@
 name: clipboard
 description: "A universal clipboard"
 publish_to: 'none'
-version: 0.1.4+11
+version: 0.1.4+12
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -26,12 +26,9 @@ dependencies:
   dartz: ^0.10.1
   form_validator: ^2.1.1
   google_fonts: ^6.2.1
-  flutter_layout_grid: ^2.0.6
-  flutter_platform_widgets: ^6.1.0
   window_manager: ^0.3.8
   clipboard_watcher: ^0.2.1
   timeago: ^3.6.1
-  flutter_context_menu: ^0.1.3
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1
   uuid: ^4.3.3
