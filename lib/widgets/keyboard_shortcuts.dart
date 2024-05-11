@@ -1,8 +1,5 @@
 import 'package:clipboard/common/logging.dart';
-import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
 
 class LoggingActionDispatcher extends ActionDispatcher {
   @override
@@ -18,33 +15,25 @@ class LoggingActionDispatcher extends ActionDispatcher {
   }
 }
 
-class SearchPageIntent extends Intent {
-  const SearchPageIntent();
-}
-
 class KeyboardShortcuts extends StatelessWidget {
+  final Map<ShortcutActivator, Intent> shortcuts;
+  final Map<Type, Action<Intent>> actions;
   final Widget child;
+
   const KeyboardShortcuts({
     super.key,
+    required this.shortcuts,
+    required this.actions,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
     return Shortcuts(
-      shortcuts: <LogicalKeySet, Intent>{
-        LogicalKeySet(
-          LogicalKeyboardKey.meta,
-          LogicalKeyboardKey.keyF,
-        ): const SearchPageIntent(),
-      },
+      shortcuts: shortcuts,
       child: Actions(
         dispatcher: LoggingActionDispatcher(),
-        actions: {
-          SearchPageIntent: CallbackAction<SearchPageIntent>(
-            onInvoke: (intent) => context.goNamed(RouteConstants.search),
-          ),
-        },
+        actions: actions,
         child: child,
       ),
     );

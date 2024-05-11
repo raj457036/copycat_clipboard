@@ -3,11 +3,11 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/snackbar.dart';
-import 'package:clipboard/widgets/keyboard_shortcuts.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:universal_io/io.dart';
 
 class NavBarPage extends StatefulWidget {
   final Widget child;
@@ -143,25 +143,28 @@ class _NavBarPageState extends State<NavBarPage> {
       child = scaffold;
     } else {
       final floatingButton = getFloatingActionButton();
-
+      final metaKey = Platform.isMacOS ? "⌘" : "⊞";
       child = Row(
         children: [
           LayoutBuilder(builder: (context, constraint) {
             final navRail = NavigationRail(
-              destinations: const [
-                NavigationRailDestination(
+              destinations: [
+                const NavigationRailDestination(
                   icon: Icon(Icons.paste_rounded),
                   label: Text("Clipboard"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.content_paste_search_rounded),
-                  label: Text("Search"),
+                  icon: Tooltip(
+                    message: "Shortcut: $metaKey + F",
+                    child: const Icon(Icons.content_paste_search_rounded),
+                  ),
+                  label: const Text("Search"),
                 ),
-                NavigationRailDestination(
+                const NavigationRailDestination(
                   icon: Icon(Icons.collections_bookmark),
                   label: Text("Collections"),
                 ),
-                NavigationRailDestination(
+                const NavigationRailDestination(
                   icon: Icon(Icons.settings),
                   label: Text("Settings"),
                 ),
@@ -195,7 +198,7 @@ class _NavBarPageState extends State<NavBarPage> {
       onPopInvoked: (didPop) {
         logger.i("DID POP: $didPop");
       },
-      child: KeyboardShortcuts(child: child),
+      child: child,
     );
   }
 }

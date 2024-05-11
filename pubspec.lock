@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  atom_event_bus:
+    dependency: "direct main"
+    description:
+      name: atom_event_bus
+      sha256: "466eff6f60c4fef0bd6f8e303f226981b7dbdf077bea57f70e4d00f5e6e0a4f0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   awesome_notifications:
     dependency: "direct main"
     description:

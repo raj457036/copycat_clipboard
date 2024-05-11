@@ -19,8 +19,10 @@ import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/search/page.dart";
+import "package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
+import "package:clipboard/routes/keyboard_shortcuts/search_page_shortcut.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -97,11 +99,19 @@ final router = GoRouter(
           _ => 0,
         };
 
-        return NavBarPage(
+        final navPage = NavBarPage(
           navbarActiveIndex: activeIndex,
           depth: depth,
           child: child,
         );
+
+        if (activeIndex != 1) {
+          return SearchPageShortcut(
+            child: navPage,
+          );
+        }
+
+        return SearchFoucsKeyboardShortcut(child: navPage);
       },
       routes: [
         GoRoute(
