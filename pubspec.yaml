@@ -58,6 +58,7 @@ dependencies:
   open_filex: ^4.4.0
   hotkey_manager: ^0.2.2
   launch_at_startup: ^0.2.2
+  atom_event_bus: ^0.0.5
   platform_device_id:
     git:
       url: https://github.com/raj457036/platform_device_id.git

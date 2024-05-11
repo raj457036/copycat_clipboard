@@ -14,7 +14,7 @@ class SystemShortcutListener extends StatelessWidget {
 
   Future<void> toggleWindow() async {
     if (await windowManager.isFocused()) {
-      await windowManager.hide();
+      await windowManager.minimize();
     } else {
       await windowManager.show();
       await windowManager.focus();

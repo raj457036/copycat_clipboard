@@ -144,7 +144,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     return deleted;
   }
 
-  Future<void> syncClipCollections(
+  Future<bool> syncClipCollections(
     SyncStatus? lastSync, {
     bool silent = false,
   }) async {
@@ -215,7 +215,9 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
           updated: updated,
         ),
       );
+      return true;
     }
+    return false;
   }
 
   Future<int> syncDeletedClipboardItems(SyncStatus? lastSync) async {
@@ -270,7 +272,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     return deleted;
   }
 
-  Future<void> syncClipboardItems(
+  Future<bool> syncClipboardItems(
     SyncStatus? lastSync, {
     bool silent = false,
   }) async {
@@ -328,7 +330,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         }
       });
 
-      if (result.isLeft()) return;
+      if (result.isLeft()) break;
     }
 
     final deleted = await syncDeletedClipboardItems(lastSync);
@@ -340,7 +342,9 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         deleted: deleted,
         updated: updated,
       ));
+      return true;
     }
+    return false;
   }
 
   Future<void> syncChanges({
@@ -360,7 +364,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         return;
       }
 
-      await Future.wait([
+      final results = await Future.wait([
         if (clipboard) syncClipboardItems(lastSync, silent: silent),
         if (collections) syncClipCollections(lastSync, silent: silent),
       ]);
@@ -369,10 +373,8 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         await repairLocalClipboardAndCollectionRelations();
       }
 
-      // Fetch unsynced changes from local db
-      // Sync local changes with server
-      // ? Has to be done manually!
-      await updateSyncTime(refreshLocalCache: !silent);
+      final hasUpdate = results.any((element) => element);
+      await updateSyncTime(refreshLocalCache: !silent, hasUpdate: hasUpdate);
     } finally {
       syncing = false;
     }
@@ -380,18 +382,24 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
   Future<void> updateSyncTime({
     bool refreshLocalCache = false,
-    int added = 0,
-    int removed = 0,
+    bool hasUpdate = false,
   }) async {
     final lastSync0 = await getSyncInfo();
     final syncTime = now();
-    final updatedSyncStatus =
-        (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
-    updatedSyncStatus.id = _syncId;
-    await db.writeTxn(() async => await db.syncStatus.put(updatedSyncStatus));
-    emit(SyncManagerState.synced(
-      lastSynced: syncTime,
-      refreshLocalCache: refreshLocalCache,
-    ));
+    if (!hasUpdate) {
+      emit(SyncManagerState.synced(
+        lastSynced: lastSync0?.lastSync ?? syncTime,
+        refreshLocalCache: refreshLocalCache,
+      ));
+    } else {
+      final updatedSyncStatus =
+          (lastSync0 ?? SyncStatus()).copyWith(lastSync: syncTime);
+      updatedSyncStatus.id = _syncId;
+      await db.writeTxn(() async => await db.syncStatus.put(updatedSyncStatus));
+      emit(SyncManagerState.synced(
+        lastSynced: syncTime,
+        refreshLocalCache: refreshLocalCache,
+      ));
+    }
   }
 }

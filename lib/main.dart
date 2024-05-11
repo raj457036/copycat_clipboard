@@ -48,7 +48,7 @@ Future<void> main() async {
       titleBarStyle: TitleBarStyle.normal,
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-      // await windowManager.setAsFrameless();
+      await windowManager.setAsFrameless();
       await windowManager.show();
       await windowManager.focus();
     });
