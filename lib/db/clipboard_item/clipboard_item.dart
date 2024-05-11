@@ -32,7 +32,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
     @Default(kLocalUserId) String userId,
     String? title,
     String? description,
-    DateTime? deletedAt,
+    @DateTimeConverter() DateTime? deletedAt,
     @Default(false) bool encrypted,
     // Text related
     String? text,
@@ -62,7 +62,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
     // Stats
     @Default(0) int copiedCount,
-    DateTime? lastCopied,
+    @DateTimeConverter() DateTime? lastCopied,
 
     // non persistant state
     @ignore

@@ -1,6 +1,7 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/sort.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,6 +28,7 @@ class RemoteClipboardSource implements ClipboardSource {
     return createdItem;
   }
 
+  /// sortBy is no-op
   @override
   Future<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
@@ -34,6 +36,8 @@ class RemoteClipboardSource implements ClipboardSource {
     DateTime? afterDate,
     String? search,
     int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   }) async {
     final items = await db
         .from(table)

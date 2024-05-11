@@ -38,6 +38,7 @@ mixin _$ClipboardItem {
   String get userId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @DateTimeConverter()
   DateTime? get deletedAt => throw _privateConstructorUsedError;
   bool get encrypted => throw _privateConstructorUsedError; // Text related
   String? get text => throw _privateConstructorUsedError;
@@ -64,6 +65,7 @@ mixin _$ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get localOnly => throw _privateConstructorUsedError; // Stats
   int get copiedCount => throw _privateConstructorUsedError;
+  @DateTimeConverter()
   DateTime? get lastCopied =>
       throw _privateConstructorUsedError; // non persistant state
   @ignore
@@ -111,7 +113,7 @@ abstract class $ClipboardItemCopyWith<$Res> {
       String userId,
       String? title,
       String? description,
-      DateTime? deletedAt,
+      @DateTimeConverter() DateTime? deletedAt,
       bool encrypted,
       String? text,
       String? url,
@@ -129,7 +131,7 @@ abstract class $ClipboardItemCopyWith<$Res> {
       @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
-      DateTime? lastCopied,
+      @DateTimeConverter() DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       bool downloading,
@@ -364,7 +366,7 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       String userId,
       String? title,
       String? description,
-      DateTime? deletedAt,
+      @DateTimeConverter() DateTime? deletedAt,
       bool encrypted,
       String? text,
       String? url,
@@ -382,7 +384,7 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
-      DateTime? lastCopied,
+      @DateTimeConverter() DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       bool downloading,
@@ -609,7 +611,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.userId = kLocalUserId,
       this.title,
       this.description,
-      this.deletedAt,
+      @DateTimeConverter() this.deletedAt,
       this.encrypted = false,
       this.text,
       this.url,
@@ -628,7 +630,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.localOnly = false,
       this.copiedCount = 0,
-      this.lastCopied,
+      @DateTimeConverter() this.lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.downloading = false,
@@ -682,6 +684,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   final String? description;
   @override
+  @DateTimeConverter()
   final DateTime? deletedAt;
   @override
   @JsonKey()
@@ -733,6 +736,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @JsonKey()
   final int copiedCount;
   @override
+  @DateTimeConverter()
   final DateTime? lastCopied;
 // non persistant state
   @override
@@ -909,7 +913,7 @@ abstract class _ClipboardItem extends ClipboardItem {
       final String userId,
       final String? title,
       final String? description,
-      final DateTime? deletedAt,
+      @DateTimeConverter() final DateTime? deletedAt,
       final bool encrypted,
       final String? text,
       final String? url,
@@ -929,7 +933,7 @@ abstract class _ClipboardItem extends ClipboardItem {
       @JsonKey(includeFromJson: false, includeToJson: false)
       final bool localOnly,
       final int copiedCount,
-      final DateTime? lastCopied,
+      @DateTimeConverter() final DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       final bool downloading,
@@ -982,6 +986,7 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   String? get description;
   @override
+  @DateTimeConverter()
   DateTime? get deletedAt;
   @override
   bool get encrypted;
@@ -1024,6 +1029,7 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override // Stats
   int get copiedCount;
   @override
+  @DateTimeConverter()
   DateTime? get lastCopied;
   @override // non persistant state
   @ignore
