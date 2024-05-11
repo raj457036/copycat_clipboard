@@ -42,17 +42,23 @@ class HomePage extends StatelessWidget {
                 ):
                 {
                   if (added > 0 || updated > 0 || deleted > 0) {
-                    showTextSnackbar(
-                      'Changes Available:\n $added Added, $updated Updated and $deleted Deleted',
-                      duration: 30,
-                      closePrevious: true,
-                      action: SnackBarAction(
-                        label: "Refresh Now",
-                        onPressed: () {
-                          context.read<ClipboardCubit>().fetch(fromTop: true);
-                        },
-                      ),
-                    );
+                    final cubit = context.read<ClipboardCubit>();
+
+                    final fetched = cubit.fetchIfInitBatch();
+
+                    if (!fetched) {
+                      showTextSnackbar(
+                        'Changes Available:\n $added Added, $updated Updated and $deleted Deleted',
+                        duration: 30,
+                        closePrevious: true,
+                        action: SnackBarAction(
+                          label: "Refresh Now",
+                          onPressed: () {
+                            cubit.fetch(fromTop: true);
+                          },
+                        ),
+                      );
+                    }
                   }
                 }
                 break;
