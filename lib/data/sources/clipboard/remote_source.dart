@@ -65,7 +65,8 @@ class RemoteClipboardSource implements ClipboardSource {
       return true;
     }
 
-    await db.from(table).delete().eq("id", item.serverId!);
+    item = item.copyWith(deletedAt: now(), modified: now());
+    await db.from(table).update(item.toJson()).eq("id", item.serverId!);
     return true;
   }
 
