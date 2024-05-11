@@ -109,7 +109,10 @@ class SyncRepositoryImpl implements SyncRepository {
           .isFilter("deletedAt", null);
 
       if (lastSynced != null) {
-        final isoDate = lastSynced.toUtc().toIso8601String();
+        final isoDate = lastSynced
+            .subtract(const Duration(seconds: 5))
+            .toUtc()
+            .toIso8601String();
         query = query.gt(
           "modified",
           isoDate,
@@ -141,11 +144,15 @@ class SyncRepositoryImpl implements SyncRepository {
   }) async {
     if (lastSynced == null) return Right(PaginatedResult.empty());
     try {
+      final isoDate = lastSynced
+          .subtract(const Duration(seconds: 5))
+          .toUtc()
+          .toIso8601String();
       var query = db
           .from(clipboardItemsTable)
           .select()
           .eq("userId", userId)
-          .gte("deletedAt", lastSynced.toIso8601String());
+          .gte("deletedAt", isoDate);
 
       if (excludeDeviceId != null || excludeDeviceId != "") {
         query = query.neq("deviceId", excludeDeviceId!);
@@ -173,11 +180,15 @@ class SyncRepositoryImpl implements SyncRepository {
   }) async {
     if (lastSynced == null) return Right(PaginatedResult.empty());
     try {
+      final isoDate = lastSynced
+          .subtract(const Duration(seconds: 5))
+          .toUtc()
+          .toIso8601String();
       var query = db
           .from(clipCollectionsTable)
           .select()
           .eq("userId", userId)
-          .gte("deletedAt", lastSynced.toIso8601String());
+          .gte("deletedAt", isoDate);
 
       if (excludeDeviceId != null || excludeDeviceId != "") {
         query = query.neq("deviceId", excludeDeviceId!);

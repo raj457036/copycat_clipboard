@@ -18,12 +18,14 @@ class SyncManagerState with _$SyncManagerState {
   const factory SyncManagerState.clipboardSynced({
     @Default(0) int added,
     @Default(0) int updated,
+    @Default(0) int deleted,
     @Default(false) bool silent,
   }) = ClipboardSyncedSyncState;
 
   const factory SyncManagerState.collectionSynced({
     @Default(0) int added,
     @Default(0) int updated,
+    @Default(0) int deleted,
     @Default(false) bool silent,
   }) = ClipCollectionSyncedSyncState;
 

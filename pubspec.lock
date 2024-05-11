@@ -241,14 +241,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
-  cupertino_icons:
-    dependency: transitive
-    description:
-      name: cupertino_icons
-      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   dart_style:
     dependency: transitive
     description:
@@ -422,22 +414,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.5"
-  flutter_context_menu:
-    dependency: "direct main"
-    description:
-      name: flutter_context_menu
-      sha256: "9f220a8fa0290c68e38000d6d62a0dc4555d490c15a5bd856a6e6d255d81b8dc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.3"
-  flutter_layout_grid:
-    dependency: "direct main"
-    description:
-      name: flutter_layout_grid
-      sha256: "962a7ec8c7ea46c3b10606dac9c964f9143d10daa5ca28e40f4ce14eeef85b2a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.6"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -451,14 +427,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_platform_widgets:
-    dependency: "direct main"
-    description:
-      name: flutter_platform_widgets
-      sha256: c483c0591d845d2adb84e341a1cfb746f1a8a7aff4c72a5957772446020601f4
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1142,14 +1110,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.1"
   realtime_client:
     dependency: transitive
     description:

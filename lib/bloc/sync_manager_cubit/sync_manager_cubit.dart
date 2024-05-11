@@ -204,11 +204,18 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       if (result.isLeft()) break;
     }
 
-    emit(SyncManagerState.collectionSynced(
-      silent: silent,
-      added: added,
-      updated: updated,
-    ));
+    final deleted = await syncDeletedClipCollections(lastSync);
+
+    if (added > 0 || updated > 0 || deleted > 0) {
+      emit(
+        SyncManagerState.collectionSynced(
+          silent: silent,
+          added: added,
+          deleted: deleted,
+          updated: updated,
+        ),
+      );
+    }
   }
 
   Future<int> syncDeletedClipboardItems(SyncStatus? lastSync) async {
@@ -324,10 +331,13 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       if (result.isLeft()) return;
     }
 
-    if (added > 0 || updated > 0) {
+    final deleted = await syncDeletedClipboardItems(lastSync);
+
+    if (added > 0 || updated > 0 || deleted > 0) {
       emit(SyncManagerState.clipboardSynced(
         silent: silent,
         added: added,
+        deleted: deleted,
         updated: updated,
       ));
     }
@@ -352,9 +362,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
       await Future.wait([
         if (clipboard) syncClipboardItems(lastSync, silent: silent),
-        if (clipboard) syncDeletedClipboardItems(lastSync),
         if (collections) syncClipCollections(lastSync, silent: silent),
-        if (collections) syncDeletedClipCollections(lastSync),
       ]);
 
       if (repairRelations) {
