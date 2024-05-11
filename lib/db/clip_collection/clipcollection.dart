@@ -18,7 +18,7 @@ class ClipCollection with _$ClipCollection, IsarIdMixin {
     @JsonKey(name: "created") @DateTimeConverter() required DateTime created,
     @JsonKey(name: "modified") @DateTimeConverter() required DateTime modified,
     @Default(kLocalUserId) String userId,
-    DateTime? deletedAt,
+    @DateTimeConverter() DateTime? deletedAt,
     String? deviceId,
     required String title,
     String? description,

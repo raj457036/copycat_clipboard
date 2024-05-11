@@ -7513,9 +7513,8 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       userId: json['userId'] as String? ?? kLocalUserId,
       title: json['title'] as String?,
       description: json['description'] as String?,
-      deletedAt: json['deletedAt'] == null
-          ? null
-          : DateTime.parse(json['deletedAt'] as String),
+      deletedAt: _$JsonConverterFromJson<String, DateTime>(
+          json['deletedAt'], const DateTimeConverter().fromJson),
       encrypted: json['encrypted'] as bool? ?? false,
       text: json['text'] as String?,
       url: json['url'] as String?,
@@ -7532,9 +7531,8 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       os: $enumDecode(_$PlatformOSEnumMap, json['os']),
       serverCollectionId: json['collectionId'] as int?,
       copiedCount: json['copiedCount'] as int? ?? 0,
-      lastCopied: json['lastCopied'] == null
-          ? null
-          : DateTime.parse(json['lastCopied'] as String),
+      lastCopied: _$JsonConverterFromJson<String, DateTime>(
+          json['lastCopied'], const DateTimeConverter().fromJson),
     );
 
 Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
@@ -7546,7 +7544,8 @@ Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
       'userId': instance.userId,
       'title': instance.title,
       'description': instance.description,
-      'deletedAt': instance.deletedAt?.toIso8601String(),
+      'deletedAt': _$JsonConverterToJson<String, DateTime>(
+          instance.deletedAt, const DateTimeConverter().toJson),
       'encrypted': instance.encrypted,
       'text': instance.text,
       'url': instance.url,
@@ -7562,7 +7561,8 @@ Map<String, dynamic> _$$ClipboardItemImplToJson(_$ClipboardItemImpl instance) =>
       'os': _$PlatformOSEnumMap[instance.os]!,
       'collectionId': instance.serverCollectionId,
       'copiedCount': instance.copiedCount,
-      'lastCopied': instance.lastCopied?.toIso8601String(),
+      'lastCopied': _$JsonConverterToJson<String, DateTime>(
+          instance.lastCopied, const DateTimeConverter().toJson),
     };
 
 const _$ClipItemTypeEnumMap = {
@@ -7571,6 +7571,12 @@ const _$ClipItemTypeEnumMap = {
   ClipItemType.file: 'file',
   ClipItemType.url: 'url',
 };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
 
 const _$TextCategoryEnumMap = {
   TextCategory.color: 'color',
@@ -7585,3 +7591,9 @@ const _$PlatformOSEnumMap = {
   PlatformOS.windows: 'windows',
   PlatformOS.linux: 'linux',
 };
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

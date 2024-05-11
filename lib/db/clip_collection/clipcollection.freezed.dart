@@ -31,6 +31,7 @@ mixin _$ClipCollection {
   @DateTimeConverter()
   DateTime get modified => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  @DateTimeConverter()
   DateTime? get deletedAt => throw _privateConstructorUsedError;
   String? get deviceId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
@@ -56,7 +57,7 @@ abstract class $ClipCollectionCopyWith<$Res> {
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
       @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
       String userId,
-      DateTime? deletedAt,
+      @DateTimeConverter() DateTime? deletedAt,
       String? deviceId,
       String title,
       String? description,
@@ -147,7 +148,7 @@ abstract class _$$ClipCollectionImplCopyWith<$Res>
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
       @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
       String userId,
-      DateTime? deletedAt,
+      @DateTimeConverter() DateTime? deletedAt,
       String? deviceId,
       String title,
       String? description,
@@ -230,7 +231,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
       @JsonKey(name: "created") @DateTimeConverter() required this.created,
       @JsonKey(name: "modified") @DateTimeConverter() required this.modified,
       this.userId = kLocalUserId,
-      this.deletedAt,
+      @DateTimeConverter() this.deletedAt,
       this.deviceId,
       required this.title,
       this.description,
@@ -258,6 +259,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
   @JsonKey()
   final String userId;
   @override
+  @DateTimeConverter()
   final DateTime? deletedAt;
   @override
   final String? deviceId;
@@ -328,7 +330,7 @@ abstract class _ClipCollection extends ClipCollection {
       @DateTimeConverter()
       required final DateTime modified,
       final String userId,
-      final DateTime? deletedAt,
+      @DateTimeConverter() final DateTime? deletedAt,
       final String? deviceId,
       required final String title,
       final String? description,
@@ -355,6 +357,7 @@ abstract class _ClipCollection extends ClipCollection {
   @override
   String get userId;
   @override
+  @DateTimeConverter()
   DateTime? get deletedAt;
   @override
   String? get deviceId;

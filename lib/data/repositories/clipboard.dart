@@ -2,6 +2,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/sort.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -15,6 +16,8 @@ abstract class ClipboardRepository {
     int offset = 0,
     String? search,
     int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   });
 
   FailureOr<ClipboardItem> update(ClipboardItem item);
@@ -50,12 +53,17 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
     int offset = 0,
     String? search,
     int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   }) async {
     try {
       final result = await remote.getList(
         limit: limit,
         offset: offset,
         collectionId: collectionId,
+        sortBy: sortBy,
+        order: order,
+        search: search,
       );
 
       return Right(result);
@@ -127,6 +135,8 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     int offset = 0,
     String? search,
     int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   }) async {
     try {
       final result = await local.getList(
@@ -134,6 +144,8 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
         offset: offset,
         search: search,
         collectionId: collectionId,
+        sortBy: sortBy,
+        order: order,
       );
 
       return Right(result);

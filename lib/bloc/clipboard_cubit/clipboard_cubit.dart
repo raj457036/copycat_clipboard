@@ -54,6 +54,8 @@ class ClipboardCubit extends Cubit<ClipboardState> {
     final items = await repo.getList(
       limit: state.limit,
       offset: fromTop ? 0 : state.offset,
+      // sortBy: ClipboardSortKey.modified,
+      // order: SortOrder.desc,
     );
 
     emit(

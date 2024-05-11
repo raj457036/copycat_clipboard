@@ -1,5 +1,13 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/sort.dart';
+
+enum ClipboardSortKey {
+  created,
+  modified,
+  lastCopied,
+  copyCount,
+}
 
 abstract class ClipboardSource {
   Future<ClipboardItem?> get({int? id, String? serverId});
@@ -10,6 +18,8 @@ abstract class ClipboardSource {
     int offset = 0,
     String? search,
     int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   });
 
   Future<ClipboardItem> update(ClipboardItem item);
