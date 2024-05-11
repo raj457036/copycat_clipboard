@@ -42,6 +42,14 @@ class ClipboardCubit extends Cubit<ClipboardState> {
     }
   }
 
+  bool fetchIfInitBatch() {
+    if (state.items.length <= 50) {
+      fetch(fromTop: true);
+      return true;
+    }
+    return false;
+  }
+
   Future<void> fetch({bool fromTop = false}) async {
     await fixDatabase();
     emit(
