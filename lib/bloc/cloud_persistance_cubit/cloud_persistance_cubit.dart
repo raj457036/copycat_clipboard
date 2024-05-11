@@ -27,12 +27,14 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   final ClipboardRepository repo;
   final DriveService drive;
   final AppConfigCubit appConfig;
+  final String deviceId;
 
   CloudPersistanceCubit(
     this.network,
     this.auth,
     this.driveCubit,
     this.appConfig,
+    @Named("device_id") this.deviceId,
     @Named("cloud") this.repo,
     @Named("google_drive") this.drive,
   ) : super(const CloudPersistanceState.initial());
@@ -235,6 +237,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       return;
     }
 
+    item = item.copyWith(deviceId: deviceId)..applyId(item);
     final result = await repo.delete(item);
 
     result.fold(

@@ -39,7 +39,9 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
     await state.mapOrNull(
       loaded: (loaded) async {
         emit(loaded.copyWith(isLoading: true));
-        await repo.delete(collection);
+        await repo.delete(
+          collection.copyWith(deviceId: deviceId)..applyId(collection),
+        );
         final items =
             loaded.collections.where((c) => c.id != collection.id).toList();
         final isDeleted = items.length < loaded.collections.length;

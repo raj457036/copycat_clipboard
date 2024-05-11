@@ -30,7 +30,12 @@ class RemoteClipCollectionSource implements ClipCollectionSource {
     if (collection.serverId == null) {
       return false;
     }
-    await db.from(table).delete().eq("id", collection.serverId!);
+
+    collection = collection.copyWith(deletedAt: now(), modified: now());
+    await db
+        .from(table)
+        .update(collection.toJson())
+        .eq("id", collection.serverId!);
     return true;
   }
 

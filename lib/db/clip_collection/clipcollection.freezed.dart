@@ -31,6 +31,7 @@ mixin _$ClipCollection {
   @DateTimeConverter()
   DateTime get modified => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  DateTime? get deletedAt => throw _privateConstructorUsedError;
   String? get deviceId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
@@ -55,6 +56,7 @@ abstract class $ClipCollectionCopyWith<$Res> {
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
       @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
       String userId,
+      DateTime? deletedAt,
       String? deviceId,
       String title,
       String? description,
@@ -79,6 +81,7 @@ class _$ClipCollectionCopyWithImpl<$Res, $Val extends ClipCollection>
     Object? created = null,
     Object? modified = null,
     Object? userId = null,
+    Object? deletedAt = freezed,
     Object? deviceId = freezed,
     Object? title = null,
     Object? description = freezed,
@@ -105,6 +108,10 @@ class _$ClipCollectionCopyWithImpl<$Res, $Val extends ClipCollection>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       deviceId: freezed == deviceId
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
@@ -140,6 +147,7 @@ abstract class _$$ClipCollectionImplCopyWith<$Res>
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
       @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
       String userId,
+      DateTime? deletedAt,
       String? deviceId,
       String title,
       String? description,
@@ -162,6 +170,7 @@ class __$$ClipCollectionImplCopyWithImpl<$Res>
     Object? created = null,
     Object? modified = null,
     Object? userId = null,
+    Object? deletedAt = freezed,
     Object? deviceId = freezed,
     Object? title = null,
     Object? description = freezed,
@@ -188,6 +197,10 @@ class __$$ClipCollectionImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       deviceId: freezed == deviceId
           ? _value.deviceId
           : deviceId // ignore: cast_nullable_to_non_nullable
@@ -217,6 +230,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
       @JsonKey(name: "created") @DateTimeConverter() required this.created,
       @JsonKey(name: "modified") @DateTimeConverter() required this.modified,
       this.userId = kLocalUserId,
+      this.deletedAt,
       this.deviceId,
       required this.title,
       this.description,
@@ -244,6 +258,8 @@ class _$ClipCollectionImpl extends _ClipCollection {
   @JsonKey()
   final String userId;
   @override
+  final DateTime? deletedAt;
+  @override
   final String? deviceId;
   @override
   final String title;
@@ -254,7 +270,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
   @override
   String toString() {
-    return 'ClipCollection(serverId: $serverId, lastSynced: $lastSynced, created: $created, modified: $modified, userId: $userId, deviceId: $deviceId, title: $title, description: $description, emoji: $emoji)';
+    return 'ClipCollection(serverId: $serverId, lastSynced: $lastSynced, created: $created, modified: $modified, userId: $userId, deletedAt: $deletedAt, deviceId: $deviceId, title: $title, description: $description, emoji: $emoji)';
   }
 
   @override
@@ -270,6 +286,8 @@ class _$ClipCollectionImpl extends _ClipCollection {
             (identical(other.modified, modified) ||
                 other.modified == modified) &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.deletedAt, deletedAt) ||
+                other.deletedAt == deletedAt) &&
             (identical(other.deviceId, deviceId) ||
                 other.deviceId == deviceId) &&
             (identical(other.title, title) || other.title == title) &&
@@ -281,7 +299,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, serverId, lastSynced, created,
-      modified, userId, deviceId, title, description, emoji);
+      modified, userId, deletedAt, deviceId, title, description, emoji);
 
   @JsonKey(ignore: true)
   @override
@@ -310,6 +328,7 @@ abstract class _ClipCollection extends ClipCollection {
       @DateTimeConverter()
       required final DateTime modified,
       final String userId,
+      final DateTime? deletedAt,
       final String? deviceId,
       required final String title,
       final String? description,
@@ -335,6 +354,8 @@ abstract class _ClipCollection extends ClipCollection {
   DateTime get modified;
   @override
   String get userId;
+  @override
+  DateTime? get deletedAt;
   @override
   String? get deviceId;
   @override

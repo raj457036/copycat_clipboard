@@ -160,6 +160,7 @@ extension GetItInjectableX on _i1.GetIt {
               gh<_i18.AuthCubit>(),
               gh<_i25.DriveSetupCubit>(),
               gh<_i13.AppConfigCubit>(),
+              gh<String>(instanceName: 'device_id'),
               gh<_i15.ClipboardRepository>(instanceName: 'cloud'),
               gh<_i7.DriveService>(instanceName: 'google_drive'),
             ));
@@ -168,6 +169,7 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i18.AuthCubit>(),
           gh<_i16.SyncRepository>(),
           gh<_i6.NetworkStatus>(),
+          gh<_i26.ClipCollectionRepository>(),
           gh<String>(instanceName: 'device_id'),
         ));
     gh.lazySingleton<_i31.ClipCollectionCubit>(() => _i31.ClipCollectionCubit(

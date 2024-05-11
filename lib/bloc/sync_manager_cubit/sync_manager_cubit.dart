@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/data/repositories/clip_collection.dart';
 import 'package:clipboard/data/repositories/sync_clipboard.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -29,6 +31,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final Isar db;
   final AuthCubit auth;
   final SyncRepository syncRepo;
+  final ClipCollectionRepository clipCollectionRepository;
   final NetworkStatus network;
   final int _syncId = 1;
   final String deviceId;
@@ -41,6 +44,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     this.auth,
     this.syncRepo,
     this.network,
+    this.clipCollectionRepository,
     @Named("device_id") this.deviceId,
   ) : super(const SyncManagerState.unknown());
 
@@ -93,6 +97,51 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         await db.clipboardItems.putAll(updated);
       });
     }
+  }
+
+  Future<int> syncDeletedClipCollections(SyncStatus? lastSync) async {
+    if (lastSync == null) return 0;
+    // Fetch changes from server
+    bool hasMore = true;
+    int offset = 0;
+    int deleted = 0;
+
+    /// when the app can show the clips to the user.
+    while (hasMore) {
+      emit(const SyncManagerState.checking());
+      final result = await syncRepo.getDeletedClipCollections(
+        userId: auth.userId!,
+        lastSynced: lastSync.lastSync,
+        offset: offset,
+        excludeDeviceId: deviceId,
+      );
+
+      await result.fold((l) async => logger.e(l), (r) async {
+        hasMore = r.hasMore;
+        offset += r.results.length;
+        // Apply changes to local db
+        final items = r.results;
+        if (items.isEmpty) return;
+
+        for (var i = 0; i < items.length; i++) {
+          final item = items[i];
+          final result = await db.txn(
+            () async => await db.clipCollections
+                .filter()
+                .serverIdEqualTo(item.serverId)
+                .findFirst(),
+          );
+          if (result != null) {
+            await clipCollectionRepository.delete(result);
+            deleted++;
+          }
+        }
+      });
+
+      if (result.isLeft()) break;
+    }
+    logger.i("Deleted clip collection count: $deleted");
+    return deleted;
   }
 
   Future<void> syncClipCollections(
@@ -160,6 +209,58 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       added: added,
       updated: updated,
     ));
+  }
+
+  Future<int> syncDeletedClipboardItems(SyncStatus? lastSync) async {
+    if (lastSync == null) return 0;
+    // Fetch changes from server
+    bool hasMore = true;
+    int offset = 0;
+    int deleted = 0;
+
+    /// when the app can show the clips to the user.
+    while (hasMore) {
+      emit(const SyncManagerState.checking());
+      final result = await syncRepo.getDeletedClipboardItems(
+        userId: auth.userId!,
+        lastSynced: lastSync.lastSync,
+        offset: offset,
+        excludeDeviceId: deviceId,
+      );
+
+      await result.fold((l) async => logger.e(l), (r) async {
+        hasMore = r.hasMore;
+        offset += r.results.length;
+        // Apply changes to local db
+        final items = r.results;
+        final deletedIds = <int>[];
+
+        if (items.isEmpty) return;
+
+        for (var i = 0; i < items.length; i++) {
+          final item = items[i];
+          final result = await db.txn(
+            () async => await db.clipboardItems
+                .filter()
+                .serverIdEqualTo(item.serverId)
+                .findFirst(),
+          );
+          if (result != null) {
+            deletedIds.add(result.id);
+            deleted++;
+          }
+        }
+
+        await db.writeTxn(() async {
+          await db.clipboardItems.deleteAll(deletedIds);
+        });
+      });
+
+      if (result.isLeft()) break;
+    }
+
+    logger.i("Deleted clipboard items count: $deleted");
+    return deleted;
   }
 
   Future<void> syncClipboardItems(
@@ -251,7 +352,9 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
       await Future.wait([
         if (clipboard) syncClipboardItems(lastSync, silent: silent),
+        if (clipboard) syncDeletedClipboardItems(lastSync),
         if (collections) syncClipCollections(lastSync, silent: silent),
+        if (collections) syncDeletedClipCollections(lastSync),
       ]);
 
       if (repairRelations) {
