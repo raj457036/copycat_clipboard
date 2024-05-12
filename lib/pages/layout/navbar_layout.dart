@@ -3,6 +3,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/ads/home_banner.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,29 +109,37 @@ class _NavBarPageState extends State<NavBarPage> {
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: smallScreen && widget.depth == 1
-          ? NavigationBar(
-              selectedIndex: widget.navbarActiveIndex,
-              onDestinationSelected: _onNavItemTapped,
-              destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.paste_rounded),
-                  label: "Clipboard",
-                  tooltip: "Clipboard",
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const HomeBannerAd(
+                  key: ValueKey("home-banner-ad"),
                 ),
-                NavigationDestination(
-                  icon: Icon(Icons.content_paste_search_rounded),
-                  label: "Search",
-                  tooltip: "Search Clipboard",
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.collections_bookmark),
-                  label: "Collections",
-                  tooltip: "Collections",
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.settings),
-                  label: "Settings",
-                  tooltip: "Settings",
+                NavigationBar(
+                  selectedIndex: widget.navbarActiveIndex,
+                  onDestinationSelected: _onNavItemTapped,
+                  destinations: const [
+                    NavigationDestination(
+                      icon: Icon(Icons.paste_rounded),
+                      label: "Clipboard",
+                      tooltip: "Clipboard",
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.content_paste_search_rounded),
+                      label: "Search",
+                      tooltip: "Search Clipboard",
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.collections_bookmark),
+                      label: "Collections",
+                      tooltip: "Collections",
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.settings),
+                      label: "Settings",
+                      tooltip: "Settings",
+                    ),
+                  ],
                 ),
               ],
             )

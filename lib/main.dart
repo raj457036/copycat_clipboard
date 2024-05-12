@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
@@ -21,6 +23,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -57,6 +60,7 @@ Future<void> main() async {
 
   Bloc.observer = CustomBlocObserver();
   await configureDependencies();
+  unawaited(MobileAds.instance.initialize());
   runApp(const MainApp());
 }
 
