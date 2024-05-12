@@ -17,3 +17,6 @@ const supportedUriSchemas = {
   "irc",
   "news"
 };
+
+const androidTestAdUnit = "ca-app-pub-3940256099942544/6300978111";
+const iosTestAdUnit = "ca-app-pub-3940256099942544/2934735716";

@@ -118,8 +118,8 @@ class SyncRepositoryImpl implements SyncRepository {
           isoDate,
         );
       }
-      if (excludeDeviceId != null || excludeDeviceId != "") {
-        query = query.neq("deviceId", excludeDeviceId!);
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
       }
       final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipCollection.fromJson(e)).toList();
@@ -154,8 +154,8 @@ class SyncRepositoryImpl implements SyncRepository {
           .eq("userId", userId)
           .gte("deletedAt", isoDate);
 
-      if (excludeDeviceId != null || excludeDeviceId != "") {
-        query = query.neq("deviceId", excludeDeviceId!);
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
       }
       final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
@@ -190,8 +190,8 @@ class SyncRepositoryImpl implements SyncRepository {
           .eq("userId", userId)
           .gte("deletedAt", isoDate);
 
-      if (excludeDeviceId != null || excludeDeviceId != "") {
-        query = query.neq("deviceId", excludeDeviceId!);
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
       }
       final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipCollection.fromJson(e)).toList();
