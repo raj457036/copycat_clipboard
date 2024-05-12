@@ -10,6 +10,7 @@
             <array>
                 <string>INSendMessageIntent</string>
             </array>
+            <key>NSExtensionActivationRule</key>
             <string>SUBQUERY (
                 extensionItems,
                 $extensionItem,
