@@ -75,6 +75,7 @@ dev_dependencies:
   isar_generator: 3.1.0+1
   freezed: 2.4.7
   json_serializable: ^6.7.1
+  flutter_launcher_icons: "^0.13.1"
   
 
 dependency_overrides:
@@ -87,3 +88,11 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/icons/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icons/icon.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true

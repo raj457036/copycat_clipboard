@@ -1,5 +1,4 @@
 import 'package:clipboard/constants/strings/strings.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:universal_io/io.dart';
@@ -17,12 +16,14 @@ class _HomeBannerAdState extends State<HomeBannerAd> {
 
   String? get adUnitId {
     if (Platform.isAndroid) {
-      if (kDebugMode) return androidTestAdUnit;
-      return "ca-app-pub-2217728188815563/7003381606";
+      // if (kDebugMode)
+      return androidTestAdUnit;
+      // return "ca-app-pub-2217728188815563/7003381606";
     }
     if (Platform.isIOS) {
-      if (kDebugMode) return iosTestAdUnit;
-      return "ca-app-pub-2217728188815563/1754924358";
+      // if (kDebugMode)
+      return iosTestAdUnit;
+      // return "ca-app-pub-2217728188815563/1754924358";
     }
     return null;
   }
