@@ -1,7 +1,7 @@
 name: clipboard
 description: "A universal clipboard"
 publish_to: 'none'
-version: 0.1.4+15
+version: 0.1.4+16
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
