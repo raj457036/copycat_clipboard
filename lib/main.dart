@@ -47,13 +47,11 @@ Future<void> main() async {
       size: initialWindowSize,
       minimumSize: minimumWindowSize,
       center: true,
-      // backgroundColor: Colors.white,
-      skipTaskbar: false,
-      // windowButtonVisibility: false,
       titleBarStyle: TitleBarStyle.normal,
+      title: "Clipboard",
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-      await windowManager.setAsFrameless();
+      await windowManager.setClosable(false);
       await windowManager.show();
       await windowManager.focus();
     });

@@ -111,9 +111,10 @@ class ClipCard extends StatelessWidget {
         ...customMenuItems,
       ],
       child: Card.outlined(
+        elevation: .5,
         margin: EdgeInsets.zero,
         child: InkWell(
-          borderRadius: radius8,
+          borderRadius: radius12,
           onTap: () => preview(context),
           child: Column(
             children: [
