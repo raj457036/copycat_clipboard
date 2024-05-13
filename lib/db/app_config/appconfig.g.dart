@@ -1247,12 +1247,12 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
           ThemeMode.system,
       enableSync: json['enableSync'] as bool? ?? true,
       enableFileSync: json['enableFileSync'] as bool? ?? true,
-      dontUploadOver: json['dontUploadOver'] as int? ?? $10MB,
-      dontCopyOver: json['dontCopyOver'] as int? ?? $10MB,
+      dontUploadOver: (json['dontUploadOver'] as num?)?.toInt() ?? $10MB,
+      dontCopyOver: (json['dontCopyOver'] as num?)?.toInt() ?? $10MB,
       pausedTill: json['pausedTill'] == null
           ? null
           : DateTime.parse(json['pausedTill'] as String),
-      autoSyncInterval: json['autoSyncInterval'] as int? ?? $90S,
+      autoSyncInterval: (json['autoSyncInterval'] as num?)?.toInt() ?? $90S,
       toggleHotkey: json['toggleHotkey'] as String?,
     );
 

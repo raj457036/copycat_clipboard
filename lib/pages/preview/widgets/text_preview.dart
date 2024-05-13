@@ -1,5 +1,6 @@
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class TextClipPreviewCard extends StatelessWidget {
@@ -13,7 +14,14 @@ class TextClipPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? fg;
+    final bg = hexToColor(item);
+    if (bg != null) {
+      fg = getFg(bg);
+    }
+
     return Card.filled(
+      color: bg,
       margin: isMobile
           ? const EdgeInsets.only(
               left: padding16,
@@ -36,7 +44,10 @@ class TextClipPreviewCard extends StatelessWidget {
             top: padding16,
             bottom: padding38,
           ),
-          child: SelectableText(item.text ?? "Nothing here"),
+          child: SelectableText(
+            item.text ?? "Nothing here",
+            style: TextStyle(color: fg),
+          ),
         ),
       ),
     );

@@ -10,7 +10,7 @@ _$DriveAccessTokenImpl _$$DriveAccessTokenImplFromJson(
         Map<String, dynamic> json) =>
     _$DriveAccessTokenImpl(
       accessToken: json['access_token'] as String,
-      expiresIn: json['expires_in'] as int,
+      expiresIn: (json['expires_in'] as num).toInt(),
       issuedAt: DateTime.parse(json['issued_at'] as String),
       scopes:
           (json['scopes'] as List<dynamic>).map((e) => e as String).toList(),

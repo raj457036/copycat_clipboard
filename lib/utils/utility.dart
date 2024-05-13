@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import "package:universal_io/io.dart";
@@ -116,3 +119,25 @@ bool get isDesktop =>
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 
 bool get isMobile => Platform.isIOS || Platform.isAndroid;
+
+Color? hexToColor(ClipboardItem item) {
+  if (item.textCategory != TextCategory.color) return null;
+  String hex = item.text!.replaceAll('#', '');
+
+  if (hex.length == 3) {
+    // Expand shorthand format (e.g., #abc to #aabbcc)
+    hex = '${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}FF';
+  } else if (hex.length == 6) {
+    // Add alpha value if not specified
+    hex = 'FF$hex';
+  } else if (hex.length != 8) {
+    // Check for valid length
+    return null;
+  }
+
+  return Color(int.parse(hex, radix: 16));
+}
+
+Color getFg(Color bg) {
+  return bg.computeLuminance() < 0.35 ? Colors.white54 : Colors.black54;
+}
