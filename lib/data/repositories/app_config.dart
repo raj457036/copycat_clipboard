@@ -17,11 +17,11 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
   AppConfigRepositoryImpl(this.db);
 
   Future<AppConfig> create() async {
-    final appConfig = AppConfig()..id = _fixedId;
-    final id = await db.writeTxn(
+    final appConfig = AppConfig();
+    appConfig.id = _fixedId;
+    await db.writeTxn(
       () async => await db.appConfigs.put(appConfig),
     );
-    appConfig.id = id;
     return appConfig;
   }
 

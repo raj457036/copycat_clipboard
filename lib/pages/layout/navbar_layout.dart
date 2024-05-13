@@ -152,7 +152,7 @@ class _NavBarPageState extends State<NavBarPage> {
       child = scaffold;
     } else {
       final floatingButton = getFloatingActionButton();
-      final metaKey = Platform.isMacOS ? "⌘" : "⊞";
+      final metaKey = Platform.isMacOS ? "⌘" : "control";
       child = Row(
         children: [
           LayoutBuilder(builder: (context, constraint) {

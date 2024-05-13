@@ -3,6 +3,7 @@ import 'package:clipboard/widgets/keyboard_shortcuts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:universal_io/io.dart';
 
 class SearchPageIntent extends Intent {
   const SearchPageIntent();
@@ -17,12 +18,22 @@ class SearchPageShortcut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LogicalKeySet keyset;
+
+    if (Platform.isMacOS) {
+      keyset = LogicalKeySet(
+        LogicalKeyboardKey.meta,
+        LogicalKeyboardKey.keyF,
+      );
+    } else {
+      keyset = LogicalKeySet(
+        LogicalKeyboardKey.control,
+        LogicalKeyboardKey.keyF,
+      );
+    }
     return KeyboardShortcuts(
       shortcuts: <LogicalKeySet, Intent>{
-        LogicalKeySet(
-          LogicalKeyboardKey.meta,
-          LogicalKeyboardKey.keyF,
-        ): const SearchPageIntent(),
+        keyset: const SearchPageIntent(),
       },
       actions: {
         SearchPageIntent: CallbackAction<SearchPageIntent>(

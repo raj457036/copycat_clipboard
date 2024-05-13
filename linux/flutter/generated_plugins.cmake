@@ -10,6 +10,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   hotkey_manager_linux
   irondash_engine_context
   isar_flutter_libs
+  platform_device_id_linux
   screen_retriever
   super_native_extensions
   url_launcher_linux
