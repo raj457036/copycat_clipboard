@@ -7505,7 +7505,7 @@ extension ClipboardItemQueryProperty
 
 _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
     _$ClipboardItemImpl(
-      serverId: json['id'] as int?,
+      serverId: (json['id'] as num?)?.toInt(),
       created: const DateTimeConverter().fromJson(json['created'] as String),
       modified: const DateTimeConverter().fromJson(json['modified'] as String),
       deviceId: json['deviceId'] as String?,
@@ -7524,13 +7524,13 @@ _$ClipboardItemImpl _$$ClipboardItemImplFromJson(Map<String, dynamic> json) =>
       fileMimeType: json['fileMimeType'] as String?,
       fileExtension: json['fileExtension'] as String?,
       driveFileId: json['driveFileId'] as String?,
-      fileSize: json['fileSize'] as int?,
+      fileSize: (json['fileSize'] as num?)?.toInt(),
       imgBlurHash: json['imgBlurHash'] as String?,
       sourceUrl: json['sourceUrl'] as String?,
       sourceApp: json['sourceApp'] as String?,
       os: $enumDecode(_$PlatformOSEnumMap, json['os']),
-      serverCollectionId: json['collectionId'] as int?,
-      copiedCount: json['copiedCount'] as int? ?? 0,
+      serverCollectionId: (json['collectionId'] as num?)?.toInt(),
+      copiedCount: (json['copiedCount'] as num?)?.toInt() ?? 0,
       lastCopied: _$JsonConverterFromJson<String, DateTime>(
           json['lastCopied'], const DateTimeConverter().fromJson),
     );

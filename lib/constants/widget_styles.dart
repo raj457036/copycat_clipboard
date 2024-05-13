@@ -54,3 +54,7 @@ const insetLTR16 = EdgeInsets.only(
 );
 
 const insetAll16 = EdgeInsets.all(padding16);
+
+const initialWindowSize = Size(900, 600);
+const minimumWindowSize = Size(365, 420);
+const compactWindowSize = Size(365, 780);

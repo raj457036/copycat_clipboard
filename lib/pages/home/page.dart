@@ -7,7 +7,10 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/compact_mode_toggle.dart';
+import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -109,14 +112,17 @@ class HomePage extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        appBar: isMobile
-            ? AppBar(
-                title: const Text("Clipboard"),
-                titleTextStyle: textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            : null,
+        appBar: AppBar(
+          title: const Text("Clipboard"),
+          titleTextStyle: textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+          actions: [
+            if (isDesktop) const PinToTopToggleButton(),
+            if (isDesktop) const CompactModeToggleButton(),
+            width12,
+          ],
+        ),
         body: RefreshIndicator(
           onRefresh: () async => await syncChanges(context),
           child: BlocSelector<ClipboardCubit, ClipboardState,
@@ -139,7 +145,7 @@ class HomePage extends StatelessWidget {
               }
 
               return GridView.builder(
-                padding: isMobile ? insetLTR16 : insetAll16,
+                padding: insetLTR16,
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 250,
                   crossAxisSpacing: padding8,

@@ -2708,7 +2708,7 @@ extension ClipCollectionQueryProperty
 
 _$ClipCollectionImpl _$$ClipCollectionImplFromJson(Map<String, dynamic> json) =>
     _$ClipCollectionImpl(
-      serverId: json['id'] as int?,
+      serverId: (json['id'] as num?)?.toInt(),
       created: const DateTimeConverter().fromJson(json['created'] as String),
       modified: const DateTimeConverter().fromJson(json['modified'] as String),
       userId: json['userId'] as String? ?? kLocalUserId,

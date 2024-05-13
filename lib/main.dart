@@ -7,8 +7,10 @@ import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.d
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
+import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/generated/app_localizations.dart';
 import 'package:clipboard/routes/routes.dart';
@@ -42,8 +44,8 @@ Future<void> main() async {
     }
 
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(900, 600),
-      minimumSize: Size(365, 420),
+      size: initialWindowSize,
+      minimumSize: minimumWindowSize,
       center: true,
       // backgroundColor: Colors.white,
       skipTaskbar: false,
@@ -55,6 +57,7 @@ Future<void> main() async {
       await windowManager.show();
       await windowManager.focus();
     });
+
     await updateWindowsRegistry();
   }
 
@@ -93,6 +96,10 @@ class MainApp extends StatelessWidget {
         BlocProvider<DriveSetupCubit>(
           create: (context) => sl(),
         ),
+        if (isDesktop)
+          BlocProvider<WindowActionCubit>(
+            create: (context) => sl()..fetch(),
+          ),
       ],
       child: EventBridge(
         child: ShareListener.forPlatform(
