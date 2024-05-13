@@ -8,7 +8,6 @@ import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ClipCardOptionsHeader extends StatelessWidget {
   final ClipboardItem item;
@@ -28,12 +27,6 @@ class ClipCardOptionsHeader extends StatelessWidget {
         return const Icon(Icons.http_rounded, size: 20);
       case ClipItemType.file:
         return const Icon(Icons.description, size: 20);
-    }
-  }
-
-  Future<void> launchUrl() async {
-    if (item.url != null && Uri.tryParse(item.url!) != null) {
-      await launchUrlString(item.url!);
     }
   }
 
@@ -89,11 +82,22 @@ class ClipCardOptionsHeader extends StatelessWidget {
               width8,
               if (width > 100 && item.type == ClipItemType.url)
                 IconButton(
-                  onPressed: launchUrl,
+                  onPressed: () => launchUrl(item),
                   icon: const Icon(
                     Icons.open_in_new,
                   ),
                   tooltip: "Open in browser",
+                  style: IconButton.styleFrom(
+                    shape: const RoundedRectangleBorder(),
+                  ),
+                ),
+              if (width > 100 && item.textCategory == TextCategory.phone)
+                IconButton(
+                  onPressed: () => launchPhone(item),
+                  icon: const Icon(
+                    Icons.call,
+                  ),
+                  tooltip: "Make a phone call",
                   style: IconButton.styleFrom(
                     shape: const RoundedRectangleBorder(),
                   ),

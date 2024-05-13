@@ -56,6 +56,10 @@ Future<void> launchUrl(ClipboardItem item) async {
   }
 }
 
+Future<void> launchPhone(ClipboardItem item) async {
+  await launchUrlString("tel:${item.text}");
+}
+
 Future<bool> deleteItem(BuildContext context, ClipboardItem item) async {
   final confirmation = await const ConfirmDialog(
     title: "Delete Item",
