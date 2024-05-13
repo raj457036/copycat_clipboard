@@ -18,6 +18,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 import "package:universal_io/io.dart";
 
+String? lastCopiedText;
+
 const _clipTypePriority = [
   Formats.png,
   Formats.jpeg,
@@ -281,10 +283,14 @@ class ClipboardFormatProcessor {
       }
     }
 
-    if (text == null) {
+    if (text == lastCopiedText) {
+      logger.i("Duplicated text");
+      return null;
+    } else if (text == null) {
       logger.w("Text is null");
       return null;
     } else {
+      lastCopiedText = text;
       if (text.trim().isEmpty) return null;
       text = text.replaceAll(RegExp('\r[\n]?'), '\n');
       text = cleanText(text);
