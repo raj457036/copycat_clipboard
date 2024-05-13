@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/constants/widget_styles.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:window_manager/window_manager.dart';
@@ -37,8 +37,11 @@ class WindowActionCubit extends Cubit<WindowActionState> {
       compactMode ? initialWindowSize : compactWindowSize,
     );
     if (!compactMode) {
-      await windowManager.setPosition(const Offset(1061.0, 61.0),
-          animate: true);
+      final position = await calcWindowPosition(
+        compactWindowSize,
+        const Alignment(0.98, 0.0),
+      );
+      await windowManager.setPosition(position, animate: true);
     } else {
       await windowManager.center(animate: true);
     }
