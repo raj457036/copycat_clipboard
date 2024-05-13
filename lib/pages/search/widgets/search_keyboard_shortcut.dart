@@ -2,6 +2,7 @@ import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/widgets/keyboard_shortcuts.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:universal_io/io.dart';
 
 final searchFocusEvent = Event<void>("SEARCH_FOCUS");
 
@@ -19,12 +20,23 @@ class SearchFoucsKeyboardShortcut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LogicalKeySet keyset;
+
+    if (Platform.isMacOS) {
+      keyset = LogicalKeySet(
+        LogicalKeyboardKey.meta,
+        LogicalKeyboardKey.keyF,
+      );
+    } else {
+      keyset = LogicalKeySet(
+        LogicalKeyboardKey.control,
+        LogicalKeyboardKey.keyF,
+      );
+    }
+
     return KeyboardShortcuts(
       shortcuts: <LogicalKeySet, Intent>{
-        LogicalKeySet(
-          LogicalKeyboardKey.meta,
-          LogicalKeyboardKey.keyF,
-        ): const SearchFocusIntent(),
+        keyset: const SearchFocusIntent(),
       },
       actions: {
         SearchFocusIntent: CallbackAction<SearchFocusIntent>(

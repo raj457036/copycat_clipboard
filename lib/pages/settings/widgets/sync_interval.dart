@@ -17,7 +17,9 @@ class AutoSyncInterval extends StatelessWidget {
       selector: (state) {
         switch (state) {
           case AppConfigLoaded(:final config):
-            return config.autoSyncInterval;
+            return config.autoSyncInterval.isNegative
+                ? $90S
+                : config.autoSyncInterval;
           default:
             return $90S;
         }

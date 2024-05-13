@@ -18,7 +18,7 @@ class DontAutoCopyOver extends StatelessWidget {
       selector: (state) {
         switch (state) {
           case AppConfigLoaded(:final config):
-            return config.dontCopyOver;
+            return config.dontCopyOver.isNegative ? $10MB : config.dontCopyOver;
           default:
             return $10MB;
         }

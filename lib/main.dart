@@ -57,11 +57,13 @@ Future<void> main() async {
     });
 
     await updateWindowsRegistry();
+  } else {
+    unawaited(MobileAds.instance.initialize());
   }
 
   Bloc.observer = CustomBlocObserver();
   await configureDependencies();
-  unawaited(MobileAds.instance.initialize());
+
   runApp(const MainApp());
 }
 
