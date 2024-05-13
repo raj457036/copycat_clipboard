@@ -142,7 +142,7 @@ final rgbRegex = RegExp(r"^#?(?:[0-9a-fA-F]{3}){1,2}$");
 final rgbaRegex = RegExp(r"^#?(?:[0-9a-fA-F]{3,4}){1,2}$");
 final emailRegex = RegExp(
     r"^([a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9\-\_]+(\.[a-zA-Z]+)*)$");
-final phoneRegex = RegExp(r'^\d{7,15}$');
+final phoneRegex = RegExp(r'^\+?\d{0,2}\s?\d{7,15}$');
 
 (bool, String) parseColor(String value) {
   final rgb = rgbRegex.stringMatch(value);
