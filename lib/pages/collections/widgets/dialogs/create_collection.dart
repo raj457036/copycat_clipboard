@@ -11,11 +11,8 @@ Future<void> showCreateCollectionDialog(BuildContext context) async {
       context,
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: const Text("Create Collection"),
-          ),
-          body: const ClipCollectionCreateEditPage(),
+        builder: (context) => const Scaffold(
+          body: ClipCollectionCreateEditPage(),
         ),
       ),
     );
