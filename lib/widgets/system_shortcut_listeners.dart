@@ -1,21 +1,28 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
+int? lastWindowId;
+
 class SystemShortcutListener extends StatelessWidget {
   final Widget child;
+
   const SystemShortcutListener({
     super.key,
     required this.child,
   });
 
-  Future<void> toggleWindow() async {
+  Future<void> toggleWindow(BuildContext context) async {
+    final focusManager = WindowFocusManager.of(context);
     if (await windowManager.isFocused()) {
       await windowManager.minimize();
+      await focusManager?.restore();
     } else {
+      await focusManager?.record();
       await windowManager.show();
       await windowManager.focus();
     }
@@ -34,7 +41,7 @@ class SystemShortcutListener extends StatelessWidget {
         await hotKeyManager.register(
           hotKey,
           keyDownHandler: (hotKey_) async {
-            if (hotKey == hotKey_) toggleWindow();
+            if (hotKey == hotKey_) toggleWindow(context);
           },
         );
       },

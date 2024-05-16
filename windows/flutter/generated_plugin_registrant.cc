@@ -11,9 +11,11 @@
 #include <clipboard_watcher/clipboard_watcher_plugin.h>
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
 #include <emoji_picker_flutter/emoji_picker_flutter_plugin_c_api.h>
+#include <focus_window/focus_window_plugin_c_api.h>
 #include <hotkey_manager_windows/hotkey_manager_windows_plugin_c_api.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
 #include <isar_flutter_libs/isar_flutter_libs_plugin.h>
+#include <keypress_simulator_windows/keypress_simulator_windows_plugin_c_api.h>
 #include <platform_device_id_windows/platform_device_id_windows_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
 #include <share_plus/share_plus_windows_plugin_c_api.h>
@@ -32,12 +34,16 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   EmojiPickerFlutterPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("EmojiPickerFlutterPluginCApi"));
+  FocusWindowPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FocusWindowPluginCApi"));
   HotkeyManagerWindowsPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("HotkeyManagerWindowsPluginCApi"));
   IrondashEngineContextPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IrondashEngineContextPluginCApi"));
   IsarFlutterLibsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IsarFlutterLibsPlugin"));
+  KeypressSimulatorWindowsPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("KeypressSimulatorWindowsPluginCApi"));
   PlatformDeviceIdWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PlatformDeviceIdWindowsPlugin"));
   ScreenRetrieverPluginRegisterWithRegistrar(

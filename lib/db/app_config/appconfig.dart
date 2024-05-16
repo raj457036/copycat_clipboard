@@ -35,6 +35,9 @@ class AppConfig with _$AppConfig, IsarIdMixin {
 
     // System show/hide toggle hotkey
     String? toggleHotkey,
+
+    /// show paste button as default
+    @Default(false) bool autoPaste,
   }) = _AppConfig;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>

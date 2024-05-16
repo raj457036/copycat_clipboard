@@ -19,7 +19,7 @@ class PinToTopToggleButton extends StatelessWidget {
         final (pinned, loading) = state;
         if (loading) return const SizedBox.shrink();
         return IconButton(
-          onPressed: () {
+          onPressed: () async {
             context.read<WindowActionCubit>().togglePinned();
           },
           icon: Icon(

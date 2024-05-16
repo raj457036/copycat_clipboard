@@ -3,6 +3,7 @@ import "package:clipboard/db/clip_collection/clipcollection.dart";
 import "package:clipboard/db/clipboard_item/clipboard_item.dart";
 import "package:clipboard/db/sync_status/syncstatus.dart";
 import "package:flutter/foundation.dart";
+import "package:focus_window/focus_window.dart";
 import "package:injectable/injectable.dart";
 import "package:isar/isar.dart";
 import "package:path_provider/path_provider.dart";
@@ -34,6 +35,9 @@ abstract class RegisterModule {
   @Named("device_id")
   Future<String> get deviceId async =>
       (await PlatformDeviceId.getDeviceId) ?? "";
+
+  @singleton
+  FocusWindow get focusWindow => FocusWindow();
 
   @Named("supabase_url")
   String get supabaseUrl => "https://jyawrokzkzfjturwttte.supabase.co";
