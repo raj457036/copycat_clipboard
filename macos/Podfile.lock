@@ -19,6 +19,8 @@ PODS:
   - emoji_picker_flutter (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
+  - focus_window (0.0.1):
+    - FlutterMacOS
   - google_sign_in_ios (0.0.1):
     - AppAuth (>= 1.7.4)
     - Flutter
@@ -44,6 +46,8 @@ PODS:
   - irondash_engine_context (0.0.1):
     - FlutterMacOS
   - isar_flutter_libs (1.0.0):
+    - FlutterMacOS
+  - keypress_simulator_macos (0.0.1):
     - FlutterMacOS
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -76,10 +80,12 @@ DEPENDENCIES:
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
   - emoji_picker_flutter (from `Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - focus_window (from `Flutter/ephemeral/.symlinks/plugins/focus_window/macos`)
   - google_sign_in_ios (from `Flutter/ephemeral/.symlinks/plugins/google_sign_in_ios/darwin`)
   - hotkey_manager_macos (from `Flutter/ephemeral/.symlinks/plugins/hotkey_manager_macos/macos`)
   - irondash_engine_context (from `Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos`)
   - isar_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/isar_flutter_libs/macos`)
+  - keypress_simulator_macos (from `Flutter/ephemeral/.symlinks/plugins/keypress_simulator_macos/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - platform_device_id (from `Flutter/ephemeral/.symlinks/plugins/platform_device_id/macos`)
   - platform_device_id_macos (from `Flutter/ephemeral/.symlinks/plugins/platform_device_id_macos/macos`)
@@ -114,6 +120,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  focus_window:
+    :path: Flutter/ephemeral/.symlinks/plugins/focus_window/macos
   google_sign_in_ios:
     :path: Flutter/ephemeral/.symlinks/plugins/google_sign_in_ios/darwin
   hotkey_manager_macos:
@@ -122,6 +130,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos
   isar_flutter_libs:
     :path: Flutter/ephemeral/.symlinks/plugins/isar_flutter_libs/macos
+  keypress_simulator_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/keypress_simulator_macos/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   platform_device_id:
@@ -152,6 +162,7 @@ SPEC CHECKSUMS:
   device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  focus_window: c7371ddf4c3009e6d4ba0d7f1b279eccd01aca22
   google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
@@ -160,6 +171,7 @@ SPEC CHECKSUMS:
   hotkey_manager_macos: 1e2edb0c7ae4fe67108af44a9d3445de41404160
   irondash_engine_context: da62996ee25616d2f01bbeb85dc115d813359478
   isar_flutter_libs: 43385c99864c168fadba7c9adeddc5d38838ca6a
+  keypress_simulator_macos: f8556f9101f9f2f175652e0bceddf0fe82a4c6b2
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   platform_device_id: 3e414428f45df149bbbfb623e2c0ca27c545b763
   platform_device_id_macos: f763bb55f088be804d61b96eb4710b8ab6598e94

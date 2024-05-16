@@ -92,6 +92,13 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     await repo.update(newConfig);
   }
 
+  Future<void> toggleAutoPaste(bool value) async {
+    final newConfig = state.config.copyWith(autoPaste: value)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    await repo.update(newConfig);
+  }
+
   Future<void> changeFileSync(bool value) async {
     final newConfig = state.config.copyWith(enableFileSync: value)
       ..applyId(state.config);

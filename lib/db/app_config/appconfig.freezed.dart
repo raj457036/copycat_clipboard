@@ -38,6 +38,9 @@ mixin _$AppConfig {
       throw _privateConstructorUsedError; // System show/hide toggle hotkey
   String? get toggleHotkey => throw _privateConstructorUsedError;
 
+  /// show paste button as default
+  bool get autoPaste => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $AppConfigCopyWith<AppConfig> get copyWith =>
@@ -57,7 +60,8 @@ abstract class $AppConfigCopyWith<$Res> {
       int dontCopyOver,
       DateTime? pausedTill,
       int autoSyncInterval,
-      String? toggleHotkey});
+      String? toggleHotkey,
+      bool autoPaste});
 }
 
 /// @nodoc
@@ -81,6 +85,7 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? pausedTill = freezed,
     Object? autoSyncInterval = null,
     Object? toggleHotkey = freezed,
+    Object? autoPaste = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -115,6 +120,10 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.toggleHotkey
           : toggleHotkey // ignore: cast_nullable_to_non_nullable
               as String?,
+      autoPaste: null == autoPaste
+          ? _value.autoPaste
+          : autoPaste // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -135,7 +144,8 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       int dontCopyOver,
       DateTime? pausedTill,
       int autoSyncInterval,
-      String? toggleHotkey});
+      String? toggleHotkey,
+      bool autoPaste});
 }
 
 /// @nodoc
@@ -157,6 +167,7 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? pausedTill = freezed,
     Object? autoSyncInterval = null,
     Object? toggleHotkey = freezed,
+    Object? autoPaste = null,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
@@ -191,6 +202,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.toggleHotkey
           : toggleHotkey // ignore: cast_nullable_to_non_nullable
               as String?,
+      autoPaste: null == autoPaste
+          ? _value.autoPaste
+          : autoPaste // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -206,7 +221,8 @@ class _$AppConfigImpl extends _AppConfig {
       this.dontCopyOver = $10MB,
       this.pausedTill,
       this.autoSyncInterval = $90S,
-      this.toggleHotkey})
+      this.toggleHotkey,
+      this.autoPaste = false})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -244,9 +260,14 @@ class _$AppConfigImpl extends _AppConfig {
   @override
   final String? toggleHotkey;
 
+  /// show paste button as default
+  @override
+  @JsonKey()
+  final bool autoPaste;
+
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, autoPaste: $autoPaste)';
   }
 
   @override
@@ -269,7 +290,9 @@ class _$AppConfigImpl extends _AppConfig {
             (identical(other.autoSyncInterval, autoSyncInterval) ||
                 other.autoSyncInterval == autoSyncInterval) &&
             (identical(other.toggleHotkey, toggleHotkey) ||
-                other.toggleHotkey == toggleHotkey));
+                other.toggleHotkey == toggleHotkey) &&
+            (identical(other.autoPaste, autoPaste) ||
+                other.autoPaste == autoPaste));
   }
 
   @JsonKey(ignore: true)
@@ -283,7 +306,8 @@ class _$AppConfigImpl extends _AppConfig {
       dontCopyOver,
       pausedTill,
       autoSyncInterval,
-      toggleHotkey);
+      toggleHotkey,
+      autoPaste);
 
   @JsonKey(ignore: true)
   @override
@@ -308,7 +332,8 @@ abstract class _AppConfig extends AppConfig {
       final int dontCopyOver,
       final DateTime? pausedTill,
       final int autoSyncInterval,
-      final String? toggleHotkey}) = _$AppConfigImpl;
+      final String? toggleHotkey,
+      final bool autoPaste}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -337,6 +362,10 @@ abstract class _AppConfig extends AppConfig {
   int get autoSyncInterval;
   @override // System show/hide toggle hotkey
   String? get toggleHotkey;
+  @override
+
+  /// show paste button as default
+  bool get autoPaste;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>

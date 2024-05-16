@@ -65,6 +65,10 @@ dependencies:
       ref: master
       path: "platform_device_id"
   google_mobile_ads: ^5.1.0
+  handy_window: ^0.4.0
+  focus_window:
+    path: ./plugins/focus_window
+  keypress_simulator: ^0.2.0
 
 dev_dependencies:
   flutter_test:
