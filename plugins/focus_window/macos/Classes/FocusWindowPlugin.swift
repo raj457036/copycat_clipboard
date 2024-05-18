@@ -24,6 +24,19 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
     }
 
     public func pasteContent() {
+        
+        var hasAccess = AXIsProcessTrusted()
+        
+        if (!hasAccess) {
+            let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as CFDictionary
+            hasAccess = AXIsProcessTrustedWithOptions(options)
+            if (!hasAccess) {
+                let prefpaneUrl = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
+                NSWorkspace.shared.open(prefpaneUrl)
+                return;
+            }
+        }
+
         let source = CGEventSource(stateID: .hidSystemState)
         let kVK_Command: UInt16 = 0x37
         let kVK_ANSI_V: UInt16 = 0x09
@@ -42,14 +55,12 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
         
         // Post the key down events
         cmdDown?.post(tap: .cghidEventTap)
-        usleep(10000) // 10 milliseconds delay
         vDown?.post(tap: .cghidEventTap)
         usleep(10000) // 10 milliseconds delay
         
         // Post the key up events
-        vUp?.post(tap: .cghidEventTap)
-        usleep(10000) // 10 milliseconds delay
         cmdUp?.post(tap: .cghidEventTap)
+        vUp?.post(tap: .cghidEventTap)
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {

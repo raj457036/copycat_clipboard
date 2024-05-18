@@ -26,8 +26,8 @@ class PrimaryClipActionButton extends StatelessWidget {
             icon: const Icon(Icons.paste),
             onPressed: () async {
               await copyToClipboard(context, item, noAck: true);
-              await Future.delayed(Durations.short1);
               final unfocused = await focusManager?.toggleWindow();
+              await Future.delayed(Durations.short1);
               if (unfocused == true) {
                 await focusManager?.pasteOnFocusedWindow();
               }
