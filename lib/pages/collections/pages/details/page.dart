@@ -1,3 +1,4 @@
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/collection_clips_cubit/collection_clips_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
@@ -23,25 +24,38 @@ class CollectionDetailPage extends StatelessWidget {
     final title = "${collection.emoji} • ${collection.title}";
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    return BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
-      listenWhen: (previous, current) {
-        switch (current) {
-          case OfflinePersistanceDeleted() ||
-                OfflinePersistanceSaved(synced: false):
-            return true;
-          case _:
-            return false;
-        }
-      },
-      listener: (context, state) {
-        switch (state) {
-          case OfflinePersistanceDeleted(:final item):
-            context.read<CollectionClipsCubit>().deleteItem(item);
-          case OfflinePersistanceSaved(:final item):
-            context.read<CollectionClipsCubit>().put(item);
-          case _:
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
+          listenWhen: (previous, current) {
+            switch (current) {
+              case OfflinePersistanceDeleted() ||
+                    OfflinePersistanceSaved(synced: false):
+                return true;
+              case _:
+                return false;
+            }
+          },
+          listener: (context, state) {
+            switch (state) {
+              case OfflinePersistanceDeleted(:final item):
+                context.read<CollectionClipsCubit>().deleteItem(item);
+              case OfflinePersistanceSaved(:final item):
+                context.read<CollectionClipsCubit>().put(item);
+              case _:
+            }
+          },
+        ),
+        BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
+            listener: (context, state) {
+          switch (state) {
+            case CloudPersistanceUploadingFile(:final item) ||
+                  CloudPersistanceDownloadingFile(:final item):
+              context.read<CollectionClipsCubit>().put(item);
+              break;
+          }
+        }),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -94,7 +108,7 @@ class CollectionDetailPage extends StatelessWidget {
 
                       final item = results[index];
                       return ClipCard(
-                        key: ValueKey("clipboard-item-${item.id}"),
+                        key: ValueKey("clipboard-item-//${item.id}"),
                         item: item,
                         // deleteAllowed: false,
                       );
