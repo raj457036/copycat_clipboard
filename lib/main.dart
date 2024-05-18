@@ -56,7 +56,6 @@ Future<void> main() async {
       minimumSize: minimumWindowSize,
       center: true,
       titleBarStyle: TitleBarStyle.hidden,
-      backgroundColor: Colors.transparent,
       windowButtonVisibility: false,
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {

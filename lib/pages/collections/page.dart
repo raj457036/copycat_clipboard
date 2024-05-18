@@ -3,6 +3,8 @@ import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
+import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +28,10 @@ class CollectionsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Collections"),
+          actions: [
+            if (isDesktop) const MinimizeWindowButton(),
+            width12,
+          ],
         ),
         body: LayoutBuilder(
           builder: (context, constraints) {
