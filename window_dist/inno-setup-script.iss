@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Clipboard"
-#define MyAppVersion "0.1.5+20"
+#define MyAppVersion "0.1.5+21"
 #define MyAppPublisher "Raj S."
 #define MyAppExeName "Clipboard.exe"
 #define MyAppAssocName MyAppName + ""
@@ -46,7 +46,6 @@ Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\flutter_
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\hotkey_manager_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\irondash_engine_context_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\focus_window_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\keypress_simulator_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\isar.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\isar_flutter_libs_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\platform_device_id_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
