@@ -12,8 +12,4 @@ class FocusWindow {
   Future<void> setActiveWindowId(int windowId) async {
     return FocusWindowPlatform.instance.setActiveWindowId(windowId);
   }
-
-  Future<void> paste() async {
-    return FocusWindowPlatform.instance.paste();
-  }
 }

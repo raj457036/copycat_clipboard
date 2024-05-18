@@ -22,35 +22,6 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
         let app = NSRunningApplication(processIdentifier: pid_t(windowId))
         app?.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
     }
-    
-    public func pasteContent() {
-        let source = CGEventSource(stateID: .hidSystemState)
-        let kVK_Command: UInt16 = 0x37
-        let kVK_ANSI_V: UInt16 = 0x09
-            
-        // Down events for Command and V keys
-        let cmdDown = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
-        let vDown = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_ANSI_V), keyDown: true)
-        
-        // Up events for V and Command keys
-        let vUp = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_ANSI_V), keyDown: false)
-        let cmdUp = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_Command), keyDown: false)
-        
-        // Ensure the Command key is marked as being held down when the V key event is posted
-        vDown?.flags = .maskCommand
-        vUp?.flags = .maskCommand
-        
-        // Post the key down events
-        cmdDown?.post(tap: .cghidEventTap)
-        usleep(1000) // 1 milliseconds delay
-        vDown?.post(tap: .cghidEventTap)
-        usleep(1000) // 1 milliseconds delay
-        
-        // Post the key up events
-        vUp?.post(tap: .cghidEventTap)
-        usleep(1000) // 1 milliseconds delay
-        cmdUp?.post(tap: .cghidEventTap)
-    }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
@@ -76,9 +47,6 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
                     return
                 }
                 self.setActiveWindow(windowId: windowId)
-                result(nil)
-            case "pasteContent":
-                self.pasteContent()
                 result(nil)
             default:
                 result(FlutterMethodNotImplemented)
