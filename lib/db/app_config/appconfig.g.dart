@@ -47,24 +47,29 @@ const AppConfigSchema = CollectionSchema(
       name: r'isPersisted',
       type: IsarType.bool,
     ),
-    r'pausedTill': PropertySchema(
+    r'launchAtStartup': PropertySchema(
       id: 6,
+      name: r'launchAtStartup',
+      type: IsarType.bool,
+    ),
+    r'pausedTill': PropertySchema(
+      id: 7,
       name: r'pausedTill',
       type: IsarType.dateTime,
     ),
     r'smartPaste': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'smartPaste',
       type: IsarType.bool,
     ),
     r'themeMode': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
     ),
     r'toggleHotkey': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'toggleHotkey',
       type: IsarType.string,
     )
@@ -111,10 +116,11 @@ void _appConfigSerialize(
   writer.writeBool(offsets[3], object.enableFileSync);
   writer.writeBool(offsets[4], object.enableSync);
   writer.writeBool(offsets[5], object.isPersisted);
-  writer.writeDateTime(offsets[6], object.pausedTill);
-  writer.writeBool(offsets[7], object.smartPaste);
-  writer.writeString(offsets[8], object.themeMode.name);
-  writer.writeString(offsets[9], object.toggleHotkey);
+  writer.writeBool(offsets[6], object.launchAtStartup);
+  writer.writeDateTime(offsets[7], object.pausedTill);
+  writer.writeBool(offsets[8], object.smartPaste);
+  writer.writeString(offsets[9], object.themeMode.name);
+  writer.writeString(offsets[10], object.toggleHotkey);
 }
 
 AppConfig _appConfigDeserialize(
@@ -129,12 +135,13 @@ AppConfig _appConfigDeserialize(
     dontUploadOver: reader.readLong(offsets[2]),
     enableFileSync: reader.readBool(offsets[3]),
     enableSync: reader.readBool(offsets[4]),
-    pausedTill: reader.readDateTimeOrNull(offsets[6]),
-    smartPaste: reader.readBool(offsets[7]),
+    launchAtStartup: reader.readBool(offsets[6]),
+    pausedTill: reader.readDateTimeOrNull(offsets[7]),
+    smartPaste: reader.readBool(offsets[8]),
     themeMode:
-        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[8])] ??
+        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[9])] ??
             ThemeMode.system,
-    toggleHotkey: reader.readStringOrNull(offsets[9]),
+    toggleHotkey: reader.readStringOrNull(offsets[10]),
   );
   object.id = id;
   return object;
@@ -160,14 +167,16 @@ P _appConfigDeserializeProp<P>(
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 7:
       return (reader.readBool(offset)) as P;
+    case 7:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 8:
+      return (reader.readBool(offset)) as P;
+    case 9:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
-    case 9:
+    case 10:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -521,6 +530,16 @@ extension AppConfigQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isPersisted',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
+      launchAtStartupEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'launchAtStartup',
         value: value,
       ));
     });
@@ -973,6 +992,18 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByLaunchAtStartup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'launchAtStartup', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByLaunchAtStartupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'launchAtStartup', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByPausedTill() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pausedTill', Sort.asc);
@@ -1109,6 +1140,18 @@ extension AppConfigQuerySortThenBy
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByLaunchAtStartup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'launchAtStartup', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByLaunchAtStartupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'launchAtStartup', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByPausedTill() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pausedTill', Sort.asc);
@@ -1196,6 +1239,12 @@ extension AppConfigQueryWhereDistinct
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByLaunchAtStartup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'launchAtStartup');
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByPausedTill() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pausedTill');
@@ -1267,6 +1316,12 @@ extension AppConfigQueryProperty
     });
   }
 
+  QueryBuilder<AppConfig, bool, QQueryOperations> launchAtStartupProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'launchAtStartup');
+    });
+  }
+
   QueryBuilder<AppConfig, DateTime?, QQueryOperations> pausedTillProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pausedTill');
@@ -1310,6 +1365,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
       autoSyncInterval: (json['autoSyncInterval'] as num?)?.toInt() ?? $90S,
       toggleHotkey: json['toggleHotkey'] as String?,
       smartPaste: json['smartPaste'] as bool? ?? false,
+      launchAtStartup: json['launchAtStartup'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
@@ -1323,6 +1379,7 @@ Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
       'autoSyncInterval': instance.autoSyncInterval,
       'toggleHotkey': instance.toggleHotkey,
       'smartPaste': instance.smartPaste,
+      'launchAtStartup': instance.launchAtStartup,
     };
 
 const _$ThemeModeEnumMap = {

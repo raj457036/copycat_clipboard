@@ -5,6 +5,7 @@ import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/pause_till.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
+import 'package:clipboard/pages/settings/widgets/startup_launch_switch.dart';
 import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
@@ -24,33 +25,53 @@ class SettingsPage extends StatelessWidget {
           width12,
         ],
       ),
-      body: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 480),
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: padding16),
-          children: const [
-            SettingHeader(
-              name: "Basic • Local",
-              tooltip: "These settings are applicable to this device only.",
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: padding16),
+        child: Wrap(
+          spacing: 20,
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 570),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SettingHeader(
+                    name: "Basic • Local",
+                    tooltip:
+                        "These settings are applicable to this device only.",
+                  ),
+                  height10,
+                  ListTile(
+                    title: Text("Theme"),
+                    trailing: ThemeDropdown(),
+                  ),
+                  SmartPasteSwitch(),
+                  StartUpLaunchSwitch(),
+                  SetupToggleHotKey(),
+                  DontAutoCopyOver(),
+                  PauseTill(),
+                ],
+              ),
             ),
-            height10,
-            ListTile(
-              title: Text("Theme"),
-              trailing: ThemeDropdown(),
-            ),
-            SmartPasteSwitch(),
-            SetupToggleHotKey(),
-            DontAutoCopyOver(),
-            PauseTill(),
-            height20,
-            SettingHeader(
-              name: "Sync • Local",
-              tooltip: "These settings are applicable to this device only.",
-            ),
-            height10,
-            AutoSyncInterval(),
-            EnableSyncSwitch(),
-            EnableFileSyncSwitch(),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 570),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SettingHeader(
+                    name: "Sync • Local",
+                    tooltip:
+                        "These settings are applicable to this device only.",
+                  ),
+                  height10,
+                  AutoSyncInterval(),
+                  EnableSyncSwitch(),
+                  EnableFileSyncSwitch(),
+                ],
+              ),
+            )
           ],
         ),
       ),

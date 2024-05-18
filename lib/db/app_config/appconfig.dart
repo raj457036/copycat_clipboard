@@ -41,6 +41,9 @@ class AppConfig with _$AppConfig, IsarIdMixin {
     /// to the last focused cursor in the last window, and the clipboard will minimize.
     @Default(false) bool smartPaste,
 
+    /// If enabled, the application will automatically start at startup.
+    @Default(false) bool launchAtStartup,
+
     //? Local App States
     /// last focus window id
     @ignore
