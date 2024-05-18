@@ -5,13 +5,9 @@ import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
-import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:keypress_simulator/keypress_simulator.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> copyToClipboard(
@@ -35,39 +31,6 @@ Future<void> copyToClipboard(
     }
   } catch (e) {
     showTextSnackbar("⭕️ Failed to copy. Something went wrong!");
-  }
-}
-
-Future<void> pasteClipboardContent() async {
-  if (Platform.isMacOS) {
-    await keyPressSimulator.simulateKeyDown(
-      PhysicalKeyboardKey.keyV,
-      [ModifierKey.metaModifier],
-    );
-    await keyPressSimulator.simulateKeyUp(
-      PhysicalKeyboardKey.keyV,
-      [ModifierKey.metaModifier],
-    );
-  }
-  if (Platform.isWindows) {
-    await keyPressSimulator.simulateKeyDown(
-      PhysicalKeyboardKey.keyV,
-      [ModifierKey.controlModifier],
-    );
-    await keyPressSimulator.simulateKeyUp(
-      PhysicalKeyboardKey.keyV,
-      [ModifierKey.controlModifier],
-    );
-  }
-  if (Platform.isLinux) {
-    // TODO: use xdotool to simulate keypress
-  }
-}
-
-Future<void> unfocusAndPaste(BuildContext context) async {
-  final unfocused = await WindowFocusManager.of(context)?.toggleWindow();
-  if (unfocused == true) {
-    await pasteClipboardContent();
   }
 }
 

@@ -47,12 +47,15 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     }
   }
 
+  Future<void> pasteOnFocusedWindow() async {
+    await widget.focusWindow.pasteContent();
+  }
+
   /// returns true when unfocused and false when focused
   Future<bool> toggleWindow() async {
     final focused = await windowManager.isFocused();
     if (focused) {
-      await windowManager.hide();
-      await Future.delayed(Durations.short2);
+      windowManager.hide();
       await restore();
       return true;
     } else {
@@ -66,6 +69,13 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   Future<void> record() async {
     lastWindowId = await widget.focusWindow.getActiveWindowId();
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
+    await Future.delayed(Durations.short2);
+  }
+
+  @override
+  void onWindowFocus() {
+    // Make sure to call once.
+    setState(() {});
   }
 
   @override

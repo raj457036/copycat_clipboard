@@ -61,7 +61,7 @@ Future<void> main() async {
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
       await windowManager.setClosable(false);
       await windowManager.show();
-      await windowManager.focus();
+      await windowManager.minimize();
     });
 
     await updateWindowsRegistry();

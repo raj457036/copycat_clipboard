@@ -68,7 +68,6 @@ dependencies:
   handy_window: ^0.4.0
   focus_window:
     path: ./plugins/focus_window
-  keypress_simulator: ^0.2.0
   package_info_plus: ^8.0.0
 
 dev_dependencies:
