@@ -34,8 +34,4 @@ abstract class FocusWindowPlatform extends PlatformInterface {
   Future<void> setActiveWindowId(int windowId) {
     throw UnimplementedError('setActiveWindowId() has not been implemented.');
   }
-
-  Future<void> paste() async {
-    throw UnimplementedError('paste() has not been implemented.');
-  }
 }

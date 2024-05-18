@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:focus_window/windows_keyboard_simulator.dart';
 import 'package:universal_io/io.dart';
 import "package:win32/win32.dart" show GetForegroundWindow, SetForegroundWindow;
 
@@ -42,16 +41,6 @@ class MethodChannelFocusWindow extends FocusWindowPlatform {
           "windowId": windowId,
         },
       );
-    }
-    return;
-  }
-
-  @override
-  Future<void> paste() async {
-    if (Platform.isWindows) {
-      simulateWindowsPasteShortcut();
-    } else if (Platform.isMacOS) {
-      await methodChannel.invokeMethod<void>('pasteContent');
     }
     return;
   }
