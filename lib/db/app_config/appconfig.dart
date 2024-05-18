@@ -36,8 +36,16 @@ class AppConfig with _$AppConfig, IsarIdMixin {
     // System show/hide toggle hotkey
     String? toggleHotkey,
 
-    /// show paste button as default
-    @Default(false) bool autoPaste,
+    /// If enabled, the primary action on clips will be smartly selected.
+    /// The primary action will be paste, which will directly paste the clip
+    /// to the last focused cursor in the last window, and the clipboard will minimize.
+    @Default(false) bool smartPaste,
+
+    //? Local App States
+    /// last focus window id
+    @ignore
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    int? lastFocusedWindowId,
   }) = _AppConfig;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>

@@ -19,6 +19,12 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   AppConfigCubit(this.repo)
       : super(AppConfigState.loaded(isLoading: true, config: AppConfig()));
 
+  @override
+  void emit(AppConfigState state) {
+    if (isClosed) return;
+    super.emit(state);
+  }
+
   Future<void> load() async {
     emit(state.copyWith(isLoading: true));
     final appConfig = await repo.get();
@@ -92,8 +98,8 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     await repo.update(newConfig);
   }
 
-  Future<void> toggleAutoPaste(bool value) async {
-    final newConfig = state.config.copyWith(autoPaste: value)
+  Future<void> toggleSmartPaste(bool value) async {
+    final newConfig = state.config.copyWith(smartPaste: value)
       ..applyId(state.config);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);
@@ -104,5 +110,12 @@ class AppConfigCubit extends Cubit<AppConfigState> {
       ..applyId(state.config);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);
+  }
+
+  // ? Non persistent states
+  void setLastFocusedWindowId(int? value) {
+    final newConfig = state.config.copyWith(lastFocusedWindowId: value)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
   }
 }

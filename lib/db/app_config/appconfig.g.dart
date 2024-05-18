@@ -17,45 +17,45 @@ const AppConfigSchema = CollectionSchema(
   name: r'AppConfig',
   id: -7085420701237142207,
   properties: {
-    r'autoPaste': PropertySchema(
-      id: 0,
-      name: r'autoPaste',
-      type: IsarType.bool,
-    ),
     r'autoSyncInterval': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'autoSyncInterval',
       type: IsarType.long,
     ),
     r'dontCopyOver': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'dontCopyOver',
       type: IsarType.long,
     ),
     r'dontUploadOver': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'dontUploadOver',
       type: IsarType.long,
     ),
     r'enableFileSync': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'enableFileSync',
       type: IsarType.bool,
     ),
     r'enableSync': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'enableSync',
       type: IsarType.bool,
     ),
     r'isPersisted': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'pausedTill': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'pausedTill',
       type: IsarType.dateTime,
+    ),
+    r'smartPaste': PropertySchema(
+      id: 7,
+      name: r'smartPaste',
+      type: IsarType.bool,
     ),
     r'themeMode': PropertySchema(
       id: 8,
@@ -105,14 +105,14 @@ void _appConfigSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.autoPaste);
-  writer.writeLong(offsets[1], object.autoSyncInterval);
-  writer.writeLong(offsets[2], object.dontCopyOver);
-  writer.writeLong(offsets[3], object.dontUploadOver);
-  writer.writeBool(offsets[4], object.enableFileSync);
-  writer.writeBool(offsets[5], object.enableSync);
-  writer.writeBool(offsets[6], object.isPersisted);
-  writer.writeDateTime(offsets[7], object.pausedTill);
+  writer.writeLong(offsets[0], object.autoSyncInterval);
+  writer.writeLong(offsets[1], object.dontCopyOver);
+  writer.writeLong(offsets[2], object.dontUploadOver);
+  writer.writeBool(offsets[3], object.enableFileSync);
+  writer.writeBool(offsets[4], object.enableSync);
+  writer.writeBool(offsets[5], object.isPersisted);
+  writer.writeDateTime(offsets[6], object.pausedTill);
+  writer.writeBool(offsets[7], object.smartPaste);
   writer.writeString(offsets[8], object.themeMode.name);
   writer.writeString(offsets[9], object.toggleHotkey);
 }
@@ -124,13 +124,13 @@ AppConfig _appConfigDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AppConfig(
-    autoPaste: reader.readBool(offsets[0]),
-    autoSyncInterval: reader.readLong(offsets[1]),
-    dontCopyOver: reader.readLong(offsets[2]),
-    dontUploadOver: reader.readLong(offsets[3]),
-    enableFileSync: reader.readBool(offsets[4]),
-    enableSync: reader.readBool(offsets[5]),
-    pausedTill: reader.readDateTimeOrNull(offsets[7]),
+    autoSyncInterval: reader.readLong(offsets[0]),
+    dontCopyOver: reader.readLong(offsets[1]),
+    dontUploadOver: reader.readLong(offsets[2]),
+    enableFileSync: reader.readBool(offsets[3]),
+    enableSync: reader.readBool(offsets[4]),
+    pausedTill: reader.readDateTimeOrNull(offsets[6]),
+    smartPaste: reader.readBool(offsets[7]),
     themeMode:
         _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[8])] ??
             ThemeMode.system,
@@ -148,21 +148,21 @@ P _appConfigDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readBool(offset)) as P;
-    case 7:
       return (reader.readDateTimeOrNull(offset)) as P;
+    case 7:
+      return (reader.readBool(offset)) as P;
     case 8:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
@@ -276,16 +276,6 @@ extension AppConfigQueryWhere
 
 extension AppConfigQueryFilter
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {
-  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> autoPasteEqualTo(
-      bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'autoPaste',
-        value: value,
-      ));
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition>
       autoSyncIntervalEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
@@ -607,6 +597,16 @@ extension AppConfigQueryFilter
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> smartPasteEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'smartPaste',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> themeModeEqualTo(
     ThemeMode value, {
     bool caseSensitive = true,
@@ -900,18 +900,6 @@ extension AppConfigQueryLinks
     on QueryBuilder<AppConfig, AppConfig, QFilterCondition> {}
 
 extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByAutoPaste() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'autoPaste', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByAutoPasteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'autoPaste', Sort.desc);
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByAutoSyncInterval() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'autoSyncInterval', Sort.asc);
@@ -997,6 +985,18 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortBySmartPaste() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'smartPaste', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortBySmartPasteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'smartPaste', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByThemeMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.asc);
@@ -1024,18 +1024,6 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
 
 extension AppConfigQuerySortThenBy
     on QueryBuilder<AppConfig, AppConfig, QSortThenBy> {
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByAutoPaste() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'autoPaste', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByAutoPasteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'autoPaste', Sort.desc);
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByAutoSyncInterval() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'autoSyncInterval', Sort.asc);
@@ -1133,6 +1121,18 @@ extension AppConfigQuerySortThenBy
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenBySmartPaste() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'smartPaste', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenBySmartPasteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'smartPaste', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByThemeMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'themeMode', Sort.asc);
@@ -1160,12 +1160,6 @@ extension AppConfigQuerySortThenBy
 
 extension AppConfigQueryWhereDistinct
     on QueryBuilder<AppConfig, AppConfig, QDistinct> {
-  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByAutoPaste() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'autoPaste');
-    });
-  }
-
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByAutoSyncInterval() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'autoSyncInterval');
@@ -1208,6 +1202,12 @@ extension AppConfigQueryWhereDistinct
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctBySmartPaste() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'smartPaste');
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByThemeMode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1228,12 +1228,6 @@ extension AppConfigQueryProperty
   QueryBuilder<AppConfig, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
-    });
-  }
-
-  QueryBuilder<AppConfig, bool, QQueryOperations> autoPasteProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'autoPaste');
     });
   }
 
@@ -1279,6 +1273,12 @@ extension AppConfigQueryProperty
     });
   }
 
+  QueryBuilder<AppConfig, bool, QQueryOperations> smartPasteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'smartPaste');
+    });
+  }
+
   QueryBuilder<AppConfig, ThemeMode, QQueryOperations> themeModeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'themeMode');
@@ -1309,7 +1309,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['pausedTill'] as String),
       autoSyncInterval: (json['autoSyncInterval'] as num?)?.toInt() ?? $90S,
       toggleHotkey: json['toggleHotkey'] as String?,
-      autoPaste: json['autoPaste'] as bool? ?? false,
+      smartPaste: json['smartPaste'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
@@ -1322,7 +1322,7 @@ Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
       'pausedTill': instance.pausedTill?.toIso8601String(),
       'autoSyncInterval': instance.autoSyncInterval,
       'toggleHotkey': instance.toggleHotkey,
-      'autoPaste': instance.autoPaste,
+      'smartPaste': instance.smartPaste,
     };
 
 const _$ThemeModeEnumMap = {

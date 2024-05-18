@@ -49,6 +49,7 @@ Future<void> main() async {
       minimumSize: minimumWindowSize,
       center: true,
       titleBarStyle: TitleBarStyle.hidden,
+      backgroundColor: Colors.transparent,
       windowButtonVisibility: false,
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
@@ -132,8 +133,7 @@ class MainApp extends StatelessWidget {
                           brightness: Brightness.light,
                           inputDecorationTheme: const InputDecorationTheme(
                             border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderRadius: radius12,
                             ),
                           ),
                         ),
