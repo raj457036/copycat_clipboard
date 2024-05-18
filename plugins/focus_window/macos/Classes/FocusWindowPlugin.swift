@@ -42,13 +42,13 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
         
         // Post the key down events
         cmdDown?.post(tap: .cghidEventTap)
-        usleep(1000) // 1 milliseconds delay
+        usleep(10000) // 10 milliseconds delay
         vDown?.post(tap: .cghidEventTap)
-        usleep(1000) // 1 milliseconds delay
+        usleep(10000) // 10 milliseconds delay
         
         // Post the key up events
         vUp?.post(tap: .cghidEventTap)
-        usleep(1000) // 1 milliseconds delay
+        usleep(10000) // 10 milliseconds delay
         cmdUp?.post(tap: .cghidEventTap)
     }
 
