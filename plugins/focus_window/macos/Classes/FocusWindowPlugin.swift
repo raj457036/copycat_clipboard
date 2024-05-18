@@ -25,42 +25,27 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
 
     public func pasteContent() {
         
-        var hasAccess = AXIsProcessTrusted()
-        
-        if (!hasAccess) {
-            let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as CFDictionary
-            hasAccess = AXIsProcessTrustedWithOptions(options)
-            if (!hasAccess) {
-                let prefpaneUrl = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
-                NSWorkspace.shared.open(prefpaneUrl)
-                return;
-            }
-        }
-
-        let source = CGEventSource(stateID: .hidSystemState)
-        let kVK_Command: UInt16 = 0x37
-        let kVK_ANSI_V: UInt16 = 0x09
-            
-        // Down events for Command and V keys
-        let cmdDown = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
-        let vDown = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_ANSI_V), keyDown: true)
-        
-        // Up events for V and Command keys
-        let vUp = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_ANSI_V), keyDown: false)
-        let cmdUp = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_Command), keyDown: false)
-        
-        // Ensure the Command key is marked as being held down when the V key event is posted
-        vDown?.flags = .maskCommand
-        vUp?.flags = .maskCommand
-        
-        // Post the key down events
-        cmdDown?.post(tap: .cghidEventTap)
-        vDown?.post(tap: .cghidEventTap)
-        usleep(10000) // 10 milliseconds delay
-        
-        // Post the key up events
-        cmdUp?.post(tap: .cghidEventTap)
-        vUp?.post(tap: .cghidEventTap)
+//        var hasAccess = AXIsProcessTrusted()
+//        
+//        if (!hasAccess) {
+//            let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as CFDictionary
+//            hasAccess = AXIsProcessTrustedWithOptions(options)
+//            if (!hasAccess) {
+//                let prefpaneUrl = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
+//                NSWorkspace.shared.open(prefpaneUrl)
+//                return;
+//            }
+//        }
+        let virtualKey: CGKeyCode = CGKeyCode(0x09)
+        var flags: CGEventFlags = CGEventFlags()
+        flags.insert(CGEventFlags.maskCommand)
+        let eventKeyDownPress = CGEvent(keyboardEventSource: nil, virtualKey: virtualKey, keyDown: true);
+        eventKeyDownPress!.flags = flags
+        eventKeyDownPress!.post(tap: .cghidEventTap);
+        usleep(10000)
+        let eventKeyUpPress = CGEvent(keyboardEventSource: nil, virtualKey: virtualKey, keyDown: false);
+        eventKeyUpPress!.flags = flags
+        eventKeyUpPress!.post(tap: .cghidEventTap);
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
