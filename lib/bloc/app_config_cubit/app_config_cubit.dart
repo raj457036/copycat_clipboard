@@ -2,6 +2,7 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/app_config.dart';
 import 'package:clipboard/db/app_config/appconfig.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:injectable/injectable.dart';
+import 'package:launch_at_startup/launch_at_startup.dart';
 
 part 'app_config_cubit.freezed.dart';
 part 'app_config_state.dart';
@@ -118,7 +120,19 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   }
 
   Future<void> setLaunchAtStartup(bool value) async {
-    final newConfig = state.config.copyWith(launchAtStartup: value)
+    bool launchAtStartup_ = false;
+    try {
+      if (value) {
+        await launchAtStartup.enable();
+        launchAtStartup_ = true;
+      } else {
+        await launchAtStartup.disable();
+        launchAtStartup_ = false;
+      }
+    } catch (e) {
+      logger.e(e);
+    }
+    final newConfig = state.config.copyWith(launchAtStartup: launchAtStartup_)
       ..applyId(state.config);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);
