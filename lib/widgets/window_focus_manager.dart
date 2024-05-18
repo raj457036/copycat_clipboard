@@ -43,6 +43,20 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     }
   }
 
+  /// returns true when unfocused and false when focused
+  Future<bool> toggleWindow() async {
+    if (await windowManager.isFocused()) {
+      await windowManager.close();
+      await restore();
+      return true;
+    } else {
+      await record();
+      await windowManager.show();
+      await windowManager.focus();
+      return false;
+    }
+  }
+
   Future<void> record() async {
     lastWindowId = await widget.focusWindow.getActiveWindowId();
   }

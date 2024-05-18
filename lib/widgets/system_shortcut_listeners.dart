@@ -4,7 +4,6 @@ import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:window_manager/window_manager.dart';
 
 int? lastWindowId;
 
@@ -18,14 +17,7 @@ class SystemShortcutListener extends StatelessWidget {
 
   Future<void> toggleWindow(BuildContext context) async {
     final focusManager = WindowFocusManager.of(context);
-    if (await windowManager.isFocused()) {
-      await windowManager.minimize();
-      await focusManager?.restore();
-    } else {
-      await focusManager?.record();
-      await windowManager.show();
-      await windowManager.focus();
-    }
+    focusManager?.toggleWindow();
   }
 
   @override
