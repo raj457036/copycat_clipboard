@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Clipboard"
-#define MyAppVersion "0.1.4+17"
+#define MyAppVersion "0.1.5+20"
 #define MyAppPublisher "Raj S."
-#define MyAppExeName "clipboard.exe"
+#define MyAppExeName "Clipboard.exe"
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt

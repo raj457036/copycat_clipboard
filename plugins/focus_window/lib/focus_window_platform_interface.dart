@@ -23,15 +23,15 @@ abstract class FocusWindowPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
-
   Future<int?> getActiveWindowId() {
     throw UnimplementedError('getActiveWindowId() has not been implemented.');
   }
 
   Future<void> setActiveWindowId(int windowId) {
     throw UnimplementedError('setActiveWindowId() has not been implemented.');
+  }
+
+  Future<void> pasteContent() {
+    throw UnimplementedError("pasteContent() has not been implemented");
   }
 }

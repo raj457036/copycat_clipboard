@@ -24,11 +24,12 @@ class NetworkStatus {
   bool? _isConnected;
 
   Future<bool> get isConnected async {
-    if (_isConnected != null) {
-      return _isConnected!;
-    }
-    _isConnected = await InternetConnection().hasInternetAccess;
-    return _isConnected!;
+    return true;
+    // if (_isConnected != null) {
+    //   return _isConnected!;
+    // }
+    // _isConnected = await InternetConnection().hasInternetAccess;
+    // return _isConnected!;
   }
 
   @disposeMethod

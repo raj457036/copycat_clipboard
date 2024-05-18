@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:focus_window/windows_paste_simulator.dart';
 import 'package:universal_io/io.dart';
 import "package:win32/win32.dart" show GetForegroundWindow, SetForegroundWindow;
 
@@ -10,13 +11,6 @@ class MethodChannelFocusWindow extends FocusWindowPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('focus_window');
-
-  @override
-  Future<String?> getPlatformVersion() async {
-    final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
 
   @override
   Future<int?> getActiveWindowId() async {
@@ -43,5 +37,16 @@ class MethodChannelFocusWindow extends FocusWindowPlatform {
       );
     }
     return;
+  }
+
+  @override
+  Future<void> pasteContent() async {
+    if (Platform.isWindows) {
+      simulateWindowsPasteShortcut();
+    }
+    if (Platform.isMacOS) {
+      await methodChannel.invokeMethod<void>("pasteContent", {});
+    }
+    if (Platform.isLinux) {}
   }
 }

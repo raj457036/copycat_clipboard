@@ -12,7 +12,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   hotkey_manager_windows
   irondash_engine_context
   isar_flutter_libs
-  keypress_simulator_windows
   platform_device_id_windows
   screen_retriever
   share_plus
