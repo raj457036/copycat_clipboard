@@ -48,8 +48,8 @@ Future<void> main() async {
       size: initialWindowSize,
       minimumSize: minimumWindowSize,
       center: true,
-      titleBarStyle: TitleBarStyle.normal,
-      title: "Clipboard",
+      titleBarStyle: TitleBarStyle.hidden,
+      windowButtonVisibility: false,
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
       await windowManager.setClosable(false);
@@ -64,7 +64,6 @@ Future<void> main() async {
 
   Bloc.observer = CustomBlocObserver();
   await configureDependencies();
-
   runApp(const MainApp());
 }
 

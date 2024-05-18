@@ -128,9 +128,13 @@ class ClipCardOptionsHeader extends StatelessWidget {
                 )
               else
                 IconButton(
-                  icon: const Icon(Icons.copy),
-                  onPressed: () => copyToClipboard(context, item),
-                  tooltip: "Copy",
+                  icon: const Icon(Icons.paste),
+                  onPressed: () async {
+                    await copyToClipboard(context, item);
+                    await Future.delayed(Durations.short2);
+                    await unfocusAndPaste(context);
+                  },
+                  tooltip: "Paste",
                   style: IconButton.styleFrom(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -139,6 +143,18 @@ class ClipCardOptionsHeader extends StatelessWidget {
                     ),
                   ),
                 ),
+              // IconButton(
+              //   icon: const Icon(Icons.copy),
+              //   onPressed: () => copyToClipboard(context, item),
+              //   tooltip: "Copy",
+              //   style: IconButton.styleFrom(
+              //     shape: const RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.only(
+              //         topRight: Radius.circular(12),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           );
         },
