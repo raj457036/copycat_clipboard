@@ -7,6 +7,7 @@ import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
+import 'package:clipboard/widgets/clip_cards/primary_clip_action_button.dart';
 import 'package:flutter/material.dart';
 
 class ClipCardOptionsHeader extends StatelessWidget {
@@ -127,34 +128,7 @@ class ClipCardOptionsHeader extends StatelessWidget {
                   ),
                 )
               else
-                IconButton(
-                  icon: const Icon(Icons.paste),
-                  onPressed: () async {
-                    await copyToClipboard(context, item);
-                    await Future.delayed(Durations.short2);
-                    await unfocusAndPaste(context);
-                  },
-                  tooltip: "Paste",
-                  style: IconButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              // IconButton(
-              //   icon: const Icon(Icons.copy),
-              //   onPressed: () => copyToClipboard(context, item),
-              //   tooltip: "Copy",
-              //   style: IconButton.styleFrom(
-              //     shape: const RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.only(
-              //         topRight: Radius.circular(12),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+                PrimaryClipActionButton(item: item),
             ],
           );
         },

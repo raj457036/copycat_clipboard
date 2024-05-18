@@ -3,8 +3,8 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AutoPasteSwitch extends StatelessWidget {
-  const AutoPasteSwitch({super.key});
+class SmartPasteSwitch extends StatelessWidget {
+  const SmartPasteSwitch({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class AutoPasteSwitch extends StatelessWidget {
       selector: (state) {
         switch (state) {
           case AppConfigLoaded(:final config):
-            return config.autoPaste;
+            return config.smartPaste;
           default:
             return false;
         }
@@ -22,12 +22,12 @@ class AutoPasteSwitch extends StatelessWidget {
         return SwitchListTile(
           value: state,
           onChanged: (value) {
-            context.read<AppConfigCubit>().toggleAutoPaste(value);
+            context.read<AppConfigCubit>().toggleSmartPaste(value);
           },
-          title: const Text("Enable Auto Paste"),
-          subtitle:
-              const Text("Show paste button when possible to automatically"
-                  " paste the selected item."),
+          title: const Text("Smart Paste"),
+          subtitle: const Text(
+            "Enable to paste clips directly to the last focused window.",
+          ),
         );
       },
     );

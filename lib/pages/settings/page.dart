@@ -1,10 +1,10 @@
 import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/pages/settings/widgets/auto_paste.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/pause_till.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
+import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
 import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
@@ -38,7 +38,7 @@ class SettingsPage extends StatelessWidget {
               title: Text("Theme"),
               trailing: ThemeDropdown(),
             ),
-            AutoPasteSwitch(),
+            SmartPasteSwitch(),
             SetupToggleHotKey(),
             DontAutoCopyOver(),
             PauseTill(),

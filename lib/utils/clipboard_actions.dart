@@ -18,6 +18,7 @@ Future<void> copyToClipboard(
   BuildContext context,
   ClipboardItem item, {
   bool saveFile = false,
+  bool noAck = false,
 }) async {
   try {
     final result =
@@ -25,6 +26,8 @@ Future<void> copyToClipboard(
               item,
               saveFile: saveFile,
             );
+
+    if (noAck) return;
     if (result) {
       showTextSnackbar("Copied");
     } else {

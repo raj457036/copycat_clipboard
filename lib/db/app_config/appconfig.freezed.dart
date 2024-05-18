@@ -38,8 +38,15 @@ mixin _$AppConfig {
       throw _privateConstructorUsedError; // System show/hide toggle hotkey
   String? get toggleHotkey => throw _privateConstructorUsedError;
 
-  /// show paste button as default
-  bool get autoPaste => throw _privateConstructorUsedError;
+  /// If enabled, the primary action on clips will be smartly selected.
+  /// The primary action will be paste, which will directly paste the clip
+  /// to the last focused cursor in the last window, and the clipboard will minimize.
+  bool get smartPaste =>
+      throw _privateConstructorUsedError; //? Local App States
+  /// last focus window id
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get lastFocusedWindowId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -61,7 +68,10 @@ abstract class $AppConfigCopyWith<$Res> {
       DateTime? pausedTill,
       int autoSyncInterval,
       String? toggleHotkey,
-      bool autoPaste});
+      bool smartPaste,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      int? lastFocusedWindowId});
 }
 
 /// @nodoc
@@ -85,7 +95,8 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? pausedTill = freezed,
     Object? autoSyncInterval = null,
     Object? toggleHotkey = freezed,
-    Object? autoPaste = null,
+    Object? smartPaste = null,
+    Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -120,10 +131,14 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.toggleHotkey
           : toggleHotkey // ignore: cast_nullable_to_non_nullable
               as String?,
-      autoPaste: null == autoPaste
-          ? _value.autoPaste
-          : autoPaste // ignore: cast_nullable_to_non_nullable
+      smartPaste: null == smartPaste
+          ? _value.smartPaste
+          : smartPaste // ignore: cast_nullable_to_non_nullable
               as bool,
+      lastFocusedWindowId: freezed == lastFocusedWindowId
+          ? _value.lastFocusedWindowId
+          : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -145,7 +160,10 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       DateTime? pausedTill,
       int autoSyncInterval,
       String? toggleHotkey,
-      bool autoPaste});
+      bool smartPaste,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      int? lastFocusedWindowId});
 }
 
 /// @nodoc
@@ -167,7 +185,8 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? pausedTill = freezed,
     Object? autoSyncInterval = null,
     Object? toggleHotkey = freezed,
-    Object? autoPaste = null,
+    Object? smartPaste = null,
+    Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
@@ -202,10 +221,14 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.toggleHotkey
           : toggleHotkey // ignore: cast_nullable_to_non_nullable
               as String?,
-      autoPaste: null == autoPaste
-          ? _value.autoPaste
-          : autoPaste // ignore: cast_nullable_to_non_nullable
+      smartPaste: null == smartPaste
+          ? _value.smartPaste
+          : smartPaste // ignore: cast_nullable_to_non_nullable
               as bool,
+      lastFocusedWindowId: freezed == lastFocusedWindowId
+          ? _value.lastFocusedWindowId
+          : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -222,7 +245,10 @@ class _$AppConfigImpl extends _AppConfig {
       this.pausedTill,
       this.autoSyncInterval = $90S,
       this.toggleHotkey,
-      this.autoPaste = false})
+      this.smartPaste = false,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.lastFocusedWindowId})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -260,14 +286,22 @@ class _$AppConfigImpl extends _AppConfig {
   @override
   final String? toggleHotkey;
 
-  /// show paste button as default
+  /// If enabled, the primary action on clips will be smartly selected.
+  /// The primary action will be paste, which will directly paste the clip
+  /// to the last focused cursor in the last window, and the clipboard will minimize.
   @override
   @JsonKey()
-  final bool autoPaste;
+  final bool smartPaste;
+//? Local App States
+  /// last focus window id
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final int? lastFocusedWindowId;
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, autoPaste: $autoPaste)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, lastFocusedWindowId: $lastFocusedWindowId)';
   }
 
   @override
@@ -291,8 +325,10 @@ class _$AppConfigImpl extends _AppConfig {
                 other.autoSyncInterval == autoSyncInterval) &&
             (identical(other.toggleHotkey, toggleHotkey) ||
                 other.toggleHotkey == toggleHotkey) &&
-            (identical(other.autoPaste, autoPaste) ||
-                other.autoPaste == autoPaste));
+            (identical(other.smartPaste, smartPaste) ||
+                other.smartPaste == smartPaste) &&
+            (identical(other.lastFocusedWindowId, lastFocusedWindowId) ||
+                other.lastFocusedWindowId == lastFocusedWindowId));
   }
 
   @JsonKey(ignore: true)
@@ -307,7 +343,8 @@ class _$AppConfigImpl extends _AppConfig {
       pausedTill,
       autoSyncInterval,
       toggleHotkey,
-      autoPaste);
+      smartPaste,
+      lastFocusedWindowId);
 
   @JsonKey(ignore: true)
   @override
@@ -333,7 +370,10 @@ abstract class _AppConfig extends AppConfig {
       final DateTime? pausedTill,
       final int autoSyncInterval,
       final String? toggleHotkey,
-      final bool autoPaste}) = _$AppConfigImpl;
+      final bool smartPaste,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final int? lastFocusedWindowId}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -364,8 +404,15 @@ abstract class _AppConfig extends AppConfig {
   String? get toggleHotkey;
   @override
 
-  /// show paste button as default
-  bool get autoPaste;
+  /// If enabled, the primary action on clips will be smartly selected.
+  /// The primary action will be paste, which will directly paste the clip
+  /// to the last focused cursor in the last window, and the clipboard will minimize.
+  bool get smartPaste;
+  @override //? Local App States
+  /// last focus window id
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get lastFocusedWindowId;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>
