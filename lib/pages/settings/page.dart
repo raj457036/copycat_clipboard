@@ -9,7 +9,9 @@ import 'package:clipboard/pages/settings/widgets/startup_launch_switch.dart';
 import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/logout_button.dart';
+import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -20,8 +22,9 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
-        actions: const [
-          LogoutButton(),
+        actions: [
+          if (isDesktop) const MinimizeWindowButton(),
+          const LogoutButton(),
           width12,
         ],
       ),
