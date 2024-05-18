@@ -10,6 +10,7 @@ import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/compact_mode_toggle.dart';
+import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -118,6 +119,7 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           actions: [
+            if (isDesktop) const MinimizeWindowButton(),
             if (isDesktop) const PinToTopToggleButton(),
             if (isDesktop) const CompactModeToggleButton(),
             width12,
