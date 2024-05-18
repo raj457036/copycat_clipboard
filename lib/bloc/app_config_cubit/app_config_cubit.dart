@@ -17,7 +17,12 @@ part 'app_config_state.dart';
 class AppConfigCubit extends Cubit<AppConfigState> {
   final AppConfigRepository repo;
   AppConfigCubit(this.repo)
-      : super(AppConfigState.loaded(isLoading: true, config: AppConfig()));
+      : super(
+          AppConfigState.loaded(
+            isLoading: true,
+            config: AppConfig(),
+          ),
+        );
 
   @override
   void emit(AppConfigState state) {
@@ -107,6 +112,13 @@ class AppConfigCubit extends Cubit<AppConfigState> {
 
   Future<void> changeFileSync(bool value) async {
     final newConfig = state.config.copyWith(enableFileSync: value)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    await repo.update(newConfig);
+  }
+
+  Future<void> setLaunchAtStartup(bool value) async {
+    final newConfig = state.config.copyWith(launchAtStartup: value)
       ..applyId(state.config);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);

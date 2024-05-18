@@ -41,7 +41,10 @@ mixin _$AppConfig {
   /// If enabled, the primary action on clips will be smartly selected.
   /// The primary action will be paste, which will directly paste the clip
   /// to the last focused cursor in the last window, and the clipboard will minimize.
-  bool get smartPaste =>
+  bool get smartPaste => throw _privateConstructorUsedError;
+
+  /// If enabled, the application will automatically start at startup.
+  bool get launchAtStartup =>
       throw _privateConstructorUsedError; //? Local App States
   /// last focus window id
   @ignore
@@ -69,6 +72,7 @@ abstract class $AppConfigCopyWith<$Res> {
       int autoSyncInterval,
       String? toggleHotkey,
       bool smartPaste,
+      bool launchAtStartup,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       int? lastFocusedWindowId});
@@ -96,6 +100,7 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? autoSyncInterval = null,
     Object? toggleHotkey = freezed,
     Object? smartPaste = null,
+    Object? launchAtStartup = null,
     Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -135,6 +140,10 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.smartPaste
           : smartPaste // ignore: cast_nullable_to_non_nullable
               as bool,
+      launchAtStartup: null == launchAtStartup
+          ? _value.launchAtStartup
+          : launchAtStartup // ignore: cast_nullable_to_non_nullable
+              as bool,
       lastFocusedWindowId: freezed == lastFocusedWindowId
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
@@ -161,6 +170,7 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       int autoSyncInterval,
       String? toggleHotkey,
       bool smartPaste,
+      bool launchAtStartup,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       int? lastFocusedWindowId});
@@ -186,6 +196,7 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? autoSyncInterval = null,
     Object? toggleHotkey = freezed,
     Object? smartPaste = null,
+    Object? launchAtStartup = null,
     Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_$AppConfigImpl(
@@ -225,6 +236,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.smartPaste
           : smartPaste // ignore: cast_nullable_to_non_nullable
               as bool,
+      launchAtStartup: null == launchAtStartup
+          ? _value.launchAtStartup
+          : launchAtStartup // ignore: cast_nullable_to_non_nullable
+              as bool,
       lastFocusedWindowId: freezed == lastFocusedWindowId
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
@@ -246,6 +261,7 @@ class _$AppConfigImpl extends _AppConfig {
       this.autoSyncInterval = $90S,
       this.toggleHotkey,
       this.smartPaste = false,
+      this.launchAtStartup = false,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.lastFocusedWindowId})
@@ -292,6 +308,11 @@ class _$AppConfigImpl extends _AppConfig {
   @override
   @JsonKey()
   final bool smartPaste;
+
+  /// If enabled, the application will automatically start at startup.
+  @override
+  @JsonKey()
+  final bool launchAtStartup;
 //? Local App States
   /// last focus window id
   @override
@@ -301,7 +322,7 @@ class _$AppConfigImpl extends _AppConfig {
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, lastFocusedWindowId: $lastFocusedWindowId)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, lastFocusedWindowId: $lastFocusedWindowId)';
   }
 
   @override
@@ -327,6 +348,8 @@ class _$AppConfigImpl extends _AppConfig {
                 other.toggleHotkey == toggleHotkey) &&
             (identical(other.smartPaste, smartPaste) ||
                 other.smartPaste == smartPaste) &&
+            (identical(other.launchAtStartup, launchAtStartup) ||
+                other.launchAtStartup == launchAtStartup) &&
             (identical(other.lastFocusedWindowId, lastFocusedWindowId) ||
                 other.lastFocusedWindowId == lastFocusedWindowId));
   }
@@ -344,6 +367,7 @@ class _$AppConfigImpl extends _AppConfig {
       autoSyncInterval,
       toggleHotkey,
       smartPaste,
+      launchAtStartup,
       lastFocusedWindowId);
 
   @JsonKey(ignore: true)
@@ -371,6 +395,7 @@ abstract class _AppConfig extends AppConfig {
       final int autoSyncInterval,
       final String? toggleHotkey,
       final bool smartPaste,
+      final bool launchAtStartup,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       final int? lastFocusedWindowId}) = _$AppConfigImpl;
@@ -408,6 +433,10 @@ abstract class _AppConfig extends AppConfig {
   /// The primary action will be paste, which will directly paste the clip
   /// to the last focused cursor in the last window, and the clipboard will minimize.
   bool get smartPaste;
+  @override
+
+  /// If enabled, the application will automatically start at startup.
+  bool get launchAtStartup;
   @override //? Local App States
   /// last focus window id
   @ignore

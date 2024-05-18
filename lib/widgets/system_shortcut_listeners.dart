@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 
-int? lastWindowId;
-
 class SystemShortcutListener extends StatelessWidget {
   final Widget child;
 
