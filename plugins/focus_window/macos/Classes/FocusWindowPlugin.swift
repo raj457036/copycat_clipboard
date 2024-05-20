@@ -24,18 +24,6 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
     }
 
     public func pasteContent() {
-        
-//        var hasAccess = AXIsProcessTrusted()
-//        
-//        if (!hasAccess) {
-//            let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as CFDictionary
-//            hasAccess = AXIsProcessTrustedWithOptions(options)
-//            if (!hasAccess) {
-//                let prefpaneUrl = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
-//                NSWorkspace.shared.open(prefpaneUrl)
-//                return;
-//            }
-//        }
         let virtualKey: CGKeyCode = CGKeyCode(0x09)
         var flags: CGEventFlags = CGEventFlags()
         flags.insert(CGEventFlags.maskCommand)
