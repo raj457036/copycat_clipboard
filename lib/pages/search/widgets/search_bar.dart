@@ -37,7 +37,6 @@ class _SearchBarStInputate extends State<SearchInputBar> {
   Widget build(BuildContext context) {
     return SearchBar(
       focusNode: focusNode,
-      elevation: 1.0.msp,
       padding: const EdgeInsets.symmetric(horizontal: padding16).msp,
       leading: const Icon(Icons.search_rounded),
       hintText: "Search in clipboard",
