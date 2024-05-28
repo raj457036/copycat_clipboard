@@ -92,7 +92,7 @@ BEGIN
             VALUE "CompanyName", "com.floatint" "\0"
             VALUE "FileDescription", "clipboard" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "clipboard" "\0"
+            VALUE "InternalName", "com.entilitystudio.CopyCat" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.floatint. All rights reserved." "\0"
             VALUE "OriginalFilename", "clipboard.exe" "\0"
             VALUE "ProductName", "clipboard" "\0"
