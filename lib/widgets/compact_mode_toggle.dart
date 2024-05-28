@@ -23,7 +23,7 @@ class CompactModeToggleButton extends StatelessWidget {
             context.read<WindowActionCubit>().toggleCompact();
           },
           icon: Icon(
-            Icons.drag_indicator,
+            Icons.view_compact,
             color: compact ? colors.primary : null,
           ),
           tooltip: "Compact Mode",

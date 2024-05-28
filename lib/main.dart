@@ -51,11 +51,12 @@ Future<void> main() async {
       appPath: Platform.resolvedExecutable,
     );
 
-    WindowOptions windowOptions = const WindowOptions(
+    WindowOptions windowOptions = WindowOptions(
       size: initialWindowSize,
       minimumSize: minimumWindowSize,
       center: true,
-      titleBarStyle: TitleBarStyle.hidden,
+      titleBarStyle:
+          Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
       windowButtonVisibility: false,
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
