@@ -121,7 +121,6 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Stack(
             clipBehavior: Clip.none,
-            alignment: Alignment.centerLeft,
             children: [
               Positioned(
                 top: -13,
