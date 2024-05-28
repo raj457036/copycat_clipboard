@@ -79,7 +79,7 @@ dev_dependencies:
   isar_generator: 3.1.0+1
   freezed: 2.4.7
   json_serializable: ^6.7.1
-  flutter_launcher_icons: "^0.13.1"  
+  flutter_launcher_icons: "^0.13.1" 
 
 dependency_overrides:
   device_info_plus: ^9.0.2
