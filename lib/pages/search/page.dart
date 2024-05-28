@@ -27,16 +27,18 @@ class SearchPage extends StatelessWidget {
     return SearchFoucsKeyboardShortcut(
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: kToolbarHeight + (isMobile ? 15 : 30),
+          toolbarHeight: kToolbarHeight + (isMobile ? 45 : 30),
           centerTitle: true,
-          title: const Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Search"),
-              Spacer(),
-              SearchInputBar(),
-            ],
-          ),
+          title: isMobile
+              ? const SearchInputBar()
+              : const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Search"),
+                    Spacer(),
+                    SearchInputBar(),
+                  ],
+                ),
         ),
         body: LeftNavRail(
           floatingActionButton: floatingActionButton,
