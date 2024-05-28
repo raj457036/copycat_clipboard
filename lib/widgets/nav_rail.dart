@@ -1,3 +1,4 @@
+import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
@@ -17,46 +18,50 @@ class LeftNavRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final metaKey = Platform.isMacOS ? "⌘" : "control";
-    return Row(
-      children: [
-        LayoutBuilder(builder: (context, constraint) {
-          final navRail = NavigationRail(
-            destinations: [
-              const NavigationRailDestination(
-                icon: Icon(Icons.paste_rounded),
-                label: Text("Clipboard"),
-              ),
-              NavigationRailDestination(
-                icon: Tooltip(
-                  message: "Shortcut: $metaKey + F",
-                  child: const Icon(Icons.content_paste_search_rounded),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (Breakpoints.isMobile(constraints.maxWidth)) {
+          return child;
+        }
+        return Row(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                height: constraints.maxHeight,
+                child: NavigationRail(
+                  destinations: [
+                    const NavigationRailDestination(
+                      icon: Icon(Icons.paste_rounded),
+                      label: Text("Clipboard"),
+                    ),
+                    NavigationRailDestination(
+                      icon: Tooltip(
+                        message: "Shortcut: $metaKey + F",
+                        child: const Icon(Icons.content_paste_search_rounded),
+                      ),
+                      label: const Text("Search"),
+                    ),
+                    const NavigationRailDestination(
+                      icon: Icon(Icons.collections_bookmark),
+                      label: Text("Collection"),
+                    ),
+                    const NavigationRailDestination(
+                      icon: Icon(Icons.settings),
+                      label: Text("Settings"),
+                    ),
+                  ],
+                  leading: floatingActionButton,
+                  labelType: NavigationRailLabelType.all,
+                  groupAlignment: 0,
+                  selectedIndex: navbarActiveIndex,
+                  onDestinationSelected: (idx) => onNavItemTapped(context, idx),
                 ),
-                label: const Text("Search"),
               ),
-              const NavigationRailDestination(
-                icon: Icon(Icons.collections_bookmark),
-                label: Text("Collection"),
-              ),
-              const NavigationRailDestination(
-                icon: Icon(Icons.settings),
-                label: Text("Settings"),
-              ),
-            ],
-            leading: floatingActionButton,
-            labelType: NavigationRailLabelType.all,
-            groupAlignment: 0,
-            selectedIndex: navbarActiveIndex,
-            onDestinationSelected: (idx) => onNavItemTapped(context, idx),
-          );
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraint.maxHeight),
-              child: IntrinsicHeight(child: navRail),
             ),
-          );
-        }),
-        Expanded(child: child),
-      ],
+            Expanded(child: child),
+          ],
+        );
+      },
     );
   }
 }

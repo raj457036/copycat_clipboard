@@ -3,6 +3,7 @@ import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.d
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/routes/utils.dart';
@@ -118,7 +119,29 @@ class HomePage extends StatelessWidget {
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Clipboard"),
+          title: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.centerLeft,
+            children: [
+              Positioned(
+                top: -13,
+                child: RotatedBox(
+                  quarterTurns: 2,
+                  child: Image.asset(
+                    AssetConstants.catImage,
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.topCenter,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 53),
+                child: Text("CopyCat"),
+              ),
+            ],
+          ),
           titleTextStyle: textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
