@@ -139,7 +139,7 @@ class ClipCard extends StatelessWidget {
                         ),
                       ),
                     Expanded(
-                      child: Card.filled(
+                      child: Card(
                         shape: const RoundedRectangleBorder(
                           borderRadius: radius8,
                         ),

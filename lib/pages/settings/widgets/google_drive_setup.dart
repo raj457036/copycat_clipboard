@@ -12,6 +12,7 @@ class GoogleDriveSetup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+    final colors = context.colors;
     return BlocBuilder<DriveSetupCubit, DriveSetupState>(
       builder: (context, state) {
         String text = "Connected";
@@ -38,7 +39,7 @@ class GoogleDriveSetup extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: padding16),
               child: InfoCard(
                 title: hasError ? null : "ⓘ Tips",
-                color: hasError ? Colors.deepOrange : Colors.green,
+                color: hasError ? Colors.deepOrange : colors.primary,
                 description:
                     "${hasError ? "Google Drive not connected, File and media syncing is disabled.\n\n" : ""}"
                     "Your files and media are synced securely across "
