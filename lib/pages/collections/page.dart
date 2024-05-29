@@ -8,6 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/no_collection.dart';
+import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,8 +21,13 @@ class CollectionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final floatingActionButton =
-        getFloatingActionButton(context, 2, isMobile: isMobile);
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = Breakpoints.isMobile(width);
+    final floatingActionButton = getFloatingActionButton(
+      context,
+      2,
+      isMobile: isMobile,
+    );
     return BlocListener<SyncManagerCubit, SyncManagerState>(
       listenWhen: ((previous, current) {
         return current is ClipCollectionSyncedSyncState;
@@ -33,7 +39,9 @@ class CollectionsPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Collections"),
           actions: [
-            if (isDesktop) const MinimizeWindowButton(),
+            ActivePlanAction(compact: isMobile),
+            width12,
+            if (isDesktopPlatform) const MinimizeWindowButton(),
             width12,
           ],
         ),

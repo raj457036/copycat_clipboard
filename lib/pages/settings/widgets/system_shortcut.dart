@@ -12,7 +12,7 @@ class SetupToggleHotKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile) return const SizedBox.shrink();
+    if (isMobilePlatform) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, HotKey?>(

@@ -15,6 +15,7 @@ import 'package:clipboard/widgets/compact_mode_toggle.dart';
 import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
+import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +31,7 @@ class HomePage extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final textTheme = context.textTheme;
     final isMobile = Breakpoints.isMobile(width);
+
     final floatingActionButton =
         getFloatingActionButton(context, 0, isMobile: isMobile);
     return MultiBlocListener(
@@ -145,9 +147,11 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           actions: [
-            if (isDesktop) const MinimizeWindowButton(),
-            if (isDesktop) const PinToTopToggleButton(),
-            if (isDesktop) const CompactModeToggleButton(),
+            ActivePlanAction(compact: isMobile),
+            width12,
+            if (isDesktopPlatform && !isMobile) const MinimizeWindowButton(),
+            if (isDesktopPlatform && !isMobile) const PinToTopToggleButton(),
+            if (isDesktopPlatform && !isMobile) const CompactModeToggleButton(),
             width12,
           ],
         ),

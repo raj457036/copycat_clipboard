@@ -17,7 +17,7 @@ class WindowFocusManager extends StatefulWidget {
   });
 
   static Widget fromPlatform({required Widget child}) {
-    if (isMobile) {
+    if (isMobilePlatform) {
       return child;
     }
     return WindowFocusManager(

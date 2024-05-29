@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/drive_credential.dart';
 import 'package:clipboard/model/drive_access_token.dart';
+import 'package:clipboard/utils/network_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:injectable/injectable.dart';
@@ -11,9 +14,16 @@ part 'drive_setup_state.dart';
 
 @lazySingleton
 class DriveSetupCubit extends Cubit<DriveSetupState> {
+  StreamSubscription? networkSub;
   final DriveCredentialRepository repo;
 
-  DriveSetupCubit(this.repo) : super(const DriveSetupState.unknown());
+  DriveSetupCubit(this.repo) : super(const DriveSetupState.unknown()) {
+    networkSub = networkObserver.listen((connected) {
+      if (connected) {
+        fetch();
+      }
+    });
+  }
 
   Future<String?> get accessToken async {
     var token = state.whenOrNull(setupDone: (token) => token);
@@ -93,5 +103,11 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
         failure: Failure(code: code, message: "Failed to setup drive."),
       ),
     );
+  }
+
+  @override
+  Future<void> close() async {
+    networkSub?.cancel();
+    await super.close();
   }
 }

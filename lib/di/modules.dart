@@ -1,6 +1,7 @@
 import "package:clipboard/db/app_config/appconfig.dart";
 import "package:clipboard/db/clip_collection/clipcollection.dart";
 import "package:clipboard/db/clipboard_item/clipboard_item.dart";
+import "package:clipboard/db/subscription/subscription.dart";
 import "package:clipboard/db/sync_status/syncstatus.dart";
 import "package:flutter/foundation.dart";
 import "package:focus_window/focus_window.dart";
@@ -22,6 +23,7 @@ abstract class RegisterModule {
         AppConfigSchema,
         SyncStatusSchema,
         ClipCollectionSchema,
+        SubscriptionSchema,
       ],
       directory: dir.path,
       relaxedDurability: true,

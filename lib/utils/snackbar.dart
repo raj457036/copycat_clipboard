@@ -60,6 +60,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   String text, {
   bool isLoading = false,
   bool success = false,
+  bool failure = false,
   bool closePrevious = false,
   int? duration,
   SnackBarAction? action,
@@ -67,6 +68,10 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   final context = scaffoldMessengerKey.currentContext!;
   final mq = MediaQuery.of(context);
   final isMobile = Breakpoints.isMobile(mq.size.width);
+
+  Color? bg;
+  if (success) bg = Colors.green;
+  if (failure) bg = Colors.red;
 
   return showSnackbar(
     SnackBar(
@@ -82,6 +87,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
               ],
             )
           : Text(text),
+      backgroundColor: bg,
       showCloseIcon: !isMobile && !isLoading,
       behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
       width: isMobile ? null : 480,

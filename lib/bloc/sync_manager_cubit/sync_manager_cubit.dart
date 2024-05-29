@@ -8,7 +8,6 @@ import 'package:clipboard/data/repositories/sync_clipboard.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/db/sync_status/syncstatus.dart';
-import 'package:clipboard/utils/network_status.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,6 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final AuthCubit auth;
   final SyncRepository syncRepo;
   final ClipCollectionRepository clipCollectionRepository;
-  final NetworkStatus network;
   final int _syncId = 1;
   final String deviceId;
 
@@ -43,7 +41,6 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     this.db,
     this.auth,
     this.syncRepo,
-    this.network,
     this.clipCollectionRepository,
     @Named("device_id") this.deviceId,
   ) : super(const SyncManagerState.unknown());
@@ -57,6 +54,19 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
     autoSyncTimer =
         Timer.periodic(duration, (timer) => syncChanges(silent: true));
+  }
+
+  DateTime getLastSyncedTime(DateTime? current) {
+    final subscription = auth.subscription!;
+
+    if (current != null) {
+      final diff = now().difference(current);
+      if (diff.inHours < subscription.syncHours) {
+        return current;
+      }
+    }
+
+    return now().subtract(Duration(hours: subscription.syncHours));
   }
 
   Future<SyncStatus?> getSyncInfo() async {
@@ -111,7 +121,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getDeletedClipCollections(
         userId: auth.userId!,
-        lastSynced: lastSync.lastSync,
+        lastSynced: getLastSyncedTime(lastSync.lastSync),
         offset: offset,
         excludeDeviceId: deviceId,
       );
@@ -145,7 +155,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   }
 
   Future<bool> syncClipCollections(
-    SyncStatus? lastSync, {
+    SyncStatus? syncInfo, {
     bool silent = false,
   }) async {
     // Fetch changes from server
@@ -160,9 +170,9 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getLatestClipCollections(
         userId: auth.userId!,
-        lastSynced: lastSync?.lastSync,
+        lastSynced: syncInfo?.lastSync,
         offset: offset,
-        excludeDeviceId: lastSync?.lastSync != null ? deviceId : null,
+        excludeDeviceId: syncInfo?.lastSync != null ? deviceId : null,
       );
 
       await result.fold((l) async => emit(SyncManagerState.failed(l)),
@@ -204,7 +214,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       if (result.isLeft()) break;
     }
 
-    final deleted = await syncDeletedClipCollections(lastSync);
+    final deleted = await syncDeletedClipCollections(syncInfo);
 
     if (added > 0 || updated > 0 || deleted > 0) {
       emit(
@@ -220,8 +230,8 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     return false;
   }
 
-  Future<int> syncDeletedClipboardItems(SyncStatus? lastSync) async {
-    if (lastSync == null) return 0;
+  Future<int> syncDeletedClipboardItems(SyncStatus? syncInfo) async {
+    if (syncInfo == null) return 0;
     // Fetch changes from server
     bool hasMore = true;
     int offset = 0;
@@ -232,7 +242,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getDeletedClipboardItems(
         userId: auth.userId!,
-        lastSynced: lastSync.lastSync,
+        lastSynced: getLastSyncedTime(syncInfo.lastSync),
         offset: offset,
         excludeDeviceId: deviceId,
       );
@@ -353,20 +363,17 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     bool repairRelations = true,
     bool silent = false,
   }) async {
+    if (auth.state is! AuthenticatedAuthState) return;
+
     if (syncing) return;
     syncing = true;
     try {
       emit(const SyncManagerState.checking());
-      final lastSync = await getSyncInfo();
-
-      if (!await network.isConnected) {
-        emit(const SyncManagerState.failed(noInternetConnectionFailure));
-        return;
-      }
+      final syncInfo = await getSyncInfo();
 
       final results = await Future.wait([
-        if (clipboard) syncClipboardItems(lastSync, silent: silent),
-        if (collections) syncClipCollections(lastSync, silent: silent),
+        if (clipboard) syncClipboardItems(syncInfo, silent: silent),
+        if (collections) syncClipCollections(syncInfo, silent: silent),
       ]);
 
       if (repairRelations) {

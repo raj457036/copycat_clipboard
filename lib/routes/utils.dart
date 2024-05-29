@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/create_collection_fab.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,22 +50,10 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
     );
   }
   if (navbarActiveIndex == 2) {
-    return Column(
+    return const Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        FloatingActionButton(
-          heroTag: "collection-fab",
-          onPressed: () {
-            context.goNamed(
-              RouteConstants.createEditCollection,
-              pathParameters: {
-                "id": "new",
-              },
-            );
-          },
-          tooltip: "Create a collection",
-          child: const Icon(Icons.library_add_rounded),
-        )
+        CreateCollectionFloatingActionButton(),
       ],
     );
   }

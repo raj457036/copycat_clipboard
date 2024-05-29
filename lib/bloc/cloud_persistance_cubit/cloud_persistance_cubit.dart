@@ -11,7 +11,6 @@ import 'package:clipboard/data/services/google_services.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/blur_hash.dart';
-import 'package:clipboard/utils/network_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import "package:universal_io/io.dart";
@@ -21,7 +20,6 @@ part 'cloud_persistance_state.dart';
 
 @lazySingleton
 class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
-  final NetworkStatus network;
   final AuthCubit auth;
   final DriveSetupCubit driveCubit;
   final ClipboardRepository repo;
@@ -30,7 +28,6 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   final String deviceId;
 
   CloudPersistanceCubit(
-    this.network,
     this.auth,
     this.driveCubit,
     this.appConfig,
@@ -55,15 +52,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       }
       return;
     }
-    if (!await network.isConnected) {
-      emit(
-        CloudPersistanceState.error(
-          noInternetConnectionFailure,
-          item.syncDone(noInternetConnectionFailure),
-        ),
-      );
-      return;
-    }
+
     final userId = auth.userId;
     if (userId == null) return;
     item = item.assignUserId(userId);
@@ -222,16 +211,6 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       emit(
         CloudPersistanceState.deletedItem(
           item.copyWith(lastSynced: null)..applyId(item),
-        ),
-      );
-      return;
-    }
-
-    if (!await network.isConnected) {
-      emit(
-        CloudPersistanceState.error(
-          noInternetConnectionFailure,
-          item.syncDone(noInternetConnectionFailure),
         ),
       );
       return;

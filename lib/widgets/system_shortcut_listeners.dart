@@ -20,7 +20,7 @@ class SystemShortcutListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile) return child;
+    if (isMobilePlatform) return child;
     return BlocListener<AppConfigCubit, AppConfigState>(
       listenWhen: (previous, current) =>
           previous.config.toggleHotkey != current.config.toggleHotkey,

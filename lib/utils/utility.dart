@@ -115,10 +115,10 @@ Future<void> clearPersistedRootDir() async {
   }
 }
 
-bool get isDesktop =>
+bool get isDesktopPlatform =>
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 
-bool get isMobile => Platform.isIOS || Platform.isAndroid;
+bool get isMobilePlatform => Platform.isIOS || Platform.isAndroid;
 
 Color? hexToColor(ClipboardItem item) {
   if (item.textCategory != TextCategory.color) return null;

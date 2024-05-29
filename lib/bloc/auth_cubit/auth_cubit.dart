@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/data/repositories/subscription.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
@@ -11,14 +16,20 @@ part 'auth_state.dart';
 @singleton
 class AuthCubit extends Cubit<AuthState> {
   SupabaseClient sbClient;
+  SubscriptionRepository subRepo;
 
   AuthCubit(
     this.sbClient,
+    this.subRepo,
   ) : super(const AuthState.unknown());
 
-  String? get userId => state.whenOrNull(authenticated: (_, user) => user.id);
+  String? get userId =>
+      state.whenOrNull(authenticated: (_, user, __) => user.id);
 
   Session? get session => sbClient.auth.currentSession;
+
+  Subscription? get subscription =>
+      state.whenOrNull(authenticated: (_, __, sub) => sub);
 
   checkForAuthentication() {
     if (session != null) {
@@ -31,10 +42,26 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void authenticated(Session session, User user) {
+  Future<void> fetchSubscription() async {
+    if (session != null) {
+      await authenticated(session!, session!.user);
+    }
+  }
+
+  Future<void> authenticated(Session session, User user) async {
+    final subResult = await subRepo.get();
+
+    final sub = subResult.fold(
+      (l) {
+        logger.e(l);
+      },
+      (r) => r,
+    );
+
     emit(AuthState.authenticated(
       session: session,
       user: user,
+      subscription: sub,
     ));
   }
 
