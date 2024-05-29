@@ -18,6 +18,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
+import 'package:clipboard/widgets/network_observer.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
@@ -38,7 +39,7 @@ import 'common/bloc_config.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (isDesktop) {
+  if (isDesktopPlatform) {
     await windowManager.ensureInitialized();
 
     if (kDebugMode) {
@@ -103,7 +104,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<DriveSetupCubit>(
           create: (context) => sl(),
         ),
-        if (isDesktop)
+        if (isDesktopPlatform)
           BlocProvider<WindowActionCubit>(
             create: (context) => sl()..fetch(),
           ),
@@ -113,57 +114,59 @@ class MainApp extends StatelessWidget {
           child: ShareListener.fromPlatform(
             child: SystemShortcutListener(
               child: AppLinkListener(
-                child: DevicePreview(
-                  enabled: false,
-                  builder: (context) =>
-                      BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
-                    selector: (state) {
-                      return state.config.themeMode;
-                    },
-                    builder: (context, state) {
-                      return MaterialApp.router(
-                        scaffoldMessengerKey: scaffoldMessengerKey,
-                        routeInformationParser: router.routeInformationParser,
-                        routeInformationProvider:
-                            router.routeInformationProvider,
-                        routerDelegate: router.routerDelegate,
-                        backButtonDispatcher: router.backButtonDispatcher,
-                        themeMode: state,
-                        theme: ThemeData(
-                          useMaterial3: true,
-                          textTheme: textTheme.apply(
-                            bodyColor: lightColorScheme.onSurface,
-                            displayColor: lightColorScheme.onSurface,
-                          ),
-                          colorScheme: lightColorScheme,
-                          brightness: Brightness.light,
-                          inputDecorationTheme: const InputDecorationTheme(
-                            border: OutlineInputBorder(
-                              borderRadius: radius12,
+                child: NetworkObserver(
+                  child: DevicePreview(
+                    enabled: kDebugMode,
+                    builder: (context) =>
+                        BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
+                      selector: (state) {
+                        return state.config.themeMode;
+                      },
+                      builder: (context, state) {
+                        return MaterialApp.router(
+                          scaffoldMessengerKey: scaffoldMessengerKey,
+                          routeInformationParser: router.routeInformationParser,
+                          routeInformationProvider:
+                              router.routeInformationProvider,
+                          routerDelegate: router.routerDelegate,
+                          backButtonDispatcher: router.backButtonDispatcher,
+                          themeMode: state,
+                          theme: ThemeData(
+                            useMaterial3: true,
+                            textTheme: textTheme.apply(
+                              bodyColor: lightColorScheme.onSurface,
+                              displayColor: lightColorScheme.onSurface,
+                            ),
+                            colorScheme: lightColorScheme,
+                            brightness: Brightness.light,
+                            inputDecorationTheme: const InputDecorationTheme(
+                              border: OutlineInputBorder(
+                                borderRadius: radius12,
+                              ),
                             ),
                           ),
-                        ),
-                        darkTheme: ThemeData(
-                          useMaterial3: true,
-                          textTheme: textTheme.apply(
-                            bodyColor: darkColorScheme.onSurface,
-                            displayColor: darkColorScheme.onSurface,
-                          ),
-                          colorScheme: darkColorScheme,
-                          brightness: Brightness.dark,
-                          inputDecorationTheme: const InputDecorationTheme(
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12.0)),
+                          darkTheme: ThemeData(
+                            useMaterial3: true,
+                            textTheme: textTheme.apply(
+                              bodyColor: darkColorScheme.onSurface,
+                              displayColor: darkColorScheme.onSurface,
+                            ),
+                            colorScheme: darkColorScheme,
+                            brightness: Brightness.dark,
+                            inputDecorationTheme: const InputDecorationTheme(
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
                             ),
                           ),
-                        ),
-                        debugShowCheckedModeBanner: false,
-                        localizationsDelegates:
-                            AppLocalizations.localizationsDelegates,
-                        supportedLocales: AppLocalizations.supportedLocales,
-                      );
-                    },
+                          debugShowCheckedModeBanner: false,
+                          localizationsDelegates:
+                              AppLocalizations.localizationsDelegates,
+                          supportedLocales: AppLocalizations.supportedLocales,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

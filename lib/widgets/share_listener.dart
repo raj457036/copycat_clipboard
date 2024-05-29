@@ -19,7 +19,7 @@ class ShareListener extends StatefulWidget {
   });
 
   static Widget fromPlatform({required Widget child}) {
-    if (isMobile) {
+    if (isMobilePlatform) {
       return ShareListener(child: child);
     }
     return child;

@@ -8,7 +8,7 @@ class SmartPasteSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile) return const SizedBox.shrink();
+    if (isMobilePlatform) return const SizedBox.shrink();
     return BlocSelector<AppConfigCubit, AppConfigState, bool>(
       selector: (state) {
         switch (state) {

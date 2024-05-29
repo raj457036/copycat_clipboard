@@ -1,3 +1,4 @@
+import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
@@ -14,6 +15,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
+import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -21,13 +23,17 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = Breakpoints.isMobile(width);
     final floatingActionButton =
         getFloatingActionButton(context, 3, isMobile: isMobile);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
         actions: [
-          if (isDesktop) const MinimizeWindowButton(),
+          ActivePlanAction(compact: isMobile),
+          width12,
+          if (isDesktopPlatform) const MinimizeWindowButton(),
           const LogoutButton(),
           width12,
         ],

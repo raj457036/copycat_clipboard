@@ -9,7 +9,7 @@ class StartUpLaunchSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile || Platform.isMacOS) return const SizedBox.shrink();
+    if (isMobilePlatform || Platform.isMacOS) return const SizedBox.shrink();
     return BlocSelector<AppConfigCubit, AppConfigState, bool>(
       selector: (state) {
         switch (state) {

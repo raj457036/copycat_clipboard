@@ -103,7 +103,7 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
         state is ClipCollectionError ||
         fromTop) {
       emit(const ClipCollectionState.initial());
-      final result = await repo.getList();
+      final result = await repo.getList(limit: 100);
       final next = result.fold(
         (l) => ClipCollectionState.error(l),
         (r) => ClipCollectionState.loaded(
