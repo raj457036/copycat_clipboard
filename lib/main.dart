@@ -65,10 +65,12 @@ Future<void> main() async {
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
       await windowManager.setClosable(false);
       await windowManager.setSkipTaskbar(true);
-      await windowManager.setVisibleOnAllWorkspaces(
-        false,
-        visibleOnFullScreen: true,
-      );
+      if (Platform.isMacOS) {
+        await windowManager.setVisibleOnAllWorkspaces(
+          false,
+          visibleOnFullScreen: true,
+        );
+      }
     });
 
     await updateWindowsRegistry();
