@@ -1,5 +1,4 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -79,15 +78,6 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   void onWindowFocus() {
     // Make sure to call once.
     setState(() {});
-
-    logger.i("FOCUSED");
-  }
-
-  @override
-  void onWindowEvent(String eventName) {
-    super.onWindowEvent(eventName);
-
-    logger.i("EVENT: $eventName");
   }
 
   @override
