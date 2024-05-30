@@ -121,7 +121,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getDeletedClipCollections(
         userId: auth.userId!,
-        lastSynced: getLastSyncedTime(lastSync.lastSync),
+        lastSynced: lastSync.lastSync,
         offset: offset,
         excludeDeviceId: deviceId,
       );
@@ -170,7 +170,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getLatestClipCollections(
         userId: auth.userId!,
-        lastSynced: syncInfo?.lastSync,
+        lastSynced: getLastSyncedTime(syncInfo?.lastSync),
         offset: offset,
         excludeDeviceId: syncInfo?.lastSync != null ? deviceId : null,
       );
@@ -242,7 +242,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getDeletedClipboardItems(
         userId: auth.userId!,
-        lastSynced: getLastSyncedTime(syncInfo.lastSync),
+        lastSynced: syncInfo.lastSync,
         offset: offset,
         excludeDeviceId: deviceId,
       );
@@ -298,7 +298,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getLatestClipboardItems(
         userId: auth.userId!,
-        lastSynced: lastSync?.lastSync,
+        lastSynced: getLastSyncedTime(lastSync?.lastSync),
         offset: offset,
         excludeDeviceId: lastSync?.lastSync != null ? deviceId : null,
       );
