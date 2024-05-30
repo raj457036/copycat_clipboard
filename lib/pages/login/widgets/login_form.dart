@@ -31,23 +31,19 @@ class LoginForm extends StatelessWidget {
               height: 140,
             ),
           ),
-        if (isMobile)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Image.asset(
-              AssetConstants.catPeekImage,
-              height: 55,
-            ),
-          ),
         Positioned.fill(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: padding16),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              left: padding16,
+              right: padding16,
+              top: 180,
+            ),
+            child: SizedBox(
+              height: mq.size.height - 180,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
+                  const Spacer(),
                   Text(
                     "CopyCat Clipboard",
                     style: textTheme.headlineMedium,
@@ -60,7 +56,7 @@ class LoginForm extends StatelessWidget {
                   height24,
                   SizedBox(
                     width: 350,
-                    height: 320,
+                    height: 300,
                     child: su_auth.SupaEmailAuth(
                       onSignUpComplete: (su_auth.AuthResponse response) {
                         if (response.session != null && response.user != null) {
@@ -95,6 +91,12 @@ class LoginForm extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const Spacer(),
+                  if (isMobile)
+                    Image.asset(
+                      AssetConstants.catPeekImage,
+                      height: 55,
+                    ),
                 ],
               ),
             ),
