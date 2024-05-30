@@ -41,38 +41,48 @@ class LoginPage extends StatelessWidget {
           builder: (context, constraints) {
             final height = constraints.maxHeight;
             final width = constraints.maxWidth;
-            final child = Flex(
-              direction: isMobile ? Axis.vertical : Axis.horizontal,
-              children: [
-                Expanded(
-                  flex: isMobile ? 2 : 1,
-                  child: ShaderMask(
-                    shaderCallback: (rect) {
-                      return LinearGradient(
-                        begin:
-                            isMobile ? Alignment.topCenter : Alignment.center,
-                        end: isMobile
-                            ? Alignment.bottomCenter
-                            : Alignment.centerRight,
-                        colors: const [Colors.black, Colors.transparent],
-                      ).createShader(
-                        Rect.fromLTRB(0, 0, rect.width, rect.height),
-                      );
-                    },
-                    blendMode: BlendMode.dstIn,
-                    child: Image.asset(
-                      AssetConstants.catInValley,
-                      fit: BoxFit.cover,
-                      height: height,
-                      width: width,
-                    ),
+            final bg = ShaderMask(
+              shaderCallback: (rect) {
+                return LinearGradient(
+                  begin: isMobile ? Alignment.topCenter : Alignment.center,
+                  end:
+                      isMobile ? Alignment.bottomCenter : Alignment.centerRight,
+                  colors: const [Colors.black, Colors.transparent],
+                ).createShader(
+                  Rect.fromLTRB(0, 0, rect.width, rect.height),
+                );
+              },
+              blendMode: BlendMode.dstIn,
+              child: Image.asset(
+                AssetConstants.catInValley,
+                fit: BoxFit.cover,
+                height: height,
+                width: width,
+              ),
+            );
+            if (!isMobile) {
+              final child = Row(
+                children: [
+                  Expanded(
+                    flex: isMobile ? 2 : 1,
+                    child: bg,
                   ),
+                  Expanded(flex: isMobile ? 4 : 1, child: const LoginForm()),
+                ],
+              );
+
+              return child;
+            }
+
+            return Stack(
+              children: [
+                Positioned(
+                  height: 250,
+                  child: bg,
                 ),
-                Expanded(flex: isMobile ? 4 : 1, child: const LoginForm()),
+                const LoginForm(),
               ],
             );
-
-            return child;
           },
         ),
       ),

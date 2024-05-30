@@ -46,10 +46,10 @@ class SettingsPage extends StatelessWidget {
           child: OverflowBar(
             alignment: MainAxisAlignment.start,
             overflowAlignment: OverflowBarAlignment.start,
-            spacing: 20,
+            spacing: 10,
             children: [
               ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 570),
+                constraints: const BoxConstraints(maxWidth: 520),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -73,7 +73,7 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 570),
+                constraints: const BoxConstraints(maxWidth: 520),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
