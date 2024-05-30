@@ -1,5 +1,6 @@
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
@@ -39,16 +40,21 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
   Future<void> initTray() async {
     await trayManager.setIcon(
       Platform.isWindows
-          ? 'assets/images/icons/icon.ico'
-          : 'assets/images/icons/icon.png',
+          ? 'assets/images/icons/tray_icon.ico'
+          : 'assets/images/icons/tray_icon.png',
     );
     Menu menu = Menu(
       items: [
+        MenuItem(disabled: true, label: "CopyCat Clipboard"),
+        MenuItem.separator(),
         MenuItem(
           key: 'show_window',
           label: 'Show Window',
         ),
-        MenuItem.separator(),
+        MenuItem(
+          key: 'quit_app',
+          label: 'Quit',
+        ),
       ],
     );
     await trayManager.setContextMenu(menu);
@@ -56,18 +62,20 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   void onTrayIconMouseDown() {
-    // do something, for example pop up the menu
     trayManager.popUpContextMenu();
   }
 
-  @override
-  void onTrayIconRightMouseDown() {
-    // do something
-  }
+  Future<void> quitApp() async {
+    final result = await FlutterPlatformAlert.showCustomAlert(
+      windowTitle: 'CopyCat Clipboard',
+      text: 'Are you sure you want to quit?',
+      positiveButtonTitle: "Yes",
+      negativeButtonTitle: "No",
+    );
 
-  @override
-  void onTrayIconRightMouseUp() {
-    // do something
+    if (result.name == "positiveButton") {
+      exit(0);
+    }
   }
 
   @override
@@ -75,6 +83,9 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
     switch (menuItem.key) {
       case "show_window":
         await windowManager.show();
+        break;
+      case "quit_app":
+        await quitApp();
         break;
       default:
     }

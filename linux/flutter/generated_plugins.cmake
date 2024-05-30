@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
   clipboard_watcher
   emoji_picker_flutter
+  flutter_platform_alert
   focus_window
   gtk
   handy_window

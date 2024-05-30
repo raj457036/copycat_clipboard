@@ -18,6 +18,8 @@ PODS:
     - FlutterMacOS
   - emoji_picker_flutter (0.0.1):
     - FlutterMacOS
+  - flutter_platform_alert (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - focus_window (0.0.1):
     - FlutterMacOS
@@ -81,6 +83,7 @@ DEPENDENCIES:
   - connectivity_plus (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin`)
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
   - emoji_picker_flutter (from `Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos`)
+  - flutter_platform_alert (from `Flutter/ephemeral/.symlinks/plugins/flutter_platform_alert/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - focus_window (from `Flutter/ephemeral/.symlinks/plugins/focus_window/macos`)
   - google_sign_in_ios (from `Flutter/ephemeral/.symlinks/plugins/google_sign_in_ios/darwin`)
@@ -121,6 +124,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
   emoji_picker_flutter:
     :path: Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos
+  flutter_platform_alert:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_platform_alert/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   focus_window:
@@ -166,6 +171,7 @@ SPEC CHECKSUMS:
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
   device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
+  flutter_platform_alert: b21b2b7d801e71c12ce9ffab618ff114ca9fc903
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   focus_window: c7371ddf4c3009e6d4ba0d7f1b279eccd01aca22
   google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
