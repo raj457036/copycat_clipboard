@@ -65,20 +65,23 @@ class SyncRepositoryImpl implements SyncRepository {
           .eq("userId", userId)
           .isFilter("deletedAt", null);
 
+      final orQ = <String>[
+        "collectionId.not.is.null",
+      ];
+
       if (lastSynced != null) {
         final isoDate = lastSynced
             .subtract(const Duration(seconds: 5))
             .toUtc()
             .toIso8601String();
-        query = query.gt(
-          "modified",
-          isoDate,
-        );
+        orQ.add("modified.gt.$isoDate");
       }
 
       if (excludeDeviceId != null && excludeDeviceId != "") {
         query = query.neq("deviceId", excludeDeviceId);
       }
+
+      query = query.or(orQ.join(','));
 
       final docs = await query.order("modified").range(offset, offset + limit);
       final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
