@@ -1,5 +1,8 @@
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
   const SubscriptionInfoDialog({super.key});
@@ -13,8 +16,8 @@ class SubscriptionInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SimpleDialog(
-      title: Row(
+    return SimpleDialog(
+      title: const Row(
         children: [
           Text("Subscription"),
           Spacer(),
@@ -22,8 +25,8 @@ class SubscriptionInfoDialog extends StatelessWidget {
         ],
       ),
       children: [
-        Divider(),
-        ListTile(
+        const Divider(),
+        const ListTile(
           title: Text(
             "BETA",
             style: TextStyle(
@@ -32,16 +35,27 @@ class SubscriptionInfoDialog extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            "CopyCat Clipboard is in Beta, "
-            "There might be some bugs here and there, more features will be available soon.",
+            "CopyCat Clipboard is currently in the Beta phase. While we "
+            "strive for a seamless experience, you may encounter occasional "
+            "bugs. Stay tuned for upcoming features and enhancements.",
           ),
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Current Plan"),
-          subtitle: Text("FREE"),
+          title: const Text("Current Plan"),
+          subtitle: BlocSelector<AuthCubit, AuthState, Subscription?>(
+            selector: (state) {
+              if (state is AuthenticatedAuthState) {
+                return state.subscription;
+              }
+              return null;
+            },
+            builder: (context, state) {
+              return Text(state?.planName ?? "FREE");
+            },
+          ),
         ),
-        ListTile(
+        const ListTile(
           title: Text("Included"),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
