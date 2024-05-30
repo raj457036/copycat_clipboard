@@ -1,6 +1,6 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
-import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/dialogs/subscription_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,11 +11,8 @@ class ActivePlanAction extends StatelessWidget {
     this.compact = false,
   });
 
-  void action() {
-    showTextSnackbar(
-      "CopyCat is in Beta Version. "
-      "Subscription with more features will be available soon.",
-    );
+  Future<void> action(BuildContext context) async {
+    const SubscriptionInfoDialog().open(context);
   }
 
   @override
@@ -35,7 +32,7 @@ class ActivePlanAction extends StatelessWidget {
           label = "Active Plan • $label";
         }
         return ElevatedButton.icon(
-          onPressed: action,
+          onPressed: () => action(context),
           icon: const Icon(Icons.monetization_on_rounded),
           label: Text(label),
         );

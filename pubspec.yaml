@@ -70,6 +70,7 @@ dependencies:
     path: ./plugins/focus_window
   package_info_plus: ^8.0.0
   tray_manager: ^0.2.3
+  flutter_platform_alert: ^0.5.1
 
 dev_dependencies:
   flutter_test:
