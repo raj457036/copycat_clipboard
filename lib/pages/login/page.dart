@@ -6,21 +6,22 @@ import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart'
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/constants/numbers/breakpoints.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/pages/login/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as su_auth;
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final isMobile = Breakpoints.isMobile(mq.size.width) ||
+        mq.orientation == Orientation.portrait;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
@@ -36,46 +37,43 @@ class LoginPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(padding16),
-            child: SizedBox.square(
-              dimension: 400,
-              child: su_auth.SupaEmailAuth(
-                onSignUpComplete: (su_auth.AuthResponse response) {
-                  if (response.session != null && response.user != null) {
-                    context
-                        .read<AuthCubit>()
-                        .authenticated(response.session!, response.user!);
-                  }
-                },
-                onSignInComplete: (su_auth.AuthResponse response) {
-                  if (response.session != null && response.user != null) {
-                    context
-                        .read<AuthCubit>()
-                        .authenticated(response.session!, response.user!);
-                  }
-                },
-                onError: (error) {
-                  context.read<AuthCubit>().unauthenticated(
-                        Failure.fromException(error),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final height = constraints.maxHeight;
+            final width = constraints.maxWidth;
+            final child = Flex(
+              direction: isMobile ? Axis.vertical : Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: isMobile ? 2 : 1,
+                  child: ShaderMask(
+                    shaderCallback: (rect) {
+                      return LinearGradient(
+                        begin:
+                            isMobile ? Alignment.topCenter : Alignment.center,
+                        end: isMobile
+                            ? Alignment.bottomCenter
+                            : Alignment.centerRight,
+                        colors: const [Colors.black, Colors.transparent],
+                      ).createShader(
+                        Rect.fromLTRB(0, 0, rect.width, rect.height),
                       );
-
-                  if (error is su_auth.AuthException) {
-                    showTextSnackbar(error.message);
-                  }
-                },
-                metadataFields: [
-                  su_auth.MetaDataField(
-                    label: "Full Name",
-                    key: "display_name",
-                    prefixIcon: const Icon(Icons.person_outline_rounded),
-                    validator: ValidationBuilder().minLength(1).build(),
+                    },
+                    blendMode: BlendMode.dstIn,
+                    child: Image.asset(
+                      AssetConstants.catInValley,
+                      fit: BoxFit.cover,
+                      height: height,
+                      width: width,
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
+                Expanded(flex: isMobile ? 4 : 1, child: const LoginForm()),
+              ],
+            );
+
+            return child;
+          },
         ),
       ),
     );

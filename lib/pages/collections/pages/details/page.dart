@@ -4,6 +4,7 @@ import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +30,7 @@ class CollectionDetailPage extends StatelessWidget {
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
           listenWhen: (previous, current) {
             switch (current) {
-              case OfflinePersistanceDeleted() ||
-                    OfflinePersistanceSaved(synced: false):
+              case OfflinePersistanceDeleted() || OfflinePersistanceSaved():
                 return true;
               case _:
                 return false;
@@ -40,8 +40,10 @@ class CollectionDetailPage extends StatelessWidget {
             switch (state) {
               case OfflinePersistanceDeleted(:final item):
                 context.read<CollectionClipsCubit>().deleteItem(item);
+                break;
               case OfflinePersistanceSaved(:final item):
                 context.read<CollectionClipsCubit>().put(item);
+                break;
               case _:
             }
           },
@@ -51,6 +53,10 @@ class CollectionDetailPage extends StatelessWidget {
           switch (state) {
             case CloudPersistanceUploadingFile(:final item) ||
                   CloudPersistanceDownloadingFile(:final item):
+              context.read<CollectionClipsCubit>().put(item);
+              break;
+            case CloudPersistanceError(:final failure, :final item):
+              showFailureSnackbar(failure);
               context.read<CollectionClipsCubit>().put(item);
               break;
           }

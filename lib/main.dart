@@ -26,6 +26,7 @@ import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -74,6 +75,11 @@ Future<void> main() async {
   } else {
     unawaited(MobileAds.instance.initialize());
   }
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   Bloc.observer = CustomBlocObserver();
   await configureDependencies();

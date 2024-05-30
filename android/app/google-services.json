@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:892296995692:android:ab53a268cba93cc4490949",
+        "mobilesdk_app_id": "1:892296995692:android:64012302abe55897490949",
         "android_client_info": {
-          "package_name": "com.floatint.clipboard"
+          "package_name": "com.entilitystudio.CopyCat"
         }
       },
       "oauth_client": [

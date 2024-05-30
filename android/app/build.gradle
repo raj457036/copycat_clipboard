@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.floatint.clipboard"
+    namespace "com.entilitystudio.CopyCat"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -67,6 +67,5 @@ flutter {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.8.1')
-
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics:17.4.1'
 }

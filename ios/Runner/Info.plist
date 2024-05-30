@@ -54,7 +54,7 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>com.floatint.clipboard</string>
+        <string>com.entilitystudio.CopyCat</string>
         <key>CFBundleURLSchemes</key>
         <array>
           <string>clipboard</string>

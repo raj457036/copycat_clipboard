@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
-    <share-target android:targetClass="com.floatint.clipboard.MainActivity">
+    <share-target android:targetClass="com.entilitystudio.CopyCat.MainActivity">
         <data android:mimeType="*/*" />
-        <category android:name="com.floatint.clipboard.dynamic_share_target" />
+        <category android:name="com.entilitystudio.CopyCat.dynamic_share_target" />
     </share-target>
 </shortcuts>

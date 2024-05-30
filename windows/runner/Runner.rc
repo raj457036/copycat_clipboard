@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.floatint" "\0"
-            VALUE "FileDescription", "clipboard" "\0"
+            VALUE "CompanyName", "Entility Studio" "\0"
+            VALUE "FileDescription", "CopyCat Clipboard" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "com.entilitystudio.CopyCat" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.floatint. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 entilitystudio. All rights reserved." "\0"
             VALUE "OriginalFilename", "clipboard.exe" "\0"
-            VALUE "ProductName", "clipboard" "\0"
+            VALUE "ProductName", "CopyCat Clipboard" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

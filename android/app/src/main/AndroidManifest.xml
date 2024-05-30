@@ -52,7 +52,7 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data android:name="flutterEmbedding" android:value="2"/>
 
-        <provider android:name="com.superlist.super_native_extensions.DataProvider" android:authorities="com.floatint.clipboard.SuperClipboardDataProvider" android:exported="true" android:grantUriPermissions="true">
+        <provider android:name="com.superlist.super_native_extensions.DataProvider" android:authorities="com.entilitystudio.CopyCat.SuperClipboardDataProvider" android:exported="true" android:grantUriPermissions="true">
         </provider>
         <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileProvider" android:exported="false" android:grantUriPermissions="true" tools:replace="android:authorities">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths" tools:replace="android:resource"/>
