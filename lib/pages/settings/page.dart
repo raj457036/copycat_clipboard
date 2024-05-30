@@ -11,9 +11,7 @@ import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/routes/utils.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/logout_button.dart';
-import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +31,6 @@ class SettingsPage extends StatelessWidget {
         actions: [
           ActivePlanAction(compact: isMobile),
           width12,
-          if (isDesktopPlatform) const MinimizeWindowButton(),
           const LogoutButton(),
           width12,
         ],
