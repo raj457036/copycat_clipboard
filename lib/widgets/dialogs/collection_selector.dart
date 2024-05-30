@@ -1,7 +1,7 @@
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/pages/collections/widgets/dialogs/create_collection.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/widgets/create_collection_button.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,15 +13,11 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
     return await showDialog<ClipCollection?>(
       context: context,
       builder: (context) => SimpleDialog(
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Select Collection"),
-            IconButton.filledTonal(
-              onPressed: () => showCreateCollectionDialog(context),
-              icon: const Icon(Icons.add),
-              tooltip: "Create a collection",
-            ),
+            Text("Select Collection"),
+            CreateCollectionButton(isFab: false),
           ],
         ),
         children: [this],
