@@ -4,8 +4,6 @@ import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/routes/utils.dart';
-import 'package:clipboard/utils/utility.dart';
-import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
@@ -40,8 +38,6 @@ class CollectionsPage extends StatelessWidget {
           title: const Text("Collections"),
           actions: [
             ActivePlanAction(compact: isMobile),
-            width12,
-            if (isDesktopPlatform) const MinimizeWindowButton(),
             width12,
           ],
         ),

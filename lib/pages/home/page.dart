@@ -12,7 +12,6 @@ import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/compact_mode_toggle.dart';
-import 'package:clipboard/widgets/minimize_window.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
@@ -149,7 +148,6 @@ class HomePage extends StatelessWidget {
           actions: [
             ActivePlanAction(compact: isMobile),
             width12,
-            if (isDesktopPlatform && !isMobile) const MinimizeWindowButton(),
             if (isDesktopPlatform && !isMobile) const PinToTopToggleButton(),
             if (isDesktopPlatform && !isMobile) const CompactModeToggleButton(),
             width12,
