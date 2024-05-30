@@ -21,6 +21,7 @@ import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:clipboard/widgets/network_observer.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
+import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
@@ -62,7 +63,11 @@ Future<void> main() async {
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
       await windowManager.setClosable(false);
-      await windowManager.minimize();
+      await windowManager.setSkipTaskbar(true);
+      await windowManager.setVisibleOnAllWorkspaces(
+        false,
+        visibleOnFullScreen: true,
+      );
     });
 
     await updateWindowsRegistry();
@@ -110,62 +115,65 @@ class MainApp extends StatelessWidget {
           ),
       ],
       child: EventBridge(
-        child: WindowFocusManager.fromPlatform(
-          child: ShareListener.fromPlatform(
-            child: SystemShortcutListener(
-              child: AppLinkListener(
-                child: NetworkObserver(
-                  child: DevicePreview(
-                    enabled: kDebugMode,
-                    builder: (context) =>
-                        BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
-                      selector: (state) {
-                        return state.config.themeMode;
-                      },
-                      builder: (context, state) {
-                        return MaterialApp.router(
-                          scaffoldMessengerKey: scaffoldMessengerKey,
-                          routeInformationParser: router.routeInformationParser,
-                          routeInformationProvider:
-                              router.routeInformationProvider,
-                          routerDelegate: router.routerDelegate,
-                          backButtonDispatcher: router.backButtonDispatcher,
-                          themeMode: state,
-                          theme: ThemeData(
-                            useMaterial3: true,
-                            textTheme: textTheme.apply(
-                              bodyColor: lightColorScheme.onSurface,
-                              displayColor: lightColorScheme.onSurface,
-                            ),
-                            colorScheme: lightColorScheme,
-                            brightness: Brightness.light,
-                            inputDecorationTheme: const InputDecorationTheme(
-                              border: OutlineInputBorder(
-                                borderRadius: radius12,
+        child: TrayManager.fromPlatform(
+          child: WindowFocusManager.fromPlatform(
+            child: ShareListener.fromPlatform(
+              child: SystemShortcutListener(
+                child: AppLinkListener(
+                  child: NetworkObserver(
+                    child: DevicePreview(
+                      enabled: kDebugMode,
+                      builder: (context) => BlocSelector<AppConfigCubit,
+                          AppConfigState, ThemeMode>(
+                        selector: (state) {
+                          return state.config.themeMode;
+                        },
+                        builder: (context, state) {
+                          return MaterialApp.router(
+                            scaffoldMessengerKey: scaffoldMessengerKey,
+                            routeInformationParser:
+                                router.routeInformationParser,
+                            routeInformationProvider:
+                                router.routeInformationProvider,
+                            routerDelegate: router.routerDelegate,
+                            backButtonDispatcher: router.backButtonDispatcher,
+                            themeMode: state,
+                            theme: ThemeData(
+                              useMaterial3: true,
+                              textTheme: textTheme.apply(
+                                bodyColor: lightColorScheme.onSurface,
+                                displayColor: lightColorScheme.onSurface,
+                              ),
+                              colorScheme: lightColorScheme,
+                              brightness: Brightness.light,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                border: OutlineInputBorder(
+                                  borderRadius: radius12,
+                                ),
                               ),
                             ),
-                          ),
-                          darkTheme: ThemeData(
-                            useMaterial3: true,
-                            textTheme: textTheme.apply(
-                              bodyColor: darkColorScheme.onSurface,
-                              displayColor: darkColorScheme.onSurface,
-                            ),
-                            colorScheme: darkColorScheme,
-                            brightness: Brightness.dark,
-                            inputDecorationTheme: const InputDecorationTheme(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
+                            darkTheme: ThemeData(
+                              useMaterial3: true,
+                              textTheme: textTheme.apply(
+                                bodyColor: darkColorScheme.onSurface,
+                                displayColor: darkColorScheme.onSurface,
+                              ),
+                              colorScheme: darkColorScheme,
+                              brightness: Brightness.dark,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12.0)),
+                                ),
                               ),
                             ),
-                          ),
-                          debugShowCheckedModeBanner: false,
-                          localizationsDelegates:
-                              AppLocalizations.localizationsDelegates,
-                          supportedLocales: AppLocalizations.supportedLocales,
-                        );
-                      },
+                            debugShowCheckedModeBanner: false,
+                            localizationsDelegates:
+                                AppLocalizations.localizationsDelegates,
+                            supportedLocales: AppLocalizations.supportedLocales,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
