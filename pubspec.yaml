@@ -69,6 +69,7 @@ dependencies:
   focus_window:
     path: ./plugins/focus_window
   package_info_plus: ^8.0.0
+  tray_manager: ^0.2.3
 
 dev_dependencies:
   flutter_test:

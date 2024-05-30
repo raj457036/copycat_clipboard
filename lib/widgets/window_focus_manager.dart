@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,8 @@ class WindowFocusManagerState extends State<WindowFocusManager>
       return true;
     } else {
       await record();
-      await windowManager.show();
+      await windowManager.show(inactive: false);
+      await Future.delayed(Durations.short1);
       await windowManager.focus();
       return false;
     }
@@ -77,6 +79,15 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   void onWindowFocus() {
     // Make sure to call once.
     setState(() {});
+
+    logger.i("FOCUSED");
+  }
+
+  @override
+  void onWindowEvent(String eventName) {
+    super.onWindowEvent(eventName);
+
+    logger.i("EVENT: $eventName");
   }
 
   @override
