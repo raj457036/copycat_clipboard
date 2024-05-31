@@ -29,11 +29,11 @@ class ActivePlanAction extends StatelessWidget {
         if (state == null) return const SizedBox.shrink();
         String label = state.planName;
         if (!compact) {
-          label = "Active Plan • $label";
+          label = "Current Plan • $label";
         }
         return ElevatedButton.icon(
           onPressed: () => action(context),
-          icon: const Icon(Icons.monetization_on_rounded),
+          icon: const Icon(Icons.loyalty_rounded),
           label: Text(label),
         );
       },

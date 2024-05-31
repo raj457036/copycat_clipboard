@@ -148,8 +148,8 @@ class HomePage extends StatelessWidget {
           actions: [
             ActivePlanAction(compact: isMobile),
             width12,
-            if (isDesktopPlatform && !isMobile) const PinToTopToggleButton(),
-            if (isDesktopPlatform && !isMobile) const CompactModeToggleButton(),
+            if (isDesktopPlatform) const PinToTopToggleButton(),
+            if (isDesktopPlatform) const CompactModeToggleButton(),
             width12,
           ],
         ),
