@@ -18,6 +18,11 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
   return state?.showSnackBar(snackBar);
 }
 
+void closeSnackbar() {
+  ScaffoldMessengerState? state = scaffoldMessengerKey.currentState;
+  state?.removeCurrentSnackBar();
+}
+
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
   Failure failure,
 ) {

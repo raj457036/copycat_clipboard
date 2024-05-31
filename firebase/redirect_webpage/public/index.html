@@ -24,7 +24,13 @@
     </div>
 
     <script>
-      location.href = "clipboard://drive-connect" + location.search;
+      const path = location.pathname;
+
+      if (path.startsWith("/auth")) {
+        location.href = "clipboard://auth/" + location.search;
+      } else {
+        location.href = "clipboard://drive-connect" + location.search;
+      }
 
       setTimeout(() => {
         document.querySelector("#msg").innerText =

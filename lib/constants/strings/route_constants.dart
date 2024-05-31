@@ -9,4 +9,5 @@ class RouteConstants {
   static const String settings = "settings";
   static const String driveConnect = "drive-connect";
   static const String preview = "preview";
+  static const String resetPassword = "reset-password";
 }
