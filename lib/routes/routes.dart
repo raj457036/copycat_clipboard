@@ -18,6 +18,7 @@ import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/preview/page.dart";
+import "package:clipboard/pages/reset_password/page.dart";
 import "package:clipboard/pages/search/page.dart";
 import "package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart";
 import "package:clipboard/pages/settings/page.dart";
@@ -57,6 +58,15 @@ final router = GoRouter(
         final scopes = state.uri.queryParameters["scopes"]!.split(" ");
         context.read<DriveSetupCubit>().verifyAuthCodeAndSetup(code, scopes);
         return DriveSetupPage(
+          key: state.pageKey,
+        );
+      },
+    ),
+    GoRoute(
+      name: RouteConstants.resetPassword,
+      path: '/reset-password',
+      builder: (context, state) {
+        return ResetPasswordPage(
           key: state.pageKey,
         );
       },

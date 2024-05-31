@@ -1461,10 +1461,11 @@ packages:
   supabase_auth_ui:
     dependency: "direct main"
     description:
-      name: supabase_auth_ui
-      sha256: d8bdfbe957b3028780c3074574b790588c48a4a75d895e95d63404ebf7686653
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: d7538f49850a73d83a5a2678df6a8f08a8bf5cd0
+      url: "https://github.com/supabase-community/flutter-auth-ui.git"
+    source: git
     version: "0.4.4"
   supabase_flutter:
     dependency: "direct main"

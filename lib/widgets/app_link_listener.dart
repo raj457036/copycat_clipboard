@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,12 +25,13 @@ class _AppLinkListenerState extends State<AppLinkListener> {
   late StreamSubscription sub;
   final appLink = AppLinks();
 
-  void onUri(Uri uri) {
+  Future<void> onUri(Uri uri) async {
     logger.i("🔗 NEW APP LINK: $uri");
 
     if (rootNavKey.currentContext == null) return;
     // clipboard://drive-connect?code=4/0AeaYSHB-QUSzN0WX8F-R7Y-64KkUUgAgT5lrHXVmrgFPr7mJIM9p_aHJJpKg0XXBuytu1Q&scope=https://www.googleapis.com/auth/drive.appdata%20https://www.googleapis.com/auth/drive.file
     if (uri.host == "drive-connect") {
+      showTextSnackbar("Please wait ...", isLoading: true);
       final code = uri.queryParameters["code"];
       final scope = uri.queryParameters["scope"] ?? "";
       final error = uri.queryParameters["error"];
@@ -48,6 +51,18 @@ class _AppLinkListenerState extends State<AppLinkListener> {
         context.read<DriveSetupCubit>().setupError(error);
       }
     }
+    if (uri.host == "auth") {
+      showTextSnackbar("Please wait ...", isLoading: true);
+      final code = uri.queryParameters["code"];
+      if (code != null) {
+        final path = await context.read<AuthCubit>().validateAuthCode(code);
+        await Future.delayed(const Duration(seconds: 2));
+        if (path != null) {
+          rootNavKey.currentContext?.pushNamed(path);
+        }
+      }
+    }
+    closeSnackbar();
   }
 
   @override

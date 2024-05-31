@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/repositories/subscription.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_cubit.freezed.dart';
@@ -22,6 +22,20 @@ class AuthCubit extends Cubit<AuthState> {
     this.sbClient,
     this.subRepo,
   ) : super(const AuthState.unknown());
+
+  /// validate the code and return a suitable page path
+  Future<String?> validateAuthCode(String code) async {
+    final exchange = await sbClient.auth.exchangeCodeForSession(code);
+
+    switch (exchange.redirectType) {
+      case "passwordRecovery":
+        authenticated(exchange.session, exchange.session.user);
+        return RouteConstants.resetPassword;
+      case _:
+        logger.w("Exchange not supported. ${exchange.redirectType}");
+        return null;
+    }
+  }
 
   String? get userId =>
       state.whenOrNull(authenticated: (_, user, __) => user.id);
