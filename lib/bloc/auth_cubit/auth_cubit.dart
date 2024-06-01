@@ -33,8 +33,8 @@ class AuthCubit extends Cubit<AuthState> {
         return RouteConstants.resetPassword;
       case _:
         logger.w("Exchange not supported. ${exchange.redirectType}");
-        return null;
     }
+    return null;
   }
 
   String? get userId =>

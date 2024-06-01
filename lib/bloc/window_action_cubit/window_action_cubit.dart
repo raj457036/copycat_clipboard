@@ -25,14 +25,20 @@ class WindowActionCubit extends Cubit<WindowActionState> {
     );
   }
 
-  Future<void> togglePinned() async {
-    final isPinned = await windowManager.isAlwaysOnTop();
+  Future<void> reset() async {
+    toggleCompact(reset: true);
+    togglePinned(reset: true);
+  }
+
+  Future<void> togglePinned({bool reset = false}) async {
+    final isPinned = reset ? true : await windowManager.isAlwaysOnTop();
     await windowManager.setAlwaysOnTop(!isPinned);
     emit(state.copyWith(pinned: !isPinned));
   }
 
-  Future<void> toggleCompact() async {
-    final compactMode = (await windowManager.getSize()) == compactWindowSize;
+  Future<void> toggleCompact({bool reset = false}) async {
+    final compactMode =
+        reset ? true : (await windowManager.getSize()) == compactWindowSize;
     await windowManager.setSize(
       compactMode ? initialWindowSize : compactWindowSize,
     );

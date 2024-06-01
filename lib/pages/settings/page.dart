@@ -46,7 +46,8 @@ class SettingsPage extends StatelessWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: padding16),
             child: LayoutBuilder(builder: (context, constraints) {
-              final isTablet = Breakpoints.isTablet(constraints.maxWidth);
+              final isTablet = Breakpoints.isMobile(constraints.maxWidth) ||
+                  Breakpoints.isTablet(constraints.maxWidth);
               final halfWidth = isTablet ? 890.0 : constraints.maxWidth / 2;
 
               return Flex(

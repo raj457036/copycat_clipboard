@@ -4,6 +4,7 @@ import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -38,6 +39,7 @@ class LogoutButton extends StatelessWidget {
       context.read<OfflinePersistanceCubit>().reset();
       context.read<SyncManagerCubit>().reset();
       context.read<DriveSetupCubit>().reset();
+      context.read<WindowActionCubit>().reset();
       context.read<AuthCubit>().logout();
       context.goNamed(RouteConstants.login);
       showTextSnackbar(
