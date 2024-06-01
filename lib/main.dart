@@ -58,6 +58,7 @@ Future<void> main() async {
       size: initialWindowSize,
       minimumSize: minimumWindowSize,
       center: true,
+      title: "CopyCat",
       titleBarStyle:
           Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
       windowButtonVisibility: false,
