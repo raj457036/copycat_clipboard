@@ -68,7 +68,7 @@ class _AppLinkListenerState extends State<AppLinkListener> {
   @override
   void initState() {
     super.initState();
-    sub = appLink.allUriLinkStream.listen(onUri);
+    sub = appLink.uriLinkStream.listen(onUri);
   }
 
   @override

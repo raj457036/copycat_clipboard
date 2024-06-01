@@ -1,12 +1,11 @@
 import "package:universal_io/io.dart";
-
 import 'package:win32_registry/win32_registry.dart';
 
 Future<void> updateWindowsRegistry() async {
   if (!Platform.isWindows) return;
   String appPath = Platform.resolvedExecutable;
 
-  String protocolRegKey = 'Software\\Classes\\clipboard';
+  String protocolRegKey = 'Software\\Classes\\CopyCat';
   RegistryValue protocolRegValue = const RegistryValue(
     'URL Protocol',
     RegistryValueType.string,
