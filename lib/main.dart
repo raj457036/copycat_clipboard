@@ -64,7 +64,6 @@ Future<void> main() async {
       windowButtonVisibility: false,
     );
     windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-      await windowManager.hide();
       await windowManager.setClosable(false);
       await windowManager.setSkipTaskbar(true);
       if (Platform.isMacOS) {
