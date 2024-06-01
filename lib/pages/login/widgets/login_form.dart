@@ -56,7 +56,7 @@ class LoginForm extends StatelessWidget {
                   height24,
                   SizedBox(
                     width: 350,
-                    height: 300,
+                    height: 390,
                     child: su_auth.SupaEmailAuth(
                       onSignUpComplete: (su_auth.AuthResponse response) {
                         if (response.session != null && response.user != null) {

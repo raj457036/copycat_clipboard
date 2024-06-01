@@ -52,6 +52,12 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
           label: 'Show Window',
         ),
         MenuItem(
+          key: 'hide_window',
+          label: 'Hide Window',
+          toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
+        ),
+        MenuItem.separator(),
+        MenuItem(
           key: 'quit_app',
           label: 'Quit',
         ),
@@ -61,7 +67,16 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
   }
 
   @override
-  void onTrayIconMouseDown() {
+  Future<void> onTrayIconMouseDown() async {
+    if (Platform.isWindows || Platform.isLinux) {
+      await windowManager.show();
+    } else {
+      trayManager.popUpContextMenu();
+    }
+  }
+
+  @override
+  Future<void> onTrayIconRightMouseDown() async {
     trayManager.popUpContextMenu();
   }
 
@@ -83,6 +98,9 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
     switch (menuItem.key) {
       case "show_window":
         await windowManager.show();
+        break;
+      case "hide_window":
+        await windowManager.hide();
         break;
       case "quit_app":
         await quitApp();

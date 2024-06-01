@@ -1353,10 +1353,10 @@ packages:
     dependency: transitive
     description:
       name: sign_in_with_apple
-      sha256: "0975c23b9f8b30a80e27d5659a75993a093d4cb5f4eb7d23a9ccc586fea634e0"
+      sha256: b0abd9c0d0407140829b12cd99a250f10b20352573ff08c7e0c5174c64b4973e
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0"
+    version: "6.1.0"
   sign_in_with_apple_platform_interface:
     dependency: transitive
     description:
@@ -1369,10 +1369,10 @@ packages:
     dependency: transitive
     description:
       name: sign_in_with_apple_web
-      sha256: "44b66528f576e77847c14999d5e881e17e7223b7b0625a185417829e5306f47a"
+      sha256: c009e9beeb6c376e86aaa154fcc8b4e075d4bad90c56286b9668a51cdb6129ea
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "2.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1463,8 +1463,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: d7538f49850a73d83a5a2678df6a8f08a8bf5cd0
-      url: "https://github.com/supabase-community/flutter-auth-ui.git"
+      resolved-ref: acf0ab191e6b5ea22f05995a8bf3725fa7fa93a7
+      url: "https://github.com/raj457036/flutter-auth-ui.git"
     source: git
     version: "0.4.4"
   supabase_flutter:

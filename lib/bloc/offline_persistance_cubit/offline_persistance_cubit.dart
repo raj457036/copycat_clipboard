@@ -29,7 +29,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
 
   bool _listening = false;
 
-  late StreamSubscription<List<ClipItem?>> copySub;
+  StreamSubscription<List<ClipItem?>>? copySub;
 
   OfflinePersistanceCubit(
     this.auth,
@@ -71,14 +71,15 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   void startListners() {
     if (_listening) return;
     clipboard.start(onCaptureClipboard);
-    copySub = clipboard.onCopy.listen(onClips);
+    copySub = clipboard.onCopy?.listen(onClips);
     _listening = true;
   }
 
   void stopListners() {
     if (!_listening) return;
     clipboard.dispose();
-    copySub.cancel();
+    copySub?.cancel();
+    copySub = null;
     _listening = false;
   }
 

@@ -10,6 +10,7 @@ import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:window_manager/window_manager.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({
@@ -36,6 +37,7 @@ class SplashPage extends StatelessWidget {
           case UnauthenticatedAuthState():
             context.goNamed(RouteConstants.login);
             context.read<OfflinePersistanceCubit>().stopListners();
+            await windowManager.show();
           default:
         }
       },

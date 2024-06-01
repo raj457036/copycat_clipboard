@@ -487,7 +487,7 @@ class ClipboardService with ClipboardListener {
   bool _started = false;
 
   void Function()? onRead;
-  late final BehaviorSubject<List<ClipItem?>> onCopy;
+  BehaviorSubject<List<ClipItem?>>? onCopy;
   final ClipboardFormatProcessor processor = ClipboardFormatProcessor();
   ClipboardWatcher get watcher => clipboardWatcher;
 
@@ -521,7 +521,7 @@ class ClipboardService with ClipboardListener {
     onRead = null;
     watcher.removeListener(this);
     await watcher.stop();
-    await onCopy.close();
+    await onCopy?.close();
   }
 
   @override
@@ -587,7 +587,7 @@ class ClipboardService with ClipboardListener {
       return clips;
     }
 
-    onCopy.add(clips);
+    onCopy?.add(clips);
     return null;
   }
 }
