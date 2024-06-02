@@ -86,4 +86,9 @@ class RemoteClipboardSource implements ClipboardSource {
     if (item.isEmpty) return null;
     return ClipboardItem.fromJson(item.first);
   }
+
+  @override
+  Future<ClipboardItem?> getLatest() {
+    throw UnimplementedError();
+  }
 }

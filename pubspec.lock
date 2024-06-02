@@ -337,6 +337,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  device_preview_screenshot:
+    dependency: "direct main"
+    description:
+      name: device_preview_screenshot
+      sha256: c79f185e155c0ed5d97b4e1afff6df181c2045fe28c7414c95f0b46307c549e6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   duration:
     dependency: "direct main"
     description:

@@ -142,4 +142,11 @@ class LocalClipboardSource implements ClipboardSource {
     final result = await db.txn(() => db.clipboardItems.get(id));
     return result;
   }
+
+  @override
+  Future<ClipboardItem?> getLatest() async {
+    final result = await db
+        .txn(() => db.clipboardItems.where().sortByModifiedDesc().findFirst());
+    return result;
+  }
 }

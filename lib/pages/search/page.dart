@@ -36,7 +36,7 @@ class SearchPage extends StatelessWidget {
                   children: [
                     Text("Search"),
                     Spacer(),
-                    SearchInputBar(),
+                    Expanded(child: SearchInputBar()),
                   ],
                 ),
         ),

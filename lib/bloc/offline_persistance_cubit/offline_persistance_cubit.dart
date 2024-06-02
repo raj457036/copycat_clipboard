@@ -18,6 +18,8 @@ import "package:universal_io/io.dart";
 part 'offline_persistance_cubit.freezed.dart';
 part 'offline_persistance_state.dart';
 
+ClipboardItem? _latestItem;
+
 @lazySingleton
 class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final AuthCubit auth;
@@ -68,8 +70,9 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     clipboard.readClipboard();
   }
 
-  void startListners() {
+  Future<void> startListners() async {
     if (_listening) return;
+    _latestItem = await _getLatestClipboardItem();
     clipboard.start(onCaptureClipboard);
     copySub = clipboard.onCopy?.listen(onClips);
     _listening = true;
@@ -81,6 +84,17 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     copySub?.cancel();
     copySub = null;
     _listening = false;
+  }
+
+  Future<ClipboardItem?> _getLatestClipboardItem() async {
+    final result = await repo.getLatest();
+    final item = result.fold((l) {
+      logger.e(l);
+      return null;
+    }, (r) {
+      return r;
+    });
+    return item;
   }
 
   Future<void> reset() async {
@@ -156,6 +170,25 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     return copied;
   }
 
+  bool _foundDuplicate(ClipboardItem item) {
+    if (_latestItem == null) {
+      return false;
+    }
+
+    if (item.type == ClipItemType.text) {
+      logger.i("Found Duplicate Text");
+      return _latestItem!.text == item.text;
+    }
+
+    if (item.type == ClipItemType.url) {
+      logger.i("Found Duplicate URL");
+      return _latestItem!.url == item.url;
+    }
+
+    // other type not supported yet.
+    return false;
+  }
+
   Future<ClipboardItem> _convertToClipboardItem(ClipItem clip) async {
     final userId = auth.userId;
 
@@ -201,8 +234,10 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     }
   }
 
-  Future<void> onClips(List<ClipItem?> clips,
-      {bool manualPaste = false}) async {
+  Future<void> onClips(
+    List<ClipItem?> clips, {
+    bool manualPaste = false,
+  }) async {
     if (clips.isEmpty) return;
 
     for (final clip in clips) {
@@ -226,12 +261,17 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       }
 
       final item = await _convertToClipboardItem(clip);
+      final isDuplicate = _foundDuplicate(item);
+
+      _latestItem = item;
 
       if (manualPaste) {
         final userItem = item.copyWith(userIntent: manualPaste)..applyId(item);
         await persist(userItem);
         return;
       }
+
+      if (isDuplicate) return;
 
       await persist(item);
     }
