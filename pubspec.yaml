@@ -73,6 +73,7 @@ dependencies:
   package_info_plus: ^8.0.0
   tray_manager: ^0.2.3
   flutter_platform_alert: ^0.5.1
+  device_preview_screenshot: ^1.0.0
 
 dev_dependencies:
   flutter_test:

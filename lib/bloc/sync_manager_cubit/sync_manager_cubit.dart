@@ -21,7 +21,7 @@ part 'sync_manager_state.dart';
 
 Future<void> syncChanges(BuildContext context) async {
   showTextSnackbar("Syncing...", isLoading: true, closePrevious: true);
-  await context.read<SyncManagerCubit>().syncChanges();
+  await context.read<SyncManagerCubit>().syncChanges(force: true);
   showTextSnackbar("✅ Changes are synced", closePrevious: true);
 }
 
@@ -170,7 +170,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getLatestClipCollections(
         userId: auth.userId!,
-        lastSynced: getLastSyncedTime(syncInfo?.lastSync),
+        lastSynced: syncInfo?.lastSync,
         offset: offset,
         excludeDeviceId: syncInfo?.lastSync != null ? deviceId : null,
       );
@@ -362,6 +362,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     bool collections = true,
     bool repairRelations = true,
     bool silent = false,
+    bool force = false,
   }) async {
     if (auth.state is! AuthenticatedAuthState) return;
 
@@ -373,7 +374,8 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
       final results = await Future.wait([
         if (clipboard) syncClipboardItems(syncInfo, silent: silent),
-        if (collections) syncClipCollections(syncInfo, silent: silent),
+        if (collections)
+          syncClipCollections(force ? null : syncInfo, silent: silent),
       ]);
 
       if (repairRelations) {

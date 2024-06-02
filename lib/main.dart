@@ -23,7 +23,8 @@ import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
-import 'package:device_preview/device_preview.dart';
+import 'package:device_preview_screenshot/device_preview_screenshot.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,6 +35,7 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_io/io.dart';
+import 'package:uuid/uuid.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'common/bloc_config.dart';
@@ -89,6 +91,24 @@ Future<void> main() async {
   runApp(const MainApp());
 }
 
+Future<void> screenshotAsFile(
+  BuildContext context,
+  DeviceScreenshot screenshot,
+) async {
+  final filePath = await FilePicker.platform.saveFile(
+    dialogTitle: 'Save to',
+    type: FileType.image,
+    fileName: 'screenshot_${const Uuid().v4()}.png',
+    bytes: screenshot.bytes,
+  );
+
+  if (filePath != null) {
+    final file = File(filePath);
+
+    file.writeAsBytesSync(screenshot.bytes);
+  }
+}
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -132,6 +152,12 @@ class MainApp extends StatelessWidget {
                   child: NetworkObserver(
                     child: DevicePreview(
                       enabled: kDebugMode,
+                      tools: const [
+                        ...DevicePreview.defaultTools,
+                        DevicePreviewScreenshot(
+                          onScreenshot: screenshotAsFile,
+                        ),
+                      ],
                       builder: (context) => BlocSelector<AppConfigCubit,
                           AppConfigState, ThemeMode>(
                         selector: (state) {
