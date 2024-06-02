@@ -35,7 +35,6 @@ class SearchPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Search"),
-                    Spacer(),
                     Expanded(child: SearchInputBar()),
                   ],
                 ),
