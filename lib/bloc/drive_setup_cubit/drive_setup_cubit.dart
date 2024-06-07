@@ -60,8 +60,7 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
   }
 
   Future<void> verifyAuthCodeAndSetup(String code, List<String> scopes) async {
-    if (!scopes.contains(DriveApi.driveAppdataScope) ||
-        !scopes.contains(DriveApi.driveFileScope)) {
+    if (!scopes.contains(DriveApi.driveAppdataScope)) {
       emit(
         const DriveSetupState.setupError(
           failure: Failure(
