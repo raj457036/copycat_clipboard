@@ -22,7 +22,5 @@ class DriveAccessToken with _$DriveAccessToken {
   bool get isExpired => now().isAfter(
       issuedAt.add(Duration(seconds: expiresIn + 300))); // 5 min offset
 
-  bool get hasAllGrants =>
-      scopes.contains(DriveApi.driveFileScope) &&
-      scopes.contains(DriveApi.driveAppdataScope);
+  bool get hasAllGrants => scopes.contains(DriveApi.driveAppdataScope);
 }

@@ -28,14 +28,13 @@ class DriveCredentialRepositoryImpl implements DriveCredentialRepository {
   FailureOr<void> launchConsentPage() async {
     const String clientId =
         "892296995692-qh4gj970dkvf4m3aur0ol0an2l70lvsj.apps.googleusercontent.com";
-    const String redirectUrl = 'https://clipboard-419514.web.app';
+    const String redirectUrl = 'https://connect.entilitystudio.com';
 
     final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
       'response_type': 'code',
       'client_id': clientId,
       'redirect_uri': redirectUrl,
       'scope': [
-        DriveApi.driveFileScope,
         DriveApi.driveAppdataScope,
       ].join(" "),
       "access_type": "offline",
