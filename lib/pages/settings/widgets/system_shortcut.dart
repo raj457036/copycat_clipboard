@@ -35,13 +35,14 @@ class SetupToggleHotKey extends StatelessWidget {
                 ),
               ),
               height6,
-              Row(
-                mainAxisSize: MainAxisSize.min,
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
                     context.locale.clipboardShortcutPreview(
                       state == null ? context.locale.unassigned : '',
                     ),
+                    maxLines: 2,
                     style: textTheme.bodySmall?.copyWith(
                       color: colors.outline,
                     ),
