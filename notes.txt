@@ -1,3 +1,7 @@
 Linux:
 1. hotkey_manager needs "sudo apt-get install keybinder-3.0" for hot key shortcut implementations.
 2. for tray manager needs to install "sudo apt-get install appindicator3-0.1 libappindicator3-dev"
+
+
+Performance Improvement:
+1. https://docs.flutter.dev/perf/shader
