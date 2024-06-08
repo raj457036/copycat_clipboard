@@ -87,7 +87,7 @@ class ClipCardOptionsHeader extends StatelessWidget {
                   icon: const Icon(
                     Icons.open_in_new,
                   ),
-                  tooltip: "Open in browser",
+                  tooltip: context.locale.openInBrowser,
                   style: IconButton.styleFrom(
                     shape: const RoundedRectangleBorder(),
                   ),
@@ -98,7 +98,7 @@ class ClipCardOptionsHeader extends StatelessWidget {
                   icon: const Icon(
                     Icons.call,
                   ),
-                  tooltip: "Make a phone call",
+                  tooltip: context.locale.makePhoneCall,
                   style: IconButton.styleFrom(
                     shape: const RoundedRectangleBorder(),
                   ),
@@ -117,8 +117,9 @@ class ClipCardOptionsHeader extends StatelessWidget {
                   onPressed: item.downloading
                       ? null
                       : () => downloadFile(context, item),
-                  tooltip:
-                      item.downloading ? "Downloading" : "Download for offline",
+                  tooltip: item.downloading
+                      ? context.locale.downloading
+                      : context.locale.downloadForOffline,
                   style: IconButton.styleFrom(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(

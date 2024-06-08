@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,15 +24,15 @@ class ThemeDropdown extends StatelessWidget {
             value: state,
             padding: const EdgeInsets.symmetric(horizontal: padding16),
             borderRadius: radius12,
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: ThemeMode.system,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.contrast_rounded),
+                    const Icon(Icons.contrast_rounded),
                     width12,
-                    Text("System"),
+                    Text(context.locale.system),
                   ],
                 ),
               ),
@@ -40,9 +41,9 @@ class ThemeDropdown extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.light_mode_rounded),
+                    const Icon(Icons.light_mode_rounded),
                     width12,
-                    Text("Light"),
+                    Text(context.locale.light),
                   ],
                 ),
               ),
@@ -51,9 +52,9 @@ class ThemeDropdown extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.dark_mode_rounded),
+                    const Icon(Icons.dark_mode_rounded),
                     width12,
-                    Text("Dark"),
+                    Text(context.locale.dark),
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/search/widgets/search_bar.dart';
 import 'package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart';
 import 'package:clipboard/routes/utils.dart';
@@ -70,8 +71,8 @@ class SearchPage extends StatelessWidget {
               builder: (context, state) {
                 switch (state) {
                   case InitialSearchState():
-                    return const Center(
-                      child: Text("Find whatever you are looking for..."),
+                    return Center(
+                      child: Text(context.locale.findWhateverYouLooking),
                     );
                   case SearchingState():
                     return const Center(
@@ -84,8 +85,8 @@ class SearchPage extends StatelessWidget {
                   case SearchResultState(:final results, :final hasMore):
                     {
                       if (results.isEmpty) {
-                        return const Center(
-                          child: Text("No results were found."),
+                        return Center(
+                          child: Text(context.locale.noResultsWereFound),
                         );
                       }
 
@@ -106,8 +107,8 @@ class SearchPage extends StatelessWidget {
                               child: Center(
                                 child: TextButton.icon(
                                   onPressed: () => loadMore(context),
-                                  label: const Text(
-                                    "Load More",
+                                  label: Text(
+                                    context.locale.loadMore,
                                   ),
                                   icon: const Icon(Icons.read_more),
                                 ),

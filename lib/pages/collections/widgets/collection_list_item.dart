@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
@@ -46,13 +47,13 @@ class ClipCollectionListItem extends StatelessWidget {
       items: [
         MenuItem(
           icon: Icons.edit,
-          text: 'Edit',
+          text: context.locale.edit,
           onPressed: () => edit(context),
         ),
         const MenuItem(type: MenuItemType.divider),
         MenuItem(
           icon: Icons.delete,
-          text: 'Delete',
+          text: context.locale.delete,
           onPressed: () => delete(context),
         ),
       ],
@@ -67,7 +68,7 @@ class ClipCollectionListItem extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         subtitle: Text(
-          collection.description ?? "No Description",
+          collection.description ?? context.locale.noDescription,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

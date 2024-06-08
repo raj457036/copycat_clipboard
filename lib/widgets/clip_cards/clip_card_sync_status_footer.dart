@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,13 +29,13 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
           final percent = ((item.uploadProgress ?? 0) * 100) ~/ 1;
           buttonText = '↑ $percent%';
         } else {
-          buttonText = 'Uploading...';
+          buttonText = context.locale.uploading;
         }
       } else {
-        buttonText = 'Syncing';
+        buttonText = context.locale.syncing('');
       }
     } else {
-      buttonText = 'Sync';
+      buttonText = context.locale.sync;
     }
 
     return SizedBox.fromSize(
@@ -58,7 +59,7 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                 width6,
                 if (width > 200)
                   Text(
-                    "Local",
+                    context.locale.local,
                     style: context.textTheme.labelMedium,
                   ),
                 const Spacer(),
@@ -67,7 +68,10 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                       ? null
                       : () {
                           context.read<CloudPersistanceCubit>().persist(
-                                item.copyWith(userIntent: true)..applyId(item),
+                                item.copyWith(userIntent: true)
+                                  ..applyId(
+                                    item,
+                                  ),
                               );
                         },
                   child: Text(

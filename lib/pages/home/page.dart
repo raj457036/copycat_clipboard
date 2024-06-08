@@ -6,6 +6,7 @@ import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -58,11 +59,11 @@ class HomePage extends StatelessWidget {
 
                     if (!fetched) {
                       showTextSnackbar(
-                        'Changes Available:\n $added Added, $updated Updated and $deleted Deleted',
+                        context.locale.newUpdates(added, updated, deleted),
                         duration: 30,
                         closePrevious: true,
                         action: SnackBarAction(
-                          label: "Refresh Now",
+                          label: context.locale.refreshNow,
                           onPressed: () {
                             cubit.fetch(fromTop: true);
                           },
@@ -80,7 +81,10 @@ class HomePage extends StatelessWidget {
             switch (state) {
               case OfflinePersistanceDeleted(:final item):
                 context.read<ClipboardCubit>().deleteItem(item);
-                showTextSnackbar("Item Deleted", closePrevious: true);
+                showTextSnackbar(
+                  context.locale.itemDeleted,
+                  closePrevious: true,
+                );
               case OfflinePersistanceSaved(
                   :final item,
                   :final created,
@@ -104,7 +108,7 @@ class HomePage extends StatelessWidget {
               case CloudPersistanceDeleting(:final item):
                 context.read<ClipboardCubit>().put(item);
                 showTextSnackbar(
-                  "Deleting from cloud",
+                  context.locale.deletingFromCloud,
                   isLoading: true,
                   closePrevious: true,
                 );
@@ -136,9 +140,9 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 53),
-                child: Text("CopyCat"),
+              Padding(
+                padding: const EdgeInsets.only(left: 53),
+                child: Text(context.locale.appName),
               ),
             ],
           ),
@@ -172,8 +176,8 @@ class HomePage extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return const Center(
-                    child: Text("Your clipboard is empty."),
+                  return Center(
+                    child: Text(context.locale.emptyClipboard),
                   );
                 }
 
@@ -193,8 +197,8 @@ class HomePage extends StatelessWidget {
                         child: Center(
                           child: TextButton.icon(
                             onPressed: () => _loadMore(context),
-                            label: const Text(
-                              "Load More",
+                            label: Text(
+                              context.locale.loadMore,
                             ),
                             icon: const Icon(Icons.read_more),
                           ),

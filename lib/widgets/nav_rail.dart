@@ -1,4 +1,5 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
@@ -30,24 +31,24 @@ class LeftNavRail extends StatelessWidget {
                 height: constraints.maxHeight,
                 child: NavigationRail(
                   destinations: [
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.paste_rounded),
-                      label: Text("Clipboard"),
+                    NavigationRailDestination(
+                      icon: const Icon(Icons.paste_rounded),
+                      label: Text(context.locale.clipboard),
                     ),
                     NavigationRailDestination(
                       icon: Tooltip(
-                        message: "Shortcut: $metaKey + F",
+                        message: "Keyboard : $metaKey + F",
                         child: const Icon(Icons.content_paste_search_rounded),
                       ),
-                      label: const Text("Search"),
+                      label: Text(context.locale.search),
                     ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.collections_bookmark),
-                      label: Text("Collection"),
+                    NavigationRailDestination(
+                      icon: const Icon(Icons.collections_bookmark),
+                      label: Text(context.locale.collection),
                     ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.settings),
-                      label: Text("Settings"),
+                    NavigationRailDestination(
+                      icon: const Icon(Icons.settings),
+                      label: Text(context.locale.settings),
                     ),
                   ],
                   leading: floatingActionButton,

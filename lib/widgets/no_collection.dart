@@ -1,5 +1,6 @@
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +17,7 @@ class NoCollectionAvailable extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "No collections found",
+            context.locale.noCollectionFound,
             style: textTheme.bodyLarge,
           ),
           height12,
@@ -30,7 +31,7 @@ class NoCollectionAvailable extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.library_add),
-            label: const Text("Create a collection"),
+            label: Text(context.locale.createCollection),
           ),
         ],
       ),

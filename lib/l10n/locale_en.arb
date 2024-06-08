@@ -1,5 +1,234 @@
 {
     "@@locale": "en",
     "@@author": "Raj Singh",
-    "home": "Home Page"
+    "appName": "CopyCat",
+    "collections": "Collections",
+    "collection": "Collection",
+    "createCollection": "Create Collection",
+    "editCollection": "Edit Collection",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "description": "Description",
+    "noDescription": "No description",
+    "noResultsWereFound": "No Results were found",
+    "driveSetupDone": "Drive Setup Done 🥳",
+    "pleaseWaitWhileWeSetupSyncing": "Please wait while we setup\nsyncing",
+    "driveSetupMayTakeFewMin": "This might take about a minute to complete.\n( Please do not close the app )",
+    "refreshNow": "Refresh Now",
+    "newUpdates": "Changes Available:\n {ADDED} Added, {UPDATED} Updated and {DELETED} Deleted",
+    "@newUpdates": {
+        "placeholders": {
+            "ADDED": {
+                "type": "int"
+            },
+            "UPDATED": {
+                "type": "int"
+            },
+            "DELETED": {
+                "type": "int"
+            }
+        }
+    },
+    "itemDeleted": "Item Deleted",
+    "deletingFromCloud": "Deleting from Cloud",
+    "emptyClipboard": "Your clipboard is empty",
+    "loadMore": "Load More",
+    "clipboard": "Clipboard",
+    "search": "Search",
+    "share": "Share",
+    "export": "Export",
+    "searchClipboard": "Search Clipboard",
+    "settings": "Settings",
+    "copyCatClipboard": "CopyCat Clipboard",
+    "oneClipboardLimitlessPosibility": "One Clipboard, Limitless Posibility",
+    "fullName": "Full Name",
+    "preview": "Preview",
+    "editDetails": "Edit Details",
+    "title": "Title",
+    "nothingHere": "Nothing Here",
+    "downloading": "Downloading",
+    "downloadForOffline": "Downloading for offline",
+    "copyToClipboard": "Copy to Clipboard",
+    "delete": "Delete",
+    "resetYourPassword": "Reset your password",
+    "passwordResetSuccess": "Password reset successfully",
+    "findWhateverYouLooking": "Find Whatever you are looking for...",
+    "noResults": "No results were found.",
+    "searchInClipboard": "Search in clipboard",
+    "basicLocal": "Basic • Local",
+    "localSettingsDesc": "These settings are applicable to this device only.",
+    "theme": "Theme",
+    "syncLocal": "Sync • Local",
+    "dontAutoCopyOver": "Don't Auto Copy Over",
+    "dontAutoCopyOverDesc": "Files and Media over a certain size ({SIZE}) will not be copied automatically.",
+    "@dontAutoCopyOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "dontAutoUploadOver": "Don't Auto Upload Over",
+    "dontAutoUploadOverDesc": "Files and Media over a certain size ({SIZE}) will not be uploaded automatically.",
+    "@dontAutoUploadOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "enableSync": "Enable Sync",
+    "enableSyncDesc": "Keep your files updated across devices",
+    "syncFiles": "Sync Files and Medias",
+    "syncFilesDesc": "Keep your files and media items updated across devices.",
+    "connected": "Connected",
+    "loading": "Loading...",
+    "authorizing": "Authorizing...",
+    "connectNow": "Connect Now",
+    "tips": "ⓘ Tips",
+    "cloudStorageInfoDefault": "\n\nGoogle Drive not connected, File and media syncing is disabled.",
+    "cloudStorageInfo": "{INFO}Your files and media are synced securely across devices using Google Drive to protect your privacy.",
+    "@cloudStorageInfo": {
+        "placeholders": {
+            "INFO": {
+                "type": "String"
+            }
+        }
+    },
+    "attentionNeeded": "⚠ Attention Needed!",
+    "isPaused": "Is Paused?",
+    "isPausedDesc": "{isPaused, select, true{Auto copy is not paused} other{Auto Copy is paused until {TILL}}}",
+    "@isPausedDesc": {
+        "placeholders": {
+            "isPaused": {
+                "type": "String"
+            },
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "paste": "Paste",
+    "copy": "Copy",
+    "previewEdit": "Preview & Edit",
+    "pastingTheSharedContent": "Pasting the Shared Content to Clipboard",
+    "smartPaste": "Smart Paste",
+    "smartPasteDesc": "Enable to paste clips directly to the last focused window.",
+    "launchAtStartup": "Launch At Startup",
+    "launchAtStartupDesc": "Enable to start the app automatically when your device starts.",
+    "autoSyncInterval": "Auto Sync Interval",
+    "autoSyncIntervalDesc": "Clipboard will be automatically synced every {TIME}",
+    "@autoSyncIntervalDesc": {
+        "placeholders": {
+            "TIME": {
+                "type": "String"
+            }
+        }
+    },
+    "clipboardShortcut": "Clipboard Shortcut",
+    "clipboardShortcutDesc": "Effortlessly Access Clipboard Anywhere",
+    "clipboardShortcutPreview": "Current Shortcut Key : {KEY}",
+    "@clipboardShortcutPreview": {
+        "placeholders": {
+            "KEY": {
+                "type": "String"
+            }
+        }
+    },
+    "unassigned": "Unassigned",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "local": "Local",
+    "uploading": "Uploading...",
+    "pleaseWait": "Please Wait...",
+    "open": "Open",
+    "noCollection": "No Collection",
+    "chooseCollection": "Choose Collection",
+    "changeCollection": "Change Collection",
+    "removeFromCollection": "Remove from collection",
+    "compactMode": "Compact Mode",
+    "createACollection": "Create a new collection ( {LEFT} left )",
+    "@createACollection": {
+        "placeholders": {
+            "LEFT": {
+                "type": "int"
+            }
+        }
+    },
+    "logout": "Logout",
+    "logoutMessage": "⚠️ WARNING ⚠️\n\nLogging out will delete unsynced changes in the local database. Are you sure you want to proceed?",
+    "loggingYouOut": "Logging you out! Please wait...",
+    "logoutSuccess": "Logged out successfully",
+    "internetConnected": "Internet Connected",
+    "internetDisconnected": "Internet Disconnected",
+    "noCollectionFound": "No collection found",
+    "pinToTop": "Pin to Top",
+    "done": "Done",
+    "failed": "Failed",
+    "syncNow": "Sync Now",
+    "syncNotAvailable": "Sync Not Available",
+    "checkingForRecord": "Checking for Records",
+    "sync": "Sync",
+    "syncing": "Syncing {PROGRESS}",
+    
+    "@syncing": {
+        "placeholders": {
+            "PROGRESS": {
+                "type": "String"
+            }
+        }
+    },
+    "syncingCheckFailed": "Syncing Check Failed: {MESSAGE}",
+    "@syncingCheckFailed": {
+        "placeholders": {
+            "MESSAGE": {
+                "type": "String"
+            }
+        }
+    },
+    "lastSynced": "Last synced at {TIMESTAMP}",
+    "@lastSynced": {
+        "placeholders": {
+            "TIMESTAMP": {
+                "type": "String"
+            }
+        }
+    },
+    "showWindow": "Show Window",
+    "hideWindow": "Hide Window",
+    "hideWindowDesc": "Tip: Use keyboard shortcut to show the clipboard.",
+    "quit": "Quit",
+    "quitDesc": "Are you sure you want to quit?",
+    "yes": "Yes",
+    "no": "No",
+    "openInBrowser": "Open in browser",
+    "makePhoneCall": "Make a phone call",
+    "selectCollection": "Select a collection",
+    "confirm": "Confirm",
+    "recordKeyboardShortcut": "Record keyboard shortcut.",
+    "recordKeyboardShortcutDesc": "Type your shortcut using your keyboard and click ",
+    "subscription": "Subscription",
+    "beta": "BETA",
+    "featureListDetail": "CopyCat Clipboard is currently in the Beta phase. While we strive for a seamless experience, you may encounter occasional bugs. Stay tuned for upcoming features and enhancements.",
+    "currentPlan": "Current Plan",
+    "currentPlanLabel": "Current Plan • {LABEL}",
+    "@currentPlanLabel": {
+        "placeholders": {
+            "LABEL": {
+                "type": "String"
+            }
+        }
+    },
+    "included": "Included",
+    "unlimitedClipboardItems": "• Unlimited Clipboard Items",
+    "supportAllMajorPlatforms": "• Support all major platforms",
+    "supportsAppleUniversalClipboard": "• Supports Apple's Universal Clipboard",
+    "onDeviceStorage": "• On-Device Storage",
+    "googleDriveIntegration": "• Google Drive Integration",
+    "instantSearch": "• Instant Search",
+    "syncingUpToLast24Hours": "• Syncing up to Last 24 Hours",
+    "upTo3Collections": "• Up to 3 Collections",
+    "autoSyncEvery30Seconds": "• Auto-Sync Every 30 Seconds"
 }

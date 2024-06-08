@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/dont_upload_over.dart';
 import 'package:clipboard/pages/settings/widgets/google_drive_setup.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +31,8 @@ class EnableFileSyncSwitch extends StatelessWidget {
                       context.read<AppConfigCubit>().changeFileSync(value);
                     }
                   : null,
-              title: const Text("Sync Files and Medias"),
-              subtitle: const Text(
-                "Keep your files and media items updated across devices.",
-              ),
+              title: Text(context.locale.syncFiles),
+              subtitle: Text(context.locale.syncFilesDesc),
             ),
             if (enableFileSync && enableSync) const GoogleDriveSetup(),
             if (enableFileSync && enableSync) const DontAutoUploadOver(),

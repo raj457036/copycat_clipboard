@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class PrimaryClipActionButton extends StatelessWidget {
                 await focusManager?.pasteOnFocusedWindow();
               }
             },
-            tooltip: "Paste",
+            tooltip: context.locale.paste,
             style: IconButton.styleFrom(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -45,7 +46,7 @@ class PrimaryClipActionButton extends StatelessWidget {
         return IconButton(
           icon: const Icon(Icons.copy),
           onPressed: () => copyToClipboard(context, item),
-          tooltip: "Copy",
+          tooltip: context.locale.copy,
           style: IconButton.styleFrom(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(

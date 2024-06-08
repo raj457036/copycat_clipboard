@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
@@ -45,21 +48,21 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
     );
     Menu menu = Menu(
       items: [
-        MenuItem(disabled: true, label: "CopyCat Clipboard"),
+        MenuItem(disabled: true, label: context.locale.copyCatClipboard),
         MenuItem.separator(),
         MenuItem(
           key: 'show_window',
-          label: 'Show Window',
+          label: context.locale.showWindow,
         ),
         MenuItem(
           key: 'hide_window',
-          label: 'Hide Window',
-          toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
+          label: context.locale.hideWindow,
+          toolTip: context.locale.hideWindowDesc,
         ),
         MenuItem.separator(),
         MenuItem(
           key: 'quit_app',
-          label: 'Quit',
+          label: context.locale.quit,
         ),
       ],
     );
@@ -82,10 +85,10 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
 
   Future<void> quitApp() async {
     final result = await FlutterPlatformAlert.showCustomAlert(
-      windowTitle: 'CopyCat Clipboard',
-      text: 'Are you sure you want to quit?',
-      positiveButtonTitle: "Yes",
-      negativeButtonTitle: "No",
+      windowTitle: context.locale.copyCatClipboard,
+      text: context.locale.quitDesc,
+      positiveButtonTitle: context.locale.yes,
+      negativeButtonTitle: context.locale.no,
     );
 
     if (result.name == "positiveButton") {

@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,7 @@ class ResetPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Reset your password"),
+        title: Text(context.locale.resetYourPassword),
       ),
       body: Center(
         child: BlocSelector<AuthCubit, AuthState, String?>(
@@ -33,8 +34,8 @@ class ResetPasswordPage extends StatelessWidget {
               height: 300,
               child: su_auth.SupaResetPassword(
                 accessToken: state,
-                localization: const su_auth.SupaResetPasswordLocalization(
-                  passwordResetSent: "Password reset successfully",
+                localization: su_auth.SupaResetPasswordLocalization(
+                  passwordResetSent: context.locale.passwordResetSuccess,
                 ),
                 onSuccess: (su_auth.UserResponse response) {
                   context.pop();

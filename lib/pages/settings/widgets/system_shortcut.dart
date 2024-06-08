@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/record_keyboard_shortcut.dart';
@@ -21,14 +22,14 @@ class SetupToggleHotKey extends StatelessWidget {
       },
       builder: (context, state) {
         return SwitchListTile(
-          title: const Text("Clipboard Shortcut"),
+          title: Text(context.locale.clipboardShortcut),
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               height4,
               Text(
-                "Effortlessly Access Clipboard Anywhere",
+                context.locale.clipboardShortcutDesc,
                 style: textTheme.bodySmall?.copyWith(
                   color: colors.outline,
                 ),
@@ -38,7 +39,9 @@ class SetupToggleHotKey extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Current Shortcut Key : ${state == null ? 'Unassigned' : ''}",
+                    context.locale.clipboardShortcutPreview(
+                      state == null ? context.locale.unassigned : '',
+                    ),
                     style: textTheme.bodySmall?.copyWith(
                       color: colors.outline,
                     ),
