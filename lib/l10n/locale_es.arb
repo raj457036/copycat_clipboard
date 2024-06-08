@@ -1,0 +1,233 @@
+{
+    "@@locale": "es",
+    "@@author": "Raj Singh",
+    "appName": "CopyCat",
+    "collections": "Colecciones",
+    "collection": "Colección",
+    "createCollection": "Crear Colección",
+    "editCollection": "Editar Colección",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "description": "Descripción",
+    "noDescription": "Sin descripción",
+    "noResultsWereFound": "No se encontraron resultados",
+    "driveSetupDone": "Configuración de Drive Completa 🥳",
+    "pleaseWaitWhileWeSetupSyncing": "Por favor espera mientras configuramos\nla sincronización",
+    "driveSetupMayTakeFewMin": "Esto puede tardar aproximadamente un minuto en completarse.\n(Por favor, no cierres la aplicación)",
+    "refreshNow": "Actualizar ahora",
+    "newUpdates": "Cambios Disponibles:\n {ADDED} Agregado, {UPDATED} Actualizado y {DELETED} Eliminado",
+    "@newUpdates": {
+        "placeholders": {
+            "ADDED": {
+                "type": "int"
+            },
+            "UPDATED": {
+                "type": "int"
+            },
+            "DELETED": {
+                "type": "int"
+            }
+        }
+    },
+    "itemDeleted": "Elemento Eliminado",
+    "deletingFromCloud": "Eliminando del Nube",
+    "emptyClipboard": "Tu portapapeles está vacío",
+    "loadMore": "Cargar más",
+    "clipboard": "Portapapeles",
+    "search": "Buscar",
+    "share": "Compartir",
+    "export": "Exportar",
+    "searchClipboard": "Buscar en el Portapapeles",
+    "settings": "Configuraciones",
+    "copyCatClipboard": "Portapapeles CopyCat",
+    "oneClipboardLimitlessPosibility": "Un Portapapeles, Posibilidades Ilimitadas",
+    "fullName": "Nombre completo",
+    "preview": "Vista previa",
+    "editDetails": "Editar Detalles",
+    "title": "Título",
+    "nothingHere": "Nada aquí",
+    "downloading": "Descargando",
+    "downloadForOffline": "Descargando para uso sin conexión",
+    "copyToClipboard": "Copiar al portapapeles",
+    "delete": "Eliminar",
+    "resetYourPassword": "Restablece tu contraseña",
+    "passwordResetSuccess": "Contraseña restablecida con éxito",
+    "findWhateverYouLooking": "Encuentra lo que estás buscando...",
+    "noResults": "No se encontraron resultados.",
+    "searchInClipboard": "Buscar en el portapapeles",
+    "basicLocal": "Básico • Local",
+    "localSettingsDesc": "Estas configuraciones son aplicables solo a este dispositivo.",
+    "theme": "Tema",
+    "syncLocal": "Sincronizar • Local",
+    "dontAutoCopyOver": "No Copiar Automáticamente",
+    "dontAutoCopyOverDesc": "Los archivos y medios que superen un cierto tamaño ({SIZE}) no se copiarán automáticamente.",
+    "@dontAutoCopyOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "dontAutoUploadOver": "No Subir Automáticamente",
+    "dontAutoUploadOverDesc": "Los archivos y medios que superen un cierto tamaño ({SIZE}) no se subirán automáticamente.",
+    "@dontAutoUploadOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "enableSync": "Habilitar Sincronización",
+    "enableSyncDesc": "Mantén tus archivos actualizados en todos los dispositivos",
+    "syncFiles": "Sincronizar Archivos y Medios",
+    "syncFilesDesc": "Mantén tus archivos y elementos multimedia actualizados en todos los dispositivos.",
+    "connected": "Conectado",
+    "loading": "Cargando...",
+    "authorizing": "Autorizando...",
+    "connectNow": "Conectar Ahora",
+    "tips": "ⓘ Consejos",
+    "cloudStorageInfoDefault": "\n\nGoogle Drive no conectado, la sincronización de archivos y medios está deshabilitada.",
+    "cloudStorageInfo": "{INFO}Tus archivos y medios se sincronizan de manera segura a través de dispositivos utilizando Google Drive para proteger tu privacidad.",
+    "@cloudStorageInfo": {
+        "placeholders": {
+            "INFO": {
+                "type": "String"
+            }
+        }
+    },
+    "attentionNeeded": "⚠ ¡Atención Necesaria!",
+    "isPaused": "¿Está Pausado?",
+    "isPausedDesc": "{isPaused, select, true{La copia automática no está pausada} other{La copia automática está pausada hasta {TILL}}}",
+    "@isPausedDesc": {
+        "placeholders": {
+            "isPaused": {
+                "type": "String"
+            },
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "paste": "Pegar",
+    "copy": "Copiar",
+    "previewEdit": "Vista Previa y Editar",
+    "pastingTheSharedContent": "Pegando el contenido compartido al portapapeles",
+    "smartPaste": "Pegar Inteligente",
+    "smartPasteDesc": "Habilitar para pegar clips directamente en la última ventana enfocada.",
+    "launchAtStartup": "Lanzar al Iniciar",
+    "launchAtStartupDesc": "Habilitar para iniciar la aplicación automáticamente cuando tu dispositivo se encienda.",
+    "autoSyncInterval": "Intervalo de Sincronización Automática",
+    "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente cada {TIME}",
+    "@autoSyncIntervalDesc": {
+        "placeholders": {
+            "TIME": {
+                "type": "String"
+            }
+        }
+    },
+    "clipboardShortcut": "Atajo de Portapapeles",
+    "clipboardShortcutDesc": "Accede fácilmente al portapapeles en cualquier lugar",
+    "clipboardShortcutPreview": "Tecla de Atajo Actual : {KEY}",
+    "@clipboardShortcutPreview": {
+        "placeholders": {
+            "KEY": {
+                "type": "String"
+            }
+        }
+    },
+    "unassigned": "No asignado",
+    "system": "Sistema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "local": "Local",
+    "uploading": "Subiendo...",
+    "pleaseWait": "Por favor espera...",
+    "open": "Abrir",
+    "noCollection": "Sin Colección",
+    "chooseCollection": "Elegir Colección",
+    "changeCollection": "Cambiar Colección",
+    "removeFromCollection": "Eliminar de la Colección",
+    "compactMode": "Modo Compacto",
+    "createACollection": "Crear una nueva colección ( {LEFT} restantes )",
+    "@createACollection": {
+        "placeholders": {
+            "LEFT": {
+                "type": "int"
+            }
+        }
+    },
+    "logout": "Cerrar Sesión",
+    "logoutMessage": "⚠️ ADVERTENCIA ⚠️\n\nCerrar sesión eliminará los cambios no sincronizados en la base de datos local. ¿Estás seguro de que quieres proceder?",
+    "loggingYouOut": "¡Cerrando sesión! Por favor espera...",
+    "logoutSuccess": "Sesión cerrada con éxito",
+    "internetConnected": "Internet Conectado",
+    "internetDisconnected": "Internet Desconectado",
+    "noCollectionFound": "No se encontró ninguna colección",
+    "pinToTop": "Fijar al principio",
+    "done": "Hecho",
+    "failed": "Fallido",
+    "syncNow": "Sincronizar Ahora",
+    "syncNotAvailable": "Sincronización No Disponible",
+    "checkingForRecord": "Buscando Registros",
+    "sync": "Sincronizar",
+    "syncing": "Sincronizando {PROGRESS}",
+    "@syncing": {
+        "placeholders": {
+            "PROGRESS": {
+                "type": "String"
+            }
+        }
+    },
+    "syncingCheckFailed": "Error en la Comprobación de Sincronización: {MESSAGE}",
+    "@syncingCheckFailed": {
+        "placeholders": {
+            "MESSAGE": {
+                "type": "String"
+            }
+        }
+    },
+    "lastSynced": "Última sincronización a las {TIMESTAMP}",
+    "@lastSynced": {
+        "placeholders": {
+            "TIMESTAMP": {
+                "type": "String"
+            }
+        }
+    },
+    "showWindow": "Mostrar Ventana",
+    "hideWindow": "Ocultar Ventana",
+    "hideWindowDesc": "Consejo: Usa el atajo de teclado para mostrar el portapapeles.",
+    "quit": "Salir",
+    "quitDesc": "¿Estás seguro de que quieres salir?",
+    "yes": "Sí",
+    "no": "No",
+    "openInBrowser": "Abrir en el navegador",
+    "makePhoneCall": "Hacer una llamada",
+    "selectCollection": "Seleccionar una colección",
+    "confirm": "Confirmar",
+    "recordKeyboardShortcut": "Grabar atajo de teclado.",
+    "recordKeyboardShortcutDesc": "Escribe tu atajo usando tu teclado y haz clic ",
+    "subscription": "Suscripción",
+    "beta": "BETA",
+    "featureListDetail": "CopyCat Clipboard está actualmente en fase Beta. Mientras nos esforzamos por ofrecer una experiencia sin problemas, puede que encuentres errores ocasionales. Mantente atento a las próximas características y mejoras.",
+    "currentPlan": "Plan Actual",
+    "currentPlanLabel": "Plan Actual • {LABEL}",
+    "@currentPlanLabel": {
+        "placeholders": {
+            "LABEL": {
+                "type": "String"
+            }
+        }
+    },
+    "included": "Incluido",
+    "unlimitedClipboardItems": "• Elementos de Portapapeles Ilimitados",
+    "supportAllMajorPlatforms": "• Soporte para todas las plataformas principales",
+    "supportsAppleUniversalClipboard": "• Compatible con el Portapapeles Universal de Apple",
+    "onDeviceStorage": "• Almacenamiento en el Dispositivo",
+    "googleDriveIntegration": "• Integración con Google Drive",
+    "instantSearch": "• Búsqueda Instantánea",
+    "syncingUpToLast24Hours": "• Sincronización hasta las últimas 24 horas",
+    "upTo3Collections": "• Hasta 3 Colecciones",
+    "autoSyncEvery30Seconds": "• Auto-Sincronización cada 30 Segundos"
+}

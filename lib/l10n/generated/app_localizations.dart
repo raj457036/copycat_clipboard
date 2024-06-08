@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart' deferred as app_localizations_en;
+import 'app_localizations_es.dart' deferred as app_localizations_es;
 
 /// Callers can lookup localized strings with an instance of AppLocalizations
 /// returned by `AppLocalizations.of(context)`.
@@ -89,7 +90,10 @@ abstract class AppLocalizations {
   ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('es')
+  ];
 
   /// No description provided for @appName.
   ///
@@ -919,7 +923,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en'].contains(locale.languageCode);
+      <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -932,6 +936,10 @@ Future<AppLocalizations> lookupAppLocalizations(Locale locale) {
       return app_localizations_en
           .loadLibrary()
           .then((dynamic _) => app_localizations_en.AppLocalizationsEn());
+    case 'es':
+      return app_localizations_es
+          .loadLibrary()
+          .then((dynamic _) => app_localizations_es.AppLocalizationsEs());
   }
 
   throw FlutterError(

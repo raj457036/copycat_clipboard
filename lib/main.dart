@@ -207,6 +207,7 @@ class MainApp extends StatelessWidget {
                                 ),
                               ),
                               debugShowCheckedModeBanner: false,
+                              locale: const Locale("es"),
                               localizationsDelegates:
                                   AppLocalizations.localizationsDelegates,
                               supportedLocales:

@@ -29,26 +29,39 @@ class LeftNavRail extends StatelessWidget {
             SingleChildScrollView(
               child: SizedBox(
                 height: constraints.maxHeight,
+                width: 90,
                 child: NavigationRail(
                   destinations: [
                     NavigationRailDestination(
                       icon: const Icon(Icons.paste_rounded),
-                      label: Text(context.locale.clipboard),
+                      label: Text(
+                        context.locale.clipboard,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     NavigationRailDestination(
                       icon: Tooltip(
                         message: "Keyboard : $metaKey + F",
                         child: const Icon(Icons.content_paste_search_rounded),
                       ),
-                      label: Text(context.locale.search),
+                      label: Text(
+                        context.locale.search,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     NavigationRailDestination(
                       icon: const Icon(Icons.collections_bookmark),
-                      label: Text(context.locale.collection),
+                      label: Text(
+                        context.locale.collection,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     NavigationRailDestination(
                       icon: const Icon(Icons.settings),
-                      label: Text(context.locale.settings),
+                      label: Text(
+                        context.locale.settings,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                   leading: floatingActionButton,
