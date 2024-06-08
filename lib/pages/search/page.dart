@@ -29,15 +29,7 @@ class SearchPage extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: kToolbarHeight + (isMobile ? 45 : 30),
           centerTitle: true,
-          title: isMobile
-              ? const SearchInputBar()
-              : const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Search"),
-                    Expanded(child: SearchInputBar()),
-                  ],
-                ),
+          title: const SearchInputBar(),
         ),
         body: LeftNavRail(
           floatingActionButton: floatingActionButton,
