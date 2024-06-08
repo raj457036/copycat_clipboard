@@ -39,5 +39,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>FLTEnableImpeller</key>
+	<true />
 </dict>
 </plist>

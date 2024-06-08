@@ -122,7 +122,7 @@ class MainApp extends StatelessWidget {
           create: (context) => sl(),
         ),
         BlocProvider<AppConfigCubit>(
-          create: (context) => sl(),
+          create: (context) => sl()..load(),
         ),
         BlocProvider<SyncManagerCubit>(
           create: (context) => sl(),
