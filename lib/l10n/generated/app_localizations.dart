@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_de.dart' deferred as app_localizations_de;
 import 'app_localizations_en.dart' deferred as app_localizations_en;
 import 'app_localizations_es.dart' deferred as app_localizations_es;
+import 'app_localizations_fr.dart' deferred as app_localizations_fr;
 
 /// Callers can lookup localized strings with an instance of AppLocalizations
 /// returned by `AppLocalizations.of(context)`.
@@ -91,8 +93,10 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('de'),
     Locale('en'),
-    Locale('es')
+    Locale('es'),
+    Locale('fr')
   ];
 
   /// No description provided for @appName.
@@ -100,6 +104,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'CopyCat'**
   String get appName;
+
+  /// No description provided for @en.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get en;
+
+  /// No description provided for @es.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get es;
+
+  /// No description provided for @fr.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get fr;
+
+  /// No description provided for @de.
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get de;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get enterEmail;
+
+  /// No description provided for @validEmailError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get validEmailError;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enterPassword;
+
+  /// No description provided for @passwordLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a password that is at least 6 characters long'**
+  String get passwordLengthError;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUp;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get forgotPassword;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Sign up'**
+  String get dontHaveAccount;
+
+  /// No description provided for @haveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get haveAccount;
+
+  /// No description provided for @sendPasswordReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Send password reset email'**
+  String get sendPasswordReset;
+
+  /// No description provided for @backToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
+  String get backToSignIn;
+
+  /// No description provided for @updatePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get updatePassword;
+
+  /// No description provided for @unexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred'**
+  String get unexpectedError;
+
+  /// No description provided for @passwordResetSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email has been sent'**
+  String get passwordResetSent;
 
   /// No description provided for @collections.
   ///
@@ -923,7 +1041,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+      <String>['de', 'en', 'es', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -932,6 +1050,10 @@ class _AppLocalizationsDelegate
 Future<AppLocalizations> lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de':
+      return app_localizations_de
+          .loadLibrary()
+          .then((dynamic _) => app_localizations_de.AppLocalizationsDe());
     case 'en':
       return app_localizations_en
           .loadLibrary()
@@ -940,6 +1062,10 @@ Future<AppLocalizations> lookupAppLocalizations(Locale locale) {
       return app_localizations_es
           .loadLibrary()
           .then((dynamic _) => app_localizations_es.AppLocalizationsEs());
+    case 'fr':
+      return app_localizations_fr
+          .loadLibrary()
+          .then((dynamic _) => app_localizations_fr.AppLocalizationsFr());
   }
 
   throw FlutterError(

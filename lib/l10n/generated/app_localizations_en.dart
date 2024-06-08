@@ -10,6 +10,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'CopyCat';
 
   @override
+  String get en => 'English';
+
+  @override
+  String get es => 'Spanish';
+
+  @override
+  String get fr => 'French';
+
+  @override
+  String get de => 'German';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get enterEmail => 'Enter your email';
+
+  @override
+  String get validEmailError => 'Please enter a valid email address';
+
+  @override
+  String get enterPassword => 'Enter your password';
+
+  @override
+  String get passwordLengthError =>
+      'Please enter a password that is at least 6 characters long';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get forgotPassword => 'Forgot your password?';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account? Sign up';
+
+  @override
+  String get haveAccount => 'Already have an account? Sign in';
+
+  @override
+  String get sendPasswordReset => 'Send password reset email';
+
+  @override
+  String get backToSignIn => 'Back to sign in';
+
+  @override
+  String get updatePassword => 'Update Password';
+
+  @override
+  String get unexpectedError => 'An unexpected error occurred';
+
+  @override
+  String get passwordResetSent => 'Password reset email has been sent';
+
+  @override
   String get collections => 'Collections';
 
   @override

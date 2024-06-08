@@ -10,6 +10,67 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appName => 'CopyCat';
 
   @override
+  String get en => 'Inglés';
+
+  @override
+  String get es => 'Español';
+
+  @override
+  String get fr => 'Francés';
+
+  @override
+  String get de => 'Alemán';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get enterEmail => 'Introduce tu correo electrónico';
+
+  @override
+  String get validEmailError =>
+      'Por favor, introduce una dirección de correo electrónico válida';
+
+  @override
+  String get enterPassword => 'Introduce tu contraseña';
+
+  @override
+  String get passwordLengthError =>
+      'Por favor, introduce una contraseña que tenga al menos 6 caracteres';
+
+  @override
+  String get signIn => 'Iniciar Sesión';
+
+  @override
+  String get signUp => 'Registrarse';
+
+  @override
+  String get forgotPassword => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get dontHaveAccount => '¿No tienes una cuenta? Regístrate';
+
+  @override
+  String get haveAccount => '¿Ya tienes una cuenta? Inicia sesión';
+
+  @override
+  String get sendPasswordReset =>
+      'Enviar correo de restablecimiento de contraseña';
+
+  @override
+  String get backToSignIn => 'Volver a iniciar sesión';
+
+  @override
+  String get updatePassword => 'Actualizar Contraseña';
+
+  @override
+  String get unexpectedError => 'Ocurrió un error inesperado';
+
+  @override
+  String get passwordResetSent =>
+      'El correo de restablecimiento de contraseña ha sido enviado';
+
+  @override
   String get collections => 'Colecciones';
 
   @override
@@ -89,7 +150,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings => 'Configuraciones';
 
   @override
-  String get copyCatClipboard => 'Portapapeles CopyCat';
+  String get copyCatClipboard => 'CopyCat Clipboard';
 
   @override
   String get oneClipboardLimitlessPosibility =>

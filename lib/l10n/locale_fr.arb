@@ -1,0 +1,252 @@
+{
+    "@@locale": "fr",
+    "@@author": "Raj Singh",
+    "appName": "CopyCat",
+    "en": "Anglais",
+    "es": "Espagnol",
+    "fr": "Français",
+    "de": "Allemand",
+    "language": "Langue",
+    "enterEmail": "Entrez votre e-mail",
+    "validEmailError": "Veuillez entrer une adresse e-mail valide",
+    "enterPassword": "Entrez votre mot de passe",
+    "passwordLengthError": "Veuillez entrer un mot de passe d'au moins 6 caractères",
+    "signIn": "Se Connecter",
+    "signUp": "S'inscrire",
+    "forgotPassword": "Mot de passe oublié?",
+    "dontHaveAccount": "Vous n'avez pas de compte? Inscrivez-vous",
+    "haveAccount": "Vous avez déjà un compte? Connectez-vous",
+    "sendPasswordReset": "Envoyer un e-mail de réinitialisation du mot de passe",
+    "backToSignIn": "Retour à la connexion",
+    "updatePassword": "Mettre à jour le mot de passe",
+    "unexpectedError": "Une erreur inattendue s'est produite",
+    "passwordResetSent": "L'e-mail de réinitialisation du mot de passe a été envoyé",
+    "collections": "Collections",
+    "collection": "Collection",
+    "createCollection": "Créer une Collection",
+    "editCollection": "Modifier la Collection",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "edit": "Modifier",
+    "description": "Description",
+    "noDescription": "Pas de description",
+    "noResultsWereFound": "Aucun résultat trouvé",
+    "driveSetupDone": "Configuration du Drive terminée 🥳",
+    "pleaseWaitWhileWeSetupSyncing": "Veuillez patienter pendant que nous configurons\nla synchronisation",
+    "driveSetupMayTakeFewMin": "Cela peut prendre environ une minute pour terminer.\n( Veuillez ne pas fermer l'application )",
+    "refreshNow": "Actualiser Maintenant",
+    "newUpdates": "Modifications Disponibles:\n {ADDED} Ajouté, {UPDATED} Mis à jour et {DELETED} Supprimé",
+    "@newUpdates": {
+        "placeholders": {
+            "ADDED": {
+                "type": "int"
+            },
+            "UPDATED": {
+                "type": "int"
+            },
+            "DELETED": {
+                "type": "int"
+            }
+        }
+    },
+    "itemDeleted": "Élément supprimé",
+    "deletingFromCloud": "Suppression du Cloud",
+    "emptyClipboard": "Votre presse-papiers est vide",
+    "loadMore": "Charger Plus",
+    "clipboard": "Presse-papiers",
+    "search": "Recherche",
+    "share": "Partager",
+    "export": "Exporter",
+    "searchClipboard": "Rechercher dans le presse-papiers",
+    "settings": "Paramètres",
+    "copyCatClipboard": "Presse-papiers CopyCat",
+    "oneClipboardLimitlessPosibility": "Un Presse-papiers, Possibilités Illimitées",
+    "fullName": "Nom Complet",
+    "preview": "Aperçu",
+    "editDetails": "Modifier les Détails",
+    "title": "Titre",
+    "nothingHere": "Rien ici",
+    "downloading": "Téléchargement",
+    "downloadForOffline": "Téléchargement pour une utilisation hors ligne",
+    "copyToClipboard": "Copier dans le presse-papiers",
+    "delete": "Supprimer",
+    "resetYourPassword": "Réinitialisez votre mot de passe",
+    "passwordResetSuccess": "Mot de passe réinitialisé avec succès",
+    "findWhateverYouLooking": "Trouvez ce que vous cherchez...",
+    "noResults": "Aucun résultat trouvé.",
+    "searchInClipboard": "Rechercher dans le presse-papiers",
+    "basicLocal": "Basique • Local",
+    "localSettingsDesc": "Ces paramètres s'appliquent uniquement à cet appareil.",
+    "theme": "Thème",
+    "syncLocal": "Synchroniser • Local",
+    "dontAutoCopyOver": "Ne pas Copier Automatiquement",
+    "dontAutoCopyOverDesc": "Les fichiers et médias de plus d'une certaine taille ({SIZE}) ne seront pas copiés automatiquement.",
+    "@dontAutoCopyOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "dontAutoUploadOver": "Ne pas Télécharger Automatiquement",
+    "dontAutoUploadOverDesc": "Les fichiers et médias de plus d'une certaine taille ({SIZE}) ne seront pas téléchargés automatiquement.",
+    "@dontAutoUploadOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "enableSync": "Activer la Synchronisation",
+    "enableSyncDesc": "Gardez vos fichiers à jour sur tous vos appareils",
+    "syncFiles": "Synchroniser les Fichiers et Médias",
+    "syncFilesDesc": "Gardez vos fichiers et éléments multimédias à jour sur tous vos appareils.",
+    "connected": "Connecté",
+    "loading": "Chargement...",
+    "authorizing": "Autorisation...",
+    "connectNow": "Connecter Maintenant",
+    "tips": "ⓘ Conseils",
+    "cloudStorageInfoDefault": "\n\nGoogle Drive non connecté, la synchronisation des fichiers et des médias est désactivée.",
+    "cloudStorageInfo": "{INFO}Vos fichiers et médias sont synchronisés en toute sécurité sur tous vos appareils en utilisant Google Drive pour protéger votre confidentialité.",
+    "@cloudStorageInfo": {
+        "placeholders": {
+            "INFO": {
+                "type": "String"
+            }
+        }
+    },
+    "attentionNeeded": "⚠ Attention Requise!",
+    "isPaused": "Est en Pause?",
+    "isPausedDesc": "{isPaused, select, true{La copie automatique n'est pas en pause} other{La copie automatique est en pause jusqu'à {TILL}}}",
+    "@isPausedDesc": {
+        "placeholders": {
+            "isPaused": {
+                "type": "String"
+            },
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "paste": "Coller",
+    "copy": "Copier",
+    "previewEdit": "Aperçu et Modifier",
+    "pastingTheSharedContent": "Collage du contenu partagé dans le presse-papiers",
+    "smartPaste": "Collage Intelligent",
+    "smartPasteDesc": "Permet de coller les clips directement dans la dernière fenêtre active.",
+    "launchAtStartup": "Lancer au Démarrage",
+    "launchAtStartupDesc": "Permet de démarrer l'application automatiquement au démarrage de votre appareil.",
+    "autoSyncInterval": "Intervalle de Synchronisation Automatique",
+    "autoSyncIntervalDesc": "Le presse-papiers sera automatiquement synchronisé toutes les {TIME}",
+    "@autoSyncIntervalDesc": {
+        "placeholders": {
+            "TIME": {
+                "type": "String"
+            }
+        }
+    },
+    "clipboardShortcut": "Raccourci du Presse-papiers",
+    "clipboardShortcutDesc": "Accédez facilement au presse-papiers partout",
+    "clipboardShortcutPreview": "Touche de raccourci actuelle : {KEY}",
+    "@clipboardShortcutPreview": {
+        "placeholders": {
+            "KEY": {
+                "type": "String"
+            }
+        }
+    },
+    "unassigned": "Non assigné",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre",
+    "local": "Local",
+    "uploading": "Téléchargement...",
+    "pleaseWait": "Veuillez patienter...",
+    "open": "Ouvrir",
+    "noCollection": "Aucune Collection",
+    "chooseCollection": "Choisir une Collection",
+    "changeCollection": "Changer de Collection",
+    "removeFromCollection": "Retirer de la collection",
+    "compactMode": "Mode Compact",
+    "createACollection": "Créer une nouvelle collection ( {LEFT} restant )",
+    "@createACollection": {
+        "placeholders": {
+            "LEFT": {
+                "type": "int"
+            }
+        }
+    },
+    "logout": "Se Déconnecter",
+    "logoutMessage": "⚠️ AVERTISSEMENT ⚠️\n\nLa déconnexion supprimera les modifications non synchronisées dans la base de données locale. Êtes-vous sûr de vouloir continuer?",
+    "loggingYouOut": "Déconnexion en cours! Veuillez patienter...",
+    "logoutSuccess": "Déconnexion réussie",
+    "internetConnected": "Internet Connecté",
+    "internetDisconnected": "Internet Déconnecté",
+    "noCollectionFound": "Aucune collection trouvée",
+    "pinToTop": "Épingler en Haut",
+    "done": "Terminé",
+    "failed": "Échoué",
+    "syncNow": "Synchroniser Maintenant",
+    "syncNotAvailable": "Synchronisation Non Disponible",
+    "checkingForRecord": "Vérification des Enregistrements",
+    "sync": "Synchroniser",
+    "syncing": "Synchronisation en cours {PROGRESS}",
+    "@syncing": {
+        "placeholders": {
+            "PROGRESS": {
+                "type": "String"
+            }
+        }
+    },
+    "syncingCheckFailed": "Échec de la vérification de synchronisation : {MESSAGE}",
+    "@syncingCheckFailed": {
+        "placeholders": {
+            "MESSAGE": {
+                "type": "String"
+            }
+        }
+    },
+    "lastSynced": "Dernière synchronisation à {TIMESTAMP}",
+    "@lastSynced": {
+        "placeholders": {
+            "TIMESTAMP": {
+                "type": "String"
+            }
+        }
+    },
+    "showWindow": "Afficher la Fenêtre",
+    "hideWindow": "Masquer la Fenêtre",
+    "hideWindowDesc": "Conseil : Utilisez le raccourci clavier pour afficher le presse-papiers.",
+    "quit": "Quitter",
+    "quitDesc": "Êtes-vous sûr de vouloir quitter?",
+    "yes": "Oui",
+    "no": "Non",
+    "openInBrowser": "Ouvrir dans le navigateur",
+    "makePhoneCall": "Passer un appel téléphonique",
+    "selectCollection": "Sélectionner une collection",
+    "confirm": "Confirmer",
+    "recordKeyboardShortcut": "Enregistrer le raccourci clavier.",
+    "recordKeyboardShortcutDesc": "Tapez votre raccourci à l'aide de votre clavier et cliquez ",
+    "subscription": "Abonnement",
+    "beta": "BETA",
+    "featureListDetail": "CopyCat Clipboard est actuellement en phase Beta. Bien que nous nous efforcions d'offrir une expérience sans faille, vous pourriez rencontrer des bugs occasionnels. Restez à l'écoute pour les futures fonctionnalités et améliorations.",
+    "currentPlan": "Plan Actuel",
+    "currentPlanLabel": "Plan Actuel • {LABEL}",
+    "@currentPlanLabel": {
+        "placeholders": {
+            "LABEL": {
+                "type": "String"
+            }
+        }
+    },
+    "included": "Inclus",
+    "unlimitedClipboardItems": "• Éléments de Presse-papiers Illimités",
+    "supportAllMajorPlatforms": "• Prend en charge toutes les principales plateformes",
+    "supportsAppleUniversalClipboard": "• Prend en charge le Presse-papiers Universel d'Apple",
+    "onDeviceStorage": "• Stockage sur l'Appareil",
+    "googleDriveIntegration": "• Intégration Google Drive",
+    "instantSearch": "• Recherche Instantanée",
+    "syncingUpToLast24Hours": "• Synchronisation jusqu'aux dernières 24 heures",
+    "upTo3Collections": "• Jusqu'à 3 Collections",
+    "autoSyncEvery30Seconds": "• Synchronisation Automatique Toutes les 30 Secondes"
+}

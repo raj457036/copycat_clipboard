@@ -24,6 +24,7 @@ class ThemeDropdown extends StatelessWidget {
             value: state,
             padding: const EdgeInsets.symmetric(horizontal: padding16),
             borderRadius: radius12,
+            icon: const Icon(Icons.arrow_drop_down_rounded),
             items: [
               DropdownMenuItem(
                 value: ThemeMode.system,

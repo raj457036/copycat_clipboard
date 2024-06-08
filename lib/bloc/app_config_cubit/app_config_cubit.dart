@@ -91,6 +91,13 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     await repo.update(newConfig);
   }
 
+  Future<void> changeLocale(String locale) async {
+    final newConfig = state.config.copyWith(locale: locale)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    await repo.update(newConfig);
+  }
+
   Future<void> changeThemeMode(ThemeMode mode) async {
     final newConfig = state.config.copyWith(themeMode: mode)
       ..applyId(state.config);

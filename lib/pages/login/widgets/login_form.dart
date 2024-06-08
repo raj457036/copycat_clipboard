@@ -6,6 +6,7 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_validator/form_validator.dart';
@@ -40,24 +41,27 @@ class LoginForm extends StatelessWidget {
               top: 180,
             ),
             child: SizedBox(
-              height: mq.size.height - 180,
+              // height: mq.size.height,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Spacer(),
+                  // const Spacer(),
                   Text(
                     context.locale.copyCatClipboard,
                     style: textTheme.headlineMedium,
+                    textAlign: TextAlign.center,
                   ),
                   height12,
                   Text(
                     context.locale.oneClipboardLimitlessPosibility,
                     style: textTheme.titleMedium,
+                    textAlign: TextAlign.center,
                   ),
                   height24,
                   SizedBox(
                     width: 350,
-                    height: 390,
+                    // height: 390,
                     child: su_auth.SupaEmailAuth(
                       onSignUpComplete: (su_auth.AuthResponse response) {
                         if (response.session != null && response.user != null) {
@@ -90,13 +94,30 @@ class LoginForm extends StatelessWidget {
                           validator: ValidationBuilder().minLength(1).build(),
                         ),
                       ],
+                      localization: su_auth.SupaEmailAuthLocalization(
+                        enterEmail: context.locale.enterEmail,
+                        validEmailError: context.locale.validEmailError,
+                        enterPassword: context.locale.enterPassword,
+                        passwordLengthError: context.locale.passwordLengthError,
+                        signIn: context.locale.signIn,
+                        signUp: context.locale.signUp,
+                        forgotPassword: context.locale.forgotPassword,
+                        dontHaveAccount: context.locale.dontHaveAccount,
+                        haveAccount: context.locale.haveAccount,
+                        sendPasswordReset: context.locale.sendPasswordReset,
+                        passwordResetSent: context.locale.passwordResetSent,
+                        backToSignIn: context.locale.backToSignIn,
+                        unexpectedError: context.locale.unexpectedError,
+                      ),
                     ),
                   ),
-                  const Spacer(),
+                  // const Spacer(),
+                  const LocaleDropdown(),
+                  // height12,
                   if (isMobile)
                     Image.asset(
-                      AssetConstants.catPeekImage,
-                      height: 55,
+                      AssetConstants.catPeekUpSideDownImage,
+                      height: 50,
                     ),
                 ],
               ),

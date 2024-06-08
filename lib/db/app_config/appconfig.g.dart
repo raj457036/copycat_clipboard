@@ -52,24 +52,29 @@ const AppConfigSchema = CollectionSchema(
       name: r'launchAtStartup',
       type: IsarType.bool,
     ),
-    r'pausedTill': PropertySchema(
+    r'locale': PropertySchema(
       id: 7,
+      name: r'locale',
+      type: IsarType.string,
+    ),
+    r'pausedTill': PropertySchema(
+      id: 8,
       name: r'pausedTill',
       type: IsarType.dateTime,
     ),
     r'smartPaste': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'smartPaste',
       type: IsarType.bool,
     ),
     r'themeMode': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'themeMode',
       type: IsarType.string,
       enumMap: _AppConfigthemeModeEnumValueMap,
     ),
     r'toggleHotkey': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'toggleHotkey',
       type: IsarType.string,
     )
@@ -94,6 +99,7 @@ int _appConfigEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.locale.length * 3;
   bytesCount += 3 + object.themeMode.name.length * 3;
   {
     final value = object.toggleHotkey;
@@ -117,10 +123,11 @@ void _appConfigSerialize(
   writer.writeBool(offsets[4], object.enableSync);
   writer.writeBool(offsets[5], object.isPersisted);
   writer.writeBool(offsets[6], object.launchAtStartup);
-  writer.writeDateTime(offsets[7], object.pausedTill);
-  writer.writeBool(offsets[8], object.smartPaste);
-  writer.writeString(offsets[9], object.themeMode.name);
-  writer.writeString(offsets[10], object.toggleHotkey);
+  writer.writeString(offsets[7], object.locale);
+  writer.writeDateTime(offsets[8], object.pausedTill);
+  writer.writeBool(offsets[9], object.smartPaste);
+  writer.writeString(offsets[10], object.themeMode.name);
+  writer.writeString(offsets[11], object.toggleHotkey);
 }
 
 AppConfig _appConfigDeserialize(
@@ -136,12 +143,13 @@ AppConfig _appConfigDeserialize(
     enableFileSync: reader.readBool(offsets[3]),
     enableSync: reader.readBool(offsets[4]),
     launchAtStartup: reader.readBool(offsets[6]),
-    pausedTill: reader.readDateTimeOrNull(offsets[7]),
-    smartPaste: reader.readBool(offsets[8]),
+    locale: reader.readString(offsets[7]),
+    pausedTill: reader.readDateTimeOrNull(offsets[8]),
+    smartPaste: reader.readBool(offsets[9]),
     themeMode:
-        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[9])] ??
+        _AppConfigthemeModeValueEnumMap[reader.readStringOrNull(offsets[10])] ??
             ThemeMode.system,
-    toggleHotkey: reader.readStringOrNull(offsets[10]),
+    toggleHotkey: reader.readStringOrNull(offsets[11]),
   );
   object.id = id;
   return object;
@@ -169,14 +177,16 @@ P _appConfigDeserializeProp<P>(
     case 6:
       return (reader.readBool(offset)) as P;
     case 7:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 8:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 9:
+      return (reader.readBool(offset)) as P;
+    case 10:
       return (_AppConfigthemeModeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           ThemeMode.system) as P;
-    case 10:
+    case 11:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -541,6 +551,136 @@ extension AppConfigQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'launchAtStartup',
         value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'locale',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'locale',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'locale',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'locale',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'locale',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'locale',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'locale',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'locale',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'locale',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterFilterCondition> localeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'locale',
+        value: '',
       ));
     });
   }
@@ -1004,6 +1144,18 @@ extension AppConfigQuerySortBy on QueryBuilder<AppConfig, AppConfig, QSortBy> {
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByLocale() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locale', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByLocaleDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locale', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> sortByPausedTill() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pausedTill', Sort.asc);
@@ -1152,6 +1304,18 @@ extension AppConfigQuerySortThenBy
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByLocale() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locale', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByLocaleDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locale', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QAfterSortBy> thenByPausedTill() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pausedTill', Sort.asc);
@@ -1245,6 +1409,13 @@ extension AppConfigQueryWhereDistinct
     });
   }
 
+  QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByLocale(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'locale', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<AppConfig, AppConfig, QDistinct> distinctByPausedTill() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pausedTill');
@@ -1322,6 +1493,12 @@ extension AppConfigQueryProperty
     });
   }
 
+  QueryBuilder<AppConfig, String, QQueryOperations> localeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'locale');
+    });
+  }
+
   QueryBuilder<AppConfig, DateTime?, QQueryOperations> pausedTillProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pausedTill');
@@ -1366,6 +1543,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
       toggleHotkey: json['toggleHotkey'] as String?,
       smartPaste: json['smartPaste'] as bool? ?? false,
       launchAtStartup: json['launchAtStartup'] as bool? ?? false,
+      locale: json['locale'] as String? ?? "en",
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
@@ -1380,6 +1558,7 @@ Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
       'toggleHotkey': instance.toggleHotkey,
       'smartPaste': instance.smartPaste,
       'launchAtStartup': instance.launchAtStartup,
+      'locale': instance.locale,
     };
 
 const _$ThemeModeEnumMap = {
