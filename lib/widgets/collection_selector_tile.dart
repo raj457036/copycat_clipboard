@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/widgets/dialogs/collection_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,11 +69,11 @@ class ClipCollectionSelectorStateTile
   Widget build(BuildContext context) {
     final tile = ListTile(
       title: collection == null
-          ? const Text("No Collection")
+          ? Text(context.locale.noCollection)
           : Text(collection!.title),
       subtitle: collection == null
-          ? const Text("Choose a Collection")
-          : const Text("Change Collection"),
+          ? Text(context.locale.chooseCollection)
+          : Text(context.locale.changeCollection),
       leading: const Icon(Icons.library_add),
       trailing: const Icon(Icons.chevron_right),
       shape: const RoundedRectangleBorder(borderRadius: radius8),
@@ -92,7 +93,7 @@ class ClipCollectionSelectorStateTile
                 icon: const Icon(
                   Icons.remove_circle,
                 ),
-                tooltip: "Remove from collection",
+                tooltip: context.locale.removeFromCollection,
               ),
             ),
         ],

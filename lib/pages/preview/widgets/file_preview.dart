@@ -1,5 +1,6 @@
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class FileClipPreviewCard extends StatelessWidget {
@@ -31,7 +32,9 @@ class FileClipPreviewCard extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(padding16),
-          child: SelectableText(item.fileName ?? "Nothing here"),
+          child: SelectableText(
+            item.fileName ?? context.locale.nothingHere,
+          ),
         ),
       ),
     );

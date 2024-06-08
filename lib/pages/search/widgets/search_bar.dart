@@ -1,6 +1,7 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
         horizontal: padding16,
       ).msp,
       leading: const Icon(Icons.search_rounded),
-      hintText: "Search in clipboard",
+      hintText: context.locale.searchInClipboard,
       autoFocus: true,
       textInputAction: TextInputAction.search,
       onSubmitted: (value) {

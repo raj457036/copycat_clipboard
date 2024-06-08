@@ -4,6 +4,7 @@ import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:flutter/material.dart';
@@ -81,8 +82,8 @@ class CollectionDetailPage extends StatelessWidget {
               case CollectionClipsResultsState(:final results, :final hasMore):
                 {
                   if (results.isEmpty) {
-                    return const Center(
-                      child: Text("No results were found."),
+                    return Center(
+                      child: Text(context.locale.noResultsWereFound),
                     );
                   }
 
@@ -103,8 +104,8 @@ class CollectionDetailPage extends StatelessWidget {
                           child: Center(
                             child: TextButton.icon(
                               onPressed: () => loadMore(context),
-                              label: const Text(
-                                "Load More",
+                              label: Text(
+                                context.locale.loadMore,
                               ),
                               icon: const Icon(Icons.read_more),
                             ),

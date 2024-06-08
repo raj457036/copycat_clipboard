@@ -1,6 +1,7 @@
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/preview/widgets/clip_detail_form.dart';
 import 'package:clipboard/pages/preview/widgets/file_preview.dart';
 import 'package:clipboard/pages/preview/widgets/media_preview.dart';
@@ -137,7 +138,7 @@ class ClipboardItemPreviewPage extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Preview"),
+        title: Text(context.locale.preview),
       ),
       body: ClipboardItemMobilePreviewPageContent(item: item),
     );

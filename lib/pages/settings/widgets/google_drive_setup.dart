@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/info_card.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +16,20 @@ class GoogleDriveSetup extends StatelessWidget {
     final colors = context.colors;
     return BlocBuilder<DriveSetupCubit, DriveSetupState>(
       builder: (context, state) {
-        String text = "Connected";
+        String text = context.locale.connected;
         bool noClick = false;
         bool hasError = false;
         switch (state) {
           case DriveSetupUnknown(:final waiting):
-            text = waiting ? "Authorizing..." : "Loading...";
+            text =
+                waiting ? context.locale.authorizing : context.locale.loading;
             noClick = true;
           case DriveSetupDone():
-            text = "Connected";
+            text = context.locale.connected;
             noClick = true;
             break;
           case DriveSetupError():
-            text = "Connect Now";
+            text = context.locale.connectNow;
             noClick = false;
             hasError = true;
             break;
@@ -38,12 +40,11 @@ class GoogleDriveSetup extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: padding16),
               child: InfoCard(
-                title: hasError ? null : "ⓘ Tips",
+                title: hasError ? null : context.locale.tips,
                 color: hasError ? Colors.deepOrange : colors.primary,
-                description:
-                    "${hasError ? "Google Drive not connected, File and media syncing is disabled.\n\n" : ""}"
-                    "Your files and media are synced securely across "
-                    "devices using Google Drive to protect your privacy.",
+                description: context.locale.cloudStorageInfo(
+                  hasError ? context.locale.cloudStorageInfoDefault : '',
+                ),
               ),
             ),
             ListTile(

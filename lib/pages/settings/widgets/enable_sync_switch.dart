@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,8 +23,8 @@ class EnableSyncSwitch extends StatelessWidget {
           onChanged: (value) {
             context.read<AppConfigCubit>().changeSync(value);
           },
-          title: const Text("Enable Sync"),
-          subtitle: const Text("Keep your files updated across devices"),
+          title: Text(context.locale.enableSync),
+          subtitle: Text(context.locale.enableSyncDesc),
         );
       },
     );

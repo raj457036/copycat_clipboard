@@ -1,4 +1,5 @@
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/color_extension.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class InfoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title ?? "⚠ Attention Needed!",
+              title ?? context.locale.attentionNeeded,
               style: textTheme.titleMedium,
             ),
             height12,

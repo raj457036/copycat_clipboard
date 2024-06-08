@@ -1,5 +1,6 @@
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class TextClipPreviewCard extends StatelessWidget {
             bottom: padding38,
           ),
           child: SelectableText(
-            item.text ?? "Nothing here",
+            item.text ?? context.locale.nothingHere,
             style: TextStyle(color: fg),
           ),
         ),

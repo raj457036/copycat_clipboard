@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,32 +18,30 @@ class SubscriptionInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: const Row(
+      title: Row(
         children: [
-          Text("Subscription"),
-          Spacer(),
-          CloseButton(),
+          Text(context.locale.subscription),
+          const Spacer(),
+          const CloseButton(),
         ],
       ),
       children: [
         const Divider(),
-        const ListTile(
+        ListTile(
           title: Text(
-            "BETA",
-            style: TextStyle(
+            context.locale.beta,
+            style: const TextStyle(
               color: Colors.deepOrange,
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
-            "CopyCat Clipboard is currently in the Beta phase. While we "
-            "strive for a seamless experience, you may encounter occasional "
-            "bugs. Stay tuned for upcoming features and enhancements.",
+            context.locale.featureListDetail,
           ),
         ),
         const Divider(),
         ListTile(
-          title: const Text("Current Plan"),
+          title: Text(context.locale.currentPlan),
           subtitle: BlocSelector<AuthCubit, AuthState, Subscription?>(
             selector: (state) {
               if (state is AuthenticatedAuthState) {
@@ -55,29 +54,29 @@ class SubscriptionInfoDialog extends StatelessWidget {
             },
           ),
         ),
-        const ListTile(
-          title: Text("Included"),
+        ListTile(
+          title: Text(context.locale.included),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               height4,
-              Text("• Unlimited Clipboard Items"),
+              Text(context.locale.unlimitedClipboardItems),
               height4,
-              Text("• Support all major platforms"),
+              Text(context.locale.supportAllMajorPlatforms),
               height4,
-              Text("• Supports Apple's Universal Clipboard"),
+              Text(context.locale.supportsAppleUniversalClipboard),
               height4,
-              Text("• On-Device Storage"),
+              Text(context.locale.onDeviceStorage),
               height4,
-              Text("• Google Drive Integration"),
+              Text(context.locale.googleDriveIntegration),
               height4,
-              Text("• Instant Search"),
+              Text(context.locale.instantSearch),
               height4,
-              Text("• Syncing up to Last 24 Hours"),
+              Text(context.locale.syncingUpToLast24Hours),
               height4,
-              Text("• Up to 3 Collections"),
+              Text(context.locale.upTo3Collections),
               height4,
-              Text("• Auto-Sync Every 30 Seconds"),
+              Text(context.locale.autoSyncEvery30Seconds),
             ],
           ),
         )

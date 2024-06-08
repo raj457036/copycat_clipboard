@@ -3,6 +3,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -45,12 +46,12 @@ class LoginForm extends StatelessWidget {
                 children: [
                   const Spacer(),
                   Text(
-                    "CopyCat Clipboard",
+                    context.locale.copyCatClipboard,
                     style: textTheme.headlineMedium,
                   ),
                   height12,
                   Text(
-                    "One Clipboard, Limitless Productivity",
+                    context.locale.oneClipboardLimitlessPosibility,
                     style: textTheme.titleMedium,
                   ),
                   height24,
@@ -83,7 +84,7 @@ class LoginForm extends StatelessWidget {
                       },
                       metadataFields: [
                         su_auth.MetaDataField(
-                          label: "Full Name",
+                          label: context.locale.fullName,
                           key: "display_name",
                           prefixIcon: const Icon(Icons.person_outline_rounded),
                           validator: ValidationBuilder().minLength(1).build(),

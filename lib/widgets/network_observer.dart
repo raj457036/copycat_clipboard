@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/network_status.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
         wasDisconnected = false;
         refetchStates();
         showTextSnackbar(
-          "Internet Connected",
+          context.locale.internetConnected,
           success: true,
           closePrevious: true,
         );
@@ -45,7 +46,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
     } else {
       wasDisconnected = true;
       showTextSnackbar(
-        "Internet Disconnected",
+        context.locale.internetDisconnected,
         failure: true,
         closePrevious: true,
       );

@@ -1,4 +1,5 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -46,11 +47,12 @@ class PauseTill extends StatelessWidget {
       builder: (context, state) {
         final isActive = state != null && now().isBefore(state);
         return SwitchListTile(
-          title: const Text("Is Paused?"),
+          title: Text(context.locale.isPaused),
           subtitle: Text(
-            !isActive
-                ? "Auto copy is not paused"
-                : "Auto Copy is paused until ${dateTimeFormatter.format(state)}",
+            context.locale.isPausedDesc(
+              "$isActive",
+              isActive ? dateTimeFormatter.format(state) : '',
+            ),
             style: textTheme.bodySmall?.copyWith(
               color: colors.outline,
             ),

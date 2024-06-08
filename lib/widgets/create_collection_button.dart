@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/dialogs/create_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,7 @@ class CreateCollectionButton extends StatelessWidget {
               return IconButton.filledTonal(
                 onPressed: () => showCreateCollectionDialog(context),
                 icon: const Icon(Icons.add),
-                tooltip: "Create a collection ( $remaining left )",
+                tooltip: context.locale.createACollection(remaining),
               );
             }
             return FloatingActionButton(
@@ -56,7 +57,7 @@ class CreateCollectionButton extends StatelessWidget {
                       );
                     }
                   : null,
-              tooltip: "Create a collection ( $remaining left )",
+              tooltip: context.locale.createACollection(remaining),
               child: const Icon(Icons.library_add_rounded),
             );
           },

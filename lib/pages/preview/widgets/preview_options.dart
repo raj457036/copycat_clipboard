@@ -1,5 +1,6 @@
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:flutter/material.dart';
 
@@ -29,38 +30,39 @@ class PreviewOptions extends StatelessWidget {
                       downloadFile(context, item);
                       Navigator.pop(context);
                     },
-              tooltip:
-                  item.downloading ? "Downloading" : "Download for offline",
+              tooltip: item.downloading
+                  ? context.locale.downloading
+                  : context.locale.downloadForOffline,
               icon: const Icon(Icons.download_for_offline_outlined),
             ),
           if (item.inCache)
             IconButton.outlined(
               onPressed: () => copyToClipboard(context, item),
-              tooltip: "Copy to clipboard",
+              tooltip: context.locale.copyToClipboard,
               icon: const Icon(Icons.copy),
             ),
           if (item.inCache)
             IconButton.outlined(
               icon: const Icon(Icons.ios_share),
-              tooltip: 'Share',
+              tooltip: context.locale.share,
               onPressed: () => shareClipboardItem(context, item),
             ),
           if (item.type == ClipItemType.url)
             IconButton.outlined(
               icon: const Icon(Icons.open_in_new),
-              tooltip: 'Open in browser',
+              tooltip: context.locale.openInBrowser,
               onPressed: () => launchUrl(item),
             ),
           if (canOpen)
             IconButton.outlined(
               icon: const Icon(Icons.open_in_new),
-              tooltip: 'Open',
+              tooltip: context.locale.open,
               onPressed: () => openFile(item),
             ),
           if (canOpen)
             IconButton.outlined(
               icon: const Icon(Icons.save_alt_rounded),
-              tooltip: 'Export',
+              tooltip: context.locale.export,
               onPressed: () => copyToClipboard(context, item, saveFile: true),
             ),
           IconButton.outlined(
@@ -69,7 +71,7 @@ class PreviewOptions extends StatelessWidget {
               // ignore: use_build_context_synchronously
               if (done) Navigator.pop(context);
             },
-            tooltip: "Delete",
+            tooltip: context.locale.delete,
             icon: const Icon(Icons.delete_outline),
           ),
         ],

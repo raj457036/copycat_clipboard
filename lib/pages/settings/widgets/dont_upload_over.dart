@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/numbers/file_sizes.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +25,14 @@ class DontAutoUploadOver extends StatelessWidget {
       },
       builder: (context, state) {
         return ListTile(
-          title: const Text("Don't Auto Upload Over"),
+          title: Text(context.locale.dontAutoUploadOver),
           subtitle: Text(
-            "Files and Media over a certain size "
-            "(${formatBytes(state, precise: false)}) will not be "
-            "uploaded automatically.",
+            context.locale.dontAutoUploadOverDesc(
+              formatBytes(
+                state,
+                precise: false,
+              ),
+            ),
             style: textTheme.bodySmall?.copyWith(
               color: colors.outline,
             ),

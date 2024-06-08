@@ -3,6 +3,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/widgets.dart';
@@ -49,14 +50,17 @@ class _ShareListenerState extends State<ShareListener> {
       if (!mounted) return;
       logger.i("Received shared media: $media");
       showTextSnackbar(
-        "Pasting the shared content to clipboard",
+        context.locale.pastingTheSharedContent,
         isLoading: true,
       );
+      if (!mounted) return;
       try {
         await putMediaToClipboard(media);
-        showTextSnackbar("Done", closePrevious: true);
+        // ignore: use_build_context_synchronously
+        showTextSnackbar(context.locale.done, closePrevious: true);
       } catch (e) {
-        showTextSnackbar("Failed", closePrevious: true);
+        // ignore: use_build_context_synchronously
+        showTextSnackbar(context.locale.failed, closePrevious: true);
       }
     }, onError: (error) {
       showFailureSnackbar(Failure.fromException(error));

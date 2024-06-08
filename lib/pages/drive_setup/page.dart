@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,7 @@ class DriveSetupPage extends StatelessWidget {
           switch (state) {
             case DriveSetupDone():
               Navigator.pop(context);
-              showTextSnackbar("Drive setup done 🥳");
+              showTextSnackbar(context.locale.driveSetupDone);
           }
         },
         builder: (context, state) {
@@ -32,19 +33,19 @@ class DriveSetupPage extends StatelessWidget {
                 child: Text(failure.message),
               );
             case DriveSetupVerifyingCode():
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                     height10,
                     Text(
-                      "Please wait while we set up\n" "syncing.",
+                      context.locale.pleaseWaitWhileWeSetupSyncing,
                       textAlign: TextAlign.center,
                     ),
                     height10,
                     Text(
-                      "This might take about a minute to complete.\n( Please do not close the app )",
+                      context.locale.driveSetupMayTakeFewMin,
                       textAlign: TextAlign.center,
                     ),
                   ],

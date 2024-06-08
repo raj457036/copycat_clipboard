@@ -1,5 +1,6 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
@@ -28,7 +29,7 @@ class SettingsPage extends StatelessWidget {
         getFloatingActionButton(context, 3, isMobile: isMobile);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: Text(context.locale.settings),
         actions: [
           ActivePlanAction(compact: isMobile),
           width12,
@@ -56,45 +57,43 @@ class SettingsPage extends StatelessWidget {
                 children: [
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: halfWidth),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SettingHeader(
-                          name: "Basic • Local",
-                          tooltip:
-                              "These settings are applicable to this device only.",
+                          name: context.locale.basicLocal,
+                          tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,
                         ListTile(
-                          title: Text("Theme"),
-                          trailing: ThemeDropdown(),
+                          title: Text(context.locale.theme),
+                          trailing: const ThemeDropdown(),
                         ),
-                        SmartPasteSwitch(),
-                        StartUpLaunchSwitch(),
-                        SetupToggleHotKey(),
-                        DontAutoCopyOver(),
-                        PauseTill(),
+                        const SmartPasteSwitch(),
+                        const StartUpLaunchSwitch(),
+                        const SetupToggleHotKey(),
+                        const DontAutoCopyOver(),
+                        const PauseTill(),
                       ],
                     ),
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: halfWidth),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SettingHeader(
-                          name: "Sync • Local",
-                          tooltip:
-                              "These settings are applicable to this device only.",
+                          name: context.locale.syncLocal,
+                          tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,
-                        AutoSyncInterval(),
-                        EnableSyncSwitch(),
-                        EnableFileSyncSwitch(),
+                        const AutoSyncInterval(),
+                        const EnableSyncSwitch(),
+                        const EnableFileSyncSwitch(),
                       ],
                     ),
                   )

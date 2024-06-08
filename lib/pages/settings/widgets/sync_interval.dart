@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/numbers/duration.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +27,15 @@ class AutoSyncInterval extends StatelessWidget {
       },
       builder: (context, state) {
         return ListTile(
-          title: const Text("Auto Sync Interval"),
+          title: Text(context.locale.autoSyncInterval),
           subtitle: Text(
-            "Clipboard will be automatically synced every "
-            "${prettyDuration(Duration(seconds: state), abbreviated: true, delimiter: " ")}",
+            context.locale.autoSyncIntervalDesc(
+              prettyDuration(
+                Duration(seconds: state),
+                abbreviated: true,
+                delimiter: " ",
+              ),
+            ),
             style: textTheme.bodySmall?.copyWith(
               color: colors.outline,
             ),

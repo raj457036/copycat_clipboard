@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 /// The translations for English (`en`).
@@ -5,5 +7,455 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get home => 'Home Page';
+  String get appName => 'CopyCat';
+
+  @override
+  String get collections => 'Collections';
+
+  @override
+  String get collection => 'Collection';
+
+  @override
+  String get createCollection => 'Create Collection';
+
+  @override
+  String get editCollection => 'Edit Collection';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get noDescription => 'No description';
+
+  @override
+  String get noResultsWereFound => 'No Results were found';
+
+  @override
+  String get driveSetupDone => 'Drive Setup Done 🥳';
+
+  @override
+  String get pleaseWaitWhileWeSetupSyncing =>
+      'Please wait while we setup\nsyncing';
+
+  @override
+  String get driveSetupMayTakeFewMin =>
+      'This might take about a minute to complete.\n( Please do not close the app )';
+
+  @override
+  String get refreshNow => 'Refresh Now';
+
+  @override
+  String newUpdates(int ADDED, int UPDATED, int DELETED) {
+    return 'Changes Available:\n $ADDED Added, $UPDATED Updated and $DELETED Deleted';
+  }
+
+  @override
+  String get itemDeleted => 'Item Deleted';
+
+  @override
+  String get deletingFromCloud => 'Deleting from Cloud';
+
+  @override
+  String get emptyClipboard => 'Your clipboard is empty';
+
+  @override
+  String get loadMore => 'Load More';
+
+  @override
+  String get clipboard => 'Clipboard';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get export => 'Export';
+
+  @override
+  String get searchClipboard => 'Search Clipboard';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get copyCatClipboard => 'CopyCat Clipboard';
+
+  @override
+  String get oneClipboardLimitlessPosibility =>
+      'One Clipboard, Limitless Posibility';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get preview => 'Preview';
+
+  @override
+  String get editDetails => 'Edit Details';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get nothingHere => 'Nothing Here';
+
+  @override
+  String get downloading => 'Downloading';
+
+  @override
+  String get downloadForOffline => 'Downloading for offline';
+
+  @override
+  String get copyToClipboard => 'Copy to Clipboard';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get resetYourPassword => 'Reset your password';
+
+  @override
+  String get passwordResetSuccess => 'Password reset successfully';
+
+  @override
+  String get findWhateverYouLooking => 'Find Whatever you are looking for...';
+
+  @override
+  String get noResults => 'No results were found.';
+
+  @override
+  String get searchInClipboard => 'Search in clipboard';
+
+  @override
+  String get basicLocal => 'Basic • Local';
+
+  @override
+  String get localSettingsDesc =>
+      'These settings are applicable to this device only.';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get syncLocal => 'Sync • Local';
+
+  @override
+  String get dontAutoCopyOver => 'Don\'t Auto Copy Over';
+
+  @override
+  String dontAutoCopyOverDesc(String SIZE) {
+    return 'Files and Media over a certain size ($SIZE) will not be copied automatically.';
+  }
+
+  @override
+  String get dontAutoUploadOver => 'Don\'t Auto Upload Over';
+
+  @override
+  String dontAutoUploadOverDesc(String SIZE) {
+    return 'Files and Media over a certain size ($SIZE) will not be uploaded automatically.';
+  }
+
+  @override
+  String get enableSync => 'Enable Sync';
+
+  @override
+  String get enableSyncDesc => 'Keep your files updated across devices';
+
+  @override
+  String get syncFiles => 'Sync Files and Medias';
+
+  @override
+  String get syncFilesDesc =>
+      'Keep your files and media items updated across devices.';
+
+  @override
+  String get connected => 'Connected';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get authorizing => 'Authorizing...';
+
+  @override
+  String get connectNow => 'Connect Now';
+
+  @override
+  String get tips => 'ⓘ Tips';
+
+  @override
+  String get cloudStorageInfoDefault =>
+      '\n\nGoogle Drive not connected, File and media syncing is disabled.';
+
+  @override
+  String cloudStorageInfo(String INFO) {
+    return '${INFO}Your files and media are synced securely across devices using Google Drive to protect your privacy.';
+  }
+
+  @override
+  String get attentionNeeded => '⚠ Attention Needed!';
+
+  @override
+  String get isPaused => 'Is Paused?';
+
+  @override
+  String isPausedDesc(String isPaused, String TILL) {
+    String _temp0 = intl.Intl.selectLogic(
+      isPaused,
+      {
+        'true': 'Auto copy is not paused',
+        'other': 'Auto Copy is paused until $TILL',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get paste => 'Paste';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String get previewEdit => 'Preview & Edit';
+
+  @override
+  String get pastingTheSharedContent =>
+      'Pasting the Shared Content to Clipboard';
+
+  @override
+  String get smartPaste => 'Smart Paste';
+
+  @override
+  String get smartPasteDesc =>
+      'Enable to paste clips directly to the last focused window.';
+
+  @override
+  String get launchAtStartup => 'Launch At Startup';
+
+  @override
+  String get launchAtStartupDesc =>
+      'Enable to start the app automatically when your device starts.';
+
+  @override
+  String get autoSyncInterval => 'Auto Sync Interval';
+
+  @override
+  String autoSyncIntervalDesc(String TIME) {
+    return 'Clipboard will be automatically synced every $TIME';
+  }
+
+  @override
+  String get clipboardShortcut => 'Clipboard Shortcut';
+
+  @override
+  String get clipboardShortcutDesc => 'Effortlessly Access Clipboard Anywhere';
+
+  @override
+  String clipboardShortcutPreview(String KEY) {
+    return 'Current Shortcut Key : $KEY';
+  }
+
+  @override
+  String get unassigned => 'Unassigned';
+
+  @override
+  String get system => 'System';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get dark => 'Dark';
+
+  @override
+  String get local => 'Local';
+
+  @override
+  String get uploading => 'Uploading...';
+
+  @override
+  String get pleaseWait => 'Please Wait...';
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get noCollection => 'No Collection';
+
+  @override
+  String get chooseCollection => 'Choose Collection';
+
+  @override
+  String get changeCollection => 'Change Collection';
+
+  @override
+  String get removeFromCollection => 'Remove from collection';
+
+  @override
+  String get compactMode => 'Compact Mode';
+
+  @override
+  String createACollection(int LEFT) {
+    return 'Create a new collection ( $LEFT left )';
+  }
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get logoutMessage =>
+      '⚠️ WARNING ⚠️\n\nLogging out will delete unsynced changes in the local database. Are you sure you want to proceed?';
+
+  @override
+  String get loggingYouOut => 'Logging you out! Please wait...';
+
+  @override
+  String get logoutSuccess => 'Logged out successfully';
+
+  @override
+  String get internetConnected => 'Internet Connected';
+
+  @override
+  String get internetDisconnected => 'Internet Disconnected';
+
+  @override
+  String get noCollectionFound => 'No collection found';
+
+  @override
+  String get pinToTop => 'Pin to Top';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get failed => 'Failed';
+
+  @override
+  String get syncNow => 'Sync Now';
+
+  @override
+  String get syncNotAvailable => 'Sync Not Available';
+
+  @override
+  String get checkingForRecord => 'Checking for Records';
+
+  @override
+  String get sync => 'Sync';
+
+  @override
+  String syncing(String PROGRESS) {
+    return 'Syncing $PROGRESS';
+  }
+
+  @override
+  String syncingCheckFailed(String MESSAGE) {
+    return 'Syncing Check Failed: $MESSAGE';
+  }
+
+  @override
+  String lastSynced(String TIMESTAMP) {
+    return 'Last synced at $TIMESTAMP';
+  }
+
+  @override
+  String get showWindow => 'Show Window';
+
+  @override
+  String get hideWindow => 'Hide Window';
+
+  @override
+  String get hideWindowDesc =>
+      'Tip: Use keyboard shortcut to show the clipboard.';
+
+  @override
+  String get quit => 'Quit';
+
+  @override
+  String get quitDesc => 'Are you sure you want to quit?';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get openInBrowser => 'Open in browser';
+
+  @override
+  String get makePhoneCall => 'Make a phone call';
+
+  @override
+  String get selectCollection => 'Select a collection';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get recordKeyboardShortcut => 'Record keyboard shortcut.';
+
+  @override
+  String get recordKeyboardShortcutDesc =>
+      'Type your shortcut using your keyboard and click ';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get beta => 'BETA';
+
+  @override
+  String get featureListDetail =>
+      'CopyCat Clipboard is currently in the Beta phase. While we strive for a seamless experience, you may encounter occasional bugs. Stay tuned for upcoming features and enhancements.';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String currentPlanLabel(String LABEL) {
+    return 'Current Plan • $LABEL';
+  }
+
+  @override
+  String get included => 'Included';
+
+  @override
+  String get unlimitedClipboardItems => '• Unlimited Clipboard Items';
+
+  @override
+  String get supportAllMajorPlatforms => '• Support all major platforms';
+
+  @override
+  String get supportsAppleUniversalClipboard =>
+      '• Supports Apple\'s Universal Clipboard';
+
+  @override
+  String get onDeviceStorage => '• On-Device Storage';
+
+  @override
+  String get googleDriveIntegration => '• Google Drive Integration';
+
+  @override
+  String get instantSearch => '• Instant Search';
+
+  @override
+  String get syncingUpToLast24Hours => '• Syncing up to Last 24 Hours';
+
+  @override
+  String get upTo3Collections => '• Up to 3 Collections';
+
+  @override
+  String get autoSyncEvery30Seconds => '• Auto-Sync Every 30 Seconds';
 }

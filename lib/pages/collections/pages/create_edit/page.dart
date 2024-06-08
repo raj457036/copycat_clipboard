@@ -1,5 +1,6 @@
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/pages/create_edit/widgets/create_edit_form.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,9 @@ class ClipCollectionCreateEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = collection == null ? "Create Collection" : "Edit Collection";
+    final title = collection == null
+        ? context.locale.createCollection
+        : context.locale.editCollection;
     if (isDialog) {
       return ClipCollectionCreateEditDesktopPageContent(
         title: title,

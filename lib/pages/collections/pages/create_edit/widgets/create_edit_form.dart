@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/sheets/emoji_selector.dart';
 import 'package:flutter/material.dart';
@@ -90,11 +91,11 @@ class _ClipCollectionCreateEditFormState
     final options = [
       TextButton(
         onPressed: context.pop,
-        child: const Text("Cancel"),
+        child: Text(context.locale.cancel),
       ),
       ElevatedButton(
         onPressed: submit,
-        child: const Text("Save"),
+        child: Text(context.locale.save),
       ),
     ];
 
@@ -118,8 +119,8 @@ class _ClipCollectionCreateEditFormState
             ),
             height12,
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Title',
+              decoration: InputDecoration(
+                labelText: context.locale.title,
               ),
               controller: titleController,
               validator: ValidationBuilder().required().maxLength(100).build(),
@@ -127,8 +128,8 @@ class _ClipCollectionCreateEditFormState
             ),
             height12,
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: "Description",
+              decoration: InputDecoration(
+                labelText: context.locale.description,
               ),
               validator:
                   ValidationBuilder(optional: true).maxLength(255).build(),

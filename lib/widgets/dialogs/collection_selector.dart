@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/create_collection_button.dart';
 import 'package:clipboard/widgets/no_collection.dart';
@@ -13,11 +14,11 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
     return await showDialog<ClipCollection?>(
       context: context,
       builder: (context) => SimpleDialog(
-        title: const Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Select Collection"),
-            CreateCollectionButton(isFab: false),
+            Text(context.locale.selectCollection),
+            const CreateCollectionButton(isFab: false),
           ],
         ),
         children: [this],

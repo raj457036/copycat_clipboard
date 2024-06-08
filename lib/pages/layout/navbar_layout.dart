@@ -1,4 +1,5 @@
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/ads/home_banner.dart';
 import 'package:flutter/material.dart';
@@ -43,26 +44,26 @@ class _NavBarPageState extends State<NavBarPage> {
                 NavigationBar(
                   selectedIndex: widget.navbarActiveIndex,
                   onDestinationSelected: (idx) => onNavItemTapped(context, idx),
-                  destinations: const [
+                  destinations: [
                     NavigationDestination(
-                      icon: Icon(Icons.paste_rounded),
-                      label: "Clipboard",
-                      tooltip: "Clipboard",
+                      icon: const Icon(Icons.paste_rounded),
+                      label: context.locale.clipboard,
+                      tooltip: context.locale.clipboard,
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.content_paste_search_rounded),
-                      label: "Search",
-                      tooltip: "Search Clipboard",
+                      icon: const Icon(Icons.content_paste_search_rounded),
+                      label: context.locale.search,
+                      tooltip: context.locale.searchClipboard,
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.collections_bookmark),
-                      label: "Collections",
-                      tooltip: "Collections",
+                      icon: const Icon(Icons.collections_bookmark),
+                      label: context.locale.collections,
+                      tooltip: context.locale.collections,
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.settings),
-                      label: "Settings",
-                      tooltip: "Settings",
+                      icon: const Icon(Icons.settings),
+                      label: context.locale.settings,
+                      tooltip: context.locale.settings,
                     ),
                   ],
                 ),

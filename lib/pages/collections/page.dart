@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart'
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
@@ -35,7 +36,7 @@ class CollectionsPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Collections"),
+          title: Text(context.locale.collections),
           actions: [
             ActivePlanAction(compact: isMobile),
             width12,

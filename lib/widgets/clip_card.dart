@@ -3,6 +3,7 @@ import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
@@ -76,13 +77,13 @@ class ClipCard extends StatelessWidget {
           ),
         MenuItem(
           icon: Icons.edit_note_rounded,
-          text: 'Preview & Edit',
+          text: context.locale.previewEdit,
           onPressed: () => preview(context),
         ),
         if (item.type == ClipItemType.url)
           MenuItem(
             icon: Icons.open_in_new,
-            text: 'Open in browser',
+            text: context.locale.openInBrowser,
             onPressed: () => launchUrl(item),
           ),
         if ((item.type == ClipItemType.file ||
@@ -90,7 +91,7 @@ class ClipCard extends StatelessWidget {
             item.inCache)
           MenuItem(
             icon: Icons.save_alt_rounded,
-            text: 'Export',
+            text: context.locale.export,
             onPressed: () => copyToClipboard(context, item, saveFile: true),
           ),
         if ((item.type == ClipItemType.file ||
@@ -98,14 +99,14 @@ class ClipCard extends StatelessWidget {
             item.inCache)
           MenuItem(
             icon: Icons.open_in_new,
-            text: "Open",
+            text: context.locale.open,
             onPressed: () => openFile(item),
           ),
         if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
         if (deleteAllowed)
           MenuItem(
             icon: Icons.delete_outline,
-            text: 'Delete',
+            text: context.locale.delete,
             onPressed: () => deleteItem(context, item),
           ),
         ...customMenuItems,

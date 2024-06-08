@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/collection_selector_tile.dart';
 import 'package:flutter/material.dart';
@@ -90,11 +91,11 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
     final options = [
       TextButton(
         onPressed: context.pop,
-        child: const Text("Cancel"),
+        child: Text(context.locale.cancel),
       ),
       ElevatedButton(
         onPressed: submit,
-        child: const Text("Save"),
+        child: Text(context.locale.save),
       ),
     ];
     return Form(
@@ -105,21 +106,21 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Edit Details",
+            context.locale.editDetails,
             style: textTheme.titleMedium,
           ),
           height16,
           TextFormField(
-            decoration: const InputDecoration(
-              labelText: "Title",
+            decoration: InputDecoration(
+              labelText: context.locale.title,
             ),
             controller: titleController,
             validator: ValidationBuilder(optional: true).maxLength(100).build(),
           ),
           height12,
           TextFormField(
-            decoration: const InputDecoration(
-              labelText: "Description",
+            decoration: InputDecoration(
+              labelText: context.locale.description,
             ),
             minLines: 2,
             maxLines: 6,

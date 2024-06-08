@@ -1,4 +1,5 @@
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:universal_io/io.dart';
@@ -28,16 +29,16 @@ class _RecordKeyboardShortcutDialogState
     final options = [
       TextButton(
         onPressed: () => Navigator.pop(context, null),
-        child: const Text("Cancel"),
+        child: Text(context.locale.cancel),
       ),
       TextButton(
         onPressed: () => Navigator.pop(context, hotKey),
         autofocus: true,
-        child: const Text("Confirm"),
+        child: Text(context.locale.confirm),
       ),
     ];
     return SimpleDialog(
-      title: const Text("Record Keyboard Shortcut"),
+      title: Text(context.locale.recordKeyboardShortcut),
       contentPadding: const EdgeInsets.all(padding16),
       children: [
         Card(
@@ -56,13 +57,13 @@ class _RecordKeyboardShortcutDialogState
           ),
         ),
         height12,
-        const Text.rich(
+        Text.rich(
           TextSpan(
-            text: "Type your shortcut using your keyboard and click ",
+            text: context.locale.recordKeyboardShortcutDesc,
             children: [
               TextSpan(
-                text: "Confirm",
-                style: TextStyle(
+                text: context.locale.confirm,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               )
