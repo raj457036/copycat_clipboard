@@ -1,5 +1,5 @@
 import 'package:clipboard/utils/utility.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class DesktopLifecycleOptimizer extends StatefulWidget {
   final Widget child;
@@ -45,6 +45,10 @@ class _DesktopLifecycleOptimizerState extends State<DesktopLifecycleOptimizer>
   @override
   Widget build(BuildContext context) {
     if (isMobilePlatform || mustRender) return widget.child;
-    return const SizedBox.shrink();
+    return const Material(
+      child: Center(
+        child: CircleAvatar(),
+      ),
+    );
   }
 }
