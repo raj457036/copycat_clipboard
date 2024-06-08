@@ -47,7 +47,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   destinations: [
                     NavigationDestination(
                       icon: const Icon(Icons.paste_rounded),
-                      label: context.locale.clipboard.substring(0, 9),
+                      label: context.locale.clipboard.substring(0, 8),
                       tooltip: context.locale.clipboard,
                     ),
                     NavigationDestination(
@@ -62,7 +62,7 @@ class _NavBarPageState extends State<NavBarPage> {
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.settings),
-                      label: context.locale.settings.substring(0, 9),
+                      label: context.locale.settings.substring(0, 8),
                       tooltip: context.locale.settings,
                     ),
                   ],
