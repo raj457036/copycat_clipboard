@@ -43,6 +43,7 @@ class AppConfig with _$AppConfig, IsarIdMixin {
 
     /// If enabled, the application will automatically start at startup.
     @Default(false) bool launchAtStartup,
+    @Default("en") String locale,
 
     //? Local App States
     /// last focus window id

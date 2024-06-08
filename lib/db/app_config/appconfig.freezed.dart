@@ -44,8 +44,8 @@ mixin _$AppConfig {
   bool get smartPaste => throw _privateConstructorUsedError;
 
   /// If enabled, the application will automatically start at startup.
-  bool get launchAtStartup =>
-      throw _privateConstructorUsedError; //? Local App States
+  bool get launchAtStartup => throw _privateConstructorUsedError;
+  String get locale => throw _privateConstructorUsedError; //? Local App States
   /// last focus window id
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -73,6 +73,7 @@ abstract class $AppConfigCopyWith<$Res> {
       String? toggleHotkey,
       bool smartPaste,
       bool launchAtStartup,
+      String locale,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       int? lastFocusedWindowId});
@@ -101,6 +102,7 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? toggleHotkey = freezed,
     Object? smartPaste = null,
     Object? launchAtStartup = null,
+    Object? locale = null,
     Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -144,6 +146,10 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.launchAtStartup
           : launchAtStartup // ignore: cast_nullable_to_non_nullable
               as bool,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
       lastFocusedWindowId: freezed == lastFocusedWindowId
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
@@ -171,6 +177,7 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       String? toggleHotkey,
       bool smartPaste,
       bool launchAtStartup,
+      String locale,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       int? lastFocusedWindowId});
@@ -197,6 +204,7 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? toggleHotkey = freezed,
     Object? smartPaste = null,
     Object? launchAtStartup = null,
+    Object? locale = null,
     Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_$AppConfigImpl(
@@ -240,6 +248,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.launchAtStartup
           : launchAtStartup // ignore: cast_nullable_to_non_nullable
               as bool,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
       lastFocusedWindowId: freezed == lastFocusedWindowId
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
@@ -262,6 +274,7 @@ class _$AppConfigImpl extends _AppConfig {
       this.toggleHotkey,
       this.smartPaste = false,
       this.launchAtStartup = false,
+      this.locale = "en",
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.lastFocusedWindowId})
@@ -313,6 +326,9 @@ class _$AppConfigImpl extends _AppConfig {
   @override
   @JsonKey()
   final bool launchAtStartup;
+  @override
+  @JsonKey()
+  final String locale;
 //? Local App States
   /// last focus window id
   @override
@@ -322,7 +338,7 @@ class _$AppConfigImpl extends _AppConfig {
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, lastFocusedWindowId: $lastFocusedWindowId)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, locale: $locale, lastFocusedWindowId: $lastFocusedWindowId)';
   }
 
   @override
@@ -350,6 +366,7 @@ class _$AppConfigImpl extends _AppConfig {
                 other.smartPaste == smartPaste) &&
             (identical(other.launchAtStartup, launchAtStartup) ||
                 other.launchAtStartup == launchAtStartup) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.lastFocusedWindowId, lastFocusedWindowId) ||
                 other.lastFocusedWindowId == lastFocusedWindowId));
   }
@@ -368,6 +385,7 @@ class _$AppConfigImpl extends _AppConfig {
       toggleHotkey,
       smartPaste,
       launchAtStartup,
+      locale,
       lastFocusedWindowId);
 
   @JsonKey(ignore: true)
@@ -396,6 +414,7 @@ abstract class _AppConfig extends AppConfig {
       final String? toggleHotkey,
       final bool smartPaste,
       final bool launchAtStartup,
+      final String locale,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       final int? lastFocusedWindowId}) = _$AppConfigImpl;
@@ -437,6 +456,8 @@ abstract class _AppConfig extends AppConfig {
 
   /// If enabled, the application will automatically start at startup.
   bool get launchAtStartup;
+  @override
+  String get locale;
   @override //? Local App States
   /// last focus window id
   @ignore

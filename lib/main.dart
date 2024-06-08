@@ -161,11 +161,15 @@ class MainApp extends StatelessWidget {
                           ),
                         ],
                         builder: (context) => BlocSelector<AppConfigCubit,
-                            AppConfigState, ThemeMode>(
+                            AppConfigState, (ThemeMode, String)>(
                           selector: (state) {
-                            return state.config.themeMode;
+                            return (
+                              state.config.themeMode,
+                              state.config.locale
+                            );
                           },
                           builder: (context, state) {
+                            final (theme, langCode) = state;
                             return MaterialApp.router(
                               scaffoldMessengerKey: scaffoldMessengerKey,
                               routeInformationParser:
@@ -174,7 +178,7 @@ class MainApp extends StatelessWidget {
                                   router.routeInformationProvider,
                               routerDelegate: router.routerDelegate,
                               backButtonDispatcher: router.backButtonDispatcher,
-                              themeMode: state,
+                              themeMode: theme,
                               theme: ThemeData(
                                 useMaterial3: true,
                                 textTheme: textTheme.apply(
@@ -207,7 +211,8 @@ class MainApp extends StatelessWidget {
                                 ),
                               ),
                               debugShowCheckedModeBanner: false,
-                              locale: const Locale("es"),
+                              locale:
+                                  Locale(langCode.isEmpty ? "en" : langCode),
                               localizationsDelegates:
                                   AppLocalizations.localizationsDelegates,
                               supportedLocales:

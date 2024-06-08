@@ -17,15 +17,15 @@ import 'package:supabase_flutter/supabase_flutter.dart' as _i17;
 
 import '../bloc/app_config_cubit/app_config_cubit.dart' as _i16;
 import '../bloc/auth_cubit/auth_cubit.dart' as _i32;
-import '../bloc/clip_collection_cubit/clip_collection_cubit.dart' as _i34;
+import '../bloc/clip_collection_cubit/clip_collection_cubit.dart' as _i35;
 import '../bloc/clipboard_cubit/clipboard_cubit.dart' as _i23;
-import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i33;
+import '../bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart' as _i34;
 import '../bloc/collection_clips_cubit/collection_clips_cubit.dart' as _i30;
 import '../bloc/drive_setup_cubit/drive_setup_cubit.dart' as _i28;
 import '../bloc/offline_persistance_cubit/offline_persistance_cubit.dart'
-    as _i35;
+    as _i36;
 import '../bloc/search_cubit/search_cubit.dart' as _i26;
-import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i36;
+import '../bloc/sync_manager_cubit/sync_manager_cubit.dart' as _i33;
 import '../bloc/window_action_cubit/window_action_cubit.dart' as _i3;
 import '../data/repositories/app_config.dart' as _i11;
 import '../data/repositories/clip_collection.dart' as _i29;
@@ -162,11 +162,18 @@ extension GetItInjectableX on _i1.GetIt {
           collection: collection,
         ));
     gh.singleton<_i32.AuthCubit>(() => _i32.AuthCubit(
-          gh<_i25.SupabaseClient>(),
+          gh<_i17.SupabaseClient>(),
           gh<_i27.SubscriptionRepository>(),
         ));
-    gh.lazySingleton<_i33.CloudPersistanceCubit>(
-        () => _i33.CloudPersistanceCubit(
+    gh.singleton<_i33.SyncManagerCubit>(() => _i33.SyncManagerCubit(
+          gh<_i6.Isar>(),
+          gh<_i32.AuthCubit>(),
+          gh<_i19.SyncRepository>(),
+          gh<_i29.ClipCollectionRepository>(),
+          gh<String>(instanceName: 'device_id'),
+        ));
+    gh.lazySingleton<_i34.CloudPersistanceCubit>(
+        () => _i34.CloudPersistanceCubit(
               gh<_i32.AuthCubit>(),
               gh<_i28.DriveSetupCubit>(),
               gh<_i16.AppConfigCubit>(),
@@ -174,26 +181,19 @@ extension GetItInjectableX on _i1.GetIt {
               gh<_i18.ClipboardRepository>(instanceName: 'cloud'),
               gh<_i8.DriveService>(instanceName: 'google_drive'),
             ));
-    gh.lazySingleton<_i34.ClipCollectionCubit>(() => _i34.ClipCollectionCubit(
+    gh.lazySingleton<_i35.ClipCollectionCubit>(() => _i35.ClipCollectionCubit(
           gh<_i32.AuthCubit>(),
           gh<_i29.ClipCollectionRepository>(),
           gh<String>(instanceName: 'device_id'),
         ));
-    gh.lazySingleton<_i35.OfflinePersistanceCubit>(
-        () => _i35.OfflinePersistanceCubit(
+    gh.lazySingleton<_i36.OfflinePersistanceCubit>(
+        () => _i36.OfflinePersistanceCubit(
               gh<_i32.AuthCubit>(),
               gh<_i18.ClipboardRepository>(instanceName: 'offline'),
               gh<_i5.ClipboardService>(),
               gh<_i16.AppConfigCubit>(),
               gh<String>(instanceName: 'device_id'),
             ));
-    gh.singleton<_i36.SyncManagerCubit>(() => _i36.SyncManagerCubit(
-          gh<_i6.Isar>(),
-          gh<_i32.AuthCubit>(),
-          gh<_i19.SyncRepository>(),
-          gh<_i29.ClipCollectionRepository>(),
-          gh<String>(instanceName: 'device_id'),
-        ));
     return this;
   }
 }

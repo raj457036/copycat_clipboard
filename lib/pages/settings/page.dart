@@ -12,6 +12,7 @@ import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/reset_password_button.dart';
@@ -71,6 +72,12 @@ class SettingsPage extends StatelessWidget {
                           title: Text(context.locale.theme),
                           trailing: const ThemeDropdown(),
                         ),
+                        height10,
+                        ListTile(
+                          title: Text(context.locale.language),
+                          trailing: const LocaleDropdown(),
+                        ),
+                        height10,
                         const SmartPasteSwitch(),
                         const StartUpLaunchSwitch(),
                         const SetupToggleHotKey(),

@@ -36,6 +36,10 @@ class ResetPasswordPage extends StatelessWidget {
                 accessToken: state,
                 localization: su_auth.SupaResetPasswordLocalization(
                   passwordResetSent: context.locale.passwordResetSuccess,
+                  enterPassword: context.locale.enterPassword,
+                  passwordLengthError: context.locale.passwordLengthError,
+                  updatePassword: context.locale.updatePassword,
+                  unexpectedError: context.locale.unexpectedError,
                 ),
                 onSuccess: (su_auth.UserResponse response) {
                   context.pop();

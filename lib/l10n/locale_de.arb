@@ -1,0 +1,252 @@
+{
+    "@@locale": "de",
+    "@@author": "Raj Singh",
+    "appName": "CopyCat",
+    "en": "Englisch",
+    "es": "Spanisch",
+    "fr": "Französisch",
+    "de": "Deutsch",
+    "language": "Sprache",
+    "enterEmail": "Geben Sie Ihre E-Mail-Adresse ein",
+    "validEmailError": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "enterPassword": "Geben Sie Ihr Passwort ein",
+    "passwordLengthError": "Bitte geben Sie ein Passwort mit mindestens 6 Zeichen ein",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "forgotPassword": "Passwort vergessen?",
+    "dontHaveAccount": "Haben Sie kein Konto? Registrieren",
+    "haveAccount": "Haben Sie bereits ein Konto? Anmelden",
+    "sendPasswordReset": "Passwort-Reset-E-Mail senden",
+    "backToSignIn": "Zurück zur Anmeldung",
+    "updatePassword": "Passwort aktualisieren",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
+    "passwordResetSent": "Passwort-Reset-E-Mail wurde gesendet",
+    "collections": "Sammlungen",
+    "collection": "Sammlung",
+    "createCollection": "Sammlung erstellen",
+    "editCollection": "Sammlung bearbeiten",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "description": "Beschreibung",
+    "noDescription": "Keine Beschreibung",
+    "noResultsWereFound": "Keine Ergebnisse gefunden",
+    "driveSetupDone": "Laufwerk-Setup abgeschlossen 🥳",
+    "pleaseWaitWhileWeSetupSyncing": "Bitte warten, während wir die Synchronisierung einrichten",
+    "driveSetupMayTakeFewMin": "Dies kann etwa eine Minute dauern.\n(Bitte schließen Sie die App nicht)",
+    "refreshNow": "Jetzt aktualisieren",
+    "newUpdates": "Änderungen verfügbar:\n {ADDED} hinzugefügt, {UPDATED} aktualisiert und {DELETED} gelöscht",
+    "@newUpdates": {
+        "placeholders": {
+            "ADDED": {
+                "type": "int"
+            },
+            "UPDATED": {
+                "type": "int"
+            },
+            "DELETED": {
+                "type": "int"
+            }
+        }
+    },
+    "itemDeleted": "Element gelöscht",
+    "deletingFromCloud": "Aus der Cloud löschen",
+    "emptyClipboard": "Ihr Zwischenspeicher ist leer",
+    "loadMore": "Mehr laden",
+    "clipboard": "Zwischenspeicher",
+    "search": "Suche",
+    "share": "Teilen",
+    "export": "Exportieren",
+    "searchClipboard": "Zwischenspeicher durchsuchen",
+    "settings": "Einstellungen",
+    "copyCatClipboard": "CopyCat Zwischenspeicher",
+    "oneClipboardLimitlessPosibility": "Ein Zwischenspeicher, unbegrenzte Möglichkeiten",
+    "fullName": "Vollständiger Name",
+    "preview": "Vorschau",
+    "editDetails": "Details bearbeiten",
+    "title": "Titel",
+    "nothingHere": "Nichts hier",
+    "downloading": "Herunterladen",
+    "downloadForOffline": "Für die Offline-Nutzung herunterladen",
+    "copyToClipboard": "In den Zwischenspeicher kopieren",
+    "delete": "Löschen",
+    "resetYourPassword": "Setzen Sie Ihr Passwort zurück",
+    "passwordResetSuccess": "Passwort erfolgreich zurückgesetzt",
+    "findWhateverYouLooking": "Finden Sie, wonach Sie suchen...",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "searchInClipboard": "Im Zwischenspeicher suchen",
+    "basicLocal": "Basis • Lokal",
+    "localSettingsDesc": "Diese Einstellungen gelten nur für dieses Gerät.",
+    "theme": "Thema",
+    "syncLocal": "Synchronisieren • Lokal",
+    "dontAutoCopyOver": "Nicht automatisch kopieren",
+    "dontAutoCopyOverDesc": "Dateien und Medien über einer bestimmten Größe ({SIZE}) werden nicht automatisch kopiert.",
+    "@dontAutoCopyOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "dontAutoUploadOver": "Nicht automatisch hochladen",
+    "dontAutoUploadOverDesc": "Dateien und Medien über einer bestimmten Größe ({SIZE}) werden nicht automatisch hochgeladen.",
+    "@dontAutoUploadOverDesc": {
+        "placeholders": {
+            "SIZE": {
+                "type": "String"
+            }
+        }
+    },
+    "enableSync": "Synchronisierung aktivieren",
+    "enableSyncDesc": "Halten Sie Ihre Dateien auf allen Geräten aktuell",
+    "syncFiles": "Dateien und Medien synchronisieren",
+    "syncFilesDesc": "Halten Sie Ihre Dateien und Medien auf allen Geräten aktuell.",
+    "connected": "Verbunden",
+    "loading": "Laden...",
+    "authorizing": "Autorisierung...",
+    "connectNow": "Jetzt verbinden",
+    "tips": "ⓘ Tipps",
+    "cloudStorageInfoDefault": "\n\nGoogle Drive nicht verbunden, Datei- und Mediensynchronisierung ist deaktiviert.",
+    "cloudStorageInfo": "{INFO}Ihre Dateien und Medien werden sicher über Google Drive synchronisiert, um Ihre Privatsphäre zu schützen.",
+    "@cloudStorageInfo": {
+        "placeholders": {
+            "INFO": {
+                "type": "String"
+            }
+        }
+    },
+    "attentionNeeded": "⚠ Aufmerksamkeit erforderlich!",
+    "isPaused": "Ist pausiert?",
+    "isPausedDesc": "{isPaused, select, true{Automatisches Kopieren ist nicht pausiert} other{Automatisches Kopieren ist bis {TILL} pausiert}}",
+    "@isPausedDesc": {
+        "placeholders": {
+            "isPaused": {
+                "type": "String"
+            },
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "paste": "Einfügen",
+    "copy": "Kopieren",
+    "previewEdit": "Vorschau & Bearbeiten",
+    "pastingTheSharedContent": "Eingefügter Inhalt in den Zwischenspeicher",
+    "smartPaste": "Intelligentes Einfügen",
+    "smartPasteDesc": "Aktivieren Sie das direkte Einfügen von Clips in das zuletzt fokussierte Fenster.",
+    "launchAtStartup": "Beim Start starten",
+    "launchAtStartupDesc": "Aktivieren Sie die automatische Starten der App beim Start Ihres Geräts.",
+    "autoSyncInterval": "Automatisches Synchronisierungsintervall",
+    "autoSyncIntervalDesc": "Der Zwischenspeicher wird alle {TIME} automatisch synchronisiert",
+    "@autoSyncIntervalDesc": {
+        "placeholders": {
+            "TIME": {
+                "type": "String"
+            }
+        }
+    },
+    "clipboardShortcut": "Zwischenspeicher-Kurzbefehle",
+    "clipboardShortcutDesc": "Zwischenspeicher überall problemlos aufrufen",
+    "clipboardShortcutPreview": "Aktuelle Kurzbefehlstaste: {KEY}",
+    "@clipboardShortcutPreview": {
+        "placeholders": {
+            "KEY": {
+                "type": "String"
+            }
+        }
+    },
+    "unassigned": "Nicht zugewiesen",
+    "system": "System",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "local": "Lokal",
+    "uploading": "Hochladen...",
+    "pleaseWait": "Bitte warten...",
+    "open": "Öffnen",
+    "noCollection": "Keine Sammlung",
+    "chooseCollection": "Sammlung auswählen",
+    "changeCollection": "Sammlung ändern",
+    "removeFromCollection": "Aus der Sammlung entfernen",
+    "compactMode": "Kompaktmodus",
+    "createACollection": "Erstellen Sie eine neue Sammlung ( {LEFT} übrig )",
+    "@createACollection": {
+        "placeholders": {
+            "LEFT": {
+                "type": "int"
+            }
+        }
+    },
+    "logout": "Abmelden",
+    "logoutMessage": "⚠️ WARNUNG ⚠️\n\nDas Abmelden löscht nicht synchronisierte Änderungen in der lokalen Datenbank. Möchten Sie wirklich fortfahren?",
+    "loggingYouOut": "Sie werden abgemeldet! Bitte warten...",
+    "logoutSuccess": "Erfolgreich abgemeldet",
+    "internetConnected": "Internet verbunden",
+    "internetDisconnected": "Internet getrennt",
+    "noCollectionFound": "Keine Sammlung gefunden",
+    "pinToTop": "Oben anheften",
+    "done": "Fertig",
+    "failed": "Fehlgeschlagen",
+    "syncNow": "Jetzt synchronisieren",
+    "syncNotAvailable": "Synchronisierung nicht verfügbar",
+    "checkingForRecord": "Überprüfen der Aufzeichnungen",
+    "sync": "Synchronisieren",
+    "syncing": "Synchronisieren {PROGRESS}",
+    "@syncing": {
+        "placeholders": {
+            "PROGRESS": {
+                "type": "String"
+            }
+        }
+    },
+    "syncingCheckFailed": "Synchronisierungsüberprüfung fehlgeschlagen: {MESSAGE}",
+    "@syncingCheckFailed": {
+        "placeholders": {
+            "MESSAGE": {
+                "type": "String"
+            }
+        }
+    },
+    "lastSynced": "Zuletzt synchronisiert um {TIMESTAMP}",
+    "@lastSynced": {
+        "placeholders": {
+            "TIMESTAMP": {
+                "type": "String"
+            }
+        }
+    },
+    "showWindow": "Fenster anzeigen",
+    "hideWindow": "Fenster ausblenden",
+    "hideWindowDesc": "Tipp: Verwenden Sie die Tastenkombination, um den Zwischenspeicher anzuzeigen.",
+    "quit": "Beenden",
+    "quitDesc": "Sind Sie sicher, dass Sie beenden möchten?",
+    "yes": "Ja",
+    "no": "Nein",
+    "openInBrowser": "Im Browser öffnen",
+    "makePhoneCall": "Einen Anruf tätigen",
+    "selectCollection": "Sammlung auswählen",
+    "confirm": "Bestätigen",
+    "recordKeyboardShortcut": "Tastenkombination aufzeichnen.",
+    "recordKeyboardShortcutDesc": "Geben Sie Ihre Tastenkombination über Ihre Tastatur ein und klicken Sie ",
+    "subscription": "Abonnement",
+    "beta": "BETA",
+    "featureListDetail": "CopyCat Clipboard befindet sich derzeit in der Beta-Phase. Obwohl wir uns bemühen, eine nahtlose Erfahrung zu bieten, können gelegentlich Fehler auftreten. Bleiben Sie dran für zukünftige Funktionen und Verbesserungen.",
+    "currentPlan": "Aktueller Plan",
+    "currentPlanLabel": "Aktueller Plan • {LABEL}",
+    "@currentPlanLabel": {
+        "placeholders": {
+            "LABEL": {
+                "type": "String"
+            }
+        }
+    },
+    "included": "Inklusive",
+    "unlimitedClipboardItems": "• Unbegrenzte Zwischenspeicherelemente",
+    "supportAllMajorPlatforms": "• Unterstützung aller wichtigen Plattformen",
+    "supportsAppleUniversalClipboard": "• Unterstützung von Apples Universal-Zwischenspeicher",
+    "onDeviceStorage": "• Gerätespeicher",
+    "googleDriveIntegration": "• Google Drive-Integration",
+    "instantSearch": "• Sofortsuche",
+    "syncingUpToLast24Hours": "• Synchronisierung bis zu den letzten 24 Stunden",
+    "upTo3Collections": "• Bis zu 3 Sammlungen",
+    "autoSyncEvery30Seconds": "• Automatische Synchronisierung alle 30 Sekunden"
+}
