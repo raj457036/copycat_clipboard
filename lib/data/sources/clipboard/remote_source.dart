@@ -1,6 +1,7 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/enums/sort.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
@@ -35,6 +36,8 @@ class RemoteClipboardSource implements ClipboardSource {
     int offset = 0,
     DateTime? afterDate,
     String? search,
+    List<String>? category, // no-op
+    List<ClipItemType>? types, // no-op
     int? collectionId,
     ClipboardSortKey? sortBy,
     SortOrder order = SortOrder.desc,

@@ -44,6 +44,14 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       leading: const Icon(Icons.search_rounded),
       hintText: context.locale.searchInClipboard,
       autoFocus: true,
+      // trailing: [
+      //   IconButton(
+      //     icon: const Icon(Icons.filter_alt_rounded),
+      //     onPressed: () {
+      //       // context.read<SearchCubit>().clear();
+      //     },
+      //   ),
+      // ],
       textInputAction: TextInputAction.search,
       onSubmitted: (value) {
         context.read<SearchCubit>().search(value);

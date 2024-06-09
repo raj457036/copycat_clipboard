@@ -19,9 +19,17 @@ mixin _$SearchState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(String query) searching,
-    required TResult Function(String query, List<ClipboardItem> results,
-            bool hasMore, bool isLoading, int offset)
+    required TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)
+        searching,
+    required TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)
         results,
     required TResult Function(Failure failure) error,
   }) =>
@@ -29,9 +37,17 @@ mixin _$SearchState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(String query)? searching,
-    TResult? Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult? Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult? Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult? Function(Failure failure)? error,
   }) =>
@@ -39,9 +55,17 @@ mixin _$SearchState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(String query)? searching,
-    TResult Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult Function(Failure failure)? error,
     required TResult orElse(),
@@ -131,9 +155,17 @@ class _$InitialSearchStateImpl implements InitialSearchState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(String query) searching,
-    required TResult Function(String query, List<ClipboardItem> results,
-            bool hasMore, bool isLoading, int offset)
+    required TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)
+        searching,
+    required TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)
         results,
     required TResult Function(Failure failure) error,
   }) {
@@ -144,9 +176,17 @@ class _$InitialSearchStateImpl implements InitialSearchState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(String query)? searching,
-    TResult? Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult? Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult? Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult? Function(Failure failure)? error,
   }) {
@@ -157,9 +197,17 @@ class _$InitialSearchStateImpl implements InitialSearchState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(String query)? searching,
-    TResult Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult Function(Failure failure)? error,
     required TResult orElse(),
@@ -218,7 +266,8 @@ abstract class _$$SearchingStateImplCopyWith<$Res> {
           $Res Function(_$SearchingStateImpl) then) =
       __$$SearchingStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String query});
+  $Res call(
+      {String query, List<String>? textCategories, List<ClipItemType>? types});
 }
 
 /// @nodoc
@@ -233,12 +282,22 @@ class __$$SearchingStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? query = null,
+    Object? textCategories = freezed,
+    Object? types = freezed,
   }) {
     return _then(_$SearchingStateImpl(
       query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
+      textCategories: freezed == textCategories
+          ? _value._textCategories
+          : textCategories // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      types: freezed == types
+          ? _value._types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<ClipItemType>?,
     ));
   }
 }
@@ -246,14 +305,38 @@ class __$$SearchingStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SearchingStateImpl implements SearchingState {
-  const _$SearchingStateImpl({required this.query});
+  const _$SearchingStateImpl(
+      {required this.query,
+      final List<String>? textCategories,
+      final List<ClipItemType>? types})
+      : _textCategories = textCategories,
+        _types = types;
 
   @override
   final String query;
+  final List<String>? _textCategories;
+  @override
+  List<String>? get textCategories {
+    final value = _textCategories;
+    if (value == null) return null;
+    if (_textCategories is EqualUnmodifiableListView) return _textCategories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<ClipItemType>? _types;
+  @override
+  List<ClipItemType>? get types {
+    final value = _types;
+    if (value == null) return null;
+    if (_types is EqualUnmodifiableListView) return _types;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'SearchState.searching(query: $query)';
+    return 'SearchState.searching(query: $query, textCategories: $textCategories, types: $types)';
   }
 
   @override
@@ -261,11 +344,18 @@ class _$SearchingStateImpl implements SearchingState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SearchingStateImpl &&
-            (identical(other.query, query) || other.query == query));
+            (identical(other.query, query) || other.query == query) &&
+            const DeepCollectionEquality()
+                .equals(other._textCategories, _textCategories) &&
+            const DeepCollectionEquality().equals(other._types, _types));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, query);
+  int get hashCode => Object.hash(
+      runtimeType,
+      query,
+      const DeepCollectionEquality().hash(_textCategories),
+      const DeepCollectionEquality().hash(_types));
 
   @JsonKey(ignore: true)
   @override
@@ -278,41 +368,65 @@ class _$SearchingStateImpl implements SearchingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(String query) searching,
-    required TResult Function(String query, List<ClipboardItem> results,
-            bool hasMore, bool isLoading, int offset)
+    required TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)
+        searching,
+    required TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)
         results,
     required TResult Function(Failure failure) error,
   }) {
-    return searching(query);
+    return searching(query, textCategories, types);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(String query)? searching,
-    TResult? Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult? Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult? Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult? Function(Failure failure)? error,
   }) {
-    return searching?.call(query);
+    return searching?.call(query, textCategories, types);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(String query)? searching,
-    TResult Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult Function(Failure failure)? error,
     required TResult orElse(),
   }) {
     if (searching != null) {
-      return searching(query);
+      return searching(query, textCategories, types);
     }
     return orElse();
   }
@@ -356,10 +470,14 @@ class _$SearchingStateImpl implements SearchingState {
 }
 
 abstract class SearchingState implements SearchState {
-  const factory SearchingState({required final String query}) =
-      _$SearchingStateImpl;
+  const factory SearchingState(
+      {required final String query,
+      final List<String>? textCategories,
+      final List<ClipItemType>? types}) = _$SearchingStateImpl;
 
   String get query;
+  List<String>? get textCategories;
+  List<ClipItemType>? get types;
   @JsonKey(ignore: true)
   _$$SearchingStateImplCopyWith<_$SearchingStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -373,6 +491,8 @@ abstract class _$$SearchResultStateImplCopyWith<$Res> {
   @useResult
   $Res call(
       {String query,
+      List<String>? textCategories,
+      List<ClipItemType>? types,
       List<ClipboardItem> results,
       bool hasMore,
       bool isLoading,
@@ -391,6 +511,8 @@ class __$$SearchResultStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? query = null,
+    Object? textCategories = freezed,
+    Object? types = freezed,
     Object? results = null,
     Object? hasMore = null,
     Object? isLoading = null,
@@ -401,6 +523,14 @@ class __$$SearchResultStateImplCopyWithImpl<$Res>
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
+      textCategories: freezed == textCategories
+          ? _value._textCategories
+          : textCategories // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      types: freezed == types
+          ? _value._types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<ClipItemType>?,
       results: null == results
           ? _value._results
           : results // ignore: cast_nullable_to_non_nullable
@@ -426,14 +556,38 @@ class __$$SearchResultStateImplCopyWithImpl<$Res>
 class _$SearchResultStateImpl implements SearchResultState {
   const _$SearchResultStateImpl(
       {required this.query,
+      final List<String>? textCategories,
+      final List<ClipItemType>? types,
       required final List<ClipboardItem> results,
       this.hasMore = false,
       this.isLoading = false,
       this.offset = 0})
-      : _results = results;
+      : _textCategories = textCategories,
+        _types = types,
+        _results = results;
 
   @override
   final String query;
+  final List<String>? _textCategories;
+  @override
+  List<String>? get textCategories {
+    final value = _textCategories;
+    if (value == null) return null;
+    if (_textCategories is EqualUnmodifiableListView) return _textCategories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<ClipItemType>? _types;
+  @override
+  List<ClipItemType>? get types {
+    final value = _types;
+    if (value == null) return null;
+    if (_types is EqualUnmodifiableListView) return _types;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   final List<ClipboardItem> _results;
   @override
   List<ClipboardItem> get results {
@@ -454,7 +608,7 @@ class _$SearchResultStateImpl implements SearchResultState {
 
   @override
   String toString() {
-    return 'SearchState.results(query: $query, results: $results, hasMore: $hasMore, isLoading: $isLoading, offset: $offset)';
+    return 'SearchState.results(query: $query, textCategories: $textCategories, types: $types, results: $results, hasMore: $hasMore, isLoading: $isLoading, offset: $offset)';
   }
 
   @override
@@ -463,6 +617,9 @@ class _$SearchResultStateImpl implements SearchResultState {
         (other.runtimeType == runtimeType &&
             other is _$SearchResultStateImpl &&
             (identical(other.query, query) || other.query == query) &&
+            const DeepCollectionEquality()
+                .equals(other._textCategories, _textCategories) &&
+            const DeepCollectionEquality().equals(other._types, _types) &&
             const DeepCollectionEquality().equals(other._results, _results) &&
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             (identical(other.isLoading, isLoading) ||
@@ -474,6 +631,8 @@ class _$SearchResultStateImpl implements SearchResultState {
   int get hashCode => Object.hash(
       runtimeType,
       query,
+      const DeepCollectionEquality().hash(_textCategories),
+      const DeepCollectionEquality().hash(_types),
       const DeepCollectionEquality().hash(_results),
       hasMore,
       isLoading,
@@ -490,41 +649,68 @@ class _$SearchResultStateImpl implements SearchResultState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(String query) searching,
-    required TResult Function(String query, List<ClipboardItem> results,
-            bool hasMore, bool isLoading, int offset)
+    required TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)
+        searching,
+    required TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)
         results,
     required TResult Function(Failure failure) error,
   }) {
-    return results(query, this.results, hasMore, isLoading, offset);
+    return results(
+        query, textCategories, types, this.results, hasMore, isLoading, offset);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(String query)? searching,
-    TResult? Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult? Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult? Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult? Function(Failure failure)? error,
   }) {
-    return results?.call(query, this.results, hasMore, isLoading, offset);
+    return results?.call(
+        query, textCategories, types, this.results, hasMore, isLoading, offset);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(String query)? searching,
-    TResult Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult Function(Failure failure)? error,
     required TResult orElse(),
   }) {
     if (results != null) {
-      return results(query, this.results, hasMore, isLoading, offset);
+      return results(query, textCategories, types, this.results, hasMore,
+          isLoading, offset);
     }
     return orElse();
   }
@@ -570,12 +756,16 @@ class _$SearchResultStateImpl implements SearchResultState {
 abstract class SearchResultState implements SearchState {
   const factory SearchResultState(
       {required final String query,
+      final List<String>? textCategories,
+      final List<ClipItemType>? types,
       required final List<ClipboardItem> results,
       final bool hasMore,
       final bool isLoading,
       final int offset}) = _$SearchResultStateImpl;
 
   String get query;
+  List<String>? get textCategories;
+  List<ClipItemType>? get types;
   List<ClipboardItem> get results;
   bool get hasMore;
   bool get isLoading;
@@ -651,9 +841,17 @@ class _$SearchErrorStateImpl implements SearchErrorState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(String query) searching,
-    required TResult Function(String query, List<ClipboardItem> results,
-            bool hasMore, bool isLoading, int offset)
+    required TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)
+        searching,
+    required TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)
         results,
     required TResult Function(Failure failure) error,
   }) {
@@ -664,9 +862,17 @@ class _$SearchErrorStateImpl implements SearchErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(String query)? searching,
-    TResult? Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult? Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult? Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult? Function(Failure failure)? error,
   }) {
@@ -677,9 +883,17 @@ class _$SearchErrorStateImpl implements SearchErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(String query)? searching,
-    TResult Function(String query, List<ClipboardItem> results, bool hasMore,
-            bool isLoading, int offset)?
+    TResult Function(String query, List<String>? textCategories,
+            List<ClipItemType>? types)?
+        searching,
+    TResult Function(
+            String query,
+            List<String>? textCategories,
+            List<ClipItemType>? types,
+            List<ClipboardItem> results,
+            bool hasMore,
+            bool isLoading,
+            int offset)?
         results,
     TResult Function(Failure failure)? error,
     required TResult orElse(),

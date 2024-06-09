@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -14,18 +15,28 @@ class SearchCubit extends Cubit<SearchState> {
   final ClipboardRepository repo;
   SearchCubit(@Named("offline") this.repo) : super(const SearchState.initial());
 
-  Future<void> search(String? searchQuery) async {
+  Future<void> search(
+    String? searchQuery, {
+    List<String>? textClipCategories,
+    List<ClipItemType>? clipTypes,
+  }) async {
     switch (state) {
       case InitialSearchState() || SearchErrorState():
         {
           if (searchQuery == null) return;
           emit(
-            SearchState.searching(query: searchQuery),
+            SearchState.searching(
+              query: searchQuery,
+              types: clipTypes,
+              textCategories: textClipCategories,
+            ),
           );
 
           final items = await repo.getList(
             limit: 50,
             search: searchQuery,
+            types: clipTypes,
+            category: textClipCategories,
           );
 
           emit(
@@ -39,6 +50,8 @@ class SearchCubit extends Cubit<SearchState> {
                 results: r.results,
                 offset: r.results.length,
                 hasMore: r.hasMore,
+                types: clipTypes,
+                textCategories: textClipCategories,
               ),
             ),
           );
@@ -48,18 +61,26 @@ class SearchCubit extends Cubit<SearchState> {
           :final query,
           :final results,
           :final offset,
-          :final hasMore
+          :final hasMore,
+          :final types,
+          :final textCategories,
         ):
         {
           final newQuery = searchQuery != null && query != searchQuery;
           if (!hasMore && !newQuery) return;
           emit(
-            SearchState.searching(query: searchQuery ?? query),
+            SearchState.searching(
+              query: searchQuery ?? query,
+              types: clipTypes ?? types,
+              textCategories: textClipCategories ?? textCategories,
+            ),
           );
           final items = await repo.getList(
             limit: 50,
             offset: newQuery ? 0 : offset,
             search: searchQuery ?? query,
+            types: clipTypes ?? types,
+            category: textClipCategories ?? textCategories,
           );
 
           final nextState = items.fold(
@@ -71,6 +92,8 @@ class SearchCubit extends Cubit<SearchState> {
               results: newQuery ? r.results : [...results, ...r.results],
               offset: r.results.length + (newQuery ? 0 : offset),
               hasMore: r.hasMore,
+              types: clipTypes ?? types,
+              textCategories: textClipCategories ?? textCategories,
             ),
           );
           emit(nextState);

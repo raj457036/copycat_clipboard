@@ -1,5 +1,6 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/enums/sort.dart';
 
 enum ClipboardSortKey {
@@ -17,6 +18,8 @@ abstract class ClipboardSource {
     int limit = 50,
     int offset = 0,
     String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
     int? collectionId,
     ClipboardSortKey? sortBy,
     SortOrder order = SortOrder.desc,
