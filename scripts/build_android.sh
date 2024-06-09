@@ -1,1 +1,1 @@
-flutter build appbundle --dart-define-from-file=../local/prod.json
+flutter build appbundle --dart-define-from-file="local/prod.json"
