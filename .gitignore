@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+**/scripts/temps/**
 
 # IntelliJ related
 *.iml
