@@ -2,6 +2,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/enums/sort.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
@@ -15,6 +16,8 @@ abstract class ClipboardRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
     int? collectionId,
     ClipboardSortKey? sortBy,
     SortOrder order = SortOrder.desc,
@@ -54,6 +57,8 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
     int? collectionId,
     ClipboardSortKey? sortBy,
     SortOrder order = SortOrder.desc,
@@ -66,6 +71,8 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
         sortBy: sortBy,
         order: order,
         search: search,
+        types: types,
+        category: category,
       );
 
       return Right(result);
@@ -141,6 +148,8 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     int limit = 50,
     int offset = 0,
     String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
     int? collectionId,
     ClipboardSortKey? sortBy,
     SortOrder order = SortOrder.desc,
@@ -150,6 +159,8 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
         limit: limit,
         offset: offset,
         search: search,
+        types: types,
+        category: category,
         collectionId: collectionId,
         sortBy: sortBy,
         order: order,

@@ -41,7 +41,7 @@ class SearchPage extends StatelessWidget {
                 listenWhen: (previous, current) {
                   switch (current) {
                     case OfflinePersistanceDeleted() ||
-                          OfflinePersistanceSaved(synced: false):
+                          OfflinePersistanceSaved():
                       return true;
                     case _:
                       return false;

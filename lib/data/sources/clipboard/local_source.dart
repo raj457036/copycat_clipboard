@@ -3,6 +3,7 @@
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/enums/sort.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:injectable/injectable.dart';
@@ -27,6 +28,8 @@ class LocalClipboardSource implements ClipboardSource {
     int limit = 50,
     int offset = 0,
     String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
     int? collectionId,
     ClipboardSortKey? sortBy,
     SortOrder order = SortOrder.desc,
@@ -76,6 +79,17 @@ class LocalClipboardSource implements ClipboardSource {
       }
 
       resultsQuery = filter;
+    }
+    if (types != null) {
+      for (final type in types) {
+        resultsQuery = resultsQuery.typeEqualTo(type);
+      }
+    }
+
+    if (category != null) {
+      for (final category in category) {
+        resultsQuery = resultsQuery.textCategoryContains(category);
+      }
     }
 
     var query = resultsQuery.deletedAtIsNull();
