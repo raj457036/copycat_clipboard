@@ -7,17 +7,36 @@ import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart' as su_auth;
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
 
+  Future<void> launchPrivacyPolicyPage() async {
+    await launchUrl(
+      Uri.parse(
+        const String.fromEnvironment("PRIVACY_POLICY_URL"),
+      ),
+    );
+  }
+
+  Future<void> launchTermsOfServicePage() async {
+    await launchUrl(
+      Uri.parse(
+        const String.fromEnvironment("TERMS_CONDITIONS_URL"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+    final colors = context.colors;
     final mq = MediaQuery.of(context);
     final isMobile = Breakpoints.isMobile(mq.size.width);
     return Stack(
@@ -113,6 +132,36 @@ class LoginForm extends StatelessWidget {
                   ),
                   // const Spacer(),
                   const LocaleDropdown(),
+                  height10,
+                  Text.rich(
+                    TextSpan(text: context.locale.termsAgreeP1, children: [
+                      TextSpan(
+                        text: context.locale.privacyPolicies,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colors.primary,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = launchPrivacyPolicyPage,
+                      ),
+                      TextSpan(
+                        text: context.locale.and,
+                      ),
+                      TextSpan(
+                        text: context.locale.termsOfService,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colors.primary,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = launchTermsOfServicePage,
+                      ),
+                      TextSpan(
+                        text: context.locale.termsAgreeP2,
+                      )
+                    ]),
+                    textAlign: TextAlign.center,
+                  ),
                   // height12,
                   if (isMobile)
                     Image.asset(

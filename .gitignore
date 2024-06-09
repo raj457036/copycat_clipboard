@@ -43,3 +43,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 window_dist/installer.exe
+
+**/local/**

@@ -42,12 +42,10 @@ abstract class RegisterModule {
   FocusWindow get focusWindow => FocusWindow();
 
   @Named("supabase_url")
-  String get supabaseUrl => "https://jyawrokzkzfjturwttte.supabase.co";
+  String get supabaseUrl => const String.fromEnvironment("SUPABASE_URL");
 
-  // TODO!: put this in enviornment
   @Named("supabase_key")
-  String get supabaseKey =>
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5YXdyb2t6a3pmanR1cnd0dHRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMxMTU2NTAsImV4cCI6MjAyODY5MTY1MH0.zEY_hQyUEmFra4Tym-e81nAJZoyt_WafCkBmKKvl9L4";
+  String get supabaseKey => const String.fromEnvironment("SUPABASE_KEY");
 
   @preResolve
   @singleton

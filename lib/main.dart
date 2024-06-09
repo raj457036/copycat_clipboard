@@ -87,7 +87,9 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  Bloc.observer = CustomBlocObserver();
+  if (kDebugMode) {
+    Bloc.observer = CustomBlocObserver();
+  }
   await configureDependencies();
   runApp(const MainApp());
 }
