@@ -525,4 +525,19 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get autoSyncEvery30Seconds =>
       '• Synchronisation Automatique Toutes les 30 Secondes';
+
+  @override
+  String get termsAgreeP1 => 'En continuant, vous acceptez les ';
+
+  @override
+  String get privacyPolicies => 'Politiques de confidentialité';
+
+  @override
+  String get and => ' et les ';
+
+  @override
+  String get termsOfService => 'Conditions d\'utilisation';
+
+  @override
+  String get termsAgreeP2 => ' suivantes.';
 }

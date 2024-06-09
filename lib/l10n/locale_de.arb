@@ -248,5 +248,10 @@
     "instantSearch": "• Sofortsuche",
     "syncingUpToLast24Hours": "• Synchronisierung bis zu den letzten 24 Stunden",
     "upTo3Collections": "• Bis zu 3 Sammlungen",
-    "autoSyncEvery30Seconds": "• Automatische Synchronisierung alle 30 Sekunden"
+    "autoSyncEvery30Seconds": "• Automatische Synchronisierung alle 30 Sekunden",
+    "termsAgreeP1": "Durch die Fortsetzung stimmen Sie den folgenden ",
+    "privacyPolicies": "Datenschutzrichtlinien",
+    "and": " und ",
+    "termsOfService": "Nutzungsbedingungen",
+    "termsAgreeP2": " zu."
 }

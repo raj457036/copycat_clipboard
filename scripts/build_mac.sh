@@ -1,0 +1,1 @@
+flutter build macos --dart-define-from-file=../local/prod.json

@@ -1028,6 +1028,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'• Auto-Sync Every 30 Seconds'**
   String get autoSyncEvery30Seconds;
+
+  /// No description provided for @termsAgreeP1.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing you agree to the following '**
+  String get termsAgreeP1;
+
+  /// No description provided for @privacyPolicies.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policies'**
+  String get privacyPolicies;
+
+  /// No description provided for @and.
+  ///
+  /// In en, this message translates to:
+  /// **' and '**
+  String get and;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// No description provided for @termsAgreeP2.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get termsAgreeP2;
 }
 
 class _AppLocalizationsDelegate

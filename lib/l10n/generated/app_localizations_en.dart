@@ -516,4 +516,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get autoSyncEvery30Seconds => '• Auto-Sync Every 30 Seconds';
+
+  @override
+  String get termsAgreeP1 => 'By continuing you agree to the following ';
+
+  @override
+  String get privacyPolicies => 'Privacy policies';
+
+  @override
+  String get and => ' and ';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get termsAgreeP2 => '.';
 }
