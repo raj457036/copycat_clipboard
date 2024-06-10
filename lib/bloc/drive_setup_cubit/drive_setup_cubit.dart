@@ -17,12 +17,33 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
   StreamSubscription? networkSub;
   final DriveCredentialRepository repo;
 
+  Timer? timer;
+
   DriveSetupCubit(this.repo) : super(const DriveSetupState.unknown()) {
     networkSub = networkObserver.listen((connected) {
       if (connected) {
         fetch();
       }
     });
+  }
+
+  Future<void> startResetTimer() async {
+    timer = Timer(
+      const Duration(seconds: 10),
+      () => emit(
+        const DriveSetupState.setupError(
+          failure: Failure(
+            message: "timeout",
+            code: "gd-timeout",
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> stopResetTimer() async {
+    timer?.cancel();
+    timer = null;
   }
 
   Future<String?> get accessToken async {
@@ -55,7 +76,10 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
     final result = await repo.launchConsentPage();
     emit(result.fold(
       (l) => DriveSetupState.setupError(failure: l),
-      (r) => const DriveSetupState.unknown(waiting: true),
+      (r) {
+        startResetTimer();
+        return const DriveSetupState.unknown(waiting: true);
+      },
     ));
   }
 
@@ -75,6 +99,7 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
     emit(DriveSetupState.verifyingCode(code: code, scopes: scopes));
 
     final result = await repo.setupDrive(code);
+    stopResetTimer();
     emit(result.fold(
       (l) => DriveSetupState.setupError(failure: l),
       (r) => DriveSetupState.setupDone(token: r),
