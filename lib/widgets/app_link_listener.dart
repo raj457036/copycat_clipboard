@@ -31,6 +31,13 @@ class _AppLinkListenerState extends State<AppLinkListener> {
   Future<void> onUri(Uri uri) async {
     logger.i("🔗 NEW APP LINK: $uri");
 
+    if (rootNavKey.currentContext != null) {
+      showTextSnackbar(
+        rootNavKey.currentContext!.locale.pleaseWait,
+        isLoading: true,
+      );
+    }
+
     if (isDesktopPlatform) {
       await windowManager.show();
       await Future.delayed(const Duration(seconds: 2));
@@ -41,12 +48,6 @@ class _AppLinkListenerState extends State<AppLinkListener> {
     if (rootNavKey.currentContext == null) return;
     // clipboard://drive-connect?code=4/0AeaYSHB-QUSzN0WX8F-R7Y-64KkUUgAgT5lrHXVmrgFPr7mJIM9p_aHJJpKg0XXBuytu1Q&scope=https://www.googleapis.com/auth/drive.appdata%20https://www.googleapis.com/auth/drive.file
     if (uri.host == "drive-connect") {
-      if (rootNavKey.currentContext != null) {
-        showTextSnackbar(
-          rootNavKey.currentContext!.locale.pleaseWait,
-          isLoading: true,
-        );
-      }
       final code = uri.queryParameters["code"];
       final scope = uri.queryParameters["scope"] ?? "";
       final error = uri.queryParameters["error"];
@@ -67,12 +68,6 @@ class _AppLinkListenerState extends State<AppLinkListener> {
       }
     }
     if (uri.host == "auth") {
-      if (rootNavKey.currentContext != null) {
-        showTextSnackbar(
-          rootNavKey.currentContext!.locale.pleaseWait,
-          isLoading: true,
-        );
-      }
       final code = uri.queryParameters["code"];
       if (code != null) {
         final path = await context.read<AuthCubit>().validateAuthCode(code);
