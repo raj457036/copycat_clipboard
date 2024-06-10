@@ -8,6 +8,13 @@ class DesktopLifecycleOptimizer extends StatefulWidget {
     required this.child,
   });
 
+  static Widget fromPlatform({required Widget child}) {
+    if (isMobilePlatform) return child;
+    return DesktopLifecycleOptimizer(
+      child: child,
+    );
+  }
+
   @override
   State<DesktopLifecycleOptimizer> createState() =>
       _DesktopLifecycleOptimizerState();

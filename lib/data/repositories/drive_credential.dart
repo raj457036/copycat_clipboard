@@ -84,7 +84,12 @@ class DriveCredentialRepositoryImpl implements DriveCredentialRepository {
       );
       return Right(DriveAccessToken.fromJson(jsonDecode(result.data)));
     } catch (e) {
-      return Left(Failure.fromException(e));
+      return const Left(
+        Failure(
+          message: "Failed to connect, please try again later!",
+          code: "gcode-issue",
+        ),
+      );
     }
   }
 
