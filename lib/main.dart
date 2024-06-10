@@ -111,13 +111,69 @@ Future<void> screenshotAsFile(
   }
 }
 
+class AppContent extends StatelessWidget {
+  const AppContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = GoogleFonts.poppinsTextTheme();
+    return BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
+      selector: (state) {
+        return (state.config.themeMode, state.config.locale);
+      },
+      builder: (context, state) {
+        final (theme, langCode) = state;
+        return MaterialApp.router(
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
+          routerDelegate: router.routerDelegate,
+          backButtonDispatcher: router.backButtonDispatcher,
+          themeMode: theme,
+          theme: ThemeData(
+            useMaterial3: true,
+            textTheme: textTheme.apply(
+              bodyColor: lightColorScheme.onSurface,
+              displayColor: lightColorScheme.onSurface,
+            ),
+            colorScheme: lightColorScheme,
+            brightness: Brightness.light,
+            inputDecorationTheme: const InputDecorationTheme(
+              border: OutlineInputBorder(
+                borderRadius: radius12,
+              ),
+            ),
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            textTheme: textTheme.apply(
+              bodyColor: darkColorScheme.onSurface,
+              displayColor: darkColorScheme.onSurface,
+            ),
+            colorScheme: darkColorScheme,
+            brightness: Brightness.dark,
+            inputDecorationTheme: const InputDecorationTheme(
+              border: OutlineInputBorder(
+                borderRadius: radius12,
+              ),
+            ),
+          ),
+          debugShowCheckedModeBanner: false,
+          locale: Locale(langCode.isEmpty ? "en" : langCode),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        );
+      },
+    );
+  }
+}
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = GoogleFonts.poppinsTextTheme();
-    return MultiBlocProvider(
+    final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
           create: (context) => sl(),
@@ -149,71 +205,9 @@ class MainApp extends StatelessWidget {
         child: TrayManager.fromPlatform(
           child: WindowFocusManager.fromPlatform(
             child: ShareListener.fromPlatform(
-              child: SystemShortcutListener(
+              child: const SystemShortcutListener(
                 child: AppLinkListener(
-                  child: NetworkObserver(
-                    child: DevicePreview(
-                      enabled: kDebugMode,
-                      tools: const [
-                        ...DevicePreview.defaultTools,
-                        DevicePreviewScreenshot(
-                          onScreenshot: screenshotAsFile,
-                        ),
-                      ],
-                      builder: (context) => BlocSelector<AppConfigCubit,
-                          AppConfigState, (ThemeMode, String)>(
-                        selector: (state) {
-                          return (state.config.themeMode, state.config.locale);
-                        },
-                        builder: (context, state) {
-                          final (theme, langCode) = state;
-                          return MaterialApp.router(
-                            scaffoldMessengerKey: scaffoldMessengerKey,
-                            routeInformationParser:
-                                router.routeInformationParser,
-                            routeInformationProvider:
-                                router.routeInformationProvider,
-                            routerDelegate: router.routerDelegate,
-                            backButtonDispatcher: router.backButtonDispatcher,
-                            themeMode: theme,
-                            theme: ThemeData(
-                              useMaterial3: true,
-                              textTheme: textTheme.apply(
-                                bodyColor: lightColorScheme.onSurface,
-                                displayColor: lightColorScheme.onSurface,
-                              ),
-                              colorScheme: lightColorScheme,
-                              brightness: Brightness.light,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                border: OutlineInputBorder(
-                                  borderRadius: radius12,
-                                ),
-                              ),
-                            ),
-                            darkTheme: ThemeData(
-                              useMaterial3: true,
-                              textTheme: textTheme.apply(
-                                bodyColor: darkColorScheme.onSurface,
-                                displayColor: darkColorScheme.onSurface,
-                              ),
-                              colorScheme: darkColorScheme,
-                              brightness: Brightness.dark,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                border: OutlineInputBorder(
-                                  borderRadius: radius12,
-                                ),
-                              ),
-                            ),
-                            debugShowCheckedModeBanner: false,
-                            locale: Locale(langCode.isEmpty ? "en" : langCode),
-                            localizationsDelegates:
-                                AppLocalizations.localizationsDelegates,
-                            supportedLocales: AppLocalizations.supportedLocales,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  child: NetworkObserver(child: AppContent()),
                 ),
               ),
             ),
@@ -221,5 +215,18 @@ class MainApp extends StatelessWidget {
         ),
       ),
     );
+
+    if (kDebugMode) {
+      return DevicePreview(
+        tools: const [
+          ...DevicePreview.defaultTools,
+          DevicePreviewScreenshot(
+            onScreenshot: screenshotAsFile,
+          ),
+        ],
+        builder: (context) => child,
+      );
+    }
+    return child;
   }
 }
