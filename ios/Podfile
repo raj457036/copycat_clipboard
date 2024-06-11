@@ -49,5 +49,18 @@ post_install do |installer|
     target.build_configurations.each do |config|
       config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
     end
+
+    ################  Awesome Notifications pod modification 1 ###################
+    awesome_pod_file = File.expand_path(File.join('plugins', 'awesome_notifications', 'ios', 'Scripts', 'AwesomePodFile'), '.symlinks')
+    require awesome_pod_file
+    update_awesome_pod_build_settings(installer)
+    ################  Awesome Notifications pod modification 1 ###################
+
   end
 end
+
+################  Awesome Notifications pod modification 2 ###################
+awesome_pod_file = File.expand_path(File.join('plugins', 'awesome_notifications', 'ios', 'Scripts', 'AwesomePodFile'), '.symlinks')
+require awesome_pod_file
+update_awesome_main_target_settings('Runner', File.dirname(File.realpath(__FILE__)), flutter_root)
+################  Awesome Notifications pod modification 2 ###################

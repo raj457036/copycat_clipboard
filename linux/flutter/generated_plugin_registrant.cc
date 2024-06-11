@@ -7,6 +7,7 @@
 #include "generated_plugin_registrant.h"
 
 #include <awesome_notifications/awesome_notifications_plugin.h>
+#include <awesome_notifications_core/awesome_notifications_core_plugin.h>
 #include <clipboard_watcher/clipboard_watcher_plugin.h>
 #include <emoji_picker_flutter/emoji_picker_flutter_plugin.h>
 #include <flutter_platform_alert/flutter_platform_alert_plugin.h>
@@ -27,6 +28,9 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) awesome_notifications_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "AwesomeNotificationsPlugin");
   awesome_notifications_plugin_register_with_registrar(awesome_notifications_registrar);
+  g_autoptr(FlPluginRegistrar) awesome_notifications_core_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "AwesomeNotificationsCorePlugin");
+  awesome_notifications_core_plugin_register_with_registrar(awesome_notifications_core_registrar);
   g_autoptr(FlPluginRegistrar) clipboard_watcher_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "ClipboardWatcherPlugin");
   clipboard_watcher_plugin_register_with_registrar(clipboard_watcher_registrar);

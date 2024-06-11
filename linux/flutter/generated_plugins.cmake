@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
+  awesome_notifications_core
   clipboard_watcher
   emoji_picker_flutter
   flutter_platform_alert

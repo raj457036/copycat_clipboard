@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
+import 'package:clipboard/constants/strings/notification_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/generated/app_localizations.dart';
@@ -80,6 +82,29 @@ Future<void> main() async {
   } else {
     unawaited(MobileAds.instance.initialize());
   }
+
+  AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: notificationChannelGroupKey,
+        channelKey: notificationChannelKey,
+        channelName: notificationChannelName,
+        channelDescription: notificationChannelDescription,
+        defaultColor: notificationDefaultColor,
+        ledColor: notificationLedColor,
+      )
+    ],
+    // Channel groups are only visual and are not required
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: notificationChannelGroupKey,
+        channelGroupName: notificationChannelGroupKey,
+      )
+    ],
+    debug: kDebugMode,
+  );
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

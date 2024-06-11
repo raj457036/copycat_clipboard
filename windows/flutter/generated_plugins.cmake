@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   awesome_notifications
+  awesome_notifications_core
   clipboard_watcher
   connectivity_plus
   emoji_picker_flutter
