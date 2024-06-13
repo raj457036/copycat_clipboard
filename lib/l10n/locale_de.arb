@@ -254,5 +254,7 @@
     "and": " und ",
     "termsOfService": "Nutzungsbedingungen",
     "termsAgreeP2": " zu.",
-    "backToApp": "Zurück zur App"
+    "backToApp": "Zurück zur App",
+    "experimental": "⚠️ Experimentell",
+    "experimentalDescription": "Diese Funktion ist experimentell und könnte nicht wie erwartet funktionieren."
 }

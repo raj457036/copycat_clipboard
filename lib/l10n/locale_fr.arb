@@ -254,5 +254,7 @@
     "and": " et les ",
     "termsOfService": "Conditions d'utilisation",
     "termsAgreeP2": " suivantes.",
-    "backToApp": "Retour à l'application"
+    "backToApp": "Retour à l'application",
+    "experimental": "⚠️ Expérimental",
+    "experimentalDescription": "Cette fonctionnalité est expérimentale et pourrait ne pas fonctionner comme prévu."
 }
