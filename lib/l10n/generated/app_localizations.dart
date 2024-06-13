@@ -1064,6 +1064,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to App'**
   String get backToApp;
+
+  /// No description provided for @experimental.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ Experimental'**
+  String get experimental;
+
+  /// No description provided for @experimentalDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is experimental and might not work as expected.'**
+  String get experimentalDescription;
 }
 
 class _AppLocalizationsDelegate

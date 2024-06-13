@@ -543,4 +543,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get backToApp => 'Retour à l\'application';
+
+  @override
+  String get experimental => '⚠️ Expérimental';
+
+  @override
+  String get experimentalDescription =>
+      'Cette fonctionnalité est expérimentale et pourrait ne pas fonctionner comme prévu.';
 }

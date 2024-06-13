@@ -255,5 +255,7 @@
     "and": " and ",
     "termsOfService": "Terms of Service",
     "termsAgreeP2": ".",
-    "backToApp": "Back to App"
+    "backToApp": "Back to App",
+    "experimental": "⚠️ Experimental",
+    "experimentalDescription": "This feature is experimental and might not work as expected."
 }

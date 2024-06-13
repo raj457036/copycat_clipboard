@@ -542,4 +542,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get backToApp => 'Volver a la aplicación';
+
+  @override
+  String get experimental => '⚠️ Experimental';
+
+  @override
+  String get experimentalDescription =>
+      'Esta característica es experimental y podría no funcionar como se espera.';
 }
