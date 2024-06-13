@@ -1,3 +1,9 @@
+🎉 Version: 0.1.11+28
+
+- Performance improvements and optimizations.
+- Improved share content handing
+- User now has option to go back to previous app when content is shared with the app.
+
 🎉 Version: 0.1.6+23
 
 Patch:
