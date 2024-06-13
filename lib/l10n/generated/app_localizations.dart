@@ -1058,6 +1058,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'.'**
   String get termsAgreeP2;
+
+  /// No description provided for @backToApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to App'**
+  String get backToApp;
 }
 
 class _AppLocalizationsDelegate

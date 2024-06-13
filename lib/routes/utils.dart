@@ -32,8 +32,11 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
     final actions = [
       FloatingActionButton(
         onPressed: () async {
-          showTextSnackbar("Pasting to clipboard",
-              isLoading: true, closePrevious: true);
+          showTextSnackbar(
+            "Pasting to clipboard",
+            isLoading: true,
+            closePrevious: true,
+          );
           await context.read<OfflinePersistanceCubit>().paste();
           showTextSnackbar("Paste success", closePrevious: true);
         },

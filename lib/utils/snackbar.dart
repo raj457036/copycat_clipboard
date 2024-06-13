@@ -3,6 +3,7 @@ import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/widgets/timer_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
@@ -64,6 +65,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showFailureSnackbar(
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   String text, {
   bool isLoading = false,
+  bool isProgress = false,
   bool success = false,
   bool failure = false,
   bool closePrevious = false,
@@ -78,20 +80,37 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showTextSnackbar(
   if (success) bg = Colors.green;
   if (failure) bg = Colors.red;
 
+  Widget child;
+
+  if (isLoading) {
+    child = Row(
+      children: [
+        const SizedBox.square(
+          dimension: 22,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+        width8,
+        Text(text)
+      ],
+    );
+  } else if (isProgress) {
+    child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(text),
+        height6,
+        TimerProgressBar(
+          duration: Duration(seconds: duration ?? 4),
+        ),
+      ],
+    );
+  } else {
+    child = Text(text);
+  }
+
   return showSnackbar(
     SnackBar(
-      content: isLoading
-          ? Row(
-              children: [
-                const SizedBox.square(
-                  dimension: 22,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-                width8,
-                Text(text)
-              ],
-            )
-          : Text(text),
+      content: child,
       backgroundColor: bg,
       showCloseIcon: !isMobile && !isLoading,
       behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,

@@ -538,4 +538,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get termsAgreeP2 => ' zu.';
+
+  @override
+  String get backToApp => 'Zurück zur App';
 }

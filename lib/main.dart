@@ -162,6 +162,9 @@ class AppContent extends StatelessWidget {
           locale: Locale(langCode.isEmpty ? "en" : langCode),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
+          builder: (context, child) => ShareListener.fromPlatform(
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
     );
@@ -204,11 +207,9 @@ class MainApp extends StatelessWidget {
       child: EventBridge(
         child: TrayManager.fromPlatform(
           child: WindowFocusManager.fromPlatform(
-            child: ShareListener.fromPlatform(
-              child: const SystemShortcutListener(
-                child: AppLinkListener(
-                  child: NetworkObserver(child: AppContent()),
-                ),
+            child: const SystemShortcutListener(
+              child: AppLinkListener(
+                child: NetworkObserver(child: AppContent()),
               ),
             ),
           ),
