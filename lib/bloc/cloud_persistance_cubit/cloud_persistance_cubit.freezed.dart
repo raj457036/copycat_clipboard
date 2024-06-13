@@ -26,7 +26,9 @@ mixin _$CloudPersistanceState {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -39,7 +41,9 @@ mixin _$CloudPersistanceState {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -52,7 +56,9 @@ mixin _$CloudPersistanceState {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -169,7 +175,9 @@ class _$CloudPersistanceInitialImpl implements CloudPersistanceInitial {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return initial();
   }
@@ -185,7 +193,9 @@ class _$CloudPersistanceInitialImpl implements CloudPersistanceInitial {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return initial?.call();
   }
@@ -201,7 +211,9 @@ class _$CloudPersistanceInitialImpl implements CloudPersistanceInitial {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -355,7 +367,9 @@ class _$CloudPersistanceCreatingImpl implements CloudPersistanceCreating {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return creatingItem(item);
   }
@@ -371,7 +385,9 @@ class _$CloudPersistanceCreatingImpl implements CloudPersistanceCreating {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return creatingItem?.call(item);
   }
@@ -387,7 +403,9 @@ class _$CloudPersistanceCreatingImpl implements CloudPersistanceCreating {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (creatingItem != null) {
@@ -547,7 +565,9 @@ class _$CloudPersistanceUpdatingImpl implements CloudPersistanceUpdating {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return updatingItem(item);
   }
@@ -563,7 +583,9 @@ class _$CloudPersistanceUpdatingImpl implements CloudPersistanceUpdating {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return updatingItem?.call(item);
   }
@@ -579,7 +601,9 @@ class _$CloudPersistanceUpdatingImpl implements CloudPersistanceUpdating {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (updatingItem != null) {
@@ -739,7 +763,9 @@ class _$CloudPersistanceDeletingImpl implements CloudPersistanceDeleting {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return deletingItem(item);
   }
@@ -755,7 +781,9 @@ class _$CloudPersistanceDeletingImpl implements CloudPersistanceDeleting {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return deletingItem?.call(item);
   }
@@ -771,7 +799,9 @@ class _$CloudPersistanceDeletingImpl implements CloudPersistanceDeleting {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (deletingItem != null) {
@@ -931,7 +961,9 @@ class _$CloudPersistanceDeletedImpl implements CloudPersistanceDeleted {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return deletedItem(item);
   }
@@ -947,7 +979,9 @@ class _$CloudPersistanceDeletedImpl implements CloudPersistanceDeleted {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return deletedItem?.call(item);
   }
@@ -963,7 +997,9 @@ class _$CloudPersistanceDeletedImpl implements CloudPersistanceDeleted {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (deletedItem != null) {
@@ -1125,7 +1161,9 @@ class _$CloudPersistanceUploadingFileImpl
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return uploadingFile(item);
   }
@@ -1141,7 +1179,9 @@ class _$CloudPersistanceUploadingFileImpl
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return uploadingFile?.call(item);
   }
@@ -1157,7 +1197,9 @@ class _$CloudPersistanceUploadingFileImpl
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (uploadingFile != null) {
@@ -1320,7 +1362,9 @@ class _$CloudPersistanceDownloadingFileImpl
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return downloadingFile(item);
   }
@@ -1336,7 +1380,9 @@ class _$CloudPersistanceDownloadingFileImpl
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return downloadingFile?.call(item);
   }
@@ -1352,7 +1398,9 @@ class _$CloudPersistanceDownloadingFileImpl
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (downloadingFile != null) {
@@ -1522,7 +1570,9 @@ class _$CloudPersistanceSavedImpl implements CloudPersistanceSaved {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
     return saved(item, created);
   }
@@ -1538,7 +1588,9 @@ class _$CloudPersistanceSavedImpl implements CloudPersistanceSaved {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
     return saved?.call(item, created);
   }
@@ -1554,7 +1606,9 @@ class _$CloudPersistanceSavedImpl implements CloudPersistanceSaved {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (saved != null) {
@@ -1636,7 +1690,11 @@ abstract class _$$CloudPersistanceErrorImplCopyWith<$Res> {
           $Res Function(_$CloudPersistanceErrorImpl) then) =
       __$$CloudPersistanceErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Failure failure, ClipboardItem item});
+  $Res call(
+      {Failure failure,
+      ClipboardItem item,
+      FailedAction failedAction,
+      int retryCount});
 
   $ClipboardItemCopyWith<$Res> get item;
 }
@@ -1655,6 +1713,8 @@ class __$$CloudPersistanceErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? failure = null,
     Object? item = null,
+    Object? failedAction = null,
+    Object? retryCount = null,
   }) {
     return _then(_$CloudPersistanceErrorImpl(
       null == failure
@@ -1665,6 +1725,14 @@ class __$$CloudPersistanceErrorImplCopyWithImpl<$Res>
           ? _value.item
           : item // ignore: cast_nullable_to_non_nullable
               as ClipboardItem,
+      null == failedAction
+          ? _value.failedAction
+          : failedAction // ignore: cast_nullable_to_non_nullable
+              as FailedAction,
+      retryCount: null == retryCount
+          ? _value.retryCount
+          : retryCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -1680,16 +1748,22 @@ class __$$CloudPersistanceErrorImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CloudPersistanceErrorImpl implements CloudPersistanceError {
-  const _$CloudPersistanceErrorImpl(this.failure, this.item);
+  const _$CloudPersistanceErrorImpl(this.failure, this.item, this.failedAction,
+      {this.retryCount = 0});
 
   @override
   final Failure failure;
   @override
   final ClipboardItem item;
+  @override
+  final FailedAction failedAction;
+  @override
+  @JsonKey()
+  final int retryCount;
 
   @override
   String toString() {
-    return 'CloudPersistanceState.error(failure: $failure, item: $item)';
+    return 'CloudPersistanceState.error(failure: $failure, item: $item, failedAction: $failedAction, retryCount: $retryCount)';
   }
 
   @override
@@ -1698,11 +1772,16 @@ class _$CloudPersistanceErrorImpl implements CloudPersistanceError {
         (other.runtimeType == runtimeType &&
             other is _$CloudPersistanceErrorImpl &&
             (identical(other.failure, failure) || other.failure == failure) &&
-            (identical(other.item, item) || other.item == item));
+            (identical(other.item, item) || other.item == item) &&
+            (identical(other.failedAction, failedAction) ||
+                other.failedAction == failedAction) &&
+            (identical(other.retryCount, retryCount) ||
+                other.retryCount == retryCount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failure, item);
+  int get hashCode =>
+      Object.hash(runtimeType, failure, item, failedAction, retryCount);
 
   @JsonKey(ignore: true)
   @override
@@ -1722,9 +1801,11 @@ class _$CloudPersistanceErrorImpl implements CloudPersistanceError {
     required TResult Function(ClipboardItem item) uploadingFile,
     required TResult Function(ClipboardItem item) downloadingFile,
     required TResult Function(ClipboardItem item, bool created) saved,
-    required TResult Function(Failure failure, ClipboardItem item) error,
+    required TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)
+        error,
   }) {
-    return error(failure, item);
+    return error(failure, item, failedAction, retryCount);
   }
 
   @override
@@ -1738,9 +1819,11 @@ class _$CloudPersistanceErrorImpl implements CloudPersistanceError {
     TResult? Function(ClipboardItem item)? uploadingFile,
     TResult? Function(ClipboardItem item)? downloadingFile,
     TResult? Function(ClipboardItem item, bool created)? saved,
-    TResult? Function(Failure failure, ClipboardItem item)? error,
+    TResult? Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
   }) {
-    return error?.call(failure, item);
+    return error?.call(failure, item, failedAction, retryCount);
   }
 
   @override
@@ -1754,11 +1837,13 @@ class _$CloudPersistanceErrorImpl implements CloudPersistanceError {
     TResult Function(ClipboardItem item)? uploadingFile,
     TResult Function(ClipboardItem item)? downloadingFile,
     TResult Function(ClipboardItem item, bool created)? saved,
-    TResult Function(Failure failure, ClipboardItem item)? error,
+    TResult Function(Failure failure, ClipboardItem item,
+            FailedAction failedAction, int retryCount)?
+        error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure, item);
+      return error(failure, item, failedAction, retryCount);
     }
     return orElse();
   }
@@ -1819,12 +1904,14 @@ class _$CloudPersistanceErrorImpl implements CloudPersistanceError {
 }
 
 abstract class CloudPersistanceError implements CloudPersistanceState {
-  const factory CloudPersistanceError(
-          final Failure failure, final ClipboardItem item) =
-      _$CloudPersistanceErrorImpl;
+  const factory CloudPersistanceError(final Failure failure,
+      final ClipboardItem item, final FailedAction failedAction,
+      {final int retryCount}) = _$CloudPersistanceErrorImpl;
 
   Failure get failure;
   ClipboardItem get item;
+  FailedAction get failedAction;
+  int get retryCount;
   @JsonKey(ignore: true)
   _$$CloudPersistanceErrorImplCopyWith<_$CloudPersistanceErrorImpl>
       get copyWith => throw _privateConstructorUsedError;

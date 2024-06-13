@@ -2,7 +2,7 @@
 
 firebase appdistribution:distribute \
     --app 1:892296995692:ios:4bf415b9b852d3af490949 \
-    --release-notes-file "./app_distribution/release-note.txt" \
-    --testers-file "./app_distribution/testers.txt" \
+    --release-notes-file "firebase/app_distribution/release-note.txt" \
+    --testers-file "firebase/app_distribution/testers.txt" \
     --debug  \
-    ../build/ios/iphoneos/Payload.ipa
+    build/ios/iphoneos/Payload.ipa
