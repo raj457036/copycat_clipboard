@@ -6,7 +6,8 @@ import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_handler/share_handler.dart';
@@ -56,12 +57,25 @@ class _ShareListenerState extends State<ShareListener> {
       if (!mounted) return;
       try {
         await putMediaToClipboard(media);
-        // ignore: use_build_context_synchronously
-        showTextSnackbar(context.locale.done, closePrevious: true);
+        showTextSnackbar(
+          // ignore: use_build_context_synchronously
+          "✅ ${context.locale.done}",
+          closePrevious: true,
+          duration: 15,
+          isProgress: true,
+          action: SnackBarAction(
+            // ignore: use_build_context_synchronously
+            label: context.locale.backToApp,
+            onPressed: () {
+              SystemNavigator.pop(animated: true);
+            },
+          ),
+        );
       } catch (e) {
         // ignore: use_build_context_synchronously
-        showTextSnackbar(context.locale.failed, closePrevious: true);
+        showTextSnackbar("❌ ${context.locale.failed}", closePrevious: true);
       }
+      // closeSnackbar();
     }, onError: (error) {
       showFailureSnackbar(Failure.fromException(error));
     });
