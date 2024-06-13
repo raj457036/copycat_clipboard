@@ -62,3 +62,7 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
   }
   return null;
 }
+
+Future<void> waitHere(int seconds) {
+  return Future.delayed(Duration(seconds: seconds));
+}

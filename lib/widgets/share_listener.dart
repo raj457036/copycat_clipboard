@@ -43,8 +43,23 @@ class _ShareListenerState extends State<ShareListener> {
     final media = await handler.getInitialSharedMedia();
 
     if (media != null) {
+      await Future.delayed(const Duration(milliseconds: 500));
       logger.i("Received initial shared media!");
-      putMediaToClipboard(media);
+      await putMediaToClipboard(media);
+      showTextSnackbar(
+        // ignore: use_build_context_synchronously
+        "✅ ${context.locale.done}",
+        closePrevious: true,
+        duration: 15,
+        isProgress: true,
+        action: SnackBarAction(
+          // ignore: use_build_context_synchronously
+          label: context.locale.backToApp,
+          onPressed: () {
+            SystemNavigator.pop(animated: true);
+          },
+        ),
+      );
     }
 
     handler.sharedMediaStream.listen((SharedMedia media) async {

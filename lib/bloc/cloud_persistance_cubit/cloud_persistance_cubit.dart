@@ -36,7 +36,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     @Named("google_drive") this.drive,
   ) : super(const CloudPersistanceState.initial());
 
-  Future<void> persist(ClipboardItem item) async {
+  Future<void> persist(ClipboardItem item, {int retryCount = 0}) async {
     emit(const CloudPersistanceState.initial());
     if (!appConfig.isSyncEnabled) {
       if (item.userIntent) {
@@ -47,6 +47,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
               code: "sync-not-enabled",
             ),
             item,
+            FailedAction.create,
+            retryCount: -1,
           ),
         );
       }
@@ -62,7 +64,12 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       final result = await repo.update(item);
       emit(
         result.fold(
-          (l) => CloudPersistanceState.error(l, item.syncDone(l)),
+          (l) => CloudPersistanceState.error(
+            l,
+            item.syncDone(l),
+            FailedAction.update,
+            retryCount: retryCount,
+          ),
           (r) => CloudPersistanceState.saved(r.syncDone()),
         ),
       );
@@ -79,22 +86,32 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
                   code: "file-sync-not-enabled",
                 ),
                 item,
+                FailedAction.create,
+                retryCount: -1,
               ),
             );
             return;
           }
-          await _uploadAndCreate(item.assignUserId(userId));
+          await _uploadAndCreate(
+            item.assignUserId(userId),
+            retryCount: retryCount,
+          );
       }
     }
     return;
   }
 
-  Future<void> _create(ClipboardItem item) async {
+  Future<void> _create(ClipboardItem item, {int retryCount = 0}) async {
     emit(CloudPersistanceState.creatingItem(item));
     final result = await repo.create(item);
     emit(
       result.fold(
-        (l) => CloudPersistanceState.error(l, item.syncDone(l)),
+        (l) => CloudPersistanceState.error(
+          l,
+          item.syncDone(l),
+          FailedAction.create,
+          retryCount: retryCount,
+        ),
         (r) => CloudPersistanceState.saved(
           r.syncDone(),
           created: true,
@@ -113,7 +130,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     return blurHash;
   }
 
-  Future<void> _uploadAndCreate(ClipboardItem item) async {
+  Future<void> _uploadAndCreate(ClipboardItem item,
+      {int retryCount = 0}) async {
     if (!appConfig.canUploadFile(item.fileSize!) && !item.userIntent) {
       logger.i("Auto upload is disabled for files over the limit.");
       emit(
@@ -123,6 +141,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
             code: "auto-upload-restriction",
           ),
           item,
+          FailedAction.upload,
+          retryCount: -1,
         ),
       );
       return;
@@ -140,6 +160,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
         CloudPersistanceState.error(
           authFailure,
           item.syncDone(authFailure),
+          FailedAction.create,
+          retryCount: retryCount,
         ),
       );
       return;
@@ -151,6 +173,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       emit(CloudPersistanceState.error(
         driveFailure,
         item.syncDone(driveFailure),
+        FailedAction.upload,
+        retryCount: -1,
       ));
       return;
     }
@@ -183,11 +207,11 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     }
 
     if (updatedItem.driveFileId != null) {
-      await _create(updatedItem);
+      await _create(updatedItem, retryCount: retryCount);
     }
   }
 
-  Future<void> delete(ClipboardItem item) async {
+  Future<void> delete(ClipboardItem item, {int retryCount = 0}) async {
     emit(CloudPersistanceState.deletingItem(item));
     drive.cancelOperation(item);
     if (item.driveFileId != null) {
@@ -197,6 +221,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
         emit(CloudPersistanceState.error(
           driveFailure,
           item.syncDone(driveFailure),
+          FailedAction.upload,
+          retryCount: -1,
         ));
         return;
       }
@@ -220,7 +246,12 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     final result = await repo.delete(item);
 
     result.fold(
-      (l) => emit(CloudPersistanceState.error(l, item)),
+      (l) => emit(CloudPersistanceState.error(
+        l,
+        item,
+        FailedAction.delete,
+        retryCount: retryCount,
+      )),
       (r) => emit(
         CloudPersistanceState.deletedItem(
           item.copyWith(
@@ -232,7 +263,10 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     );
   }
 
-  Future<void> download(ClipboardItem item) async {
+  Future<void> download(
+    ClipboardItem item, {
+    int retryCount = 0,
+  }) async {
     final isDownloading = drive.isDownloading(item);
     if (isDownloading) return;
 
@@ -252,6 +286,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       emit(CloudPersistanceState.error(
         authFailure,
         item.syncDone(authFailure),
+        FailedAction.download,
+        retryCount: retryCount,
       ));
       return;
     }
@@ -262,6 +298,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
       emit(CloudPersistanceState.error(
         driveFailure,
         item.syncDone(driveFailure),
+        FailedAction.download,
+        retryCount: -1,
       ));
       return;
     }

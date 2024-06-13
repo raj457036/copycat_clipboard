@@ -2,7 +2,7 @@
 
 firebase appdistribution:distribute \
     --app 1:892296995692:android:64012302abe55897490949 \
-    --release-notes-file "./app_distribution/release-note.txt" \
-    --testers-file "./app_distribution/testers.txt" \
+    --release-notes-file "firebase/app_distribution/release-note.txt" \
+    --testers-file "firebase/app_distribution/testers.txt" \
     --debug  \
-    ../build/app/outputs/apk/release/app-release.apk
+    build/app/outputs/apk/release/app-release.apk
