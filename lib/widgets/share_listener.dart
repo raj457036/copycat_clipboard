@@ -46,6 +46,7 @@ class _ShareListenerState extends State<ShareListener> {
       await Future.delayed(const Duration(milliseconds: 500));
       logger.i("Received initial shared media!");
       await putMediaToClipboard(media);
+      await handler.resetInitialSharedMedia();
       showTextSnackbar(
         // ignore: use_build_context_synchronously
         "✅ ${context.locale.done}",
