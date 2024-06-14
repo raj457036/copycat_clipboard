@@ -365,10 +365,10 @@ packages:
     dependency: "direct main"
     description:
       name: easy_worker
-      sha256: "11d60765fa42b0d842647d52e951dcc542a2ca7159271ab067c1cf98ee5bfc08"
+      sha256: ff69ea7c2f1e1b6ae966b5dda974b52688214f0ad962c608f35c9b980d14ed56
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.3"
+    version: "1.0.1"
   email_validator:
     dependency: transitive
     description:
