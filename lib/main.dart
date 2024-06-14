@@ -43,6 +43,14 @@ import 'common/bloc_config.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // final secret = EncryptionSecret.generate();
+  // await EncrypterWorker.instance.start(secret.serialized);
+
+  // final encrypted = await EncrypterWorker.instance.encrypt("Hello world!");
+  // print(encrypted);
+  // final decrypted = await EncrypterWorker.instance.decrypt(encrypted);
+  // print(decrypted);
+
   if (isDesktopPlatform) {
     await windowManager.ensureInitialized();
 

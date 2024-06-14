@@ -54,7 +54,7 @@ dependencies:
   share_handler: ^0.0.21
   share_plus: ^9.0.0
   universal_io: ^2.2.2
-  easy_worker: ^0.0.3
+  easy_worker: ^1.0.1
   emoji_picker_flutter: ^2.2.0
   duration: ^3.0.13
   open_filex: ^4.4.0
