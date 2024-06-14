@@ -1,7 +1,6 @@
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
-import 'package:clipboard/widgets/ads/home_banner.dart';
 import 'package:flutter/material.dart';
 
 class NavBarPage extends StatefulWidget {
@@ -30,17 +29,20 @@ class _NavBarPageState extends State<NavBarPage> {
     final scaffold = Scaffold(
       body: widget.child,
       floatingActionButton: smallScreen && widget.depth == 1
-          ? getFloatingActionButton(context, widget.navbarActiveIndex,
-              isMobile: smallScreen)
+          ? getFloatingActionButton(
+              context,
+              widget.navbarActiveIndex,
+              isMobile: smallScreen,
+            )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: smallScreen && widget.depth == 1
           ? Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const HomeBannerAd(
-                  key: ValueKey("home-banner-ad"),
-                ),
+                // const HomeBannerAd(
+                //   key: ValueKey("home-banner-ad"),
+                // ),
                 NavigationBar(
                   selectedIndex: widget.navbarActiveIndex,
                   onDestinationSelected: (idx) => onNavItemTapped(context, idx),

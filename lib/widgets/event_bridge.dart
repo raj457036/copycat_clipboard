@@ -29,9 +29,15 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) {
             switch (state) {
               case AppConfigLoaded(:final config):
-                context.read<SyncManagerCubit>().setupAutoSync(
-                      Duration(seconds: config.autoSyncInterval),
-                    );
+                {
+                  if (config.enableSync) {
+                    context.read<SyncManagerCubit>().setupAutoSync(
+                          Duration(seconds: config.autoSyncInterval),
+                        );
+                  } else {
+                    context.read<SyncManagerCubit>().stopAutoSync();
+                  }
+                }
                 break;
               case _:
             }

@@ -205,11 +205,13 @@ class MainApp extends StatelessWidget {
           ),
       ],
       child: EventBridge(
-        child: TrayManager.fromPlatform(
-          child: WindowFocusManager.fromPlatform(
+        child: WindowFocusManager.fromPlatform(
+          child: TrayManager.fromPlatform(
             child: const SystemShortcutListener(
               child: AppLinkListener(
-                child: NetworkObserver(child: AppContent()),
+                child: NetworkObserver(
+                  child: AppContent(),
+                ),
               ),
             ),
           ),

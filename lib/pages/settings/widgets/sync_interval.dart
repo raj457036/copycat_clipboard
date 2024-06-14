@@ -14,24 +14,27 @@ class AutoSyncInterval extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
-    return BlocSelector<AppConfigCubit, AppConfigState, int>(
+    return BlocSelector<AppConfigCubit, AppConfigState, (int, bool)>(
       selector: (state) {
         switch (state) {
           case AppConfigLoaded(:final config):
-            return config.autoSyncInterval.isNegative
+            final val = config.autoSyncInterval.isNegative
                 ? $90S
                 : config.autoSyncInterval;
+            return (val, config.enableSync);
           default:
-            return $90S;
+            return ($90S, false);
         }
       },
       builder: (context, state) {
+        final (duration, enabled) = state;
         return ListTile(
+          enabled: enabled,
           title: Text(context.locale.autoSyncInterval),
           subtitle: Text(
             context.locale.autoSyncIntervalDesc(
               prettyDuration(
-                Duration(seconds: state),
+                Duration(seconds: duration),
                 abbreviated: true,
                 delimiter: " ",
               ),
@@ -42,7 +45,7 @@ class AutoSyncInterval extends StatelessWidget {
           ),
           trailing: DropdownButtonHideUnderline(
             child: DropdownButton<int>(
-              value: state,
+              value: duration,
               padding: const EdgeInsets.symmetric(horizontal: padding16),
               borderRadius: radius12,
               items: const [
@@ -126,13 +129,15 @@ class AutoSyncInterval extends StatelessWidget {
                   ),
                 ),
               ],
-              onChanged: (duration) {
-                if (duration != null) {
-                  context
-                      .read<AppConfigCubit>()
-                      .changeAutoSyncDuration(duration);
-                }
-              },
+              onChanged: enabled
+                  ? (duration) {
+                      if (duration != null) {
+                        context
+                            .read<AppConfigCubit>()
+                            .changeAutoSyncDuration(duration);
+                      }
+                    }
+                  : null,
             ),
           ),
         );
