@@ -8,6 +8,7 @@ import 'package:clipboard/data/repositories/sync_clipboard.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/db/sync_status/syncstatus.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,15 @@ part 'sync_manager_cubit.freezed.dart';
 part 'sync_manager_state.dart';
 
 Future<void> syncChanges(BuildContext context) async {
-  showTextSnackbar("Syncing...", isLoading: true, closePrevious: true);
+  showTextSnackbar(context.locale.syncing("..."),
+      isLoading: true, closePrevious: true);
   await context.read<SyncManagerCubit>().syncChanges(force: true);
-  showTextSnackbar("✅ Changes are synced", closePrevious: true);
+  if (context.mounted) {
+    showTextSnackbar(context.locale.done, closePrevious: true);
+  }
 }
+
+const _syncId = 1;
 
 @singleton
 class SyncManagerCubit extends Cubit<SyncManagerState> {
@@ -31,7 +37,6 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final AuthCubit auth;
   final SyncRepository syncRepo;
   final ClipCollectionRepository clipCollectionRepository;
-  final int _syncId = 1;
   final String deviceId;
 
   bool syncing = false;
@@ -52,8 +57,15 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       return;
     }
 
-    autoSyncTimer =
-        Timer.periodic(duration, (timer) => syncChanges(silent: true));
+    autoSyncTimer = Timer.periodic(
+      duration,
+      (timer) => syncChanges(silent: true),
+    );
+  }
+
+  void stopAutoSync() {
+    autoSyncTimer?.cancel();
+    autoSyncTimer = null;
   }
 
   DateTime getLastSyncedTime(DateTime? current) {
@@ -364,9 +376,8 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     bool silent = false,
     bool force = false,
   }) async {
-    if (auth.state is! AuthenticatedAuthState) return;
-
     if (syncing) return;
+    if (auth.state is! AuthenticatedAuthState) return;
     syncing = true;
     try {
       emit(const SyncManagerState.checking());

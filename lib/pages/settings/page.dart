@@ -98,9 +98,9 @@ class SettingsPage extends StatelessWidget {
                           tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,
-                        const AutoSyncInterval(),
                         const EnableSyncSwitch(),
                         const EnableFileSyncSwitch(),
+                        const AutoSyncInterval(),
                       ],
                     ),
                   )
