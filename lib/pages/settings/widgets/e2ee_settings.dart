@@ -41,9 +41,7 @@ class E2EESettings extends StatelessWidget {
                   ),
                   // enabled: subscription.encrypt,
                   trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: subscription.encrypt
-                      ? () => const E2EESettingDialog().show(context)
-                      : null,
+                  onTap: () => const E2EESettingDialog().show(context),
                 ),
                 SwitchListTile(
                   value: autoEncrypt,
