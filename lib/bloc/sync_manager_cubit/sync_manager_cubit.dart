@@ -50,6 +50,12 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     @Named("device_id") this.deviceId,
   ) : super(const SyncManagerState.unknown());
 
+  @override
+  void emit(SyncManagerState state) {
+    if (isClosed) return;
+    super.emit(state);
+  }
+
   void setupAutoSync(Duration duration) {
     autoSyncTimer?.cancel();
 

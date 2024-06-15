@@ -147,38 +147,38 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Card.outlined(
+                        margin: EdgeInsets.zero,
+                        color: Colors.yellow.withOpacity(0.2),
+                        child: ListTile(
+                          title: const Text(
+                            "If you lose your E2EE key and "
+                            "do not have a backup, your encrypted data will be "
+                            "permanently inaccessible. Keep your key safe and "
+                            "backed up.",
+                            textAlign: TextAlign.center,
+                          ),
+                          titleTextStyle: textTheme.titleSmall,
+                          textColor: Colors.orange.shade800,
+                        ),
+                      ),
+                      height12,
                       const Text(
                         "Generate your E2EE Vault key and save it in a secure "
                         "location. You will need this key to set up other devices "
                         "to access your encrypted information.",
+                        textAlign: TextAlign.center,
                       ),
                       height10,
-                      Row(
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: loading ? null : generateEnc2Key,
-                            icon: const Icon(Icons.key),
-                            label: const Text("Generate E2EE Vault Key"),
-                          ),
-                          if (loading) const Text("Generating..."),
-                        ],
+                      ElevatedButton.icon(
+                        onPressed: loading ? null : generateEnc2Key,
+                        icon: const Icon(Icons.key),
+                        label: loading
+                            ? const Text("Generating...")
+                            : const Text("Generate E2EE Vault Key"),
                       ),
-                      const Divider(),
-                      Text(
-                        "⚠️ Warning",
-                        style: textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      height10,
-                      const Text(
-                        "If you lose your E2EE key and "
-                        "do not have a backup, your encrypted data will be "
-                        "permanently inaccessible. Keep your key safe and "
-                        "backed up.",
-                      )
                     ],
                   ),
                 ),
@@ -205,34 +205,37 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      if (invalidImportedKey)
+                        Card.outlined(
+                          margin: EdgeInsets.zero,
+                          color: Colors.deepOrange.withOpacity(0.2),
+                          child: ListTile(
+                            title: const Text(
+                              "⚠️ The imported key is invalid!",
+                              textAlign: TextAlign.center,
+                            ),
+                            titleTextStyle: textTheme.titleSmall,
+                            textColor: Colors.deepOrange.shade800,
+                          ),
+                        ),
+                      height12,
                       const Text(
                         "Import your E2EE Vault key below to enable access to "
                         "your encrypted information on this device. Make "
                         "sure the key is securely stored and not shared with"
                         " anyone.",
+                        textAlign: TextAlign.center,
                       ),
                       height10,
-                      Row(
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed:
-                                loading ? null : () => importEnc2Key(keyId),
-                            icon: const Icon(Icons.key),
-                            label: const Text("Import E2EE Vault Key"),
-                          ),
-                          if (loading) const Text("Importing..."),
-                        ],
+                      ElevatedButton.icon(
+                        onPressed: loading ? null : () => importEnc2Key(keyId),
+                        icon: const Icon(Icons.key),
+                        label: loading
+                            ? const Text("Importing...")
+                            : const Text("Import E2EE Vault Key"),
                       ),
-                      const Divider(),
-                      if (invalidImportedKey)
-                        Text(
-                          "⚠️ The imported key is invalid!",
-                          style: textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
                     ],
                   ),
                 ),
@@ -257,12 +260,27 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Card.outlined(
+                      margin: EdgeInsets.zero,
+                      color: Colors.green.withOpacity(0.2),
+                      child: ListTile(
+                        title: const Text(
+                          "Congratulations, you have successfully "
+                          "configured the end-to-end encryption.",
+                          textAlign: TextAlign.center,
+                        ),
+                        titleTextStyle: textTheme.titleSmall,
+                        textColor: Colors.green.shade800,
+                      ),
+                    ),
+                    height12,
                     const Text(
                       "Click the button below to export your E2EE Vault key."
-                      " Save the key in a secure location to ensure you can set "
+                      "\nSave the key in a secure location to ensure you can set "
                       "up other devices to access your encrypted information.",
+                      textAlign: TextAlign.center,
                     ),
                     height10,
                     ElevatedButton.icon(

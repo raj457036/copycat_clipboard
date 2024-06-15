@@ -105,4 +105,9 @@ class RemoteClipboardSource implements ClipboardSource {
   Future<ClipboardItem?> getLatest() {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> decryptPending() {
+    throw UnimplementedError();
+  }
 }

@@ -131,13 +131,6 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
             validator: ValidationBuilder(optional: true).maxLength(255).build(),
           ),
           height12,
-          SwitchListTile(
-            value: false,
-            onChanged: (val) {},
-            title: const Text("Lock"),
-            subtitle: const Text("Lock this clip"),
-          ),
-          height12,
           ClipCollectionSelectorTile(
             onChange: setCollection,
             collectionId: collectionId?.$1,

@@ -32,28 +32,32 @@ class ExperimentalBadge extends StatelessWidget {
 }
 
 class ProBadge extends StatelessWidget {
-  const ProBadge({super.key});
+  final bool noTooltip;
+  const ProBadge({super.key, this.noTooltip = false});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final chip = Chip(
+      shape: const RoundedRectangleBorder(
+        borderRadius: radius12,
+        side: BorderSide(color: Colors.transparent),
+      ),
+      label: const Text("PRO"),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      padding: const EdgeInsets.symmetric(horizontal: padding10),
+      backgroundColor: colors.primaryContainer,
+      labelStyle: textTheme.bodySmall?.copyWith(
+        color: colors.onPrimaryContainer,
+      ),
+      labelPadding: const EdgeInsets.fromLTRB(2, -6, 2, -6),
+    );
+
+    if (noTooltip) return chip;
     return Tooltip(
       message: "This feature is available for Pro users only.",
-      child: Chip(
-        shape: const RoundedRectangleBorder(
-          borderRadius: radius12,
-          side: BorderSide(color: Colors.transparent),
-        ),
-        label: const Text("PRO"),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: const EdgeInsets.symmetric(horizontal: padding10),
-        backgroundColor: colors.primaryContainer,
-        labelStyle: textTheme.bodySmall?.copyWith(
-          color: colors.onPrimaryContainer,
-        ),
-        labelPadding: const EdgeInsets.fromLTRB(2, -6, 2, -6),
-      ),
+      child: chip,
     );
   }
 }
