@@ -1,6 +1,7 @@
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/strings.dart';
+import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:clipboard/db/json_converters/datetime_converters.dart';
 import 'package:clipboard/enums/clip_type.dart';
@@ -238,6 +239,9 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   bool get isSynced => lastSynced != null;
 
   @ignore
+  bool get isTextType => type == ClipItemType.text || type == ClipItemType.url;
+
+  @ignore
   bool get inCache =>
       ((type == ClipItemType.file || type == ClipItemType.media) &&
           localPath != null) ||
@@ -252,6 +256,42 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
   ClipboardItem assignUserId([String? newUserId]) {
     if (newUserId != null && newUserId != userId) {
       return copyWith(userId: newUserId)..applyId(this);
+    }
+    return this;
+  }
+
+  Future<ClipboardItem> encrypt() async {
+    final encrypter = EncrypterWorker.instance;
+    if (!encrypter.isRunning || !encrypter.isEncryptionActive || encrypted) {
+      return this;
+    }
+
+    if (type == ClipItemType.text && text != null) {
+      final encText = await encrypter.encrypt(text!);
+      return copyWith(encrypted: true, text: encText)..applyId(this);
+    }
+
+    if (type == ClipItemType.url && url != null) {
+      final encUrl = await encrypter.encrypt(url!);
+      return copyWith(encrypted: true, url: encUrl)..applyId(this);
+    }
+    return this;
+  }
+
+  Future<ClipboardItem> decrypt() async {
+    final encrypter = EncrypterWorker.instance;
+    if (!encrypter.isRunning || !encrypter.isEncryptionActive || !encrypted) {
+      return this;
+    }
+
+    if (type == ClipItemType.text && text != null) {
+      final decText = await encrypter.decrypt(text!);
+      return copyWith(encrypted: false, text: decText)..applyId(this);
+    }
+
+    if (type == ClipItemType.url && url != null) {
+      final decUrl = await encrypter.decrypt(url!);
+      return copyWith(encrypted: false, url: decUrl)..applyId(this);
     }
     return this;
   }

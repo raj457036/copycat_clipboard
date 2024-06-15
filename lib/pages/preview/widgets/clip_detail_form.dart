@@ -37,9 +37,12 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
     cubit = context.read<OfflinePersistanceCubit>();
     formKey = GlobalKey<FormState>();
     collectionId = (widget.item.collectionId, widget.item.serverCollectionId);
-    titleController = TextEditingController(text: widget.item.title);
-    descriptionController =
-        TextEditingController(text: widget.item.description);
+    titleController = TextEditingController(
+      text: widget.item.title,
+    );
+    descriptionController = TextEditingController(
+      text: widget.item.description,
+    );
   }
 
   @override
@@ -126,6 +129,13 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
             maxLines: 6,
             controller: descriptionController,
             validator: ValidationBuilder(optional: true).maxLength(255).build(),
+          ),
+          height12,
+          SwitchListTile(
+            value: false,
+            onChanged: (val) {},
+            title: const Text("Lock"),
+            subtitle: const Text("Lock this clip"),
           ),
           height12,
           ClipCollectionSelectorTile(

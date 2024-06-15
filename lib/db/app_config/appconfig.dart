@@ -2,6 +2,7 @@ import 'dart:convert' show jsonDecode;
 
 import 'package:clipboard/constants/numbers/duration.dart';
 import 'package:clipboard/constants/numbers/file_sizes.dart';
+import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/db/base.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -44,6 +45,8 @@ class AppConfig with _$AppConfig, IsarIdMixin {
     /// If enabled, the application will automatically start at startup.
     @Default(false) bool launchAtStartup,
     @Default("en") String locale,
+    String? enc2,
+    @Default(false) bool autoEncrypt,
 
     //? Local App States
     /// last focus window id
@@ -54,6 +57,10 @@ class AppConfig with _$AppConfig, IsarIdMixin {
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>
       _$AppConfigFromJson(json);
+
+  @ignore
+  EncryptionSecret? get enc2Key =>
+      enc2 != null ? EncryptionSecret.deserilize(enc2!) : null;
 
   @ignore
   HotKey? get getToggleHotkey =>

@@ -39,7 +39,7 @@ class LocalClipboardSource implements ClipboardSource {
     if (search == null && collectionId == null) {
       resultsQuery = db.clipboardItems.filter();
     } else {
-      var filter = db.clipboardItems.filter();
+      var filter = db.clipboardItems.filter().encryptedEqualTo(false);
 
       if (collectionId != null) {
         filter = filter.collectionIdEqualTo(collectionId);

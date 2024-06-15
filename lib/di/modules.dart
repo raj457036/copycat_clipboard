@@ -27,8 +27,8 @@ abstract class RegisterModule {
       ],
       directory: dir.path,
       relaxedDurability: true,
-      inspector: true,
-      name: "Clipboard-Cache2",
+      inspector: kDebugMode,
+      name: "CopyCat-Clipboard-DB",
     );
     return isar;
   }

@@ -1,4 +1,7 @@
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -6,8 +9,10 @@ import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
+import 'package:clipboard/widgets/clip_cards/encrypted_card.dart';
 import 'package:clipboard/widgets/clip_cards/file_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/media_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/text_clip_card.dart';
@@ -50,6 +55,23 @@ class ClipCard extends StatelessWidget {
     BuildContext context,
   ) async {
     context.read<CloudPersistanceCubit>().download(item);
+  }
+
+  Future<void> decryptItem(BuildContext context) async {
+    final persitCubit = context.read<OfflinePersistanceCubit>();
+    final appConfig = context.read<AppConfigCubit>();
+    if (!appConfig.isE2EESetupDone) {
+      showFailureSnackbar(
+        const Failure(
+          message: "E2EE not setup yet.",
+          code: "e2ee-no-setup",
+        ),
+      );
+      return;
+    }
+
+    final item_ = await item.decrypt();
+    persitCubit.persist(item_);
   }
 
   @override
@@ -116,7 +138,9 @@ class ClipCard extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: InkWell(
           borderRadius: radius12,
-          onTap: () => preview(context),
+          onTap: item.encrypted
+              ? () => decryptItem(context)
+              : () => preview(context),
           child: Column(
             children: [
               ClipCardOptionsHeader(item: item),
@@ -144,7 +168,9 @@ class ClipCard extends StatelessWidget {
                         shape: const RoundedRectangleBorder(
                           borderRadius: radius8,
                         ),
-                        child: getPreview(),
+                        child: item.encrypted
+                            ? const EncryptedClipItem()
+                            : getPreview(),
                       ),
                     ),
                   ],

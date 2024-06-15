@@ -38,6 +38,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
   Future<void> persist(ClipboardItem item, {int retryCount = 0}) async {
     emit(const CloudPersistanceState.initial());
+
     if (!appConfig.isSyncEnabled) {
       if (item.userIntent) {
         emit(
@@ -57,7 +58,9 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
     final userId = auth.userId;
     if (userId == null) return;
+
     item = item.assignUserId(userId);
+
     if (item.serverId != null) {
       emit(CloudPersistanceState.updatingItem(item));
 
