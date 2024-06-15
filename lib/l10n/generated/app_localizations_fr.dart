@@ -550,4 +550,88 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get experimentalDescription =>
       'Cette fonctionnalité est expérimentale et pourrait ne pas fonctionner comme prévu.';
+
+  @override
+  String get selectAnOption => 'Sélectionner une option';
+
+  @override
+  String get advanceSecurity => 'Sécurité Avancée';
+
+  @override
+  String get endToEndVault => 'Coffre de Chiffrement de Bout en Bout';
+
+  @override
+  String get accessE2eeVault => 'Accédez à vos paramètres de coffre E2EE';
+
+  @override
+  String get encryptClipboard => 'Crypter le Presse-papiers';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Cryptez le presse-papiers avant de le synchroniser avec le cloud.';
+
+  @override
+  String get $5Sec => '5 s';
+
+  @override
+  String get $15Sec => '15 s';
+
+  @override
+  String get $30Sec => '30 s';
+
+  @override
+  String get $60Sec => '60 s';
+
+  @override
+  String get $90Sec => '90 s';
+
+  @override
+  String get e2eeNotSetup => 'E2EE n\'est pas encore configuré.';
+
+  @override
+  String get settingE2eeVault => 'Configuration du Coffre E2EE';
+
+  @override
+  String get e2eeSetupWarning =>
+      'Si vous perdez votre clé E2EE et n\'avez pas de sauvegarde, vos données cryptées seront définitivement inaccessibles. Gardez votre clé en sécurité et sauvegardée.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Générez votre clé de coffre E2EE et enregistrez-la dans un endroit sûr. Vous aurez besoin de cette clé pour configurer d\'autres appareils afin d\'accéder à vos informations cryptées.';
+
+  @override
+  String get generating => 'Génération...';
+
+  @override
+  String get generateKey => 'Générer une Clé de Coffre E2EE';
+
+  @override
+  String get importE2eeKey => 'Importer une Clé de Coffre E2EE';
+
+  @override
+  String get importE2eeInvalidKey => '⚠️ La clé importée est invalide !';
+
+  @override
+  String get importE2eeDesc =>
+      'Importez votre clé de coffre E2EE ci-dessous pour permettre l\'accès à vos informations cryptées sur cet appareil. Assurez-vous que la clé est stockée en toute sécurité et ne la partagez avec personne.';
+
+  @override
+  String get importing => 'Importation...';
+
+  @override
+  String get importKey => 'Importer une Clé de Coffre E2EE';
+
+  @override
+  String get e2eeVault => 'Coffre E2EE';
+
+  @override
+  String get e2eeExportNote =>
+      'Félicitations, vous avez configuré avec succès le chiffrement de bout en bout.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Cliquez sur le bouton ci-dessous pour exporter votre clé de coffre E2EE.\nEnregistrez la clé dans un endroit sûr pour garantir que vous pourrez configurer d\'autres appareils afin d\'accéder à vos informations cryptées.';
+
+  @override
+  String get exportKey => 'Exporter une Clé de Coffre E2EE';
 }

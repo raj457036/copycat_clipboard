@@ -1076,6 +1076,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This feature is experimental and might not work as expected.'**
   String get experimentalDescription;
+
+  /// No description provided for @selectAnOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an option'**
+  String get selectAnOption;
+
+  /// No description provided for @advanceSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance Security'**
+  String get advanceSecurity;
+
+  /// No description provided for @endToEndVault.
+  ///
+  /// In en, this message translates to:
+  /// **'End-to-End Encryption Vault'**
+  String get endToEndVault;
+
+  /// No description provided for @accessE2eeVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your E2EE vault settings'**
+  String get accessE2eeVault;
+
+  /// No description provided for @encryptClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypt Clipboard'**
+  String get encryptClipboard;
+
+  /// No description provided for @encryptClipboardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypt clipboard before syncing with the cloud.'**
+  String get encryptClipboardDesc;
+
+  /// No description provided for @$5Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'5 Sec'**
+  String get $5Sec;
+
+  /// No description provided for @$15Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'15 Sec'**
+  String get $15Sec;
+
+  /// No description provided for @$30Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'30 Sec'**
+  String get $30Sec;
+
+  /// No description provided for @$60Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'60 Sec'**
+  String get $60Sec;
+
+  /// No description provided for @$90Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'90 Sec'**
+  String get $90Sec;
+
+  /// No description provided for @e2eeNotSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'E2EE not setup yet.'**
+  String get e2eeNotSetup;
+
+  /// No description provided for @settingE2eeVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting Up E2EE Vault'**
+  String get settingE2eeVault;
+
+  /// No description provided for @e2eeSetupWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'If you lose your E2EE key and do not have a backup, your encrypted data will be permanently inaccessible. Keep your key safe and backed up.'**
+  String get e2eeSetupWarning;
+
+  /// No description provided for @e2eeSetupDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate your E2EE Vault key and save it in a secure location. You will need this key to set up other devices to access your encrypted information.'**
+  String get e2eeSetupDesc;
+
+  /// No description provided for @generating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generating;
+
+  /// No description provided for @generateKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate E2EE Vault Key'**
+  String get generateKey;
+
+  /// No description provided for @importE2eeKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Import E2EE Vault Key'**
+  String get importE2eeKey;
+
+  /// No description provided for @importE2eeInvalidKey.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ The imported key is invalid!'**
+  String get importE2eeInvalidKey;
+
+  /// No description provided for @importE2eeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Import your E2EE Vault key below to enable access to your encrypted information on this device. Make sure the key is securely stored and not shared with anyone.'**
+  String get importE2eeDesc;
+
+  /// No description provided for @importing.
+  ///
+  /// In en, this message translates to:
+  /// **'Importing...'**
+  String get importing;
+
+  /// No description provided for @importKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Import E2EE Vault Key'**
+  String get importKey;
+
+  /// No description provided for @e2eeVault.
+  ///
+  /// In en, this message translates to:
+  /// **'E2EE Vault'**
+  String get e2eeVault;
+
+  /// No description provided for @e2eeExportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations, you have successfully configured the end-to-end encryption.'**
+  String get e2eeExportNote;
+
+  /// No description provided for @e2eeExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.'**
+  String get e2eeExportDesc;
+
+  /// No description provided for @exportKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Export E2EE Vault Key'**
+  String get exportKey;
 }
 
 class _AppLocalizationsDelegate

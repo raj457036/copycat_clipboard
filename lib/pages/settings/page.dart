@@ -105,7 +105,7 @@ class SettingsPage extends StatelessWidget {
                         const AutoSyncInterval(),
                         height20,
                         SettingHeader(
-                          name: "Advance Security",
+                          name: context.locale.advanceSecurity,
                           tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,

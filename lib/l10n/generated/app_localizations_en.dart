@@ -541,4 +541,88 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get experimentalDescription =>
       'This feature is experimental and might not work as expected.';
+
+  @override
+  String get selectAnOption => 'Select an option';
+
+  @override
+  String get advanceSecurity => 'Advance Security';
+
+  @override
+  String get endToEndVault => 'End-to-End Encryption Vault';
+
+  @override
+  String get accessE2eeVault => 'Access your E2EE vault settings';
+
+  @override
+  String get encryptClipboard => 'Encrypt Clipboard';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Encrypt clipboard before syncing with the cloud.';
+
+  @override
+  String get $5Sec => '5 Sec';
+
+  @override
+  String get $15Sec => '15 Sec';
+
+  @override
+  String get $30Sec => '30 Sec';
+
+  @override
+  String get $60Sec => '60 Sec';
+
+  @override
+  String get $90Sec => '90 Sec';
+
+  @override
+  String get e2eeNotSetup => 'E2EE not setup yet.';
+
+  @override
+  String get settingE2eeVault => 'Setting Up E2EE Vault';
+
+  @override
+  String get e2eeSetupWarning =>
+      'If you lose your E2EE key and do not have a backup, your encrypted data will be permanently inaccessible. Keep your key safe and backed up.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Generate your E2EE Vault key and save it in a secure location. You will need this key to set up other devices to access your encrypted information.';
+
+  @override
+  String get generating => 'Generating...';
+
+  @override
+  String get generateKey => 'Generate E2EE Vault Key';
+
+  @override
+  String get importE2eeKey => 'Import E2EE Vault Key';
+
+  @override
+  String get importE2eeInvalidKey => '⚠️ The imported key is invalid!';
+
+  @override
+  String get importE2eeDesc =>
+      'Import your E2EE Vault key below to enable access to your encrypted information on this device. Make sure the key is securely stored and not shared with anyone.';
+
+  @override
+  String get importing => 'Importing...';
+
+  @override
+  String get importKey => 'Import E2EE Vault Key';
+
+  @override
+  String get e2eeVault => 'E2EE Vault';
+
+  @override
+  String get e2eeExportNote =>
+      'Congratulations, you have successfully configured the end-to-end encryption.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.';
+
+  @override
+  String get exportKey => 'Export E2EE Vault Key';
 }

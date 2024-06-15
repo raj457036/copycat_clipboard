@@ -4,6 +4,7 @@ import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/data/services/encryption.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                   children: [
                     const Icon(Icons.lock),
                     width12,
-                    const Text("Setting Up E2EE Vault"),
+                    Text(context.locale.settingE2eeVault),
                     width12,
                     const Spacer(),
                     if (!loading) const CloseButton(),
@@ -153,11 +154,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                         margin: EdgeInsets.zero,
                         color: Colors.yellow.withOpacity(0.2),
                         child: ListTile(
-                          title: const Text(
-                            "If you lose your E2EE key and "
-                            "do not have a backup, your encrypted data will be "
-                            "permanently inaccessible. Keep your key safe and "
-                            "backed up.",
+                          title: Text(
+                            context.locale.e2eeSetupWarning,
                             textAlign: TextAlign.center,
                           ),
                           titleTextStyle: textTheme.titleSmall,
@@ -165,10 +163,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                         ),
                       ),
                       height12,
-                      const Text(
-                        "Generate your E2EE Vault key and save it in a secure "
-                        "location. You will need this key to set up other devices "
-                        "to access your encrypted information.",
+                      Text(
+                        context.locale.e2eeSetupDesc,
                         textAlign: TextAlign.center,
                       ),
                       height10,
@@ -176,8 +172,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                         onPressed: loading ? null : generateEnc2Key,
                         icon: const Icon(Icons.key),
                         label: loading
-                            ? const Text("Generating...")
-                            : const Text("Generate E2EE Vault Key"),
+                            ? Text(context.locale.generating)
+                            : Text(context.locale.generateKey),
                       ),
                     ],
                   ),
@@ -187,16 +183,16 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
             if (enc2Key == null) {
               return AlertDialog(
-                title: const Row(
+                title: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.lock),
+                    const Icon(Icons.lock),
                     width12,
-                    Text("Import E2EE Vault Key"),
+                    Text(context.locale.importE2eeKey),
                     width12,
-                    Spacer(),
-                    CloseButton(),
+                    const Spacer(),
+                    const CloseButton(),
                   ],
                 ),
                 content: ConstrainedBox(
@@ -212,8 +208,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                           margin: EdgeInsets.zero,
                           color: Colors.deepOrange.withOpacity(0.2),
                           child: ListTile(
-                            title: const Text(
-                              "⚠️ The imported key is invalid!",
+                            title: Text(
+                              context.locale.importE2eeInvalidKey,
                               textAlign: TextAlign.center,
                             ),
                             titleTextStyle: textTheme.titleSmall,
@@ -221,11 +217,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                           ),
                         ),
                       height12,
-                      const Text(
-                        "Import your E2EE Vault key below to enable access to "
-                        "your encrypted information on this device. Make "
-                        "sure the key is securely stored and not shared with"
-                        " anyone.",
+                      Text(
+                        context.locale.importE2eeDesc,
                         textAlign: TextAlign.center,
                       ),
                       height10,
@@ -233,8 +226,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                         onPressed: loading ? null : () => importEnc2Key(keyId),
                         icon: const Icon(Icons.key),
                         label: loading
-                            ? const Text("Importing...")
-                            : const Text("Import E2EE Vault Key"),
+                            ? Text(context.locale.importing)
+                            : Text(context.locale.importKey),
                       ),
                     ],
                   ),
@@ -242,16 +235,16 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
               );
             }
             return AlertDialog(
-              title: const Row(
+              title: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.lock),
+                  const Icon(Icons.lock),
                   width12,
-                  Text("E2EE Vault"),
+                  Text(context.locale.e2eeVault),
                   width12,
-                  Spacer(),
-                  CloseButton(),
+                  const Spacer(),
+                  const CloseButton(),
                 ],
               ),
               content: ConstrainedBox(
@@ -266,20 +259,17 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                       margin: EdgeInsets.zero,
                       color: Colors.green.withOpacity(0.2),
                       child: ListTile(
-                        title: const Text(
-                          "Congratulations, you have successfully "
-                          "configured the end-to-end encryption.",
+                        title: Text(
+                          context.locale.e2eeExportNote,
                           textAlign: TextAlign.center,
                         ),
                         titleTextStyle: textTheme.titleSmall,
-                        textColor: Colors.green.shade800,
+                        textColor: Colors.green,
                       ),
                     ),
                     height12,
-                    const Text(
-                      "Click the button below to export your E2EE Vault key."
-                      "\nSave the key in a secure location to ensure you can set "
-                      "up other devices to access your encrypted information.",
+                    Text(
+                      context.locale.e2eeExportDesc,
                       textAlign: TextAlign.center,
                     ),
                     height10,

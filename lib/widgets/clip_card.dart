@@ -62,8 +62,8 @@ class ClipCard extends StatelessWidget {
     final appConfig = context.read<AppConfigCubit>();
     if (!appConfig.isE2EESetupDone) {
       showFailureSnackbar(
-        const Failure(
-          message: "E2EE not setup yet.",
+        Failure(
+          message: context.locale.e2eeNotSetup,
           code: "e2ee-no-setup",
         ),
       );
@@ -82,19 +82,19 @@ class ClipCard extends StatelessWidget {
         if (!item.inCache)
           MenuItem(
             icon: Icons.download_for_offline_outlined,
-            text: 'Download for offline',
+            text: context.locale.downloadForOffline,
             onPressed: () => downloadFile(context),
           ),
         if (item.inCache)
           MenuItem(
             icon: Icons.copy,
-            text: 'Copy to clipboard',
+            text: context.locale.copyToClipboard,
             onPressed: () => copyToClipboard(context, item),
           ),
         if (item.inCache)
           MenuItem(
             icon: Icons.ios_share,
-            text: 'Share',
+            text: context.locale.share,
             onPressed: () => shareClipboardItem(context, item),
           ),
         MenuItem(

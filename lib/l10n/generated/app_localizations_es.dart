@@ -549,4 +549,88 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get experimentalDescription =>
       'Esta característica es experimental y podría no funcionar como se espera.';
+
+  @override
+  String get selectAnOption => 'Seleccione una opción';
+
+  @override
+  String get advanceSecurity => 'Seguridad Avanzada';
+
+  @override
+  String get endToEndVault => 'Bóveda de Cifrado de Extremo a Extremo';
+
+  @override
+  String get accessE2eeVault => 'Acceda a la configuración de su bóveda E2EE';
+
+  @override
+  String get encryptClipboard => 'Cifrar Portapapeles';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Cifre el portapapeles antes de sincronizarlo con la nube.';
+
+  @override
+  String get $5Sec => '5 Seg';
+
+  @override
+  String get $15Sec => '15 Seg';
+
+  @override
+  String get $30Sec => '30 Seg';
+
+  @override
+  String get $60Sec => '60 Seg';
+
+  @override
+  String get $90Sec => '90 Seg';
+
+  @override
+  String get e2eeNotSetup => 'E2EE no está configurado aún.';
+
+  @override
+  String get settingE2eeVault => 'Configurando Bóveda E2EE';
+
+  @override
+  String get e2eeSetupWarning =>
+      'Si pierde su clave E2EE y no tiene una copia de seguridad, sus datos cifrados serán permanentemente inaccesibles. Mantenga su clave segura y respaldada.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Genere su clave de la Bóveda E2EE y guárdela en un lugar seguro. Necesitará esta clave para configurar otros dispositivos y acceder a su información cifrada.';
+
+  @override
+  String get generating => 'Generando...';
+
+  @override
+  String get generateKey => 'Generar Clave de la Bóveda E2EE';
+
+  @override
+  String get importE2eeKey => 'Importar Clave de la Bóveda E2EE';
+
+  @override
+  String get importE2eeInvalidKey => '⚠️ ¡La clave importada no es válida!';
+
+  @override
+  String get importE2eeDesc =>
+      'Importe su clave de la Bóveda E2EE a continuación para habilitar el acceso a su información cifrada en este dispositivo. Asegúrese de que la clave esté almacenada de manera segura y no se comparta con nadie.';
+
+  @override
+  String get importing => 'Importando...';
+
+  @override
+  String get importKey => 'Importar Clave de la Bóveda E2EE';
+
+  @override
+  String get e2eeVault => 'Bóveda E2EE';
+
+  @override
+  String get e2eeExportNote =>
+      'Felicidades, ha configurado con éxito el cifrado de extremo a extremo.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Haga clic en el botón a continuación para exportar su clave de la Bóveda E2EE.\nGuarde la clave en un lugar seguro para asegurarse de que puede configurar otros dispositivos y acceder a su información cifrada.';
+
+  @override
+  String get exportKey => 'Exportar Clave de la Bóveda E2EE';
 }
