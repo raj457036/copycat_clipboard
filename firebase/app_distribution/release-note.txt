@@ -1,3 +1,8 @@
+🎉 Version: 0.1.12+30
+
+- Performance improvements and optimizations.
+- 🔐 Added end to end encryption
+
 🎉 Version: 0.1.11+28
 
 - Performance improvements and optimizations.
