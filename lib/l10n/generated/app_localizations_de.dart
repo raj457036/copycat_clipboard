@@ -548,4 +548,90 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get experimentalDescription =>
       'Diese Funktion ist experimentell und könnte nicht wie erwartet funktionieren.';
+
+  @override
+  String get selectAnOption => 'Wählen Sie eine Option';
+
+  @override
+  String get advanceSecurity => 'Erweiterte Sicherheit';
+
+  @override
+  String get endToEndVault => 'Ende-zu-Ende-Verschlüsselung Tresor';
+
+  @override
+  String get accessE2eeVault =>
+      'Greifen Sie auf Ihre E2EE-Tresoreinstellungen zu';
+
+  @override
+  String get encryptClipboard => 'Zwischenablage verschlüsseln';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Verschlüsseln Sie die Zwischenablage, bevor Sie sie mit der Cloud synchronisieren.';
+
+  @override
+  String get $5Sec => '5 Sek';
+
+  @override
+  String get $15Sec => '15 Sek';
+
+  @override
+  String get $30Sec => '30 Sek';
+
+  @override
+  String get $60Sec => '60 Sek';
+
+  @override
+  String get $90Sec => '90 Sek';
+
+  @override
+  String get e2eeNotSetup => 'E2EE noch nicht eingerichtet.';
+
+  @override
+  String get settingE2eeVault => 'Einrichten des E2EE-Tresors';
+
+  @override
+  String get e2eeSetupWarning =>
+      'Wenn Sie Ihren E2EE-Schlüssel verlieren und keine Sicherung haben, sind Ihre verschlüsselten Daten dauerhaft unzugänglich. Bewahren Sie Ihren Schlüssel sicher und gesichert auf.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Erstellen Sie Ihren E2EE-Tresorschlüssel und speichern Sie ihn an einem sicheren Ort. Sie benötigen diesen Schlüssel, um andere Geräte einzurichten, um auf Ihre verschlüsselten Informationen zuzugreifen.';
+
+  @override
+  String get generating => 'Erstellen...';
+
+  @override
+  String get generateKey => 'E2EE-Tresorschlüssel erstellen';
+
+  @override
+  String get importE2eeKey => 'E2EE-Tresorschlüssel importieren';
+
+  @override
+  String get importE2eeInvalidKey =>
+      '⚠️ Der importierte Schlüssel ist ungültig!';
+
+  @override
+  String get importE2eeDesc =>
+      'Importieren Sie unten Ihren E2EE-Tresorschlüssel, um den Zugriff auf Ihre verschlüsselten Informationen auf diesem Gerät zu ermöglichen. Stellen Sie sicher, dass der Schlüssel sicher gespeichert ist und nicht weitergegeben wird.';
+
+  @override
+  String get importing => 'Importieren...';
+
+  @override
+  String get importKey => 'E2EE-Tresorschlüssel importieren';
+
+  @override
+  String get e2eeVault => 'E2EE-Tresor';
+
+  @override
+  String get e2eeExportNote =>
+      'Herzlichen Glückwunsch, Sie haben die Ende-zu-Ende-Verschlüsselung erfolgreich eingerichtet.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Klicken Sie unten auf die Schaltfläche, um Ihren E2EE-Tresorschlüssel zu exportieren.\nSpeichern Sie den Schlüssel an einem sicheren Ort, um sicherzustellen, dass Sie andere Geräte einrichten können, um auf Ihre verschlüsselten Informationen zuzugreifen.';
+
+  @override
+  String get exportKey => 'E2EE-Tresorschlüssel exportieren';
 }

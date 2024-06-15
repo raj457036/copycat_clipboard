@@ -57,45 +57,45 @@ class AutoSyncInterval extends StatelessWidget {
                     DropdownMenuItem(
                       enabled: subscription.syncInterval <= $5S,
                       value: $5S,
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Text("5 Sec"),
+                          Text(context.locale.$5Sec),
                           width8,
-                          ProBadge(),
+                          const ProBadge(),
                         ],
                       ),
                     ),
                     DropdownMenuItem(
                       enabled: subscription.syncInterval <= $5S,
                       value: $15S,
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Text("15 Sec"),
+                          Text(context.locale.$15Sec),
                           width8,
-                          ProBadge(),
+                          const ProBadge(),
                         ],
                       ),
                     ),
                     DropdownMenuItem(
                       enabled: subscription.syncInterval <= $5S,
                       value: $30S,
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Text("30 Sec"),
+                          Text(context.locale.$30Sec),
                           width8,
-                          ProBadge(),
+                          const ProBadge(),
                         ],
                       ),
                     ),
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                       value: $60S,
-                      child: Text("60 Sec"),
+                      child: Text(context.locale.$60Sec),
                     ),
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                       value: $90S,
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("90 Sec"),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(context.locale.$90Sec),
                       ),
                     ),
                   ],
