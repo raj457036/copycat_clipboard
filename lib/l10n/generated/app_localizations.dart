@@ -1068,7 +1068,7 @@ abstract class AppLocalizations {
   /// No description provided for @experimental.
   ///
   /// In en, this message translates to:
-  /// **'⚠️ Experimental'**
+  /// **'🧪'**
   String get experimental;
 
   /// No description provided for @experimentalDescription.

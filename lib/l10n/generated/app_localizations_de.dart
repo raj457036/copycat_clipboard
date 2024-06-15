@@ -543,7 +543,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get backToApp => 'Zurück zur App';
 
   @override
-  String get experimental => '⚠️ Experimentell';
+  String get experimental => '🧪';
 
   @override
   String get experimentalDescription =>

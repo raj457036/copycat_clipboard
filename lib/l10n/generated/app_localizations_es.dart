@@ -544,7 +544,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backToApp => 'Volver a la aplicación';
 
   @override
-  String get experimental => '⚠️ Experimental';
+  String get experimental => '🧪';
 
   @override
   String get experimentalDescription =>

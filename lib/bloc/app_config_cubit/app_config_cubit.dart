@@ -3,6 +3,7 @@ import 'dart:convert' show jsonEncode;
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/numbers/duration.dart';
 import 'package:clipboard/data/repositories/app_config.dart';
 import 'package:clipboard/db/app_config/appconfig.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -32,6 +33,11 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     super.emit(state);
   }
 
+  Future<void> reset() async {
+    setE2EEKey(null);
+    changeAutoSyncDuration($90S);
+  }
+
   Future<void> load() async {
     emit(state.copyWith(isLoading: true));
     final appConfig = await repo.get();
@@ -52,6 +58,9 @@ class AppConfigCubit extends Cubit<AppConfigState> {
 
   bool get isSyncEnabled => state.config.enableSync;
 
+  bool get isEncryptionEnabled => state.config.autoEncrypt;
+  bool get isE2EESetupDone => state.config.enc2 != null;
+
   bool get isFileSyncEnabled =>
       state.config.enableSync && state.config.enableFileSync;
 
@@ -66,6 +75,12 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     final newConfig = state.config
         .copyWith(toggleHotkey: key != null ? jsonEncode(key.toJson()) : null)
       ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    await repo.update(newConfig);
+  }
+
+  Future<void> setE2EEKey(String? key) async {
+    final newConfig = state.config.copyWith(enc2: key)..applyId(state.config);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);
   }
@@ -114,6 +129,13 @@ class AppConfigCubit extends Cubit<AppConfigState> {
 
   Future<void> toggleSmartPaste(bool value) async {
     final newConfig = state.config.copyWith(smartPaste: value)
+      ..applyId(state.config);
+    emit(state.copyWith(config: newConfig));
+    await repo.update(newConfig);
+  }
+
+  Future<void> toggleAutoEncrypt(bool value) async {
+    final newConfig = state.config.copyWith(autoEncrypt: value)
       ..applyId(state.config);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);

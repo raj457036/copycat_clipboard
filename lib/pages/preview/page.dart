@@ -91,7 +91,7 @@ class ClipboardItemMobilePreviewPageContent extends StatelessWidget {
       children: [
         ConstrainedBox(
           constraints: BoxConstraints.loose(
-            const Size.fromHeight(350),
+            const Size.fromHeight(450),
           ),
           child: Stack(
             children: [
@@ -110,7 +110,7 @@ class ClipboardItemMobilePreviewPageContent extends StatelessWidget {
         ),
         ConstrainedBox(
           constraints: BoxConstraints.loose(
-            const Size.fromHeight(450),
+            const Size.fromHeight(550),
           ),
           child: Padding(
             padding: const EdgeInsets.all(padding16),

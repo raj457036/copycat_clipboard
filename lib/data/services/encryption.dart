@@ -134,13 +134,16 @@ void _encryptorEntryPoint(
 }
 
 class EncrypterWorker {
-  late final String secret;
+  Completer? _completer;
+  bool _isRunning = false;
+
+  bool _encryption = false;
+  bool _decryption = true;
+
+  String? secret;
   final Map<String, Completer> _tasks = <String, Completer>{};
 
-  final _encryptor = EasyWorker<(String, String), EncryptionPayload>(
-    Entrypoint(_encryptorEntryPoint),
-    workerName: "Encryptor Worker",
-  );
+  EasyWorker? _encryptor;
 
   StreamSubscription? _subscription;
 
@@ -149,38 +152,85 @@ class EncrypterWorker {
   static final EncrypterWorker _instance = EncrypterWorker._();
   static EncrypterWorker get instance => _instance;
 
+  bool get isRunning => _isRunning;
+  bool get isEncryptionActive => _encryption;
+  bool get isDecryptionActive => _decryption;
+
   void dispose() {
+    if (!_isRunning) return;
+    _isRunning = false;
     _subscription?.cancel();
-    _encryptor.dispose();
+    _encryptor?.dispose();
+    _encryptor = null;
+  }
+
+  void setEncryption(bool value) {
+    _encryption = value;
+  }
+
+  void setDecryption(bool value) {
+    _decryption = value;
   }
 
   Future<void> start(String secret) async {
+    _completer = Completer();
+    _isRunning = false;
     this.secret = secret;
     _subscription?.cancel();
-    await _encryptor.waitUntilReady();
-    _subscription = _encryptor.onMessage((p0) {
+    _encryptor = EasyWorker<(String, String), EncryptionPayload>(
+      Entrypoint(_encryptorEntryPoint),
+      workerName: "Encryptor Worker",
+    );
+
+    await _encryptor?.waitUntilReady();
+    _subscription = _encryptor?.onMessage((p0) {
       final (id, content) = p0;
       _tasks[id]?.complete(content);
       _tasks.remove(id);
     });
+    _completer?.complete();
+    _isRunning = true;
+  }
+
+  Future<void> waitUntilReady() async {
+    if (_completer == null || (_completer?.isCompleted ?? true)) return;
+    await _completer?.future;
   }
 
   Future<String> encrypt(String content) async {
+    if (secret == null) {
+      throw Exception("Secret is not set");
+    }
+    if (_encryptor == null) {
+      throw Exception("Encryptor is not running");
+    }
+    if (!_encryption) {
+      throw Exception("Encryption is not active");
+    }
     final id = const Uuid().v4();
     final completer = Completer<String>();
     _tasks[id] = completer;
-    await _encryptor.send(
-      (id, content, secret, EncDecType.encrypt),
+    await _encryptor?.send(
+      (id, content, secret!, EncDecType.encrypt),
     );
     return completer.future;
   }
 
   Future<String> decrypt(String content) async {
+    if (secret == null) {
+      throw Exception("Secret is not set");
+    }
+    if (_encryptor == null) {
+      throw Exception("Encryptor is not running");
+    }
+    if (!_decryption) {
+      throw Exception("Decryption is not active");
+    }
     final id = const Uuid().v4();
     final completer = Completer<String>();
     _tasks[id] = completer;
-    await _encryptor.send(
-      (id, content, secret, EncDecType.decrypt),
+    await _encryptor?.send(
+      (id, content, secret!, EncDecType.decrypt),
     );
     return completer.future;
   }
