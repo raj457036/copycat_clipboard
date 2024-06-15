@@ -280,7 +280,7 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
 
   Future<ClipboardItem> decrypt() async {
     final encrypter = EncrypterWorker.instance;
-    if (!encrypter.isRunning || !encrypter.isEncryptionActive || !encrypted) {
+    if (!encrypter.isRunning || !encrypter.isDecryptionActive || !encrypted) {
       return this;
     }
 
