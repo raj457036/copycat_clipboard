@@ -6,9 +6,12 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as su;
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
@@ -42,30 +45,30 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
   }
 
   Future<void> importEnc2Key(String keyId) async {
-    final pickedFile = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['enc2'],
-      withData: true,
-    );
-
-    if (pickedFile == null) return;
-    if (pickedFile.files.first.bytes == null) return;
-    final content = utf8.decode(pickedFile.files.first.bytes!);
-    final json = jsonDecode(content);
-    final importedKeyId = json["enc2Id"];
-    final key = json["enc2"];
-
-    if (importedKeyId == null) {
-      setState(() => invalidImportedKey = true);
-      return;
-    }
-
-    if (key == null) {
-      setState(() => invalidImportedKey = true);
-      return;
-    }
-
     try {
+      final pickedFile = await FilePicker.platform.pickFiles(
+        type: isDesktopPlatform ? FileType.custom : FileType.any,
+        allowedExtensions: isDesktopPlatform ? ['enc2'] : null,
+        withData: true,
+      );
+
+      if (pickedFile == null) return;
+      if (pickedFile.files.first.bytes == null) return;
+      final content = utf8.decode(pickedFile.files.first.bytes!);
+      final json = jsonDecode(content);
+      final importedKeyId = json["enc2Id"];
+      final key = json["enc2"];
+
+      if (importedKeyId == null) {
+        setState(() => invalidImportedKey = true);
+        return;
+      }
+
+      if (key == null) {
+        setState(() => invalidImportedKey = true);
+        return;
+      }
+
       EncryptionSecret.deserilize(key);
 
       if (importedKeyId == keyId && key != null) {
@@ -76,7 +79,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
     }
   }
 
-  Future<void> exportEnc2Key(String keyId, String enc2Key) async {
+  Future<void> exportEnc2Key(
+      BuildContext context, String keyId, String enc2Key) async {
     final json = {
       "enc2Id": keyId,
       "enc2": enc2Key,
@@ -84,11 +88,19 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
     final content = jsonEncode(json);
 
     final path = await FilePicker.platform.saveFile(
-      fileName: "copycat-e2ee-vault-key.enc2",
-    );
+        fileName: "copycat-e2ee-vault-key.enc2",
+        type: FileType.custom,
+        allowedExtensions: ['enc2'],
+        bytes: utf8.encode(content));
 
     if (path != null) {
-      await File(path).writeAsString(content);
+      if (isDesktopPlatform) {
+        await File(path).writeAsString(content);
+      }
+      if (context.mounted) {
+        context.pop();
+        showTextSnackbar(context.locale.exportSuccess);
+      }
     }
   }
 
@@ -136,7 +148,12 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                   children: [
                     const Icon(Icons.lock),
                     width12,
-                    Text(context.locale.settingE2eeVault),
+                    Text(
+                      context.locale.settingE2eeVault,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     width12,
                     const Spacer(),
                     if (!loading) const CloseButton(),
@@ -182,14 +199,19 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
             }
 
             if (enc2Key == null) {
-              return AlertDialog(
+              return AlertDialog.adaptive(
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Icon(Icons.lock),
                     width12,
-                    Text(context.locale.importE2eeKey),
+                    Text(
+                      context.locale.importE2eeKey,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     width12,
                     const Spacer(),
                     const CloseButton(),
@@ -241,7 +263,12 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                 children: [
                   const Icon(Icons.lock),
                   width12,
-                  Text(context.locale.e2eeVault),
+                  Text(
+                    context.locale.e2eeVault,
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   width12,
                   const Spacer(),
                   const CloseButton(),
@@ -275,9 +302,10 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                     height10,
                     ElevatedButton.icon(
                       icon: const Icon(Icons.key),
-                      label: const Text("Export E2EE Vault Key"),
-                      onPressed:
-                          loading ? null : () => exportEnc2Key(keyId, enc2Key),
+                      label: Text(context.locale.exportKey),
+                      onPressed: loading
+                          ? null
+                          : () => exportEnc2Key(context, keyId, enc2Key),
                     )
                   ],
                 ),

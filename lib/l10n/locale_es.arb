@@ -282,5 +282,6 @@
     "e2eeVault": "Bóveda E2EE",
     "e2eeExportNote": "Felicidades, ha configurado con éxito el cifrado de extremo a extremo.",
     "e2eeExportDesc": "Haga clic en el botón a continuación para exportar su clave de la Bóveda E2EE.\nGuarde la clave en un lugar seguro para asegurarse de que puede configurar otros dispositivos y acceder a su información cifrada.",
-    "exportKey": "Exportar Clave de la Bóveda E2EE"
+    "exportKey": "Exportar Clave de la Bóveda E2EE",
+    "exportSuccess": "✅ Clave del cofre E2EE exportada correctamente"
 }

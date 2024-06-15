@@ -634,4 +634,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get exportKey => 'Exporter une Clé de Coffre E2EE';
+
+  @override
+  String get exportSuccess => '✅ Clé de coffre E2EE exportée avec succès';
 }

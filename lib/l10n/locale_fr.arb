@@ -282,5 +282,6 @@
     "e2eeVault": "Coffre E2EE",
     "e2eeExportNote": "Félicitations, vous avez configuré avec succès le chiffrement de bout en bout.",
     "e2eeExportDesc": "Cliquez sur le bouton ci-dessous pour exporter votre clé de coffre E2EE.\nEnregistrez la clé dans un endroit sûr pour garantir que vous pourrez configurer d'autres appareils afin d'accéder à vos informations cryptées.",
-    "exportKey": "Exporter une Clé de Coffre E2EE"
+    "exportKey": "Exporter une Clé de Coffre E2EE",
+    "exportSuccess": "✅ Clé de coffre E2EE exportée avec succès"
 }

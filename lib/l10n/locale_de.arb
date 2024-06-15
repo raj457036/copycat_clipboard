@@ -282,5 +282,6 @@
     "e2eeVault": "E2EE-Tresor",
     "e2eeExportNote": "Herzlichen Glückwunsch, Sie haben die Ende-zu-Ende-Verschlüsselung erfolgreich eingerichtet.",
     "e2eeExportDesc": "Klicken Sie unten auf die Schaltfläche, um Ihren E2EE-Tresorschlüssel zu exportieren.\nSpeichern Sie den Schlüssel an einem sicheren Ort, um sicherzustellen, dass Sie andere Geräte einrichten können, um auf Ihre verschlüsselten Informationen zuzugreifen.",
-    "exportKey": "E2EE-Tresorschlüssel exportieren"
+    "exportKey": "E2EE-Tresorschlüssel exportieren",
+    "exportSuccess": "✅ Erfolgreich den E2EE-Tresorschlüssel exportiert"
 }

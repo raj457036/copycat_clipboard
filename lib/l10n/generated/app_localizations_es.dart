@@ -633,4 +633,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exportKey => 'Exportar Clave de la Bóveda E2EE';
+
+  @override
+  String get exportSuccess => '✅ Clave del cofre E2EE exportada correctamente';
 }

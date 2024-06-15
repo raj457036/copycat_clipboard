@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -26,6 +27,7 @@ class WindowActionCubit extends Cubit<WindowActionState> {
   }
 
   Future<void> reset() async {
+    if (!isDesktopPlatform) return;
     toggleCompact(reset: true);
     togglePinned(reset: true);
   }
