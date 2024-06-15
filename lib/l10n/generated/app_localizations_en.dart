@@ -625,4 +625,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportKey => 'Export E2EE Vault Key';
+
+  @override
+  String get exportSuccess => '✅ Successfully exported E2EE Vault key';
 }

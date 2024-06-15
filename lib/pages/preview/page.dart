@@ -91,7 +91,7 @@ class ClipboardItemMobilePreviewPageContent extends StatelessWidget {
       children: [
         ConstrainedBox(
           constraints: BoxConstraints.loose(
-            const Size.fromHeight(450),
+            const Size.fromHeight(400),
           ),
           child: Stack(
             children: [

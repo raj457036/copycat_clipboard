@@ -634,4 +634,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exportKey => 'E2EE-Tresorschlüssel exportieren';
+
+  @override
+  String get exportSuccess =>
+      '✅ Erfolgreich den E2EE-Tresorschlüssel exportiert';
 }

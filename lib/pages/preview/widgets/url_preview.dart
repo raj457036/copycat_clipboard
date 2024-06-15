@@ -31,7 +31,12 @@ class URLClipPreviewCard extends StatelessWidget {
             ),
       child: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(padding16),
+          padding: const EdgeInsets.only(
+            left: padding16,
+            right: padding16,
+            top: padding16,
+            bottom: padding38 * 2.5,
+          ),
           child: SelectableText(
             item.url ?? context.locale.nothingHere,
           ),

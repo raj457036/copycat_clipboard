@@ -1232,6 +1232,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export E2EE Vault Key'**
   String get exportKey;
+
+  /// No description provided for @exportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Successfully exported E2EE Vault key'**
+  String get exportSuccess;
 }
 
 class _AppLocalizationsDelegate

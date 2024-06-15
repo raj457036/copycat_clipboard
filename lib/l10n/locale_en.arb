@@ -283,5 +283,6 @@
     "e2eeVault": "E2EE Vault",
     "e2eeExportNote": "Congratulations, you have successfully configured the end-to-end encryption.",
     "e2eeExportDesc": "Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.",
-    "exportKey": "Export E2EE Vault Key"
+    "exportKey": "Export E2EE Vault Key",
+    "exportSuccess": "✅ Successfully exported E2EE Vault key"
 }
