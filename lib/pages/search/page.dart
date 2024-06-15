@@ -2,6 +2,7 @@ import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.d
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/search/widgets/search_bar.dart';
@@ -72,7 +73,17 @@ class SearchPage extends StatelessWidget {
                 switch (state) {
                   case InitialSearchState():
                     return Center(
-                      child: Text(context.locale.findWhateverYouLooking),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            AssetConstants.search,
+                            width: 250,
+                          ),
+                          height16,
+                          Text(context.locale.findWhateverYouLooking),
+                        ],
+                      ),
                     );
                   case SearchingState():
                     return const Center(
@@ -86,7 +97,21 @@ class SearchPage extends StatelessWidget {
                     {
                       if (results.isEmpty) {
                         return Center(
-                          child: Text(context.locale.noResultsWereFound),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                AssetConstants.noData,
+                                width: 200,
+                              ),
+                              height16,
+                              Text(
+                                context.locale.noResultsWereFound,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         );
                       }
 

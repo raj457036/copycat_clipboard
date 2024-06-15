@@ -1,3 +1,4 @@
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
@@ -16,6 +17,11 @@ class NoCollectionAvailable extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Image.asset(
+            AssetConstants.collection,
+            width: 250,
+          ),
+          height20,
           Text(
             context.locale.noCollectionFound,
             style: textTheme.bodyLarge,

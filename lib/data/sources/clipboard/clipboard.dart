@@ -32,4 +32,6 @@ abstract class ClipboardSource {
   Future<void> deleteAll();
 
   Future<ClipboardItem?> getLatest();
+
+  Future<void> decryptPending();
 }

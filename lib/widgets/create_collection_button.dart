@@ -1,9 +1,12 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'dart:math' show max;
+
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/dialogs/create_collection.dart';
+import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/widgets/badges.dart';
+import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,14 +20,10 @@ class CreateCollectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AuthCubit, AuthState, Subscription>(
-      selector: (state) {
-        if (state is AuthenticatedAuthState) {
-          return state.subscription!;
-        }
-        return Subscription.free("");
-      },
+    final colors = context.colors;
+    return SubscriptionBuilder(
       builder: (context, subscription) {
+        if (subscription == null) return const SizedBox.shrink();
         return BlocSelector<ClipCollectionCubit, ClipCollectionState,
             (int, int)>(
           selector: (state) {
@@ -36,17 +35,19 @@ class CreateCollectionButton extends StatelessWidget {
           builder: (context, state) {
             final (collection, count) = state;
             final canCreate = collection > count;
-            if (!canCreate) return const SizedBox.shrink();
-            final remaining = collection - count;
+            final remaining = max(collection - count, 0);
             if (!isFab) {
+              if (!canCreate) return const SizedBox.shrink();
               return IconButton.filledTonal(
                 onPressed: () => showCreateCollectionDialog(context),
                 icon: const Icon(Icons.add),
                 tooltip: context.locale.createACollection(remaining),
               );
             }
-            return FloatingActionButton(
+            Widget child = FloatingActionButton(
               heroTag: "collection-fab",
+              backgroundColor: canCreate ? null : colors.outline,
+              mouseCursor: canCreate ? null : SystemMouseCursors.forbidden,
               onPressed: canCreate
                   ? () {
                       context.goNamed(
@@ -60,6 +61,23 @@ class CreateCollectionButton extends StatelessWidget {
               tooltip: context.locale.createACollection(remaining),
               child: const Icon(Icons.library_add_rounded),
             );
+
+            if (!canCreate) {
+              child = Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  child,
+                  const Positioned(
+                    bottom: -10,
+                    left: 0,
+                    right: 0,
+                    child: ProBadge(noTooltip: true),
+                  ),
+                ],
+              );
+            }
+
+            return child;
           },
         );
       },
