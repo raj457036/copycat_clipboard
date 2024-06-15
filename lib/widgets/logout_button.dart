@@ -11,6 +11,7 @@ import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,9 @@ class LogoutButton extends StatelessWidget {
       context.read<OfflinePersistanceCubit>().reset();
       context.read<SyncManagerCubit>().reset();
       context.read<DriveSetupCubit>().reset();
-      context.read<WindowActionCubit>().reset();
+      if (isDesktopPlatform) {
+        context.read<WindowActionCubit>().reset();
+      }
       context.read<AuthCubit>().logout();
       context.goNamed(RouteConstants.login);
       context.read<AppConfigCubit>().reset();

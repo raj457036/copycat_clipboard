@@ -170,8 +170,10 @@ class AppContent extends StatelessWidget {
           locale: Locale(langCode.isEmpty ? "en" : langCode),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => ShareListener.fromPlatform(
-            child: child ?? const SizedBox.shrink(),
+          builder: (context, child) => NetworkObserver(
+            child: ShareListener.fromPlatform(
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
         );
       },
@@ -217,9 +219,7 @@ class MainApp extends StatelessWidget {
           child: TrayManager.fromPlatform(
             child: const SystemShortcutListener(
               child: AppLinkListener(
-                child: NetworkObserver(
-                  child: AppContent(),
-                ),
+                child: AppContent(),
               ),
             ),
           ),
