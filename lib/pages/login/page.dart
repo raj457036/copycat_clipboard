@@ -6,16 +6,27 @@ import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart'
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/pages/login/widgets/login_form.dart';
+import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/attention_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  Future<void> showIntoDialog() async {
+    if (!isDesktopPlatform) return;
+    final context = rootNavKey.currentContext;
+    if (context != null) {
+      const AttentionDialog().show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +43,11 @@ class LoginPage extends StatelessWidget {
             context.read<OfflinePersistanceCubit>().startListners();
             context.read<DriveSetupCubit>().fetch();
             context.goNamed(RouteConstants.home);
+
+            Future.delayed(
+              const Duration(seconds: 2),
+              showIntoDialog,
+            );
             break;
           default:
         }

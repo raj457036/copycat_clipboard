@@ -18,7 +18,7 @@ class AttentionDialog extends StatelessWidget {
 
   Future<void> openHowToUse() async {
     await launchUrlString(
-      "https://www.entilitystudio.com/copycat-clipboard",
+      "https://www.entilitystudio.com/copycat-clipboard/tutorials",
     );
   }
 
@@ -32,87 +32,96 @@ class AttentionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(padding20),
-        child: SizedBox(
-          width: 800,
-          height: 550,
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
+      insetPadding: const EdgeInsets.all(padding14),
+      child: LayoutBuilder(builder: (context, constraints) {
+        final isVisible =
+            constraints.maxWidth >= 800 && constraints.maxHeight >= 550;
+        return Padding(
+          padding: const EdgeInsets.all(padding20),
+          child: SizedBox(
+            width: 800,
+            height: 550,
+            child: Row(
+              children: [
+                if (isVisible)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          context.locale.whatsNew,
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineMedium,
+                        ),
+                        height8,
+                        ListTile(
+                          leading: const Icon(Icons.important_devices_rounded),
+                          title: Text(context.locale.feature1),
+                          subtitle: Text(
+                            context.locale.feature1Desc,
+                          ),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.history_rounded),
+                          title: Text(context.locale.feature2),
+                          subtitle: Text(
+                            context.locale.feature2Desc,
+                          ),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.paste_rounded),
+                          title: Text(context.locale.feature3),
+                          subtitle: Text(
+                            context.locale.feature3Desc,
+                          ),
+                        ),
+                        ListTile(
+                          leading:
+                              const Icon(Icons.collections_bookmark_rounded),
+                          title: Text(context.locale.feature4),
+                          subtitle: Text(
+                            context.locale.feature4Desc,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (isVisible) const VerticalDivider(),
+                Expanded(
+                    child: Column(
                   children: [
                     Text(
-                      context.locale.whatsNew,
+                      context.locale.gettingStarted,
                       textAlign: TextAlign.center,
                       style: textTheme.headlineMedium,
                     ),
                     height8,
                     ListTile(
-                      leading: const Icon(Icons.important_devices_rounded),
-                      title: Text(context.locale.feature1),
-                      subtitle: Text(
-                        context.locale.feature1Desc,
-                      ),
+                      leading: const Icon(Icons.help_outline_rounded),
+                      title: Text(context.locale.howToUse),
+                      subtitle: Text(context.locale.howToUseDesc),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: openHowToUse,
+                      shape:
+                          const RoundedRectangleBorder(borderRadius: radius12),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.history_rounded),
-                      title: Text(context.locale.feature2),
+                      leading: const Icon(Icons.video_collection_rounded),
+                      title: Text(context.locale.tutorials),
                       subtitle: Text(
-                        context.locale.feature2Desc,
+                        context.locale.tutorialsDesc,
                       ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.paste_rounded),
-                      title: Text(context.locale.feature3),
-                      subtitle: Text(
-                        context.locale.feature3Desc,
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.collections_bookmark_rounded),
-                      title: Text(context.locale.feature4),
-                      subtitle: Text(
-                        context.locale.feature4Desc,
-                      ),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: openTutorials,
+                      shape:
+                          const RoundedRectangleBorder(borderRadius: radius12),
                     ),
                   ],
-                ),
-              ),
-              const VerticalDivider(),
-              Expanded(
-                  child: Column(
-                children: [
-                  Text(
-                    context.locale.gettingStarted,
-                    textAlign: TextAlign.center,
-                    style: textTheme.headlineMedium,
-                  ),
-                  height8,
-                  ListTile(
-                    leading: const Icon(Icons.help_outline_rounded),
-                    title: Text(context.locale.howToUse),
-                    subtitle: Text(context.locale.howToUseDesc),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: openHowToUse,
-                    shape: const RoundedRectangleBorder(borderRadius: radius12),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.video_collection_rounded),
-                    title: Text(context.locale.tutorials),
-                    subtitle: Text(
-                      context.locale.tutorialsDesc,
-                    ),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: openTutorials,
-                    shape: const RoundedRectangleBorder(borderRadius: radius12),
-                  ),
-                ],
-              ))
-            ],
+                ))
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

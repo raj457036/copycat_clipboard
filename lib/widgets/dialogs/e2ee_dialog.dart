@@ -199,7 +199,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
             }
 
             if (enc2Key == null) {
-              return AlertDialog.adaptive(
+              return AlertDialog(
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -238,7 +238,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                             textColor: Colors.deepOrange.shade800,
                           ),
                         ),
-                      height12,
+                      if (invalidImportedKey) height12,
                       Text(
                         context.locale.importE2eeDesc,
                         textAlign: TextAlign.center,
