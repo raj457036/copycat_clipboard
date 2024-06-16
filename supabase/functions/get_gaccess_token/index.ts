@@ -5,6 +5,7 @@ import {
   createClient,
   SupabaseClient,
 } from "https://esm.sh/@supabase/supabase-js@2.42.4";
+import { GTokenResponse, refreshGoogleToken } from "../utils/google.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,14 +15,6 @@ const corsHeaders = {
 
 type SetupTokenPayload = {
   code?: string;
-};
-
-type GTokenResponse = {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-  token_type: string;
 };
 
 async function setupTokens(
@@ -91,79 +84,6 @@ async function setupTokens(
   );
 }
 
-async function updateToken(
-  client: SupabaseClient,
-) {
-  const { data: { user }, error: authError } = await client.auth.getUser();
-
-  if (authError) {
-    console.error(authError);
-    return new Response(JSON.stringify(authError), { status: 401 });
-  }
-
-  const userId = user!.id;
-  const { data: cred, error: credError } = await client.from(
-    "drive_credentials",
-  ).select("refresh_token").eq("userId", userId).limit(1);
-
-  if (credError) {
-    console.error(credError);
-    return new Response(JSON.stringify(credError), { status: 400 });
-  }
-
-  const refreshToken = cred[0].refresh_token;
-
-  const url = "https://www.googleapis.com/oauth2/v4/token";
-
-  const payload = new URLSearchParams({
-    "client_id": Deno.env.get("GOOGLE_CLIENT_ID") ?? "",
-    "client_secret": Deno.env.get("GOOGLE_CLIENT_SECRET") ?? "",
-    "grant_type": "refresh_token",
-    "refresh_token": refreshToken,
-  });
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: payload.toString(),
-  });
-
-  const responseJson = await response.json();
-  console.log(response.status);
-
-  if (response.status !== 200) {
-    return new Response(JSON.stringify(responseJson), {
-      status: response.status,
-    });
-  }
-
-  const { access_token, expires_in, scope } = responseJson as GTokenResponse;
-
-  const issued_at = new Date().toISOString();
-  const result = await client.from("drive_credentials").update({
-    "access_token": access_token,
-    "expires_in": expires_in,
-    "scopes": scope.split(" "),
-  }).eq("userId", userId);
-
-  const { data: _, error: saveError } = result;
-
-  return new Response(
-    JSON.stringify({
-      "access_token": access_token,
-      "expires_in": expires_in,
-      "issued_at": issued_at,
-      "scopes": scope.split(" "),
-      "error": saveError,
-    }),
-    {
-      status: saveError ? 400 : 200,
-    },
-  );
-}
-
 Deno.serve(async (req) => {
   const { method } = req;
 
@@ -202,8 +122,22 @@ Deno.serve(async (req) => {
 
     // call relevant method based on method and id
     switch (true) {
-      case method === "GET":
-        return updateToken(supabaseClient);
+      case method === "GET": {
+        const { data: { user }, error: authError } = await supabaseClient.auth
+          .getUser();
+
+        if (authError) {
+          console.error(authError);
+          return new Response(JSON.stringify(authError), { status: 401 });
+        }
+        const result = await refreshGoogleToken(supabaseClient, user!.id);
+        return new Response(
+          JSON.stringify(result),
+          {
+            status: result.status,
+          },
+        );
+      }
       case payload && method === "POST":
         return setupTokens(supabaseClient, payload.code!);
       default:
