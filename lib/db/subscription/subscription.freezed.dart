@@ -344,7 +344,7 @@ class _$SubscriptionImpl extends _Subscription {
       this.collections = 3,
       @JsonKey(name: "syncHr") this.syncHours = 24,
       this.ads = true,
-      @JsonKey(name: "syncInt") this.syncInterval = $30S,
+      @JsonKey(name: "syncInt") this.syncInterval = $60S,
       this.edit = false,
       this.encrypt = false,
       this.encryptKey,

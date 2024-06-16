@@ -543,9 +543,154 @@ class AppLocalizationsDe extends AppLocalizations {
   String get backToApp => 'Zurück zur App';
 
   @override
-  String get experimental => '⚠️ Experimentell';
+  String get experimental => '🧪';
 
   @override
   String get experimentalDescription =>
       'Diese Funktion ist experimentell und könnte nicht wie erwartet funktionieren.';
+
+  @override
+  String get selectAnOption => 'Wählen Sie eine Option';
+
+  @override
+  String get advanceSecurity => 'Erweiterte Sicherheit';
+
+  @override
+  String get endToEndVault => 'Ende-zu-Ende-Verschlüsselung Tresor';
+
+  @override
+  String get accessE2eeVault =>
+      'Greifen Sie auf Ihre E2EE-Tresoreinstellungen zu';
+
+  @override
+  String get encryptClipboard => 'Zwischenablage verschlüsseln';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Verschlüsseln Sie die Zwischenablage, bevor Sie sie mit der Cloud synchronisieren.';
+
+  @override
+  String get $5Sec => '5 Sek';
+
+  @override
+  String get $15Sec => '15 Sek';
+
+  @override
+  String get $30Sec => '30 Sek';
+
+  @override
+  String get $60Sec => '60 Sek';
+
+  @override
+  String get $90Sec => '90 Sek';
+
+  @override
+  String get e2eeNotSetup => 'E2EE noch nicht eingerichtet.';
+
+  @override
+  String get settingE2eeVault => 'Einrichten des E2EE-Tresors';
+
+  @override
+  String get e2eeSetupWarning =>
+      'Wenn Sie Ihren E2EE-Schlüssel verlieren und keine Sicherung haben, sind Ihre verschlüsselten Daten dauerhaft unzugänglich. Bewahren Sie Ihren Schlüssel sicher und gesichert auf.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Erstellen Sie Ihren E2EE-Tresorschlüssel und speichern Sie ihn an einem sicheren Ort. Sie benötigen diesen Schlüssel, um andere Geräte einzurichten, um auf Ihre verschlüsselten Informationen zuzugreifen.';
+
+  @override
+  String get generating => 'Erstellen...';
+
+  @override
+  String get generateKey => 'E2EE-Tresorschlüssel erstellen';
+
+  @override
+  String get importE2eeKey => 'E2EE-Tresorschlüssel importieren';
+
+  @override
+  String get importE2eeInvalidKey =>
+      '⚠️ Der importierte Schlüssel ist ungültig!';
+
+  @override
+  String get importE2eeDesc =>
+      'Importieren Sie unten Ihren E2EE-Tresorschlüssel, um den Zugriff auf Ihre verschlüsselten Informationen auf diesem Gerät zu ermöglichen. Stellen Sie sicher, dass der Schlüssel sicher gespeichert ist und nicht weitergegeben wird.';
+
+  @override
+  String get importing => 'Importieren...';
+
+  @override
+  String get importKey => 'E2EE-Tresorschlüssel importieren';
+
+  @override
+  String get e2eeVault => 'E2EE-Tresor';
+
+  @override
+  String get e2eeExportNote =>
+      'Herzlichen Glückwunsch, Sie haben die Ende-zu-Ende-Verschlüsselung erfolgreich eingerichtet.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Klicken Sie unten auf die Schaltfläche, um Ihren E2EE-Tresorschlüssel zu exportieren.\nSpeichern Sie den Schlüssel an einem sicheren Ort, um sicherzustellen, dass Sie andere Geräte einrichten können, um auf Ihre verschlüsselten Informationen zuzugreifen.';
+
+  @override
+  String get exportKey => 'E2EE-Tresorschlüssel exportieren';
+
+  @override
+  String get exportSuccess =>
+      '✅ Erfolgreich den E2EE-Tresorschlüssel exportiert';
+
+  @override
+  String get whatsNew => 'Was gibt\'s Neues?';
+
+  @override
+  String get feature1 => 'Intelligente plattformübergreifende Zwischenablage';
+
+  @override
+  String get feature1Desc =>
+      'Synchronisieren Sie nahtlos den Inhalt Ihrer Zwischenablage auf all Ihren Geräten. Egal ob Text, Bilder oder Dateien, greifen Sie überall auf Ihren Zwischenablageverlauf zu.';
+
+  @override
+  String get feature2 => 'Unbegrenzte Historie mit Sofortsuche';
+
+  @override
+  String get feature2Desc =>
+      'Verlieren Sie niemals Ihre kopierten Elemente. Mit unserer unbegrenzten Verlauf-Funktion können Sie jederzeit nach alten Zwischenablage-Elementen suchen und diese sofort wiederherstellen.';
+
+  @override
+  String get feature3 => 'Intelligentes Einfügen';
+
+  @override
+  String get feature3Desc =>
+      'Fügen Sie intelligent mit kontextabhängigen Vorschlägen ein. Sparen Sie Zeit, indem Sie schnell auf den richtigen Inhalt für Ihre aktuelle Aufgabe zugreifen.';
+
+  @override
+  String get feature4 => 'Sammlungen';
+
+  @override
+  String get feature4Desc =>
+      'Organisieren Sie Ihre Zwischenablage-Elemente in Sammlungen für einfachen Zugriff und Verwaltung. Perfekt für Projekte, Recherchen und mehr.';
+
+  @override
+  String get gettingStarted => 'Erste Schritte';
+
+  @override
+  String get howToUse => 'Anleitung';
+
+  @override
+  String get howToUseDesc =>
+      'Wie verwendet man CopyCat? Lesen Sie unsere Dokumentation, um loszulegen.';
+
+  @override
+  String get tutorials => 'Video-Tutorials';
+
+  @override
+  String get tutorialsDesc =>
+      'Erfahren Sie, wie Sie das Beste aus CopyCat herausholen, mit unseren Schritt-für-Schritt-Video-Tutorials.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Erfahren Sie mehr über alle Funktionen, die CopyCat zu bieten hat.';
+
+  @override
+  String get learn => 'Lernen';
 }

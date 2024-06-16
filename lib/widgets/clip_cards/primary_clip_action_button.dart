@@ -21,6 +21,9 @@ class PrimaryClipActionButton extends StatelessWidget {
             state.config.smartPaste;
       },
       builder: (context, hasFocusForPaste) {
+        if (item.encrypted) {
+          return const SizedBox.shrink();
+        }
         if (hasFocusForPaste) {
           final focusManager = WindowFocusManager.of(context);
           return IconButton(

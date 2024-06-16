@@ -1,5 +1,6 @@
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:universal_io/io.dart';
@@ -24,6 +25,8 @@ class TrayManager extends StatefulWidget {
 }
 
 class _TrayManagerState extends State<TrayManager> with TrayListener {
+  bool paused = false;
+
   @override
   void initState() {
     trayManager.addListener(this);
@@ -89,7 +92,7 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
     );
 
     if (result.name == "positiveButton") {
-      exit(0);
+      SystemNavigator.pop(animated: true);
     }
   }
 

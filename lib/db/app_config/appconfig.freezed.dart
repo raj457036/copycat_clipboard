@@ -45,7 +45,10 @@ mixin _$AppConfig {
 
   /// If enabled, the application will automatically start at startup.
   bool get launchAtStartup => throw _privateConstructorUsedError;
-  String get locale => throw _privateConstructorUsedError; //? Local App States
+  String get locale => throw _privateConstructorUsedError;
+  String? get enc2 => throw _privateConstructorUsedError;
+  bool get autoEncrypt =>
+      throw _privateConstructorUsedError; //? Local App States
   /// last focus window id
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -74,6 +77,8 @@ abstract class $AppConfigCopyWith<$Res> {
       bool smartPaste,
       bool launchAtStartup,
       String locale,
+      String? enc2,
+      bool autoEncrypt,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       int? lastFocusedWindowId});
@@ -103,6 +108,8 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? smartPaste = null,
     Object? launchAtStartup = null,
     Object? locale = null,
+    Object? enc2 = freezed,
+    Object? autoEncrypt = null,
     Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -150,6 +157,14 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
+      enc2: freezed == enc2
+          ? _value.enc2
+          : enc2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      autoEncrypt: null == autoEncrypt
+          ? _value.autoEncrypt
+          : autoEncrypt // ignore: cast_nullable_to_non_nullable
+              as bool,
       lastFocusedWindowId: freezed == lastFocusedWindowId
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
@@ -178,6 +193,8 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       bool smartPaste,
       bool launchAtStartup,
       String locale,
+      String? enc2,
+      bool autoEncrypt,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       int? lastFocusedWindowId});
@@ -205,6 +222,8 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? smartPaste = null,
     Object? launchAtStartup = null,
     Object? locale = null,
+    Object? enc2 = freezed,
+    Object? autoEncrypt = null,
     Object? lastFocusedWindowId = freezed,
   }) {
     return _then(_$AppConfigImpl(
@@ -252,6 +271,14 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
+      enc2: freezed == enc2
+          ? _value.enc2
+          : enc2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      autoEncrypt: null == autoEncrypt
+          ? _value.autoEncrypt
+          : autoEncrypt // ignore: cast_nullable_to_non_nullable
+              as bool,
       lastFocusedWindowId: freezed == lastFocusedWindowId
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
@@ -275,6 +302,8 @@ class _$AppConfigImpl extends _AppConfig {
       this.smartPaste = false,
       this.launchAtStartup = false,
       this.locale = "en",
+      this.enc2,
+      this.autoEncrypt = false,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.lastFocusedWindowId})
@@ -329,6 +358,11 @@ class _$AppConfigImpl extends _AppConfig {
   @override
   @JsonKey()
   final String locale;
+  @override
+  final String? enc2;
+  @override
+  @JsonKey()
+  final bool autoEncrypt;
 //? Local App States
   /// last focus window id
   @override
@@ -338,7 +372,7 @@ class _$AppConfigImpl extends _AppConfig {
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, locale: $locale, lastFocusedWindowId: $lastFocusedWindowId)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, locale: $locale, enc2: $enc2, autoEncrypt: $autoEncrypt, lastFocusedWindowId: $lastFocusedWindowId)';
   }
 
   @override
@@ -367,6 +401,9 @@ class _$AppConfigImpl extends _AppConfig {
             (identical(other.launchAtStartup, launchAtStartup) ||
                 other.launchAtStartup == launchAtStartup) &&
             (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.enc2, enc2) || other.enc2 == enc2) &&
+            (identical(other.autoEncrypt, autoEncrypt) ||
+                other.autoEncrypt == autoEncrypt) &&
             (identical(other.lastFocusedWindowId, lastFocusedWindowId) ||
                 other.lastFocusedWindowId == lastFocusedWindowId));
   }
@@ -386,6 +423,8 @@ class _$AppConfigImpl extends _AppConfig {
       smartPaste,
       launchAtStartup,
       locale,
+      enc2,
+      autoEncrypt,
       lastFocusedWindowId);
 
   @JsonKey(ignore: true)
@@ -415,6 +454,8 @@ abstract class _AppConfig extends AppConfig {
       final bool smartPaste,
       final bool launchAtStartup,
       final String locale,
+      final String? enc2,
+      final bool autoEncrypt,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
       final int? lastFocusedWindowId}) = _$AppConfigImpl;
@@ -458,6 +499,10 @@ abstract class _AppConfig extends AppConfig {
   bool get launchAtStartup;
   @override
   String get locale;
+  @override
+  String? get enc2;
+  @override
+  bool get autoEncrypt;
   @override //? Local App States
   /// last focus window id
   @ignore

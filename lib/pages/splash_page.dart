@@ -7,6 +7,7 @@ import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +38,9 @@ class SplashPage extends StatelessWidget {
           case UnauthenticatedAuthState():
             context.goNamed(RouteConstants.login);
             context.read<OfflinePersistanceCubit>().stopListners();
-            await windowManager.show();
+            if (isDesktopPlatform) {
+              await windowManager.show();
+            }
           default:
         }
       },

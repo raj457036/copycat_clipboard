@@ -39,7 +39,7 @@ class LocalClipboardSource implements ClipboardSource {
     if (search == null && collectionId == null) {
       resultsQuery = db.clipboardItems.filter();
     } else {
-      var filter = db.clipboardItems.filter();
+      var filter = db.clipboardItems.filter().encryptedEqualTo(false);
 
       if (collectionId != null) {
         filter = filter.collectionIdEqualTo(collectionId);
@@ -162,5 +162,23 @@ class LocalClipboardSource implements ClipboardSource {
     final result = await db
         .txn(() => db.clipboardItems.where().sortByModifiedDesc().findFirst());
     return result;
+  }
+
+  @override
+  Future<void> decryptPending() async {
+    const limit = 100;
+    await db.writeTxn(() async {
+      final q = db.clipboardItems.filter().encryptedEqualTo(true);
+      int offset = 0;
+
+      while (true) {
+        final items = await q.offset(offset).limit(limit).findAll();
+        if (items.isEmpty) break;
+        final decrypted = await Future.wait(items.map((e) => e.decrypt()));
+        await db.clipboardItems.putAll(decrypted);
+        if (items.length < limit) break;
+        offset += limit;
+      }
+    });
   }
 }
