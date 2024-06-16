@@ -637,4 +637,59 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get exportSuccess => '✅ Clé de coffre E2EE exportée avec succès';
+
+  @override
+  String get whatsNew => 'Quoi de neuf ?';
+
+  @override
+  String get feature1 => 'Presse-papiers Intelligent Multi-Plateforme';
+
+  @override
+  String get feature1Desc =>
+      'Synchronisez sans effort le contenu de votre presse-papiers sur tous vos appareils. Qu\'il s\'agisse de texte, d\'images ou de fichiers, accédez à l\'historique de votre presse-papiers où que vous alliez.';
+
+  @override
+  String get feature2 => 'Historique Illimité avec Recherche Instantanée';
+
+  @override
+  String get feature2Desc =>
+      'Ne perdez plus jamais vos éléments copiés. Notre fonctionnalité d\'historique illimité garantit que vous pouvez rechercher et récupérer instantanément tout élément de presse-papiers passé.';
+
+  @override
+  String get feature3 => 'Collage Intelligent';
+
+  @override
+  String get feature3Desc =>
+      'Collez intelligemment avec des suggestions contextuelles. Gagnez du temps en accédant rapidement au contenu approprié pour votre tâche actuelle.';
+
+  @override
+  String get feature4 => 'Collections';
+
+  @override
+  String get feature4Desc =>
+      'Organisez les éléments de votre presse-papiers en collections pour un accès et une gestion faciles. Parfait pour les projets, la recherche et plus encore.';
+
+  @override
+  String get gettingStarted => 'Commencer';
+
+  @override
+  String get howToUse => 'Comment Utiliser';
+
+  @override
+  String get howToUseDesc =>
+      'Comment utiliser CopyCat ? Lisez notre documentation pour commencer.';
+
+  @override
+  String get tutorials => 'Tutoriels Vidéo';
+
+  @override
+  String get tutorialsDesc =>
+      'Apprenez à tirer le meilleur parti de CopyCat avec nos tutoriels vidéo étape par étape.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Découvrez toutes les fonctionnalités que CopyCat a à offrir.';
+
+  @override
+  String get learn => 'Apprendre';
 }

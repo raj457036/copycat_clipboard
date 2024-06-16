@@ -628,4 +628,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportSuccess => '✅ Successfully exported E2EE Vault key';
+
+  @override
+  String get whatsNew => 'What\'s New?';
+
+  @override
+  String get feature1 => 'Smart Cross-Platform Clipboard';
+
+  @override
+  String get feature1Desc =>
+      'Seamlessly sync your clipboard content across all your devices. Whether it\'s text, images, or files, access your clipboard history wherever you go.';
+
+  @override
+  String get feature2 => 'Unlimited History with Instant Search';
+
+  @override
+  String get feature2Desc =>
+      'Never lose your copied items again. Our unlimited history feature ensures you can instantly search and retrieve any past clipboard item.';
+
+  @override
+  String get feature3 => 'Smart Paste';
+
+  @override
+  String get feature3Desc =>
+      'Paste intelligently with context-aware suggestions. Save time by quickly accessing the right content for your current task.';
+
+  @override
+  String get feature4 => 'Collections';
+
+  @override
+  String get feature4Desc =>
+      'Organize your clipboard items into collections for easy access and management. Perfect for projects, research, and more.';
+
+  @override
+  String get gettingStarted => 'Get Started';
+
+  @override
+  String get howToUse => 'How to Use';
+
+  @override
+  String get howToUseDesc =>
+      'How to use CopyCat? Read our documentation to get started.';
+
+  @override
+  String get tutorials => 'Video Tutorials';
+
+  @override
+  String get tutorialsDesc =>
+      'Learn how to make the most out of CopyCat with our step-by-step video tutorials.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Learn about all the features CopyCat has to offer.';
+
+  @override
+  String get learn => 'Learn';
 }

@@ -638,4 +638,59 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get exportSuccess =>
       '✅ Erfolgreich den E2EE-Tresorschlüssel exportiert';
+
+  @override
+  String get whatsNew => 'Was gibt\'s Neues?';
+
+  @override
+  String get feature1 => 'Intelligente plattformübergreifende Zwischenablage';
+
+  @override
+  String get feature1Desc =>
+      'Synchronisieren Sie nahtlos den Inhalt Ihrer Zwischenablage auf all Ihren Geräten. Egal ob Text, Bilder oder Dateien, greifen Sie überall auf Ihren Zwischenablageverlauf zu.';
+
+  @override
+  String get feature2 => 'Unbegrenzte Historie mit Sofortsuche';
+
+  @override
+  String get feature2Desc =>
+      'Verlieren Sie niemals Ihre kopierten Elemente. Mit unserer unbegrenzten Verlauf-Funktion können Sie jederzeit nach alten Zwischenablage-Elementen suchen und diese sofort wiederherstellen.';
+
+  @override
+  String get feature3 => 'Intelligentes Einfügen';
+
+  @override
+  String get feature3Desc =>
+      'Fügen Sie intelligent mit kontextabhängigen Vorschlägen ein. Sparen Sie Zeit, indem Sie schnell auf den richtigen Inhalt für Ihre aktuelle Aufgabe zugreifen.';
+
+  @override
+  String get feature4 => 'Sammlungen';
+
+  @override
+  String get feature4Desc =>
+      'Organisieren Sie Ihre Zwischenablage-Elemente in Sammlungen für einfachen Zugriff und Verwaltung. Perfekt für Projekte, Recherchen und mehr.';
+
+  @override
+  String get gettingStarted => 'Erste Schritte';
+
+  @override
+  String get howToUse => 'Anleitung';
+
+  @override
+  String get howToUseDesc =>
+      'Wie verwendet man CopyCat? Lesen Sie unsere Dokumentation, um loszulegen.';
+
+  @override
+  String get tutorials => 'Video-Tutorials';
+
+  @override
+  String get tutorialsDesc =>
+      'Erfahren Sie, wie Sie das Beste aus CopyCat herausholen, mit unseren Schritt-für-Schritt-Video-Tutorials.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Erfahren Sie mehr über alle Funktionen, die CopyCat zu bieten hat.';
+
+  @override
+  String get learn => 'Lernen';
 }
