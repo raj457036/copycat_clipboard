@@ -283,5 +283,22 @@
     "e2eeExportNote": "Herzlichen Glückwunsch, Sie haben die Ende-zu-Ende-Verschlüsselung erfolgreich eingerichtet.",
     "e2eeExportDesc": "Klicken Sie unten auf die Schaltfläche, um Ihren E2EE-Tresorschlüssel zu exportieren.\nSpeichern Sie den Schlüssel an einem sicheren Ort, um sicherzustellen, dass Sie andere Geräte einrichten können, um auf Ihre verschlüsselten Informationen zuzugreifen.",
     "exportKey": "E2EE-Tresorschlüssel exportieren",
-    "exportSuccess": "✅ Erfolgreich den E2EE-Tresorschlüssel exportiert"
+    "exportSuccess": "✅ Erfolgreich den E2EE-Tresorschlüssel exportiert",
+
+    "whatsNew": "Was gibt's Neues?",
+    "feature1": "Intelligente plattformübergreifende Zwischenablage",
+    "feature1Desc": "Synchronisieren Sie nahtlos den Inhalt Ihrer Zwischenablage auf all Ihren Geräten. Egal ob Text, Bilder oder Dateien, greifen Sie überall auf Ihren Zwischenablageverlauf zu.",
+    "feature2": "Unbegrenzte Historie mit Sofortsuche",
+    "feature2Desc": "Verlieren Sie niemals Ihre kopierten Elemente. Mit unserer unbegrenzten Verlauf-Funktion können Sie jederzeit nach alten Zwischenablage-Elementen suchen und diese sofort wiederherstellen.",
+    "feature3": "Intelligentes Einfügen",
+    "feature3Desc": "Fügen Sie intelligent mit kontextabhängigen Vorschlägen ein. Sparen Sie Zeit, indem Sie schnell auf den richtigen Inhalt für Ihre aktuelle Aufgabe zugreifen.",
+    "feature4": "Sammlungen",
+    "feature4Desc": "Organisieren Sie Ihre Zwischenablage-Elemente in Sammlungen für einfachen Zugriff und Verwaltung. Perfekt für Projekte, Recherchen und mehr.",
+    "gettingStarted": "Erste Schritte",
+    "howToUse": "Anleitung",
+    "howToUseDesc": "Wie verwendet man CopyCat? Lesen Sie unsere Dokumentation, um loszulegen.",
+    "tutorials": "Video-Tutorials",
+    "tutorialsDesc": "Erfahren Sie, wie Sie das Beste aus CopyCat herausholen, mit unseren Schritt-für-Schritt-Video-Tutorials.",
+    "learnAboutFeatures": "Erfahren Sie mehr über alle Funktionen, die CopyCat zu bieten hat.",
+    "learn": "Lernen"
 }

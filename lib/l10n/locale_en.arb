@@ -284,5 +284,22 @@
     "e2eeExportNote": "Congratulations, you have successfully configured the end-to-end encryption.",
     "e2eeExportDesc": "Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.",
     "exportKey": "Export E2EE Vault Key",
-    "exportSuccess": "✅ Successfully exported E2EE Vault key"
+    "exportSuccess": "✅ Successfully exported E2EE Vault key",
+
+    "whatsNew": "What's New?",
+    "feature1": "Smart Cross-Platform Clipboard",
+    "feature1Desc": "Seamlessly sync your clipboard content across all your devices. Whether it's text, images, or files, access your clipboard history wherever you go.",
+    "feature2": "Unlimited History with Instant Search",
+    "feature2Desc": "Never lose your copied items again. Our unlimited history feature ensures you can instantly search and retrieve any past clipboard item.",
+    "feature3": "Smart Paste",
+    "feature3Desc": "Paste intelligently with context-aware suggestions. Save time by quickly accessing the right content for your current task.",
+    "feature4": "Collections",
+    "feature4Desc": "Organize your clipboard items into collections for easy access and management. Perfect for projects, research, and more.",
+    "gettingStarted": "Get Started",
+    "howToUse": "How to Use",
+    "howToUseDesc": "How to use CopyCat? Read our documentation to get started.",
+    "tutorials": "Video Tutorials",
+    "tutorialsDesc": "Learn how to make the most out of CopyCat with our step-by-step video tutorials.",
+    "learnAboutFeatures": "Learn about all the features CopyCat has to offer.",
+    "learn": "Learn"
 }

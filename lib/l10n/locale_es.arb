@@ -283,5 +283,22 @@
     "e2eeExportNote": "Felicidades, ha configurado con éxito el cifrado de extremo a extremo.",
     "e2eeExportDesc": "Haga clic en el botón a continuación para exportar su clave de la Bóveda E2EE.\nGuarde la clave en un lugar seguro para asegurarse de que puede configurar otros dispositivos y acceder a su información cifrada.",
     "exportKey": "Exportar Clave de la Bóveda E2EE",
-    "exportSuccess": "✅ Clave del cofre E2EE exportada correctamente"
+    "exportSuccess": "✅ Clave del cofre E2EE exportada correctamente",
+    
+    "whatsNew": "¿Qué hay de nuevo?",
+    "feature1": "Portapapeles Inteligente Multiplataforma",
+    "feature1Desc": "Sincroniza sin problemas el contenido de tu portapapeles en todos tus dispositivos. Ya sea texto, imágenes o archivos, accede a tu historial de portapapeles dondequiera que vayas.",
+    "feature2": "Historial Ilimitado con Búsqueda Instantánea",
+    "feature2Desc": "Nunca pierdas los elementos copiados nuevamente. Nuestra función de historial ilimitado asegura que puedas buscar y recuperar instantáneamente cualquier elemento del portapapeles anterior.",
+    "feature3": "Pegado Inteligente",
+    "feature3Desc": "Pega inteligentemente con sugerencias contextuales. Ahorra tiempo accediendo rápidamente al contenido adecuado para tu tarea actual.",
+    "feature4": "Colecciones",
+    "feature4Desc": "Organiza los elementos de tu portapapeles en colecciones para un acceso y gestión fáciles. Perfecto para proyectos, investigaciones y más.",
+    "gettingStarted": "Comenzar",
+    "howToUse": "Cómo Usar",
+    "howToUseDesc": "¿Cómo usar CopyCat? Lee nuestra documentación para comenzar.",
+    "tutorials": "Tutoriales en Video",
+    "tutorialsDesc": "Aprende a aprovechar al máximo CopyCat con nuestros tutoriales en video paso a paso.",
+    "learnAboutFeatures": "Conoce todas las funciones que CopyCat tiene para ofrecer.",
+    "learn": "Aprender"
 }

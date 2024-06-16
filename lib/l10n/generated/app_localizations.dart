@@ -1238,6 +1238,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'✅ Successfully exported E2EE Vault key'**
   String get exportSuccess;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New?'**
+  String get whatsNew;
+
+  /// No description provided for @feature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Cross-Platform Clipboard'**
+  String get feature1;
+
+  /// No description provided for @feature1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Seamlessly sync your clipboard content across all your devices. Whether it\'s text, images, or files, access your clipboard history wherever you go.'**
+  String get feature1Desc;
+
+  /// No description provided for @feature2.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited History with Instant Search'**
+  String get feature2;
+
+  /// No description provided for @feature2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Never lose your copied items again. Our unlimited history feature ensures you can instantly search and retrieve any past clipboard item.'**
+  String get feature2Desc;
+
+  /// No description provided for @feature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Paste'**
+  String get feature3;
+
+  /// No description provided for @feature3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste intelligently with context-aware suggestions. Save time by quickly accessing the right content for your current task.'**
+  String get feature3Desc;
+
+  /// No description provided for @feature4.
+  ///
+  /// In en, this message translates to:
+  /// **'Collections'**
+  String get feature4;
+
+  /// No description provided for @feature4Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize your clipboard items into collections for easy access and management. Perfect for projects, research, and more.'**
+  String get feature4Desc;
+
+  /// No description provided for @gettingStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get gettingStarted;
+
+  /// No description provided for @howToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Use'**
+  String get howToUse;
+
+  /// No description provided for @howToUseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use CopyCat? Read our documentation to get started.'**
+  String get howToUseDesc;
+
+  /// No description provided for @tutorials.
+  ///
+  /// In en, this message translates to:
+  /// **'Video Tutorials'**
+  String get tutorials;
+
+  /// No description provided for @tutorialsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn how to make the most out of CopyCat with our step-by-step video tutorials.'**
+  String get tutorialsDesc;
+
+  /// No description provided for @learnAboutFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about all the features CopyCat has to offer.'**
+  String get learnAboutFeatures;
+
+  /// No description provided for @learn.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get learn;
 }
 
 class _AppLocalizationsDelegate

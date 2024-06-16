@@ -636,4 +636,59 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exportSuccess => '✅ Clave del cofre E2EE exportada correctamente';
+
+  @override
+  String get whatsNew => '¿Qué hay de nuevo?';
+
+  @override
+  String get feature1 => 'Portapapeles Inteligente Multiplataforma';
+
+  @override
+  String get feature1Desc =>
+      'Sincroniza sin problemas el contenido de tu portapapeles en todos tus dispositivos. Ya sea texto, imágenes o archivos, accede a tu historial de portapapeles dondequiera que vayas.';
+
+  @override
+  String get feature2 => 'Historial Ilimitado con Búsqueda Instantánea';
+
+  @override
+  String get feature2Desc =>
+      'Nunca pierdas los elementos copiados nuevamente. Nuestra función de historial ilimitado asegura que puedas buscar y recuperar instantáneamente cualquier elemento del portapapeles anterior.';
+
+  @override
+  String get feature3 => 'Pegado Inteligente';
+
+  @override
+  String get feature3Desc =>
+      'Pega inteligentemente con sugerencias contextuales. Ahorra tiempo accediendo rápidamente al contenido adecuado para tu tarea actual.';
+
+  @override
+  String get feature4 => 'Colecciones';
+
+  @override
+  String get feature4Desc =>
+      'Organiza los elementos de tu portapapeles en colecciones para un acceso y gestión fáciles. Perfecto para proyectos, investigaciones y más.';
+
+  @override
+  String get gettingStarted => 'Comenzar';
+
+  @override
+  String get howToUse => 'Cómo Usar';
+
+  @override
+  String get howToUseDesc =>
+      '¿Cómo usar CopyCat? Lee nuestra documentación para comenzar.';
+
+  @override
+  String get tutorials => 'Tutoriales en Video';
+
+  @override
+  String get tutorialsDesc =>
+      'Aprende a aprovechar al máximo CopyCat con nuestros tutoriales en video paso a paso.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Conoce todas las funciones que CopyCat tiene para ofrecer.';
+
+  @override
+  String get learn => 'Aprender';
 }

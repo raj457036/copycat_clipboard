@@ -1,6 +1,7 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/widgets/attention_button.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
 
@@ -29,7 +30,7 @@ class LeftNavRail extends StatelessWidget {
             SingleChildScrollView(
               child: SizedBox(
                 height: constraints.maxHeight,
-                width: 90,
+                width: 82,
                 child: NavigationRail(
                   destinations: [
                     NavigationRailDestination(
@@ -64,9 +65,11 @@ class LeftNavRail extends StatelessWidget {
                       ),
                     ),
                   ],
+                  trailing: const AttentionButton(),
                   leading: floatingActionButton,
                   labelType: NavigationRailLabelType.all,
                   groupAlignment: 0,
+                  elevation: 1,
                   selectedIndex: navbarActiveIndex,
                   onDestinationSelected: (idx) => onNavItemTapped(context, idx),
                 ),
