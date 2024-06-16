@@ -2,6 +2,7 @@ import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
+import 'package:clipboard/pages/settings/widgets/e2ee_settings.dart';
 import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/file_sync_switch.dart';
 import 'package:clipboard/pages/settings/widgets/pause_till.dart';
@@ -83,6 +84,7 @@ class SettingsPage extends StatelessWidget {
                         const DontAutoCopyOver(),
                         const PauseTill(),
                         const StartUpLaunchSwitch(),
+                        height10,
                       ],
                     ),
                   ),
@@ -98,12 +100,19 @@ class SettingsPage extends StatelessWidget {
                           tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,
-                        const AutoSyncInterval(),
                         const EnableSyncSwitch(),
                         const EnableFileSyncSwitch(),
+                        const AutoSyncInterval(),
+                        height20,
+                        SettingHeader(
+                          name: context.locale.advanceSecurity,
+                          tooltip: context.locale.localSettingsDesc,
+                        ),
+                        height10,
+                        const E2EESettings(),
                       ],
                     ),
-                  )
+                  ),
                 ],
               );
             }),

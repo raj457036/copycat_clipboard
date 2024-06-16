@@ -19,7 +19,9 @@ class RemoteClipboardSource implements ClipboardSource {
 
   @override
   Future<ClipboardItem> create(ClipboardItem item) async {
-    final docs = await db.from(table).insert(item.toJson()).select();
+    final encrypted = await item.encrypt();
+
+    final docs = await db.from(table).insert(encrypted.toJson()).select();
 
     final createdItem = item.copyWith(
       serverId: docs.first["id"],
@@ -48,7 +50,10 @@ class RemoteClipboardSource implements ClipboardSource {
         .order("modified")
         .range(offset, limit + offset);
 
-    final clips = items.map((e) => ClipboardItem.fromJson(e)).toList();
+    final clips = (await Future.wait(items
+            .map((e) => ClipboardItem.fromJson(e))
+            .map((e) => e.decrypt())))
+        .toList();
 
     return PaginatedResult(results: clips, hasMore: clips.length == limit);
   }
@@ -59,7 +64,11 @@ class RemoteClipboardSource implements ClipboardSource {
       return await create(item);
     }
 
-    await db.from(table).update(item.toJson()).eq("id", item.serverId!);
+    final encryptedItem = await item.encrypt();
+    await db
+        .from(table)
+        .update(encryptedItem.toJson())
+        .eq("id", item.serverId!);
     final updatedItem = item.copyWith(
       lastSynced: now(),
     )..applyId(item);
@@ -87,11 +96,18 @@ class RemoteClipboardSource implements ClipboardSource {
     if (serverId == null) return null;
     final item = await db.from(table).select().eq("id", serverId);
     if (item.isEmpty) return null;
-    return ClipboardItem.fromJson(item.first);
+    var clipItem = ClipboardItem.fromJson(item.first);
+    clipItem = await clipItem.decrypt();
+    return clipItem;
   }
 
   @override
   Future<ClipboardItem?> getLatest() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> decryptPending() {
     throw UnimplementedError();
   }
 }

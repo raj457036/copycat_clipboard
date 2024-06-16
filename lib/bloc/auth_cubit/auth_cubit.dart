@@ -37,8 +37,11 @@ class AuthCubit extends Cubit<AuthState> {
     return null;
   }
 
-  String? get userId =>
-      state.whenOrNull(authenticated: (_, user, __) => user.id);
+  String? get userId => sbClient.auth.currentUser?.id;
+
+  String? get enc1Key {
+    return sbClient.auth.currentUser?.userMetadata?["enc1"];
+  }
 
   Session? get session => sbClient.auth.currentSession;
 
@@ -54,6 +57,19 @@ class AuthCubit extends Cubit<AuthState> {
     } else {
       unauthenticated(authFailure);
     }
+  }
+
+  /// enc1 is always encrypted with enc2 key.
+  Future<void> setupEncryption(String enc2KeyId, String enc1) async {
+    await state.mapOrNull(authenticated: (authState) async {
+      final result = await sbClient.auth.updateUser(UserAttributes(data: {
+        "enc1": enc1,
+        "enc2KeyId": enc2KeyId,
+      }));
+      if (result.user != null) {
+        emit(authState.copyWith(user: result.user!));
+      }
+    });
   }
 
   Future<void> fetchSubscription() async {

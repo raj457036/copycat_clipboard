@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +26,39 @@ class EventBridge extends StatelessWidget {
       listeners: [
         BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) =>
-              previous.config.autoSyncInterval !=
-              current.config.autoSyncInterval,
-          listener: (context, state) {
+              (previous.config.autoSyncInterval !=
+                  current.config.autoSyncInterval) ||
+              (previous.config.enc2 != current.config.enc2) ||
+              (previous.config.autoEncrypt != current.config.autoEncrypt),
+          listener: (context, state) async {
             switch (state) {
               case AppConfigLoaded(:final config):
-                context.read<SyncManagerCubit>().setupAutoSync(
-                      Duration(seconds: config.autoSyncInterval),
-                    );
+                {
+                  if (config.enableSync) {
+                    context.read<SyncManagerCubit>().setupAutoSync(
+                          Duration(seconds: config.autoSyncInterval),
+                        );
+                  } else {
+                    context.read<SyncManagerCubit>().stopAutoSync();
+                  }
+
+                  EncrypterWorker.instance.setEncryption(config.autoEncrypt);
+
+                  if (EncrypterWorker.instance.isRunning) return;
+
+                  if (config.enc2Key == null) return;
+                  final enc1 = context.read<AuthCubit>().enc1Key;
+                  if (enc1 == null) return;
+                  final encMngr = EncryptionManager(config.enc2Key!);
+                  final enc1Decrypt = encMngr.decrypt(enc1);
+                  await EncrypterWorker.instance.start(enc1Decrypt);
+                  await Future.delayed(const Duration(seconds: 2));
+                  if (context.mounted) {
+                    await context
+                        .read<OfflinePersistanceCubit>()
+                        .decryptAllClipboardItems();
+                  }
+                }
                 break;
               case _:
             }

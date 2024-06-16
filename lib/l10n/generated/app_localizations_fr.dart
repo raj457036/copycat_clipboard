@@ -545,9 +545,151 @@ class AppLocalizationsFr extends AppLocalizations {
   String get backToApp => 'Retour à l\'application';
 
   @override
-  String get experimental => '⚠️ Expérimental';
+  String get experimental => '🧪';
 
   @override
   String get experimentalDescription =>
       'Cette fonctionnalité est expérimentale et pourrait ne pas fonctionner comme prévu.';
+
+  @override
+  String get selectAnOption => 'Sélectionner une option';
+
+  @override
+  String get advanceSecurity => 'Sécurité Avancée';
+
+  @override
+  String get endToEndVault => 'Coffre de Chiffrement de Bout en Bout';
+
+  @override
+  String get accessE2eeVault => 'Accédez à vos paramètres de coffre E2EE';
+
+  @override
+  String get encryptClipboard => 'Crypter le Presse-papiers';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Cryptez le presse-papiers avant de le synchroniser avec le cloud.';
+
+  @override
+  String get $5Sec => '5 s';
+
+  @override
+  String get $15Sec => '15 s';
+
+  @override
+  String get $30Sec => '30 s';
+
+  @override
+  String get $60Sec => '60 s';
+
+  @override
+  String get $90Sec => '90 s';
+
+  @override
+  String get e2eeNotSetup => 'E2EE n\'est pas encore configuré.';
+
+  @override
+  String get settingE2eeVault => 'Configuration du Coffre E2EE';
+
+  @override
+  String get e2eeSetupWarning =>
+      'Si vous perdez votre clé E2EE et n\'avez pas de sauvegarde, vos données cryptées seront définitivement inaccessibles. Gardez votre clé en sécurité et sauvegardée.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Générez votre clé de coffre E2EE et enregistrez-la dans un endroit sûr. Vous aurez besoin de cette clé pour configurer d\'autres appareils afin d\'accéder à vos informations cryptées.';
+
+  @override
+  String get generating => 'Génération...';
+
+  @override
+  String get generateKey => 'Générer une Clé de Coffre E2EE';
+
+  @override
+  String get importE2eeKey => 'Importer une Clé de Coffre E2EE';
+
+  @override
+  String get importE2eeInvalidKey => '⚠️ La clé importée est invalide !';
+
+  @override
+  String get importE2eeDesc =>
+      'Importez votre clé de coffre E2EE ci-dessous pour permettre l\'accès à vos informations cryptées sur cet appareil. Assurez-vous que la clé est stockée en toute sécurité et ne la partagez avec personne.';
+
+  @override
+  String get importing => 'Importation...';
+
+  @override
+  String get importKey => 'Importer une Clé de Coffre E2EE';
+
+  @override
+  String get e2eeVault => 'Coffre E2EE';
+
+  @override
+  String get e2eeExportNote =>
+      'Félicitations, vous avez configuré avec succès le chiffrement de bout en bout.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Cliquez sur le bouton ci-dessous pour exporter votre clé de coffre E2EE.\nEnregistrez la clé dans un endroit sûr pour garantir que vous pourrez configurer d\'autres appareils afin d\'accéder à vos informations cryptées.';
+
+  @override
+  String get exportKey => 'Exporter une Clé de Coffre E2EE';
+
+  @override
+  String get exportSuccess => '✅ Clé de coffre E2EE exportée avec succès';
+
+  @override
+  String get whatsNew => 'Quoi de neuf ?';
+
+  @override
+  String get feature1 => 'Presse-papiers Intelligent Multi-Plateforme';
+
+  @override
+  String get feature1Desc =>
+      'Synchronisez sans effort le contenu de votre presse-papiers sur tous vos appareils. Qu\'il s\'agisse de texte, d\'images ou de fichiers, accédez à l\'historique de votre presse-papiers où que vous alliez.';
+
+  @override
+  String get feature2 => 'Historique Illimité avec Recherche Instantanée';
+
+  @override
+  String get feature2Desc =>
+      'Ne perdez plus jamais vos éléments copiés. Notre fonctionnalité d\'historique illimité garantit que vous pouvez rechercher et récupérer instantanément tout élément de presse-papiers passé.';
+
+  @override
+  String get feature3 => 'Collage Intelligent';
+
+  @override
+  String get feature3Desc =>
+      'Collez intelligemment avec des suggestions contextuelles. Gagnez du temps en accédant rapidement au contenu approprié pour votre tâche actuelle.';
+
+  @override
+  String get feature4 => 'Collections';
+
+  @override
+  String get feature4Desc =>
+      'Organisez les éléments de votre presse-papiers en collections pour un accès et une gestion faciles. Parfait pour les projets, la recherche et plus encore.';
+
+  @override
+  String get gettingStarted => 'Commencer';
+
+  @override
+  String get howToUse => 'Comment Utiliser';
+
+  @override
+  String get howToUseDesc =>
+      'Comment utiliser CopyCat ? Lisez notre documentation pour commencer.';
+
+  @override
+  String get tutorials => 'Tutoriels Vidéo';
+
+  @override
+  String get tutorialsDesc =>
+      'Apprenez à tirer le meilleur parti de CopyCat avec nos tutoriels vidéo étape par étape.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Découvrez toutes les fonctionnalités que CopyCat a à offrir.';
+
+  @override
+  String get learn => 'Apprendre';
 }

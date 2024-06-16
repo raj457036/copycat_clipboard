@@ -43,7 +43,7 @@ class TextClipPreviewCard extends StatelessWidget {
             left: padding16,
             right: padding16,
             top: padding16,
-            bottom: padding38,
+            bottom: padding38 * 2.5,
           ),
           child: SelectableText(
             item.text ?? context.locale.nothingHere,

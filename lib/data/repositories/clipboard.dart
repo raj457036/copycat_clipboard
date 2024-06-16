@@ -30,6 +30,8 @@ abstract class ClipboardRepository {
   FailureOr<void> deleteAll();
 
   FailureOr<ClipboardItem?> getLatest();
+
+  FailureOr<void> decryptPending();
 }
 
 @Named("cloud")
@@ -120,6 +122,11 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
 
   @override
   FailureOr<ClipboardItem?> getLatest() {
+    throw UnimplementedError();
+  }
+
+  @override
+  FailureOr<void> decryptPending() {
     throw UnimplementedError();
   }
 }
@@ -217,6 +224,16 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     try {
       final result = await local.getLatest();
       return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<void> decryptPending() async {
+    try {
+      await local.decryptPending();
+      return const Right(null);
     } catch (e) {
       return Left(Failure.fromException(e));
     }

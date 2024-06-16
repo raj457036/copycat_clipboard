@@ -544,9 +544,151 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backToApp => 'Volver a la aplicación';
 
   @override
-  String get experimental => '⚠️ Experimental';
+  String get experimental => '🧪';
 
   @override
   String get experimentalDescription =>
       'Esta característica es experimental y podría no funcionar como se espera.';
+
+  @override
+  String get selectAnOption => 'Seleccione una opción';
+
+  @override
+  String get advanceSecurity => 'Seguridad Avanzada';
+
+  @override
+  String get endToEndVault => 'Bóveda de Cifrado de Extremo a Extremo';
+
+  @override
+  String get accessE2eeVault => 'Acceda a la configuración de su bóveda E2EE';
+
+  @override
+  String get encryptClipboard => 'Cifrar Portapapeles';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Cifre el portapapeles antes de sincronizarlo con la nube.';
+
+  @override
+  String get $5Sec => '5 Seg';
+
+  @override
+  String get $15Sec => '15 Seg';
+
+  @override
+  String get $30Sec => '30 Seg';
+
+  @override
+  String get $60Sec => '60 Seg';
+
+  @override
+  String get $90Sec => '90 Seg';
+
+  @override
+  String get e2eeNotSetup => 'E2EE no está configurado aún.';
+
+  @override
+  String get settingE2eeVault => 'Configurando Bóveda E2EE';
+
+  @override
+  String get e2eeSetupWarning =>
+      'Si pierde su clave E2EE y no tiene una copia de seguridad, sus datos cifrados serán permanentemente inaccesibles. Mantenga su clave segura y respaldada.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Genere su clave de la Bóveda E2EE y guárdela en un lugar seguro. Necesitará esta clave para configurar otros dispositivos y acceder a su información cifrada.';
+
+  @override
+  String get generating => 'Generando...';
+
+  @override
+  String get generateKey => 'Generar Clave de la Bóveda E2EE';
+
+  @override
+  String get importE2eeKey => 'Importar Clave de la Bóveda E2EE';
+
+  @override
+  String get importE2eeInvalidKey => '⚠️ ¡La clave importada no es válida!';
+
+  @override
+  String get importE2eeDesc =>
+      'Importe su clave de la Bóveda E2EE a continuación para habilitar el acceso a su información cifrada en este dispositivo. Asegúrese de que la clave esté almacenada de manera segura y no se comparta con nadie.';
+
+  @override
+  String get importing => 'Importando...';
+
+  @override
+  String get importKey => 'Importar Clave de la Bóveda E2EE';
+
+  @override
+  String get e2eeVault => 'Bóveda E2EE';
+
+  @override
+  String get e2eeExportNote =>
+      'Felicidades, ha configurado con éxito el cifrado de extremo a extremo.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Haga clic en el botón a continuación para exportar su clave de la Bóveda E2EE.\nGuarde la clave en un lugar seguro para asegurarse de que puede configurar otros dispositivos y acceder a su información cifrada.';
+
+  @override
+  String get exportKey => 'Exportar Clave de la Bóveda E2EE';
+
+  @override
+  String get exportSuccess => '✅ Clave del cofre E2EE exportada correctamente';
+
+  @override
+  String get whatsNew => '¿Qué hay de nuevo?';
+
+  @override
+  String get feature1 => 'Portapapeles Inteligente Multiplataforma';
+
+  @override
+  String get feature1Desc =>
+      'Sincroniza sin problemas el contenido de tu portapapeles en todos tus dispositivos. Ya sea texto, imágenes o archivos, accede a tu historial de portapapeles dondequiera que vayas.';
+
+  @override
+  String get feature2 => 'Historial Ilimitado con Búsqueda Instantánea';
+
+  @override
+  String get feature2Desc =>
+      'Nunca pierdas los elementos copiados nuevamente. Nuestra función de historial ilimitado asegura que puedas buscar y recuperar instantáneamente cualquier elemento del portapapeles anterior.';
+
+  @override
+  String get feature3 => 'Pegado Inteligente';
+
+  @override
+  String get feature3Desc =>
+      'Pega inteligentemente con sugerencias contextuales. Ahorra tiempo accediendo rápidamente al contenido adecuado para tu tarea actual.';
+
+  @override
+  String get feature4 => 'Colecciones';
+
+  @override
+  String get feature4Desc =>
+      'Organiza los elementos de tu portapapeles en colecciones para un acceso y gestión fáciles. Perfecto para proyectos, investigaciones y más.';
+
+  @override
+  String get gettingStarted => 'Comenzar';
+
+  @override
+  String get howToUse => 'Cómo Usar';
+
+  @override
+  String get howToUseDesc =>
+      '¿Cómo usar CopyCat? Lee nuestra documentación para comenzar.';
+
+  @override
+  String get tutorials => 'Tutoriales en Video';
+
+  @override
+  String get tutorialsDesc =>
+      'Aprende a aprovechar al máximo CopyCat con nuestros tutoriales en video paso a paso.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Conoce todas las funciones que CopyCat tiene para ofrecer.';
+
+  @override
+  String get learn => 'Aprender';
 }

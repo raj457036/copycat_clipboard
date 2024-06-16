@@ -43,6 +43,14 @@ import 'common/bloc_config.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // final secret = EncryptionSecret.generate();
+  // await EncrypterWorker.instance.start(secret.serialized);
+
+  // final encrypted = await EncrypterWorker.instance.encrypt("Hello world!");
+  // print(encrypted);
+  // final decrypted = await EncrypterWorker.instance.decrypt(encrypted);
+  // print(decrypted);
+
   if (isDesktopPlatform) {
     await windowManager.ensureInitialized();
 
@@ -162,8 +170,10 @@ class AppContent extends StatelessWidget {
           locale: Locale(langCode.isEmpty ? "en" : langCode),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => ShareListener.fromPlatform(
-            child: child ?? const SizedBox.shrink(),
+          builder: (context, child) => NetworkObserver(
+            child: ShareListener.fromPlatform(
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
         );
       },
@@ -205,11 +215,11 @@ class MainApp extends StatelessWidget {
           ),
       ],
       child: EventBridge(
-        child: TrayManager.fromPlatform(
-          child: WindowFocusManager.fromPlatform(
+        child: WindowFocusManager.fromPlatform(
+          child: TrayManager.fromPlatform(
             child: const SystemShortcutListener(
               child: AppLinkListener(
-                child: NetworkObserver(child: AppContent()),
+                child: AppContent(),
               ),
             ),
           ),

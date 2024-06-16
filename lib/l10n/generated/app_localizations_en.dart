@@ -536,9 +536,151 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backToApp => 'Back to App';
 
   @override
-  String get experimental => '⚠️ Experimental';
+  String get experimental => '🧪';
 
   @override
   String get experimentalDescription =>
       'This feature is experimental and might not work as expected.';
+
+  @override
+  String get selectAnOption => 'Select an option';
+
+  @override
+  String get advanceSecurity => 'Advance Security';
+
+  @override
+  String get endToEndVault => 'End-to-End Encryption Vault';
+
+  @override
+  String get accessE2eeVault => 'Access your E2EE vault settings';
+
+  @override
+  String get encryptClipboard => 'Encrypt Clipboard';
+
+  @override
+  String get encryptClipboardDesc =>
+      'Encrypt clipboard before syncing with the cloud.';
+
+  @override
+  String get $5Sec => '5 Sec';
+
+  @override
+  String get $15Sec => '15 Sec';
+
+  @override
+  String get $30Sec => '30 Sec';
+
+  @override
+  String get $60Sec => '60 Sec';
+
+  @override
+  String get $90Sec => '90 Sec';
+
+  @override
+  String get e2eeNotSetup => 'E2EE not setup yet.';
+
+  @override
+  String get settingE2eeVault => 'Setting Up E2EE Vault';
+
+  @override
+  String get e2eeSetupWarning =>
+      'If you lose your E2EE key and do not have a backup, your encrypted data will be permanently inaccessible. Keep your key safe and backed up.';
+
+  @override
+  String get e2eeSetupDesc =>
+      'Generate your E2EE Vault key and save it in a secure location. You will need this key to set up other devices to access your encrypted information.';
+
+  @override
+  String get generating => 'Generating...';
+
+  @override
+  String get generateKey => 'Generate E2EE Vault Key';
+
+  @override
+  String get importE2eeKey => 'Import E2EE Vault Key';
+
+  @override
+  String get importE2eeInvalidKey => '⚠️ The imported key is invalid!';
+
+  @override
+  String get importE2eeDesc =>
+      'Import your E2EE Vault key below to enable access to your encrypted information on this device. Make sure the key is securely stored and not shared with anyone.';
+
+  @override
+  String get importing => 'Importing...';
+
+  @override
+  String get importKey => 'Import E2EE Vault Key';
+
+  @override
+  String get e2eeVault => 'E2EE Vault';
+
+  @override
+  String get e2eeExportNote =>
+      'Congratulations, you have successfully configured the end-to-end encryption.';
+
+  @override
+  String get e2eeExportDesc =>
+      'Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.';
+
+  @override
+  String get exportKey => 'Export E2EE Vault Key';
+
+  @override
+  String get exportSuccess => '✅ Successfully exported E2EE Vault key';
+
+  @override
+  String get whatsNew => 'What\'s New?';
+
+  @override
+  String get feature1 => 'Smart Cross-Platform Clipboard';
+
+  @override
+  String get feature1Desc =>
+      'Seamlessly sync your clipboard content across all your devices. Whether it\'s text, images, or files, access your clipboard history wherever you go.';
+
+  @override
+  String get feature2 => 'Unlimited History with Instant Search';
+
+  @override
+  String get feature2Desc =>
+      'Never lose your copied items again. Our unlimited history feature ensures you can instantly search and retrieve any past clipboard item.';
+
+  @override
+  String get feature3 => 'Smart Paste';
+
+  @override
+  String get feature3Desc =>
+      'Paste intelligently with context-aware suggestions. Save time by quickly accessing the right content for your current task.';
+
+  @override
+  String get feature4 => 'Collections';
+
+  @override
+  String get feature4Desc =>
+      'Organize your clipboard items into collections for easy access and management. Perfect for projects, research, and more.';
+
+  @override
+  String get gettingStarted => 'Get Started';
+
+  @override
+  String get howToUse => 'How to Use';
+
+  @override
+  String get howToUseDesc =>
+      'How to use CopyCat? Read our documentation to get started.';
+
+  @override
+  String get tutorials => 'Video Tutorials';
+
+  @override
+  String get tutorialsDesc =>
+      'Learn how to make the most out of CopyCat with our step-by-step video tutorials.';
+
+  @override
+  String get learnAboutFeatures =>
+      'Learn about all the features CopyCat has to offer.';
+
+  @override
+  String get learn => 'Learn';
 }

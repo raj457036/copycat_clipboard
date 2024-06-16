@@ -1,3 +1,4 @@
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 enum MenuItemType { option, divider }
@@ -50,9 +51,9 @@ class Menu extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'Select an option',
-                style: TextStyle(
+              Text(
+                context.locale.selectAnOption,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
