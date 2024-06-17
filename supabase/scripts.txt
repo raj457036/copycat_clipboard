@@ -1,0 +1,7 @@
+// To Run the service
+
+supabase functions serve --env-file ./supabase/.env.local --no-verify-jwt
+
+// Calling a function
+curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/clean_expired_clips' \
+    --header 'Authorization: Bearer Service-Key or Anon Key or Auth Key'

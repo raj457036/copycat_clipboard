@@ -1,7 +1,7 @@
 /// <reference types="https://esm.sh/v135/@supabase/functions-js@2.4.1/src/edge-runtime.d.ts" />
 
 import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.42.4";
-import { refreshGoogleToken } from "../utils/google.ts";
+import { batchDeleteDriveFiles, refreshGoogleToken } from "../utils/google.ts";
 import { getSupabaseClient } from "../utils/supabase.ts";
 
 async function cleanExpiredMediaClips(client: SupabaseClient) {
@@ -16,7 +16,6 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
       },
     )
       .select("*").range(aqOffset, aqOffset + 100);
-    console.log(JSON.stringify(accounts));
 
     if (!accounts.data) {
       console.warn("No accounts found!");
@@ -49,8 +48,8 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
         const clips = await client.rpc(
           "get_expired_media_clipboard_item",
           {
-            userId: id,
-            syncHr: syncHr,
+            user_id: id,
+            sync_hr: syncHr,
           },
         )
           .select("*").range(ciOffset, ciOffset + 100);
@@ -62,15 +61,23 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
           break;
         }
 
-        const fileIds = clips.data!.map((c) => c.fileId);
+        const fileIds = clips.data!.map((c) => c.file_id);
+        const clipIds = clips.data!.map((c) => c.id);
 
-        // await batchDeleteDriveFiles(fileIds, access_token);
-        console.log(fileIds);
+        if (fileIds.length === 0) {
+          console.warn(
+            "No media/file clips found for the user, skipping further operations.",
+          );
+          break;
+        }
+
+        await batchDeleteDriveFiles(fileIds, access_token);
+        await client.from("clipboard_items").delete().in("id", clipIds);
 
         console.info("Finished cleanup for User Id: ", id);
 
         // break when no more data is available
-        if (!clips.count || clips.count < 100) {
+        if (!clips.data || clips.data.length < 100) {
           break;
         }
         ciOffset += 100;
@@ -78,7 +85,7 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
     }
 
     // break when no more data is available
-    if (!accounts.count || accounts.count < 100) {
+    if (!accounts.data || accounts.data.length < 100) {
       break;
     }
     aqOffset += 100;

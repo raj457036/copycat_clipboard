@@ -84,19 +84,27 @@ export async function refreshGoogleToken(
 }
 
 export async function deleteDriveFile(fileId: string, accessToken: string) {
-  const url = `https://www.googleapis.com/drive/v3/files/${fileId}`;
+  try {
+    const url =
+      `https://www.googleapis.com/drive/v3/files/${fileId}?supportsAllDrives=true`;
 
-  const response = await fetch(url, {
-    method: "DELETE",
-    headers: {
-      "Authorization": `Bearer ${accessToken}`,
-    },
-  });
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+      },
+    });
 
-  return {
-    data: await response.json(),
-    status: response.status,
-  };
+    return {
+      data: await response.json(),
+      status: response.status,
+    };
+  } catch (error) {
+    return {
+      error: error,
+      status: 400,
+    };
+  }
 }
 
 export async function batchDeleteDriveFiles(
@@ -108,6 +116,7 @@ export async function batchDeleteDriveFiles(
   for (const id of fileIds) {
     tasks.push(deleteDriveFile(id, accessToken));
   }
-  const result = await Promise.allSettled(tasks);
-  return result;
+  console.log(`Deleting ${fileIds.length} files from drive`);
+  await Promise.allSettled(tasks);
+  console.log(`Deleted ${fileIds.length} files from drive`);
 }
