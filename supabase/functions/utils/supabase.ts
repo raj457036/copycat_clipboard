@@ -12,7 +12,7 @@ export function getSupabaseClient(authToken: string | null = null) {
     "SERVICE_KEY",
     "ANON_KEY",
     "SUPABASE_ANON_KEY",
-    "SUPABASE_SERVICE_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
   ) ?? "";
 
   // Create a Supabase client with the Auth context of the logged in user.

@@ -18,7 +18,7 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
       .select("*").range(aqOffset, aqOffset + 100);
 
     if (!accounts.data) {
-      console.warn("No accounts found!");
+      console.info("No accounts found!");
       break;
     }
 
@@ -38,7 +38,7 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
       }
       const { access_token } = result;
       if (!access_token) {
-        console.error("No access token found!, skipping further operations.");
+        console.info("No access token found!, skipping further operations.");
         continue;
       }
 
@@ -55,7 +55,7 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
           .select("*").range(ciOffset, ciOffset + 100);
 
         if (!clips.data) {
-          console.warn(
+          console.info(
             "No media/file clips found for the user, skipping further operations.",
           );
           break;
@@ -65,7 +65,7 @@ async function cleanExpiredMediaClips(client: SupabaseClient) {
         const clipIds = clips.data!.map((c) => c.id);
 
         if (fileIds.length === 0) {
-          console.warn(
+          console.info(
             "No media/file clips found for the user, skipping further operations.",
           );
           break;
