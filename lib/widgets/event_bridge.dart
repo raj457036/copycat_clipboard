@@ -44,15 +44,16 @@ class EventBridge extends StatelessWidget {
 
                   EncrypterWorker.instance.setEncryption(config.autoEncrypt);
 
-                  if (EncrypterWorker.instance.isRunning) return;
+                  if (!EncrypterWorker.instance.isRunning) {
+                    if (config.enc2Key == null) return;
+                    final enc1 = context.read<AuthCubit>().enc1Key;
+                    if (enc1 == null) return;
+                    final encMngr = EncryptionManager(config.enc2Key!);
+                    final enc1Decrypt = encMngr.decrypt(enc1);
+                    await EncrypterWorker.instance.start(enc1Decrypt);
+                    await Future.delayed(const Duration(seconds: 2));
+                  }
 
-                  if (config.enc2Key == null) return;
-                  final enc1 = context.read<AuthCubit>().enc1Key;
-                  if (enc1 == null) return;
-                  final encMngr = EncryptionManager(config.enc2Key!);
-                  final enc1Decrypt = encMngr.decrypt(enc1);
-                  await EncrypterWorker.instance.start(enc1Decrypt);
-                  await Future.delayed(const Duration(seconds: 2));
                   if (context.mounted) {
                     await context
                         .read<OfflinePersistanceCubit>()
