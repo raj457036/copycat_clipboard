@@ -1,11 +1,9 @@
 // Google OAUTH https://developers.google.com/identity/protocols/oauth2/web-server
 
 /// <reference types="https://esm.sh/v135/@supabase/functions-js@2.3.1/src/edge-runtime.d.ts" />
-import {
-  createClient,
-  SupabaseClient,
-} from "https://esm.sh/@supabase/supabase-js@2.42.4";
+import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.42.4";
 import { GTokenResponse, refreshGoogleToken } from "../utils/google.ts";
+import { getSupabaseClient } from "../utils/supabase.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -92,24 +90,8 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Create a Supabase client with the Auth context of the logged in user.
-    const supabaseClient = createClient(
-      // Supabase API URL - env var exported by default.
-      // Deno.env.get("SUPABASE_URL") ?? "",
-      "https://jyawrokzkzfjturwttte.supabase.co",
-      // Supabase API ANON KEY - env var exported by default.
-      // Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5YXdyb2t6a3pmanR1cnd0dHRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMxMTU2NTAsImV4cCI6MjAyODY5MTY1MH0.zEY_hQyUEmFra4Tym-e81nAJZoyt_WafCkBmKKvl9L4",
-      // Create client with Auth context of the user that called the function.
-      // This way your row-level-security (RLS) policies are applied.
-      {
-        global: {
-          headers: { Authorization: req.headers.get("Authorization")! },
-        },
-      },
-    );
-
-    console.log(JSON.stringify(Deno.env.get("GOOGLE_CLIENT_ID")));
+    const authToken = req.headers.get("Authorization");
+    const supabaseClient = getSupabaseClient(authToken);
 
     let payload: SetupTokenPayload | null = null;
     if (method === "POST") {
@@ -152,15 +134,3 @@ Deno.serve(async (req) => {
     });
   }
 });
-
-/* To invoke locally:
-
-  1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
-  2. Make an HTTP request:
-
-  curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/get_gaccess_token' \
-    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0' \
-    --header 'Content-Type: application/json' \
-    --data '{"name":"Functions"}'
-
-*/
