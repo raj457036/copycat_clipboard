@@ -12,63 +12,75 @@ export async function refreshGoogleToken(
   client: SupabaseClient,
   userId: string,
 ) {
-  const { data: cred, error: credError } = await client.from(
-    "drive_credentials",
-  ).select("refresh_token").eq("userId", userId).limit(1);
+  try {
+    const { data: cred, error: credError } = await client.from(
+      "drive_credentials",
+    ).select("refresh_token").eq("userId", userId).limit(1);
 
-  if (credError) {
-    console.error(credError);
-    return { status: 400, error: credError };
-  }
+    if (credError) {
+      console.error(credError);
+      return { status: 400, error: credError };
+    }
 
-  const refreshToken = cred[0].refresh_token;
+    if (!cred || !cred[0]) {
+      console.error("No credential found!");
+      return { status: 400, error: "No credential found!" };
+    }
 
-  const url = "https://www.googleapis.com/oauth2/v4/token";
+    const refreshToken = cred[0].refresh_token;
 
-  const payload = new URLSearchParams({
-    "client_id": Deno.env.get("GOOGLE_CLIENT_ID") ?? "",
-    "client_secret": Deno.env.get("GOOGLE_CLIENT_SECRET") ?? "",
-    "grant_type": "refresh_token",
-    "refresh_token": refreshToken,
-  });
+    const url = "https://www.googleapis.com/oauth2/v4/token";
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: payload.toString(),
-  });
+    const payload = new URLSearchParams({
+      "client_id": Deno.env.get("GOOGLE_CLIENT_ID") ?? "",
+      "client_secret": Deno.env.get("GOOGLE_CLIENT_SECRET") ?? "",
+      "grant_type": "refresh_token",
+      "refresh_token": refreshToken,
+    });
 
-  const responseJson = await response.json();
-  console.log(response.status);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: payload.toString(),
+    });
 
-  if (response.status !== 200) {
+    const responseJson = await response.json();
+    console.log(response.status);
+
+    if (response.status !== 200) {
+      return {
+        status: response.status,
+        data: responseJson,
+      };
+    }
+
+    const { access_token, expires_in, scope } = responseJson as GTokenResponse;
+
+    const issued_at = new Date().toISOString();
+    const result = await client.from("drive_credentials").update({
+      "access_token": access_token,
+      "expires_in": expires_in,
+      "scopes": scope.split(" "),
+    }).eq("userId", userId);
+
+    const { data: _, error: saveError } = result;
+
     return {
-      status: response.status,
-      data: responseJson,
+      "access_token": access_token,
+      "expires_in": expires_in,
+      "issued_at": issued_at,
+      "scopes": scope.split(" "),
+      "error": saveError,
+      "status": saveError ? 400 : 200,
+    };
+  } catch (error) {
+    return {
+      error: error,
+      status: 400,
     };
   }
-
-  const { access_token, expires_in, scope } = responseJson as GTokenResponse;
-
-  const issued_at = new Date().toISOString();
-  const result = await client.from("drive_credentials").update({
-    "access_token": access_token,
-    "expires_in": expires_in,
-    "scopes": scope.split(" "),
-  }).eq("userId", userId);
-
-  const { data: _, error: saveError } = result;
-
-  return {
-    "access_token": access_token,
-    "expires_in": expires_in,
-    "issued_at": issued_at,
-    "scopes": scope.split(" "),
-    "error": saveError,
-    "status": saveError ? 400 : 200,
-  };
 }
 
 export async function deleteDriveFile(fileId: string, accessToken: string) {
