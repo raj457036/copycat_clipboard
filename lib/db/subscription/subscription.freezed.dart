@@ -44,7 +44,6 @@ mixin _$Subscription {
   int get syncInterval => throw _privateConstructorUsedError;
   bool get edit => throw _privateConstructorUsedError;
   bool get encrypt => throw _privateConstructorUsedError;
-  String? get encryptKey => throw _privateConstructorUsedError;
   @DateTimeConverter()
   DateTime? get activeTill => throw _privateConstructorUsedError;
   @JsonKey(name: "devices")
@@ -78,7 +77,6 @@ abstract class $SubscriptionCopyWith<$Res> {
       @JsonKey(name: "syncInt") int syncInterval,
       bool edit,
       bool encrypt,
-      String? encryptKey,
       @DateTimeConverter() DateTime? activeTill,
       @JsonKey(name: "devices") int maxSyncDevices});
 }
@@ -111,7 +109,6 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
     Object? syncInterval = null,
     Object? edit = null,
     Object? encrypt = null,
-    Object? encryptKey = freezed,
     Object? activeTill = freezed,
     Object? maxSyncDevices = null,
   }) {
@@ -176,10 +173,6 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
           ? _value.encrypt
           : encrypt // ignore: cast_nullable_to_non_nullable
               as bool,
-      encryptKey: freezed == encryptKey
-          ? _value.encryptKey
-          : encryptKey // ignore: cast_nullable_to_non_nullable
-              as String?,
       activeTill: freezed == activeTill
           ? _value.activeTill
           : activeTill // ignore: cast_nullable_to_non_nullable
@@ -216,7 +209,6 @@ abstract class _$$SubscriptionImplCopyWith<$Res>
       @JsonKey(name: "syncInt") int syncInterval,
       bool edit,
       bool encrypt,
-      String? encryptKey,
       @DateTimeConverter() DateTime? activeTill,
       @JsonKey(name: "devices") int maxSyncDevices});
 }
@@ -247,7 +239,6 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
     Object? syncInterval = null,
     Object? edit = null,
     Object? encrypt = null,
-    Object? encryptKey = freezed,
     Object? activeTill = freezed,
     Object? maxSyncDevices = null,
   }) {
@@ -312,10 +303,6 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
           ? _value.encrypt
           : encrypt // ignore: cast_nullable_to_non_nullable
               as bool,
-      encryptKey: freezed == encryptKey
-          ? _value.encryptKey
-          : encryptKey // ignore: cast_nullable_to_non_nullable
-              as String?,
       activeTill: freezed == activeTill
           ? _value.activeTill
           : activeTill // ignore: cast_nullable_to_non_nullable
@@ -347,7 +334,6 @@ class _$SubscriptionImpl extends _Subscription {
       @JsonKey(name: "syncInt") this.syncInterval = $60S,
       this.edit = false,
       this.encrypt = false,
-      this.encryptKey,
       @DateTimeConverter() this.activeTill,
       @JsonKey(name: "devices") this.maxSyncDevices = 3})
       : super._();
@@ -399,8 +385,6 @@ class _$SubscriptionImpl extends _Subscription {
   @JsonKey()
   final bool encrypt;
   @override
-  final String? encryptKey;
-  @override
   @DateTimeConverter()
   final DateTime? activeTill;
   @override
@@ -409,7 +393,7 @@ class _$SubscriptionImpl extends _Subscription {
 
   @override
   String toString() {
-    return 'Subscription(serverId: $serverId, created: $created, modified: $modified, userId: $userId, planName: $planName, subId: $subId, source: $source, trialStart: $trialStart, trialEnd: $trialEnd, collections: $collections, syncHours: $syncHours, ads: $ads, syncInterval: $syncInterval, edit: $edit, encrypt: $encrypt, encryptKey: $encryptKey, activeTill: $activeTill, maxSyncDevices: $maxSyncDevices)';
+    return 'Subscription(serverId: $serverId, created: $created, modified: $modified, userId: $userId, planName: $planName, subId: $subId, source: $source, trialStart: $trialStart, trialEnd: $trialEnd, collections: $collections, syncHours: $syncHours, ads: $ads, syncInterval: $syncInterval, edit: $edit, encrypt: $encrypt, activeTill: $activeTill, maxSyncDevices: $maxSyncDevices)';
   }
 
   @override
@@ -440,8 +424,6 @@ class _$SubscriptionImpl extends _Subscription {
                 other.syncInterval == syncInterval) &&
             (identical(other.edit, edit) || other.edit == edit) &&
             (identical(other.encrypt, encrypt) || other.encrypt == encrypt) &&
-            (identical(other.encryptKey, encryptKey) ||
-                other.encryptKey == encryptKey) &&
             (identical(other.activeTill, activeTill) ||
                 other.activeTill == activeTill) &&
             (identical(other.maxSyncDevices, maxSyncDevices) ||
@@ -467,7 +449,6 @@ class _$SubscriptionImpl extends _Subscription {
       syncInterval,
       edit,
       encrypt,
-      encryptKey,
       activeTill,
       maxSyncDevices);
 
@@ -506,7 +487,6 @@ abstract class _Subscription extends Subscription {
       @JsonKey(name: "syncInt") final int syncInterval,
       final bool edit,
       final bool encrypt,
-      final String? encryptKey,
       @DateTimeConverter() final DateTime? activeTill,
       @JsonKey(name: "devices") final int maxSyncDevices}) = _$SubscriptionImpl;
   _Subscription._() : super._();
@@ -553,8 +533,6 @@ abstract class _Subscription extends Subscription {
   bool get edit;
   @override
   bool get encrypt;
-  @override
-  String? get encryptKey;
   @override
   @DateTimeConverter()
   DateTime? get activeTill;

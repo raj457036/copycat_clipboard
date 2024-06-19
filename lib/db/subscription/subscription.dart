@@ -29,7 +29,6 @@ class Subscription with _$Subscription, IsarIdMixin {
     @JsonKey(name: "syncInt") @Default($60S) int syncInterval,
     @Default(false) bool edit,
     @Default(false) bool encrypt,
-    String? encryptKey,
     @DateTimeConverter() DateTime? activeTill,
     @JsonKey(name: "devices") @Default(3) int maxSyncDevices,
   }) = _Subscription;
@@ -39,10 +38,18 @@ class Subscription with _$Subscription, IsarIdMixin {
       created: now(),
       modified: now(),
       userId: userId,
-      planName: "FREE",
+      planName: "Free",
       subId: "",
       source: "",
     );
+  }
+
+  @ignore
+  bool get isActive {
+    if (planName == "Free") return true;
+    return (activeTill != null && activeTill!.isAfter(now())) ||
+        (trialStart != null && trialStart!.isBefore(now())) &&
+            (trialEnd != null && trialEnd!.isAfter(now()));
   }
 
   factory Subscription.fromJson(Map<String, dynamic> json) =>

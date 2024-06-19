@@ -84,8 +84,9 @@ class AuthCubit extends Cubit<AuthState> {
     final sub = subResult.fold(
       (l) {
         logger.e(l);
+        return Subscription.free(user.id);
       },
-      (r) => r,
+      (r) => r ?? Subscription.free(user.id),
     );
 
     emit(AuthState.authenticated(

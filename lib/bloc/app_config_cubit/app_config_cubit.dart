@@ -6,6 +6,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/numbers/duration.dart';
 import 'package:clipboard/data/repositories/app_config.dart';
 import 'package:clipboard/db/app_config/appconfig.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -38,13 +39,37 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     changeAutoSyncDuration($90S);
   }
 
-  Future<void> load() async {
+  (AppConfig, bool) applyForSubscription(
+      AppConfig config, Subscription subscription) {
+    bool changed = false;
+    if (subscription.syncInterval <= config.autoSyncInterval) {
+      config = config.copyWith(autoSyncInterval: $90S)..applyId(config);
+      changed = true;
+    }
+    if (!subscription.encrypt) {
+      config = config.copyWith(autoEncrypt: false)..applyId(config);
+      changed = true;
+    }
+    return (config, changed);
+  }
+
+  Future<void> load(Subscription? subscription) async {
     emit(state.copyWith(isLoading: true));
     final appConfig = await repo.get();
 
-    appConfig.fold(
-      (l) => emit(state.copyWith(failure: l, isLoading: false)),
-      (r) => emit(state.copyWith(config: r, isLoading: false)),
+    await appConfig.fold(
+      (l) async => emit(state.copyWith(failure: l, isLoading: false)),
+      (r) async {
+        if (subscription != null) {
+          final (config, changed) = applyForSubscription(r, subscription);
+          if (changed) {
+            emit(state.copyWith(config: config, isLoading: false));
+            await repo.update(config);
+          } else {
+            emit(state.copyWith(config: r, isLoading: false));
+          }
+        }
+      },
     );
   }
 
