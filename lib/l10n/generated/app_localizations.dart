@@ -996,13 +996,13 @@ abstract class AppLocalizations {
   /// No description provided for @supportAllMajorPlatformsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Support all major platforms'**
+  /// **'Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.'**
   String get supportAllMajorPlatformsDesc;
 
   /// No description provided for @supportsAppleUniversalClipboard.
   ///
   /// In en, this message translates to:
-  /// **'Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.'**
+  /// **'Supports Apple Universal Clipboard'**
   String get supportsAppleUniversalClipboard;
 
   /// No description provided for @supportsAppleUniversalClipboardDesc.

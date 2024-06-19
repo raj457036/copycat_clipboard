@@ -505,11 +505,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get supportAllMajorPlatformsDesc =>
-      'Unterstützung aller wichtigen Plattformen';
+      'Nahtlose Synchronisierung auf allen wichtigen Plattformen—Android, iOS, Windows, macOS und Linux—für unterbrechungsfreie Produktivität überall.';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      'Nahtlose Synchronisierung auf allen wichtigen Plattformen—Android, iOS, Windows, macOS und Linux—für unterbrechungsfreie Produktivität überall.';
+      'Unterstützt Apple Universal Clipboard';
 
   @override
   String get supportsAppleUniversalClipboardDesc =>

@@ -507,11 +507,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get supportAllMajorPlatformsDesc =>
-      'Prise en charge de toutes les principales plateformes';
+      'Synchronisation transparente sur toutes les principales plateformes—Android, iOS, Windows, macOS et Linux—pour une productivité ininterrompue partout.';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      'Synchronisation transparente sur toutes les principales plateformes—Android, iOS, Windows, macOS et Linux—pour une productivité ininterrompue partout.';
+      'Prend en charge le presse-papiers universel Apple';
 
   @override
   String get supportsAppleUniversalClipboardDesc =>
