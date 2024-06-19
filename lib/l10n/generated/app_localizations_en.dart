@@ -500,11 +500,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get supportAllMajorPlatforms => 'Support all major platforms';
 
   @override
-  String get supportAllMajorPlatformsDesc => 'Support all major platforms';
+  String get supportAllMajorPlatformsDesc =>
+      'Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      'Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.';
+      'Supports Apple Universal Clipboard';
 
   @override
   String get supportsAppleUniversalClipboardDesc =>
