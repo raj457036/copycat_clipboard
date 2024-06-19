@@ -495,35 +495,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get included => 'Incluido';
 
   @override
-  String get unlimitedClipboardItems =>
-      '• Elementos de Portapapeles Ilimitados';
+  String get unlimitedClipboardItems => 'Elementos de Portapapeles Ilimitados';
 
   @override
   String get supportAllMajorPlatforms =>
-      '• Soporte para todas las plataformas principales';
+      'Soporte para todas las plataformas principales';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      '• Compatible con el Portapapeles Universal de Apple';
+      'Compatible con el Portapapeles Universal de Apple';
 
   @override
-  String get onDeviceStorage => '• Almacenamiento en el Dispositivo';
+  String get onDeviceStorage => 'Almacenamiento en el Dispositivo';
 
   @override
-  String get googleDriveIntegration => '• Integración con Google Drive';
+  String get googleDriveIntegration => 'Integración con Google Drive';
 
   @override
-  String get instantSearch => '• Búsqueda Instantánea';
+  String get instantSearch => 'Búsqueda Instantánea';
 
   @override
   String get syncingUpToLast24Hours =>
-      '• Sincronización hasta las últimas 24 horas';
+      'Sincronización hasta las últimas 24 horas';
 
   @override
-  String get upTo3Collections => '• Hasta 3 Colecciones';
+  String get upTo3Collections => 'Hasta 3 Colecciones';
 
   @override
-  String get autoSyncEvery30Seconds => '• Auto-Sincronización cada 30 Segundos';
+  String get autoSyncEvery60Seconds => 'Auto-Sincronización cada 60 Segundos';
 
   @override
   String get termsAgreeP1 => 'Al continuar, usted acepta los siguientes ';

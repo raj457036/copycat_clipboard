@@ -495,36 +495,35 @@ class AppLocalizationsFr extends AppLocalizations {
   String get included => 'Inclus';
 
   @override
-  String get unlimitedClipboardItems =>
-      '• Éléments de Presse-papiers Illimités';
+  String get unlimitedClipboardItems => 'Éléments de Presse-papiers Illimités';
 
   @override
   String get supportAllMajorPlatforms =>
-      '• Prend en charge toutes les principales plateformes';
+      'Prend en charge toutes les principales plateformes';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      '• Prend en charge le Presse-papiers Universel d\'Apple';
+      'Prend en charge le Presse-papiers Universel d\'Apple';
 
   @override
-  String get onDeviceStorage => '• Stockage sur l\'Appareil';
+  String get onDeviceStorage => 'Stockage sur l\'Appareil';
 
   @override
-  String get googleDriveIntegration => '• Intégration Google Drive';
+  String get googleDriveIntegration => 'Intégration Google Drive';
 
   @override
-  String get instantSearch => '• Recherche Instantanée';
+  String get instantSearch => 'Recherche Instantanée';
 
   @override
   String get syncingUpToLast24Hours =>
-      '• Synchronisation jusqu\'aux dernières 24 heures';
+      'Synchronisation jusqu\'aux dernières 24 heures';
 
   @override
-  String get upTo3Collections => '• Jusqu\'à 3 Collections';
+  String get upTo3Collections => 'Jusqu\'à 3 Collections';
 
   @override
-  String get autoSyncEvery30Seconds =>
-      '• Synchronisation Automatique Toutes les 30 Secondes';
+  String get autoSyncEvery60Seconds =>
+      'Synchronisation Automatique Toutes les 60 Secondes';
 
   @override
   String get termsAgreeP1 => 'En continuant, vous acceptez les ';

@@ -490,32 +490,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get included => 'Included';
 
   @override
-  String get unlimitedClipboardItems => '• Unlimited Clipboard Items';
+  String get unlimitedClipboardItems => 'Unlimited Clipboard Items';
 
   @override
-  String get supportAllMajorPlatforms => '• Support all major platforms';
+  String get supportAllMajorPlatforms => 'Support all major platforms';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      '• Supports Apple\'s Universal Clipboard';
+      'Supports Apple\'s Universal Clipboard';
 
   @override
-  String get onDeviceStorage => '• On-Device Storage';
+  String get onDeviceStorage => 'On-Device Storage';
 
   @override
-  String get googleDriveIntegration => '• Google Drive Integration';
+  String get googleDriveIntegration => 'Google Drive Integration';
 
   @override
-  String get instantSearch => '• Instant Search';
+  String get instantSearch => 'Instant Search';
 
   @override
-  String get syncingUpToLast24Hours => '• Syncing up to Last 24 Hours';
+  String get syncingUpToLast24Hours => 'Syncing up to Last 24 Hours';
 
   @override
-  String get upTo3Collections => '• Up to 3 Collections';
+  String get upTo3Collections => 'Up to 3 Collections';
 
   @override
-  String get autoSyncEvery30Seconds => '• Auto-Sync Every 30 Seconds';
+  String get autoSyncEvery60Seconds => 'Auto-Sync Every 60 Seconds';
 
   @override
   String get termsAgreeP1 => 'By continuing you agree to the following ';
