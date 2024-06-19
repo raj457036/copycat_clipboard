@@ -493,36 +493,35 @@ class AppLocalizationsDe extends AppLocalizations {
   String get included => 'Inklusive';
 
   @override
-  String get unlimitedClipboardItems =>
-      '• Unbegrenzte Zwischenspeicherelemente';
+  String get unlimitedClipboardItems => 'Unbegrenzte Zwischenspeicherelemente';
 
   @override
   String get supportAllMajorPlatforms =>
-      '• Unterstützung aller wichtigen Plattformen';
+      'Unterstützung aller wichtigen Plattformen';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      '• Unterstützung von Apples Universal-Zwischenspeicher';
+      'Unterstützung von Apples Universal-Zwischenspeicher';
 
   @override
-  String get onDeviceStorage => '• Gerätespeicher';
+  String get onDeviceStorage => 'Gerätespeicher';
 
   @override
-  String get googleDriveIntegration => '• Google Drive-Integration';
+  String get googleDriveIntegration => 'Google Drive-Integration';
 
   @override
-  String get instantSearch => '• Sofortsuche';
+  String get instantSearch => 'Sofortsuche';
 
   @override
   String get syncingUpToLast24Hours =>
-      '• Synchronisierung bis zu den letzten 24 Stunden';
+      'Synchronisierung bis zu den letzten 24 Stunden';
 
   @override
-  String get upTo3Collections => '• Bis zu 3 Sammlungen';
+  String get upTo3Collections => 'Bis zu 3 Sammlungen';
 
   @override
-  String get autoSyncEvery30Seconds =>
-      '• Automatische Synchronisierung alle 30 Sekunden';
+  String get autoSyncEvery60Seconds =>
+      'Automatische Synchronisierung alle 60 Sekunden';
 
   @override
   String get termsAgreeP1 => 'Durch die Fortsetzung stimmen Sie den folgenden ';

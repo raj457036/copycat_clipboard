@@ -978,56 +978,56 @@ abstract class AppLocalizations {
   /// No description provided for @unlimitedClipboardItems.
   ///
   /// In en, this message translates to:
-  /// **'• Unlimited Clipboard Items'**
+  /// **'Unlimited Clipboard Items'**
   String get unlimitedClipboardItems;
 
   /// No description provided for @supportAllMajorPlatforms.
   ///
   /// In en, this message translates to:
-  /// **'• Support all major platforms'**
+  /// **'Support all major platforms'**
   String get supportAllMajorPlatforms;
 
   /// No description provided for @supportsAppleUniversalClipboard.
   ///
   /// In en, this message translates to:
-  /// **'• Supports Apple\'s Universal Clipboard'**
+  /// **'Supports Apple\'s Universal Clipboard'**
   String get supportsAppleUniversalClipboard;
 
   /// No description provided for @onDeviceStorage.
   ///
   /// In en, this message translates to:
-  /// **'• On-Device Storage'**
+  /// **'On-Device Storage'**
   String get onDeviceStorage;
 
   /// No description provided for @googleDriveIntegration.
   ///
   /// In en, this message translates to:
-  /// **'• Google Drive Integration'**
+  /// **'Google Drive Integration'**
   String get googleDriveIntegration;
 
   /// No description provided for @instantSearch.
   ///
   /// In en, this message translates to:
-  /// **'• Instant Search'**
+  /// **'Instant Search'**
   String get instantSearch;
 
   /// No description provided for @syncingUpToLast24Hours.
   ///
   /// In en, this message translates to:
-  /// **'• Syncing up to Last 24 Hours'**
+  /// **'Syncing up to Last 24 Hours'**
   String get syncingUpToLast24Hours;
 
   /// No description provided for @upTo3Collections.
   ///
   /// In en, this message translates to:
-  /// **'• Up to 3 Collections'**
+  /// **'Up to 3 Collections'**
   String get upTo3Collections;
 
-  /// No description provided for @autoSyncEvery30Seconds.
+  /// No description provided for @autoSyncEvery60Seconds.
   ///
   /// In en, this message translates to:
-  /// **'• Auto-Sync Every 30 Seconds'**
-  String get autoSyncEvery30Seconds;
+  /// **'Auto-Sync Every 60 Seconds'**
+  String get autoSyncEvery60Seconds;
 
   /// No description provided for @termsAgreeP1.
   ///
