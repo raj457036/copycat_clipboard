@@ -28,7 +28,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
     networkObserver.listen(onConnectionChanged);
   }
 
-  void refetchStates() {
+  Future<void> refetchStates() async {
     context.read<AuthCubit>().fetchSubscription();
   }
 

@@ -18,7 +18,6 @@ class AutoSyncInterval extends StatelessWidget {
     final colors = context.colors;
     return SubscriptionBuilder(
       builder: (context, subscription) {
-        if (subscription == null) return const SizedBox.shrink();
         return BlocSelector<AppConfigCubit, AppConfigState, (int, bool)>(
           selector: (state) {
             switch (state) {
@@ -26,7 +25,10 @@ class AutoSyncInterval extends StatelessWidget {
                 final val = config.autoSyncInterval.isNegative
                     ? $60S
                     : config.autoSyncInterval;
-                return (val, config.enableSync);
+                return (
+                  val,
+                  config.enableSync,
+                );
               default:
                 return ($60S, false);
             }

@@ -9,11 +9,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class E2EESettings extends StatelessWidget {
   const E2EESettings({super.key});
 
+  void toggleAutoEncrypt(BuildContext context, bool value) {
+    context.read<AppConfigCubit>().toggleAutoEncrypt(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SubscriptionBuilder(
       builder: (context, subscription) {
-        if (subscription == null) return const SizedBox.shrink();
         return BlocSelector<AppConfigCubit, AppConfigState, (bool, bool)>(
           selector: (state) {
             switch (state) {
@@ -29,13 +32,7 @@ class E2EESettings extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ListTile(
-                  title: const Row(
-                    children: [
-                      Text("End-to-End Encryption Vault"),
-                      width8,
-                      ProBadge(),
-                    ],
-                  ),
+                  title: const Text("End-to-End Encryption Vault"),
                   subtitle: const Text(
                     "Access your E2EE vault settings",
                   ),
@@ -45,12 +42,8 @@ class E2EESettings extends StatelessWidget {
                 ),
                 SwitchListTile(
                   value: autoEncrypt,
-                  onChanged: setup
-                      ? (value) {
-                          context
-                              .read<AppConfigCubit>()
-                              .toggleAutoEncrypt(value);
-                        }
+                  onChanged: setup && subscription.encrypt
+                      ? (value) => toggleAutoEncrypt(context, value)
                       : null,
                   title: const Row(
                     children: [

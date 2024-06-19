@@ -47,68 +47,63 @@ const SubscriptionSchema = CollectionSchema(
       name: r'encrypt',
       type: IsarType.bool,
     ),
-    r'encryptKey': PropertySchema(
-      id: 6,
-      name: r'encryptKey',
-      type: IsarType.string,
-    ),
     r'isPersisted': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'isPersisted',
       type: IsarType.bool,
     ),
     r'maxSyncDevices': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'maxSyncDevices',
       type: IsarType.long,
     ),
     r'modified': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'modified',
       type: IsarType.dateTime,
     ),
     r'planName': PropertySchema(
-      id: 10,
+      id: 9,
       name: r'planName',
       type: IsarType.string,
     ),
     r'serverId': PropertySchema(
-      id: 11,
+      id: 10,
       name: r'serverId',
       type: IsarType.long,
     ),
     r'source': PropertySchema(
-      id: 12,
+      id: 11,
       name: r'source',
       type: IsarType.string,
     ),
     r'subId': PropertySchema(
-      id: 13,
+      id: 12,
       name: r'subId',
       type: IsarType.string,
     ),
     r'syncHours': PropertySchema(
-      id: 14,
+      id: 13,
       name: r'syncHours',
       type: IsarType.long,
     ),
     r'syncInterval': PropertySchema(
-      id: 15,
+      id: 14,
       name: r'syncInterval',
       type: IsarType.long,
     ),
     r'trialEnd': PropertySchema(
-      id: 16,
+      id: 15,
       name: r'trialEnd',
       type: IsarType.dateTime,
     ),
     r'trialStart': PropertySchema(
-      id: 17,
+      id: 16,
       name: r'trialStart',
       type: IsarType.dateTime,
     ),
     r'userId': PropertySchema(
-      id: 18,
+      id: 17,
       name: r'userId',
       type: IsarType.string,
     )
@@ -133,12 +128,6 @@ int _subscriptionEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.encryptKey;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   bytesCount += 3 + object.planName.length * 3;
   bytesCount += 3 + object.source.length * 3;
   bytesCount += 3 + object.subId.length * 3;
@@ -158,19 +147,18 @@ void _subscriptionSerialize(
   writer.writeDateTime(offsets[3], object.created);
   writer.writeBool(offsets[4], object.edit);
   writer.writeBool(offsets[5], object.encrypt);
-  writer.writeString(offsets[6], object.encryptKey);
-  writer.writeBool(offsets[7], object.isPersisted);
-  writer.writeLong(offsets[8], object.maxSyncDevices);
-  writer.writeDateTime(offsets[9], object.modified);
-  writer.writeString(offsets[10], object.planName);
-  writer.writeLong(offsets[11], object.serverId);
-  writer.writeString(offsets[12], object.source);
-  writer.writeString(offsets[13], object.subId);
-  writer.writeLong(offsets[14], object.syncHours);
-  writer.writeLong(offsets[15], object.syncInterval);
-  writer.writeDateTime(offsets[16], object.trialEnd);
-  writer.writeDateTime(offsets[17], object.trialStart);
-  writer.writeString(offsets[18], object.userId);
+  writer.writeBool(offsets[6], object.isPersisted);
+  writer.writeLong(offsets[7], object.maxSyncDevices);
+  writer.writeDateTime(offsets[8], object.modified);
+  writer.writeString(offsets[9], object.planName);
+  writer.writeLong(offsets[10], object.serverId);
+  writer.writeString(offsets[11], object.source);
+  writer.writeString(offsets[12], object.subId);
+  writer.writeLong(offsets[13], object.syncHours);
+  writer.writeLong(offsets[14], object.syncInterval);
+  writer.writeDateTime(offsets[15], object.trialEnd);
+  writer.writeDateTime(offsets[16], object.trialStart);
+  writer.writeString(offsets[17], object.userId);
 }
 
 Subscription _subscriptionDeserialize(
@@ -186,18 +174,17 @@ Subscription _subscriptionDeserialize(
     created: reader.readDateTime(offsets[3]),
     edit: reader.readBool(offsets[4]),
     encrypt: reader.readBool(offsets[5]),
-    encryptKey: reader.readStringOrNull(offsets[6]),
-    maxSyncDevices: reader.readLong(offsets[8]),
-    modified: reader.readDateTime(offsets[9]),
-    planName: reader.readString(offsets[10]),
-    serverId: reader.readLongOrNull(offsets[11]),
-    source: reader.readString(offsets[12]),
-    subId: reader.readString(offsets[13]),
-    syncHours: reader.readLong(offsets[14]),
-    syncInterval: reader.readLong(offsets[15]),
-    trialEnd: reader.readDateTimeOrNull(offsets[16]),
-    trialStart: reader.readDateTimeOrNull(offsets[17]),
-    userId: reader.readString(offsets[18]),
+    maxSyncDevices: reader.readLong(offsets[7]),
+    modified: reader.readDateTime(offsets[8]),
+    planName: reader.readString(offsets[9]),
+    serverId: reader.readLongOrNull(offsets[10]),
+    source: reader.readString(offsets[11]),
+    subId: reader.readString(offsets[12]),
+    syncHours: reader.readLong(offsets[13]),
+    syncInterval: reader.readLong(offsets[14]),
+    trialEnd: reader.readDateTimeOrNull(offsets[15]),
+    trialStart: reader.readDateTimeOrNull(offsets[16]),
+    userId: reader.readString(offsets[17]),
   );
   object.id = id;
   return object;
@@ -223,30 +210,28 @@ P _subscriptionDeserializeProp<P>(
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
-    case 7:
       return (reader.readBool(offset)) as P;
-    case 8:
+    case 7:
       return (reader.readLong(offset)) as P;
-    case 9:
+    case 8:
       return (reader.readDateTime(offset)) as P;
-    case 10:
+    case 9:
       return (reader.readString(offset)) as P;
-    case 11:
+    case 10:
       return (reader.readLongOrNull(offset)) as P;
+    case 11:
+      return (reader.readString(offset)) as P;
     case 12:
       return (reader.readString(offset)) as P;
     case 13:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 14:
       return (reader.readLong(offset)) as P;
     case 15:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 16:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 17:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 18:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -559,160 +544,6 @@ extension SubscriptionQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'encrypt',
         value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'encryptKey',
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'encryptKey',
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'encryptKey',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'encryptKey',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'encryptKey',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'encryptKey',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'encryptKey',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'encryptKey',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'encryptKey',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'encryptKey',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'encryptKey',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
-      encryptKeyIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'encryptKey',
-        value: '',
       ));
     });
   }
@@ -1849,19 +1680,6 @@ extension SubscriptionQuerySortBy
     });
   }
 
-  QueryBuilder<Subscription, Subscription, QAfterSortBy> sortByEncryptKey() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'encryptKey', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterSortBy>
-      sortByEncryptKeyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'encryptKey', Sort.desc);
-    });
-  }
-
   QueryBuilder<Subscription, Subscription, QAfterSortBy> sortByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isPersisted', Sort.asc);
@@ -2088,19 +1906,6 @@ extension SubscriptionQuerySortThenBy
     });
   }
 
-  QueryBuilder<Subscription, Subscription, QAfterSortBy> thenByEncryptKey() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'encryptKey', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Subscription, Subscription, QAfterSortBy>
-      thenByEncryptKeyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'encryptKey', Sort.desc);
-    });
-  }
-
   QueryBuilder<Subscription, Subscription, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -2301,13 +2106,6 @@ extension SubscriptionQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Subscription, Subscription, QDistinct> distinctByEncryptKey(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'encryptKey', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<Subscription, Subscription, QDistinct> distinctByIsPersisted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isPersisted');
@@ -2430,12 +2228,6 @@ extension SubscriptionQueryProperty
     });
   }
 
-  QueryBuilder<Subscription, String?, QQueryOperations> encryptKeyProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'encryptKey');
-    });
-  }
-
   QueryBuilder<Subscription, bool, QQueryOperations> isPersistedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isPersisted');
@@ -2532,7 +2324,6 @@ _$SubscriptionImpl _$$SubscriptionImplFromJson(Map<String, dynamic> json) =>
       syncInterval: (json['syncInt'] as num?)?.toInt() ?? $60S,
       edit: json['edit'] as bool? ?? false,
       encrypt: json['encrypt'] as bool? ?? false,
-      encryptKey: json['encryptKey'] as String?,
       activeTill: _$JsonConverterFromJson<String, DateTime>(
           json['activeTill'], const DateTimeConverter().fromJson),
       maxSyncDevices: (json['devices'] as num?)?.toInt() ?? 3,
@@ -2556,7 +2347,6 @@ Map<String, dynamic> _$$SubscriptionImplToJson(_$SubscriptionImpl instance) =>
       'syncInt': instance.syncInterval,
       'edit': instance.edit,
       'encrypt': instance.encrypt,
-      'encryptKey': instance.encryptKey,
       'activeTill': _$JsonConverterToJson<String, DateTime>(
           instance.activeTill, const DateTimeConverter().toJson),
       'devices': instance.maxSyncDevices,

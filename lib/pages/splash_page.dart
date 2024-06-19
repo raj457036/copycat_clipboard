@@ -27,8 +27,8 @@ class SplashPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
-          case AuthenticatedAuthState() || OfflineAuthState():
-            await context.read<AppConfigCubit>().load();
+          case AuthenticatedAuthState(:final subscription):
+            await context.read<AppConfigCubit>().load(subscription);
             context.read<ClipCollectionCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();
             context.read<OfflinePersistanceCubit>().startListners();
