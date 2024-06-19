@@ -498,31 +498,116 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unlimitedClipboardItems => 'Elementos de Portapapeles Ilimitados';
 
   @override
+  String get unlimitedClipboardItemsDesc =>
+      'Nunca te quedes sin espacio con elementos de portapapeles ilimitados, asegurando que siempre tengas acceso a tus copias más recientes.';
+
+  @override
   String get supportAllMajorPlatforms =>
-      'Soporte para todas las plataformas principales';
+      'Compatibilidad con todas las principales plataformas';
+
+  @override
+  String get supportAllMajorPlatformsDesc =>
+      'Compatibilidad con todas las principales plataformas';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      'Compatible con el Portapapeles Universal de Apple';
+      'Sincronización perfecta en todas las principales plataformas—Android, iOS, Windows, macOS y Linux—para una productividad ininterrumpida en cualquier lugar.';
+
+  @override
+  String get supportsAppleUniversalClipboardDesc =>
+      'Transfiere fácilmente el contenido del portapapeles entre tus dispositivos Apple con soporte para el Portapapeles Universal de Apple.';
 
   @override
   String get onDeviceStorage => 'Almacenamiento en el Dispositivo';
 
   @override
+  String get onDeviceStorageDesc =>
+      'Mantén tus datos seguros con almacenamiento en el dispositivo, asegurando que los elementos de tu portapapeles siempre estén al alcance y bajo tu control.';
+
+  @override
   String get googleDriveIntegration => 'Integración con Google Drive';
+
+  @override
+  String get googleDriveIntegrationDesc =>
+      'Almacena de forma segura archivos y medios en Google Drive, integrándose perfectamente con CopyCat Clipboard para una mejor gestión de datos.';
 
   @override
   String get instantSearch => 'Búsqueda Instantánea';
 
   @override
+  String get instantSearchDesc =>
+      'Encuentra lo que necesitas al instante con potentes capacidades de búsqueda instantánea, haciendo que la recuperación de elementos del portapapeles sea rápida y eficiente.';
+
+  @override
   String get syncingUpToLast24Hours =>
-      'Sincronización hasta las últimas 24 horas';
+      'Sincronización de hasta las Últimas 24 Horas';
+
+  @override
+  String get syncingUpToLast24HoursDesc =>
+      'Accede y sincroniza tu historial del portapapeles de hasta 24 horas, asegurando que nunca pierdas copias importantes.';
 
   @override
   String get upTo3Collections => 'Hasta 3 Colecciones';
 
   @override
-  String get autoSyncEvery60Seconds => 'Auto-Sincronización cada 60 Segundos';
+  String get upTo3CollectionsDesc =>
+      'Organiza los elementos de tu portapapeles en hasta 3 colecciones, proporcionando una categorización simple para una mejor gestión del flujo de trabajo.';
+
+  @override
+  String get autoSyncEvery60Seconds =>
+      'Sincronización Automática Cada 60 Segundos';
+
+  @override
+  String get autoSyncEvery60SecondsDesc =>
+      'Disfruta de la sincronización automática de los elementos del portapapeles cada 60 segundos, manteniendo tus dispositivos actualizados sin intervención manual.';
+
+  @override
+  String get withPro => 'Con PRO ✨';
+
+  @override
+  String get withProDesc => 'Todo incluido en Gratis +';
+
+  @override
+  String get supportE2EE => 'Soporte para Cifrado de Extremo a Extremo';
+
+  @override
+  String get supportE2EEDesc =>
+      'E2EE hará que todo esté cifrado para una privacidad superior.';
+
+  @override
+  String get upto50Collection => 'Hasta 50 Colecciones';
+
+  @override
+  String get upto50CollectionDesc =>
+      'Organiza los elementos de tu portapapeles en hasta 50 colecciones para una gestión óptima.';
+
+  @override
+  String get syncLast720Hr => 'Sincronización de hasta las Últimas 720 Horas';
+
+  @override
+  String get syncLast720HrDesc =>
+      'Disfruta de acceso extendido a tu historial del portapapeles con sincronización de los últimos 30 días.';
+
+  @override
+  String get realtimeSync => 'Sincronización en Tiempo Real';
+
+  @override
+  String get realtimeSyncDesc =>
+      'Experimenta una sincronización ultrarrápida cada 5 segundos.';
+
+  @override
+  String get prioritySupport => 'Soporte Rápido y Prioritario';
+
+  @override
+  String get prioritySupportDesc =>
+      'Obtén soporte rápido y prioritario como usuario PRO.';
+
+  @override
+  String get earlyAccessToNewFeature => 'Acceso Temprano a Nuevas Funciones';
+
+  @override
+  String get earlyAccessToNewFeatureDesc =>
+      'Sé el primero en probar nuevas funciones y actualizaciones.';
 
   @override
   String get termsAgreeP1 => 'Al continuar, usted acepta los siguientes ';
@@ -690,4 +775,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get learn => 'Aprender';
+
+  @override
+  String get upgrade => 'Actualizar';
+
+  @override
+  String trialTill(String till) {
+    return 'Prueba hasta $till';
+  }
+
+  @override
+  String expiredPlan(String planName) {
+    return '$planName • Expirado';
+  }
 }

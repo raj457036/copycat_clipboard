@@ -493,29 +493,112 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unlimitedClipboardItems => 'Unlimited Clipboard Items';
 
   @override
+  String get unlimitedClipboardItemsDesc =>
+      'Never run out of space with unlimited clipboard items, ensuring you always have access to your most recent copies.';
+
+  @override
   String get supportAllMajorPlatforms => 'Support all major platforms';
 
   @override
+  String get supportAllMajorPlatformsDesc => 'Support all major platforms';
+
+  @override
   String get supportsAppleUniversalClipboard =>
-      'Supports Apple\'s Universal Clipboard';
+      'Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.';
+
+  @override
+  String get supportsAppleUniversalClipboardDesc =>
+      'Effortlessly transfer clipboard content between your Apple devices with support for Apple\'s Universal Clipboard.';
 
   @override
   String get onDeviceStorage => 'On-Device Storage';
 
   @override
+  String get onDeviceStorageDesc =>
+      'Keep your data secure with on-device storage, ensuring your clipboard items are always within reach and under your control.';
+
+  @override
   String get googleDriveIntegration => 'Google Drive Integration';
+
+  @override
+  String get googleDriveIntegrationDesc =>
+      'Securely store files and media on Google Drive, integrating seamlessly with CopyCat Clipboard for enhanced data management.';
 
   @override
   String get instantSearch => 'Instant Search';
 
   @override
+  String get instantSearchDesc =>
+      'Find what you need instantly with powerful instant search capabilities, making retrieval of clipboard items fast and efficient.';
+
+  @override
   String get syncingUpToLast24Hours => 'Syncing up to Last 24 Hours';
+
+  @override
+  String get syncingUpToLast24HoursDesc =>
+      'Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies.';
 
   @override
   String get upTo3Collections => 'Up to 3 Collections';
 
   @override
+  String get upTo3CollectionsDesc =>
+      'Organize your clipboard items into up to 3 collections, providing simple categorization for better workflow management.';
+
+  @override
   String get autoSyncEvery60Seconds => 'Auto-Sync Every 60 Seconds';
+
+  @override
+  String get autoSyncEvery60SecondsDesc =>
+      'Enjoy automatic syncing of clipboard items every 60 seconds, keeping your devices up-to-date without manual intervention.';
+
+  @override
+  String get withPro => 'With PRO ✨';
+
+  @override
+  String get withProDesc => 'Everything included in Free +';
+
+  @override
+  String get supportE2EE => 'Support End-to-End Encryption';
+
+  @override
+  String get supportE2EEDesc =>
+      'E2EE will make everything encrypted for superior privacy.';
+
+  @override
+  String get upto50Collection => 'Up to 50 Collections';
+
+  @override
+  String get upto50CollectionDesc =>
+      'Organize your clipboard items into up to 50 collections for ultimate management.';
+
+  @override
+  String get syncLast720Hr => 'Syncing up to last 720 Hours';
+
+  @override
+  String get syncLast720HrDesc =>
+      'Enjoy extended access to your clipboard history with syncing for the last 30 days.';
+
+  @override
+  String get realtimeSync => 'Real Time Synchronization';
+
+  @override
+  String get realtimeSyncDesc =>
+      'Experience lightning-fast syncing every 5 seconds.';
+
+  @override
+  String get prioritySupport => 'Faster and Priority Support';
+
+  @override
+  String get prioritySupportDesc =>
+      'Get prompt and prioritized support as a PRO user.';
+
+  @override
+  String get earlyAccessToNewFeature => 'Early Access to New Features';
+
+  @override
+  String get earlyAccessToNewFeatureDesc =>
+      'Be the first to try out new features and updates.';
 
   @override
   String get termsAgreeP1 => 'By continuing you agree to the following ';
@@ -683,4 +766,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get learn => 'Learn';
+
+  @override
+  String get upgrade => 'Upgrade';
+
+  @override
+  String trialTill(String till) {
+    return 'Trial till $till';
+  }
+
+  @override
+  String expiredPlan(String planName) {
+    return '$planName • Expired';
+  }
 }

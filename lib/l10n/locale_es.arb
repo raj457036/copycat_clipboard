@@ -241,14 +241,37 @@
     },
     "included": "Incluido",
     "unlimitedClipboardItems": "Elementos de Portapapeles Ilimitados",
-    "supportAllMajorPlatforms": "Soporte para todas las plataformas principales",
-    "supportsAppleUniversalClipboard": "Compatible con el Portapapeles Universal de Apple",
+    "unlimitedClipboardItemsDesc": "Nunca te quedes sin espacio con elementos de portapapeles ilimitados, asegurando que siempre tengas acceso a tus copias más recientes.",
+    "supportAllMajorPlatforms": "Compatibilidad con todas las principales plataformas",
+    "supportAllMajorPlatformsDesc": "Compatibilidad con todas las principales plataformas",
+    "supportsAppleUniversalClipboard": "Sincronización perfecta en todas las principales plataformas—Android, iOS, Windows, macOS y Linux—para una productividad ininterrumpida en cualquier lugar.",
+    "supportsAppleUniversalClipboardDesc": "Transfiere fácilmente el contenido del portapapeles entre tus dispositivos Apple con soporte para el Portapapeles Universal de Apple.",
     "onDeviceStorage": "Almacenamiento en el Dispositivo",
+    "onDeviceStorageDesc": "Mantén tus datos seguros con almacenamiento en el dispositivo, asegurando que los elementos de tu portapapeles siempre estén al alcance y bajo tu control.",
     "googleDriveIntegration": "Integración con Google Drive",
+    "googleDriveIntegrationDesc": "Almacena de forma segura archivos y medios en Google Drive, integrándose perfectamente con CopyCat Clipboard para una mejor gestión de datos.",
     "instantSearch": "Búsqueda Instantánea",
-    "syncingUpToLast24Hours": "Sincronización hasta las últimas 24 horas",
+    "instantSearchDesc": "Encuentra lo que necesitas al instante con potentes capacidades de búsqueda instantánea, haciendo que la recuperación de elementos del portapapeles sea rápida y eficiente.",
+    "syncingUpToLast24Hours": "Sincronización de hasta las Últimas 24 Horas",
+    "syncingUpToLast24HoursDesc": "Accede y sincroniza tu historial del portapapeles de hasta 24 horas, asegurando que nunca pierdas copias importantes.",
     "upTo3Collections": "Hasta 3 Colecciones",
-    "autoSyncEvery60Seconds": "Auto-Sincronización cada 60 Segundos",
+    "upTo3CollectionsDesc": "Organiza los elementos de tu portapapeles en hasta 3 colecciones, proporcionando una categorización simple para una mejor gestión del flujo de trabajo.",
+    "autoSyncEvery60Seconds": "Sincronización Automática Cada 60 Segundos",
+    "autoSyncEvery60SecondsDesc": "Disfruta de la sincronización automática de los elementos del portapapeles cada 60 segundos, manteniendo tus dispositivos actualizados sin intervención manual.",
+    "withPro": "Con PRO ✨",
+    "withProDesc": "Todo incluido en Gratis +",
+    "supportE2EE": "Soporte para Cifrado de Extremo a Extremo",
+    "supportE2EEDesc": "E2EE hará que todo esté cifrado para una privacidad superior.",
+    "upto50Collection": "Hasta 50 Colecciones",
+    "upto50CollectionDesc": "Organiza los elementos de tu portapapeles en hasta 50 colecciones para una gestión óptima.",
+    "syncLast720Hr": "Sincronización de hasta las Últimas 720 Horas",
+    "syncLast720HrDesc": "Disfruta de acceso extendido a tu historial del portapapeles con sincronización de los últimos 30 días.",
+    "realtimeSync": "Sincronización en Tiempo Real",
+    "realtimeSyncDesc": "Experimenta una sincronización ultrarrápida cada 5 segundos.",
+    "prioritySupport": "Soporte Rápido y Prioritario",
+    "prioritySupportDesc": "Obtén soporte rápido y prioritario como usuario PRO.",
+    "earlyAccessToNewFeature": "Acceso Temprano a Nuevas Funciones",
+    "earlyAccessToNewFeatureDesc": "Sé el primero en probar nuevas funciones y actualizaciones.",
     "termsAgreeP1": "Al continuar, usted acepta los siguientes ",
     "privacyPolicies": "Políticas de privacidad",
     "and": " y ",
@@ -300,5 +323,22 @@
     "tutorials": "Tutoriales en Video",
     "tutorialsDesc": "Aprende a aprovechar al máximo CopyCat con nuestros tutoriales en video paso a paso.",
     "learnAboutFeatures": "Conoce todas las funciones que CopyCat tiene para ofrecer.",
-    "learn": "Aprender"
+    "learn": "Aprender",
+    "upgrade": "Actualizar",
+    "trialTill": "Prueba hasta {till}",
+    "@trialTill": {
+        "placeholders": {
+            "till": {
+                "type": "String"
+            }
+        }
+    },
+    "expiredPlan": "{planName} • Expirado",
+    "@expiredPlan": {
+        "placeholders": {
+            "planName": {
+                "type": "String"
+            }
+        }
+    }
 }

@@ -240,15 +240,38 @@
         }
     },
     "included": "Inklusive",
-    "unlimitedClipboardItems": "Unbegrenzte Zwischenspeicherelemente",
+    "unlimitedClipboardItems": "Unbegrenzte Zwischenablage-Elemente",
+    "unlimitedClipboardItemsDesc": "Laufen Sie nie aus dem Speicherplatz mit unbegrenzten Zwischenablage-Elementen, um sicherzustellen, dass Sie immer Zugriff auf Ihre neuesten Kopien haben.",
     "supportAllMajorPlatforms": "Unterstützung aller wichtigen Plattformen",
-    "supportsAppleUniversalClipboard": "Unterstützung von Apples Universal-Zwischenspeicher",
-    "onDeviceStorage": "Gerätespeicher",
+    "supportAllMajorPlatformsDesc": "Unterstützung aller wichtigen Plattformen",
+    "supportsAppleUniversalClipboard": "Nahtlose Synchronisierung auf allen wichtigen Plattformen—Android, iOS, Windows, macOS und Linux—für unterbrechungsfreie Produktivität überall.",
+    "supportsAppleUniversalClipboardDesc": "Übertragen Sie mühelos den Zwischenablage-Inhalt zwischen Ihren Apple-Geräten mit Unterstützung für Apples Universal Clipboard.",
+    "onDeviceStorage": "Speicherung auf dem Gerät",
+    "onDeviceStorageDesc": "Halten Sie Ihre Daten sicher mit Speicherung auf dem Gerät, um sicherzustellen, dass Ihre Zwischenablage-Elemente immer griffbereit und unter Ihrer Kontrolle sind.",
     "googleDriveIntegration": "Google Drive-Integration",
+    "googleDriveIntegrationDesc": "Speichern Sie Dateien und Medien sicher auf Google Drive und integrieren Sie sich nahtlos mit CopyCat Clipboard für eine verbesserte Datenverwaltung.",
     "instantSearch": "Sofortsuche",
-    "syncingUpToLast24Hours": "Synchronisierung bis zu den letzten 24 Stunden",
+    "instantSearchDesc": "Finden Sie, was Sie brauchen, sofort mit leistungsstarken Sofortsuchfunktionen, die die Wiederherstellung von Zwischenablage-Elementen schnell und effizient machen.",
+    "syncingUpToLast24Hours": "Synchronisierung der letzten 24 Stunden",
+    "syncingUpToLast24HoursDesc": "Zugriff und Synchronisierung Ihrer Zwischenablage-Historie für bis zu 24 Stunden, um sicherzustellen, dass Sie nie wichtige Kopien verlieren.",
     "upTo3Collections": "Bis zu 3 Sammlungen",
+    "upTo3CollectionsDesc": "Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 3 Sammlungen, um eine einfache Kategorisierung für ein besseres Workflow-Management zu ermöglichen.",
     "autoSyncEvery60Seconds": "Automatische Synchronisierung alle 60 Sekunden",
+    "autoSyncEvery60SecondsDesc": "Genießen Sie die automatische Synchronisierung der Zwischenablage-Elemente alle 60 Sekunden, um Ihre Geräte ohne manuelles Eingreifen auf dem neuesten Stand zu halten.",
+    "withPro": "Mit PRO ✨",
+    "withProDesc": "Alles in Gratis enthalten +",
+    "supportE2EE": "Unterstützung der Ende-zu-Ende-Verschlüsselung",
+    "supportE2EEDesc": "E2EE wird alles verschlüsseln für überlegene Privatsphäre.",
+    "upto50Collection": "Bis zu 50 Sammlungen",
+    "upto50CollectionDesc": "Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 50 Sammlungen für eine optimale Verwaltung.",
+    "syncLast720Hr": "Synchronisierung der letzten 720 Stunden",
+    "syncLast720HrDesc": "Genießen Sie erweiterten Zugriff auf Ihre Zwischenablage-Historie mit der Synchronisierung der letzten 30 Tage.",
+    "realtimeSync": "Echtzeit-Synchronisation",
+    "realtimeSyncDesc": "Erleben Sie blitzschnelle Synchronisierung alle 5 Sekunden.",
+    "prioritySupport": "Schneller und priorisierter Support",
+    "prioritySupportDesc": "Erhalten Sie schnellen und priorisierten Support als PRO-Benutzer.",
+    "earlyAccessToNewFeature": "Früher Zugriff auf neue Funktionen",
+    "earlyAccessToNewFeatureDesc": "Seien Sie der Erste, der neue Funktionen und Updates ausprobiert.",
     "termsAgreeP1": "Durch die Fortsetzung stimmen Sie den folgenden ",
     "privacyPolicies": "Datenschutzrichtlinien",
     "and": " und ",
@@ -300,5 +323,22 @@
     "tutorials": "Video-Tutorials",
     "tutorialsDesc": "Erfahren Sie, wie Sie das Beste aus CopyCat herausholen, mit unseren Schritt-für-Schritt-Video-Tutorials.",
     "learnAboutFeatures": "Erfahren Sie mehr über alle Funktionen, die CopyCat zu bieten hat.",
-    "learn": "Lernen"
+    "learn": "Lernen",
+    "upgrade": "Upgrade",
+    "trialTill": "Testversion bis {till}",
+    "@trialTill": {
+        "placeholders": {
+            "till": {
+                "type": "String"
+            }
+        }
+    },
+    "expiredPlan": "{planName} • Abgelaufen",
+    "@expiredPlan": {
+        "placeholders": {
+            "planName": {
+                "type": "String"
+            }
+        }
+    }
 }

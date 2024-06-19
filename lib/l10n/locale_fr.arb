@@ -241,14 +241,37 @@
     },
     "included": "Inclus",
     "unlimitedClipboardItems": "Éléments de Presse-papiers Illimités",
-    "supportAllMajorPlatforms": "Prend en charge toutes les principales plateformes",
-    "supportsAppleUniversalClipboard": "Prend en charge le Presse-papiers Universel d'Apple",
+    "unlimitedClipboardItemsDesc": "Ne manquez jamais d'espace avec des éléments de presse-papiers illimités, garantissant que vous avez toujours accès à vos copies les plus récentes.",
+    "supportAllMajorPlatforms": "Prise en charge de toutes les principales plateformes",
+    "supportAllMajorPlatformsDesc": "Prise en charge de toutes les principales plateformes",
+    "supportsAppleUniversalClipboard": "Synchronisation transparente sur toutes les principales plateformes—Android, iOS, Windows, macOS et Linux—pour une productivité ininterrompue partout.",
+    "supportsAppleUniversalClipboardDesc": "Transférez facilement le contenu du presse-papiers entre vos appareils Apple avec la prise en charge du Presse-papiers Universel d'Apple.",
     "onDeviceStorage": "Stockage sur l'Appareil",
+    "onDeviceStorageDesc": "Gardez vos données sécurisées avec un stockage sur l'appareil, garantissant que les éléments de votre presse-papiers sont toujours à portée de main et sous votre contrôle.",
     "googleDriveIntegration": "Intégration Google Drive",
+    "googleDriveIntegrationDesc": "Stockez en toute sécurité des fichiers et des médias sur Google Drive, en s'intégrant parfaitement avec CopyCat Clipboard pour une gestion améliorée des données.",
     "instantSearch": "Recherche Instantanée",
-    "syncingUpToLast24Hours": "Synchronisation jusqu'aux dernières 24 heures",
+    "instantSearchDesc": "Trouvez ce dont vous avez besoin instantanément avec de puissantes capacités de recherche instantanée, rendant la récupération des éléments du presse-papiers rapide et efficace.",
+    "syncingUpToLast24Hours": "Synchronisation des Dernières 24 Heures",
+    "syncingUpToLast24HoursDesc": "Accédez et synchronisez votre historique du presse-papiers jusqu'à 24 heures, garantissant que vous ne perdez jamais de copies importantes.",
     "upTo3Collections": "Jusqu'à 3 Collections",
+    "upTo3CollectionsDesc": "Organisez les éléments de votre presse-papiers en jusqu'à 3 collections, offrant une catégorisation simple pour une meilleure gestion du flux de travail.",
     "autoSyncEvery60Seconds": "Synchronisation Automatique Toutes les 60 Secondes",
+    "autoSyncEvery60SecondsDesc": "Profitez de la synchronisation automatique des éléments du presse-papiers toutes les 60 secondes, gardant vos appareils à jour sans intervention manuelle.",
+    "withPro": "Avec PRO ✨",
+    "withProDesc": "Tout inclus dans Gratuit +",
+    "supportE2EE": "Prise en Charge du Chiffrement de Bout en Bout",
+    "supportE2EEDesc": "E2EE chiffrera tout pour une confidentialité supérieure.",
+    "upto50Collection": "Jusqu'à 50 Collections",
+    "upto50CollectionDesc": "Organisez les éléments de votre presse-papiers en jusqu'à 50 collections pour une gestion optimale.",
+    "syncLast720Hr": "Synchronisation des Dernières 720 Heures",
+    "syncLast720HrDesc": "Profitez d'un accès étendu à votre historique du presse-papiers avec une synchronisation des 30 derniers jours.",
+    "realtimeSync": "Synchronisation en Temps Réel",
+    "realtimeSyncDesc": "Expérimentez une synchronisation ultra-rapide toutes les 5 secondes.",
+    "prioritySupport": "Support Rapide et Prioritaire",
+    "prioritySupportDesc": "Obtenez un support rapide et prioritaire en tant qu'utilisateur PRO.",
+    "earlyAccessToNewFeature": "Accès Anticipé aux Nouvelles Fonctionnalités",
+    "earlyAccessToNewFeatureDesc": "Soyez le premier à essayer les nouvelles fonctionnalités et mises à jour.",
     "termsAgreeP1": "En continuant, vous acceptez les ",
     "privacyPolicies": "Politiques de confidentialité",
     "and": " et les ",
@@ -300,5 +323,22 @@
     "tutorials": "Tutoriels Vidéo",
     "tutorialsDesc": "Apprenez à tirer le meilleur parti de CopyCat avec nos tutoriels vidéo étape par étape.",
     "learnAboutFeatures": "Découvrez toutes les fonctionnalités que CopyCat a à offrir.",
-    "learn": "Apprendre"
+    "learn": "Apprendre",
+    "upgrade": "Mettre à niveau",
+    "trialTill": "Essai jusqu'à {till}",
+    "@trialTill": {
+        "placeholders": {
+            "till": {
+                "type": "String"
+            }
+        }
+    },
+    "expiredPlan": "{planName} • Expiré",
+    "@expiredPlan": {
+        "placeholders": {
+            "planName": {
+                "type": "String"
+            }
+        }
+    }
 }
