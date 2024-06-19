@@ -493,35 +493,119 @@ class AppLocalizationsDe extends AppLocalizations {
   String get included => 'Inklusive';
 
   @override
-  String get unlimitedClipboardItems => 'Unbegrenzte Zwischenspeicherelemente';
+  String get unlimitedClipboardItems => 'Unbegrenzte Zwischenablage-Elemente';
+
+  @override
+  String get unlimitedClipboardItemsDesc =>
+      'Laufen Sie nie aus dem Speicherplatz mit unbegrenzten Zwischenablage-Elementen, um sicherzustellen, dass Sie immer Zugriff auf Ihre neuesten Kopien haben.';
 
   @override
   String get supportAllMajorPlatforms =>
       'Unterstützung aller wichtigen Plattformen';
 
   @override
-  String get supportsAppleUniversalClipboard =>
-      'Unterstützung von Apples Universal-Zwischenspeicher';
+  String get supportAllMajorPlatformsDesc =>
+      'Unterstützung aller wichtigen Plattformen';
 
   @override
-  String get onDeviceStorage => 'Gerätespeicher';
+  String get supportsAppleUniversalClipboard =>
+      'Nahtlose Synchronisierung auf allen wichtigen Plattformen—Android, iOS, Windows, macOS und Linux—für unterbrechungsfreie Produktivität überall.';
+
+  @override
+  String get supportsAppleUniversalClipboardDesc =>
+      'Übertragen Sie mühelos den Zwischenablage-Inhalt zwischen Ihren Apple-Geräten mit Unterstützung für Apples Universal Clipboard.';
+
+  @override
+  String get onDeviceStorage => 'Speicherung auf dem Gerät';
+
+  @override
+  String get onDeviceStorageDesc =>
+      'Halten Sie Ihre Daten sicher mit Speicherung auf dem Gerät, um sicherzustellen, dass Ihre Zwischenablage-Elemente immer griffbereit und unter Ihrer Kontrolle sind.';
 
   @override
   String get googleDriveIntegration => 'Google Drive-Integration';
 
   @override
+  String get googleDriveIntegrationDesc =>
+      'Speichern Sie Dateien und Medien sicher auf Google Drive und integrieren Sie sich nahtlos mit CopyCat Clipboard für eine verbesserte Datenverwaltung.';
+
+  @override
   String get instantSearch => 'Sofortsuche';
 
   @override
+  String get instantSearchDesc =>
+      'Finden Sie, was Sie brauchen, sofort mit leistungsstarken Sofortsuchfunktionen, die die Wiederherstellung von Zwischenablage-Elementen schnell und effizient machen.';
+
+  @override
   String get syncingUpToLast24Hours =>
-      'Synchronisierung bis zu den letzten 24 Stunden';
+      'Synchronisierung der letzten 24 Stunden';
+
+  @override
+  String get syncingUpToLast24HoursDesc =>
+      'Zugriff und Synchronisierung Ihrer Zwischenablage-Historie für bis zu 24 Stunden, um sicherzustellen, dass Sie nie wichtige Kopien verlieren.';
 
   @override
   String get upTo3Collections => 'Bis zu 3 Sammlungen';
 
   @override
+  String get upTo3CollectionsDesc =>
+      'Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 3 Sammlungen, um eine einfache Kategorisierung für ein besseres Workflow-Management zu ermöglichen.';
+
+  @override
   String get autoSyncEvery60Seconds =>
       'Automatische Synchronisierung alle 60 Sekunden';
+
+  @override
+  String get autoSyncEvery60SecondsDesc =>
+      'Genießen Sie die automatische Synchronisierung der Zwischenablage-Elemente alle 60 Sekunden, um Ihre Geräte ohne manuelles Eingreifen auf dem neuesten Stand zu halten.';
+
+  @override
+  String get withPro => 'Mit PRO ✨';
+
+  @override
+  String get withProDesc => 'Alles in Gratis enthalten +';
+
+  @override
+  String get supportE2EE => 'Unterstützung der Ende-zu-Ende-Verschlüsselung';
+
+  @override
+  String get supportE2EEDesc =>
+      'E2EE wird alles verschlüsseln für überlegene Privatsphäre.';
+
+  @override
+  String get upto50Collection => 'Bis zu 50 Sammlungen';
+
+  @override
+  String get upto50CollectionDesc =>
+      'Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 50 Sammlungen für eine optimale Verwaltung.';
+
+  @override
+  String get syncLast720Hr => 'Synchronisierung der letzten 720 Stunden';
+
+  @override
+  String get syncLast720HrDesc =>
+      'Genießen Sie erweiterten Zugriff auf Ihre Zwischenablage-Historie mit der Synchronisierung der letzten 30 Tage.';
+
+  @override
+  String get realtimeSync => 'Echtzeit-Synchronisation';
+
+  @override
+  String get realtimeSyncDesc =>
+      'Erleben Sie blitzschnelle Synchronisierung alle 5 Sekunden.';
+
+  @override
+  String get prioritySupport => 'Schneller und priorisierter Support';
+
+  @override
+  String get prioritySupportDesc =>
+      'Erhalten Sie schnellen und priorisierten Support als PRO-Benutzer.';
+
+  @override
+  String get earlyAccessToNewFeature => 'Früher Zugriff auf neue Funktionen';
+
+  @override
+  String get earlyAccessToNewFeatureDesc =>
+      'Seien Sie der Erste, der neue Funktionen und Updates ausprobiert.';
 
   @override
   String get termsAgreeP1 => 'Durch die Fortsetzung stimmen Sie den folgenden ';
@@ -692,4 +776,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get learn => 'Lernen';
+
+  @override
+  String get upgrade => 'Upgrade';
+
+  @override
+  String trialTill(String till) {
+    return 'Testversion bis $till';
+  }
+
+  @override
+  String expiredPlan(String planName) {
+    return '$planName • Abgelaufen';
+  }
 }

@@ -240,15 +240,41 @@
         }
     },
     "included": "Included",
+
     "unlimitedClipboardItems": "Unlimited Clipboard Items",
+    "unlimitedClipboardItemsDesc": "Never run out of space with unlimited clipboard items, ensuring you always have access to your most recent copies.",
     "supportAllMajorPlatforms": "Support all major platforms",
-    "supportsAppleUniversalClipboard": "Supports Apple's Universal Clipboard",
+    "supportAllMajorPlatformsDesc": "Support all major platforms",
+    "supportsAppleUniversalClipboard": "Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.",
+    "supportsAppleUniversalClipboardDesc": "Effortlessly transfer clipboard content between your Apple devices with support for Apple's Universal Clipboard.",
     "onDeviceStorage": "On-Device Storage",
+    "onDeviceStorageDesc": "Keep your data secure with on-device storage, ensuring your clipboard items are always within reach and under your control.",
     "googleDriveIntegration": "Google Drive Integration",
+    "googleDriveIntegrationDesc": "Securely store files and media on Google Drive, integrating seamlessly with CopyCat Clipboard for enhanced data management.",
     "instantSearch": "Instant Search",
+    "instantSearchDesc": "Find what you need instantly with powerful instant search capabilities, making retrieval of clipboard items fast and efficient.",
     "syncingUpToLast24Hours": "Syncing up to Last 24 Hours",
+    "syncingUpToLast24HoursDesc": "Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies.",
     "upTo3Collections": "Up to 3 Collections",
+    "upTo3CollectionsDesc": "Organize your clipboard items into up to 3 collections, providing simple categorization for better workflow management.",
     "autoSyncEvery60Seconds": "Auto-Sync Every 60 Seconds",
+    "autoSyncEvery60SecondsDesc": "Enjoy automatic syncing of clipboard items every 60 seconds, keeping your devices up-to-date without manual intervention.",
+    "withPro": "With PRO ✨",
+    "withProDesc": "Everything included in Free +",
+    "supportE2EE": "Support End-to-End Encryption",
+    "supportE2EEDesc": "E2EE will make everything encrypted for superior privacy.",
+    "upto50Collection": "Up to 50 Collections",
+    "upto50CollectionDesc": "Organize your clipboard items into up to 50 collections for ultimate management.",
+    "syncLast720Hr": "Syncing up to last 720 Hours",
+    "syncLast720HrDesc": "Enjoy extended access to your clipboard history with syncing for the last 30 days.",
+    "realtimeSync": "Real Time Synchronization",
+    "realtimeSyncDesc": "Experience lightning-fast syncing every 5 seconds.",
+    "prioritySupport": "Faster and Priority Support",
+    "prioritySupportDesc": "Get prompt and prioritized support as a PRO user.",
+    "earlyAccessToNewFeature": "Early Access to New Features",
+    "earlyAccessToNewFeatureDesc": "Be the first to try out new features and updates.",
+
+
     "termsAgreeP1": "By continuing you agree to the following ",
     "privacyPolicies": "Privacy policies",
     "and": " and ",
@@ -257,7 +283,6 @@
     "backToApp": "Back to App",
     "experimental": "🧪",
     "experimentalDescription": "This feature is experimental and might not work as expected.",
-
     "selectAnOption": "Select an option",
     "advanceSecurity": "Advance Security",
     "endToEndVault": "End-to-End Encryption Vault",
@@ -285,7 +310,6 @@
     "e2eeExportDesc": "Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.",
     "exportKey": "Export E2EE Vault Key",
     "exportSuccess": "✅ Successfully exported E2EE Vault key",
-
     "whatsNew": "What's New?",
     "feature1": "Smart Cross-Platform Clipboard",
     "feature1Desc": "Seamlessly sync your clipboard content across all your devices. Whether it's text, images, or files, access your clipboard history wherever you go.",
@@ -301,5 +325,22 @@
     "tutorials": "Video Tutorials",
     "tutorialsDesc": "Learn how to make the most out of CopyCat with our step-by-step video tutorials.",
     "learnAboutFeatures": "Learn about all the features CopyCat has to offer.",
-    "learn": "Learn"
+    "learn": "Learn",
+    "upgrade": "Upgrade",
+    "trialTill": "Trial till {till}",
+    "@trialTill": {
+        "placeholders": {
+            "till": {
+                "type": "String"
+            }
+        }
+    },
+    "expiredPlan": "{planName} • Expired",
+    "@expiredPlan": {
+        "placeholders": {
+            "planName": {
+                "type": "String"
+            }
+        }
+    }
 }

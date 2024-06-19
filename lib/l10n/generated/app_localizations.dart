@@ -981,17 +981,35 @@ abstract class AppLocalizations {
   /// **'Unlimited Clipboard Items'**
   String get unlimitedClipboardItems;
 
+  /// No description provided for @unlimitedClipboardItemsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Never run out of space with unlimited clipboard items, ensuring you always have access to your most recent copies.'**
+  String get unlimitedClipboardItemsDesc;
+
   /// No description provided for @supportAllMajorPlatforms.
   ///
   /// In en, this message translates to:
   /// **'Support all major platforms'**
   String get supportAllMajorPlatforms;
 
+  /// No description provided for @supportAllMajorPlatformsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Support all major platforms'**
+  String get supportAllMajorPlatformsDesc;
+
   /// No description provided for @supportsAppleUniversalClipboard.
   ///
   /// In en, this message translates to:
-  /// **'Supports Apple\'s Universal Clipboard'**
+  /// **'Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere.'**
   String get supportsAppleUniversalClipboard;
+
+  /// No description provided for @supportsAppleUniversalClipboardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Effortlessly transfer clipboard content between your Apple devices with support for Apple\'s Universal Clipboard.'**
+  String get supportsAppleUniversalClipboardDesc;
 
   /// No description provided for @onDeviceStorage.
   ///
@@ -999,11 +1017,23 @@ abstract class AppLocalizations {
   /// **'On-Device Storage'**
   String get onDeviceStorage;
 
+  /// No description provided for @onDeviceStorageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your data secure with on-device storage, ensuring your clipboard items are always within reach and under your control.'**
+  String get onDeviceStorageDesc;
+
   /// No description provided for @googleDriveIntegration.
   ///
   /// In en, this message translates to:
   /// **'Google Drive Integration'**
   String get googleDriveIntegration;
+
+  /// No description provided for @googleDriveIntegrationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Securely store files and media on Google Drive, integrating seamlessly with CopyCat Clipboard for enhanced data management.'**
+  String get googleDriveIntegrationDesc;
 
   /// No description provided for @instantSearch.
   ///
@@ -1011,11 +1041,23 @@ abstract class AppLocalizations {
   /// **'Instant Search'**
   String get instantSearch;
 
+  /// No description provided for @instantSearchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Find what you need instantly with powerful instant search capabilities, making retrieval of clipboard items fast and efficient.'**
+  String get instantSearchDesc;
+
   /// No description provided for @syncingUpToLast24Hours.
   ///
   /// In en, this message translates to:
   /// **'Syncing up to Last 24 Hours'**
   String get syncingUpToLast24Hours;
+
+  /// No description provided for @syncingUpToLast24HoursDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies.'**
+  String get syncingUpToLast24HoursDesc;
 
   /// No description provided for @upTo3Collections.
   ///
@@ -1023,11 +1065,107 @@ abstract class AppLocalizations {
   /// **'Up to 3 Collections'**
   String get upTo3Collections;
 
+  /// No description provided for @upTo3CollectionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize your clipboard items into up to 3 collections, providing simple categorization for better workflow management.'**
+  String get upTo3CollectionsDesc;
+
   /// No description provided for @autoSyncEvery60Seconds.
   ///
   /// In en, this message translates to:
   /// **'Auto-Sync Every 60 Seconds'**
   String get autoSyncEvery60Seconds;
+
+  /// No description provided for @autoSyncEvery60SecondsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy automatic syncing of clipboard items every 60 seconds, keeping your devices up-to-date without manual intervention.'**
+  String get autoSyncEvery60SecondsDesc;
+
+  /// No description provided for @withPro.
+  ///
+  /// In en, this message translates to:
+  /// **'With PRO ✨'**
+  String get withPro;
+
+  /// No description provided for @withProDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything included in Free +'**
+  String get withProDesc;
+
+  /// No description provided for @supportE2EE.
+  ///
+  /// In en, this message translates to:
+  /// **'Support End-to-End Encryption'**
+  String get supportE2EE;
+
+  /// No description provided for @supportE2EEDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'E2EE will make everything encrypted for superior privacy.'**
+  String get supportE2EEDesc;
+
+  /// No description provided for @upto50Collection.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 50 Collections'**
+  String get upto50Collection;
+
+  /// No description provided for @upto50CollectionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize your clipboard items into up to 50 collections for ultimate management.'**
+  String get upto50CollectionDesc;
+
+  /// No description provided for @syncLast720Hr.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing up to last 720 Hours'**
+  String get syncLast720Hr;
+
+  /// No description provided for @syncLast720HrDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy extended access to your clipboard history with syncing for the last 30 days.'**
+  String get syncLast720HrDesc;
+
+  /// No description provided for @realtimeSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Real Time Synchronization'**
+  String get realtimeSync;
+
+  /// No description provided for @realtimeSyncDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience lightning-fast syncing every 5 seconds.'**
+  String get realtimeSyncDesc;
+
+  /// No description provided for @prioritySupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Faster and Priority Support'**
+  String get prioritySupport;
+
+  /// No description provided for @prioritySupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get prompt and prioritized support as a PRO user.'**
+  String get prioritySupportDesc;
+
+  /// No description provided for @earlyAccessToNewFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Early Access to New Features'**
+  String get earlyAccessToNewFeature;
+
+  /// No description provided for @earlyAccessToNewFeatureDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to try out new features and updates.'**
+  String get earlyAccessToNewFeatureDesc;
 
   /// No description provided for @termsAgreeP1.
   ///
@@ -1334,6 +1472,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Learn'**
   String get learn;
+
+  /// No description provided for @upgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get upgrade;
+
+  /// No description provided for @trialTill.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial till {till}'**
+  String trialTill(String till);
+
+  /// No description provided for @expiredPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'{planName} • Expired'**
+  String expiredPlan(String planName);
 }
 
 class _AppLocalizationsDelegate

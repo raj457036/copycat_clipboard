@@ -498,32 +498,117 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unlimitedClipboardItems => 'Éléments de Presse-papiers Illimités';
 
   @override
+  String get unlimitedClipboardItemsDesc =>
+      'Ne manquez jamais d\'espace avec des éléments de presse-papiers illimités, garantissant que vous avez toujours accès à vos copies les plus récentes.';
+
+  @override
   String get supportAllMajorPlatforms =>
-      'Prend en charge toutes les principales plateformes';
+      'Prise en charge de toutes les principales plateformes';
+
+  @override
+  String get supportAllMajorPlatformsDesc =>
+      'Prise en charge de toutes les principales plateformes';
 
   @override
   String get supportsAppleUniversalClipboard =>
-      'Prend en charge le Presse-papiers Universel d\'Apple';
+      'Synchronisation transparente sur toutes les principales plateformes—Android, iOS, Windows, macOS et Linux—pour une productivité ininterrompue partout.';
+
+  @override
+  String get supportsAppleUniversalClipboardDesc =>
+      'Transférez facilement le contenu du presse-papiers entre vos appareils Apple avec la prise en charge du Presse-papiers Universel d\'Apple.';
 
   @override
   String get onDeviceStorage => 'Stockage sur l\'Appareil';
 
   @override
+  String get onDeviceStorageDesc =>
+      'Gardez vos données sécurisées avec un stockage sur l\'appareil, garantissant que les éléments de votre presse-papiers sont toujours à portée de main et sous votre contrôle.';
+
+  @override
   String get googleDriveIntegration => 'Intégration Google Drive';
+
+  @override
+  String get googleDriveIntegrationDesc =>
+      'Stockez en toute sécurité des fichiers et des médias sur Google Drive, en s\'intégrant parfaitement avec CopyCat Clipboard pour une gestion améliorée des données.';
 
   @override
   String get instantSearch => 'Recherche Instantanée';
 
   @override
+  String get instantSearchDesc =>
+      'Trouvez ce dont vous avez besoin instantanément avec de puissantes capacités de recherche instantanée, rendant la récupération des éléments du presse-papiers rapide et efficace.';
+
+  @override
   String get syncingUpToLast24Hours =>
-      'Synchronisation jusqu\'aux dernières 24 heures';
+      'Synchronisation des Dernières 24 Heures';
+
+  @override
+  String get syncingUpToLast24HoursDesc =>
+      'Accédez et synchronisez votre historique du presse-papiers jusqu\'à 24 heures, garantissant que vous ne perdez jamais de copies importantes.';
 
   @override
   String get upTo3Collections => 'Jusqu\'à 3 Collections';
 
   @override
+  String get upTo3CollectionsDesc =>
+      'Organisez les éléments de votre presse-papiers en jusqu\'à 3 collections, offrant une catégorisation simple pour une meilleure gestion du flux de travail.';
+
+  @override
   String get autoSyncEvery60Seconds =>
       'Synchronisation Automatique Toutes les 60 Secondes';
+
+  @override
+  String get autoSyncEvery60SecondsDesc =>
+      'Profitez de la synchronisation automatique des éléments du presse-papiers toutes les 60 secondes, gardant vos appareils à jour sans intervention manuelle.';
+
+  @override
+  String get withPro => 'Avec PRO ✨';
+
+  @override
+  String get withProDesc => 'Tout inclus dans Gratuit +';
+
+  @override
+  String get supportE2EE => 'Prise en Charge du Chiffrement de Bout en Bout';
+
+  @override
+  String get supportE2EEDesc =>
+      'E2EE chiffrera tout pour une confidentialité supérieure.';
+
+  @override
+  String get upto50Collection => 'Jusqu\'à 50 Collections';
+
+  @override
+  String get upto50CollectionDesc =>
+      'Organisez les éléments de votre presse-papiers en jusqu\'à 50 collections pour une gestion optimale.';
+
+  @override
+  String get syncLast720Hr => 'Synchronisation des Dernières 720 Heures';
+
+  @override
+  String get syncLast720HrDesc =>
+      'Profitez d\'un accès étendu à votre historique du presse-papiers avec une synchronisation des 30 derniers jours.';
+
+  @override
+  String get realtimeSync => 'Synchronisation en Temps Réel';
+
+  @override
+  String get realtimeSyncDesc =>
+      'Expérimentez une synchronisation ultra-rapide toutes les 5 secondes.';
+
+  @override
+  String get prioritySupport => 'Support Rapide et Prioritaire';
+
+  @override
+  String get prioritySupportDesc =>
+      'Obtenez un support rapide et prioritaire en tant qu\'utilisateur PRO.';
+
+  @override
+  String get earlyAccessToNewFeature =>
+      'Accès Anticipé aux Nouvelles Fonctionnalités';
+
+  @override
+  String get earlyAccessToNewFeatureDesc =>
+      'Soyez le premier à essayer les nouvelles fonctionnalités et mises à jour.';
 
   @override
   String get termsAgreeP1 => 'En continuant, vous acceptez les ';
@@ -691,4 +776,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get learn => 'Apprendre';
+
+  @override
+  String get upgrade => 'Mettre à niveau';
+
+  @override
+  String trialTill(String till) {
+    return 'Essai jusqu\'à $till';
+  }
+
+  @override
+  String expiredPlan(String planName) {
+    return '$planName • Expiré';
+  }
 }

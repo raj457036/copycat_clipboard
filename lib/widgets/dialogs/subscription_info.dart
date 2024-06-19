@@ -62,27 +62,22 @@ class SubscriptionInfoDialog extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(state.planName),
-                              if (expired) const Text(" • Expired")
-                            ],
-                          ),
+                          if (expired)
+                            Text(context.locale.expiredPlan(state.planName))
+                          else
+                            Text(state.planName),
                           height2,
                           if (isTrial && state.trialEnd != null)
-                            Text(
-                              "Trial till "
-                              "${dateTimeFormatter(context.locale.localeName).format(state.trialEnd!)}",
-                            ),
+                            Text(context.locale.trialTill(
+                                dateTimeFormatter(context.locale.localeName)
+                                    .format(state.trialEnd!))),
                         ],
                       ),
                       trailing: expired
                           ? ElevatedButton.icon(
                               onPressed: () => upgrade(context),
                               icon: const Icon(Icons.workspace_premium_rounded),
-                              label: const Text('UPGRADE'),
+                              label: Text(context.locale.upgrade),
                             )
                           : null,
                     );
@@ -112,8 +107,8 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                     title: Text(
                                       context.locale.unlimitedClipboardItems,
                                     ),
-                                    subtitle: const Text(
-                                        "Never run out of space with unlimited clipboard items, ensuring you always have access to your most recent copies."),
+                                    subtitle: Text(context
+                                        .locale.unlimitedClipboardItemsDesc),
                                   ),
                                   height4,
                                   ListTile(
@@ -121,8 +116,8 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                     title: Text(
                                       context.locale.supportAllMajorPlatforms,
                                     ),
-                                    subtitle: const Text(
-                                        "Seamlessly sync across all major platforms—Android, iOS, Windows, macOS, and Linux —for uninterrupted productivity anywhere."),
+                                    subtitle: Text(context
+                                        .locale.supportAllMajorPlatformsDesc),
                                   ),
                                   height4,
                                   ListTile(
@@ -130,15 +125,15 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                         Icons.fiber_smart_record_outlined),
                                     title: Text(context.locale
                                         .supportsAppleUniversalClipboard),
-                                    subtitle: const Text(
-                                        "Effortlessly transfer clipboard content between your Apple devices with support for Apple's Universal Clipboard."),
+                                    subtitle: Text(context.locale
+                                        .supportsAppleUniversalClipboardDesc),
                                   ),
                                   height4,
                                   ListTile(
                                     leading: const Icon(Icons.storage_rounded),
                                     title: Text(context.locale.onDeviceStorage),
-                                    subtitle: const Text(
-                                        "Keep your data secure with on-device storage, ensuring your clipboard items are always within reach and under your control."),
+                                    subtitle: Text(
+                                        context.locale.onDeviceStorageDesc),
                                   ),
                                   height4,
                                   ListTile(
@@ -146,16 +141,16 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                         const Icon(Icons.add_to_drive_rounded),
                                     title: Text(
                                         context.locale.googleDriveIntegration),
-                                    subtitle: const Text(
-                                        "Securely store files and media on Google Drive, integrating seamlessly with CopyCat Clipboard for enhanced data management."),
+                                    subtitle: Text(context
+                                        .locale.googleDriveIntegrationDesc),
                                   ),
                                   height4,
                                   ListTile(
                                     leading:
                                         const Icon(Icons.manage_search_rounded),
                                     title: Text(context.locale.instantSearch),
-                                    subtitle: const Text(
-                                        "Find what you need instantly with powerful instant search capabilities, making retrieval of clipboard items fast and efficient."),
+                                    subtitle:
+                                        Text(context.locale.instantSearchDesc),
                                   ),
                                   height4,
                                   ListTile(
@@ -163,8 +158,8 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                         const Icon(Icons.cloud_sync_rounded),
                                     title: Text(
                                         context.locale.syncingUpToLast24Hours),
-                                    subtitle: const Text(
-                                        "Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies."),
+                                    subtitle: Text(context
+                                        .locale.syncingUpToLast24HoursDesc),
                                   ),
                                   height4,
                                   ListTile(
@@ -172,8 +167,8 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                         Icons.collections_bookmark_rounded),
                                     title:
                                         Text(context.locale.upTo3Collections),
-                                    subtitle: const Text(
-                                        "Organize your clipboard items into up to 3 collections, providing simple categorization for better workflow management."),
+                                    subtitle: Text(
+                                        context.locale.upTo3CollectionsDesc),
                                   ),
                                   height4,
                                   ListTile(
@@ -181,71 +176,74 @@ class SubscriptionInfoDialog extends StatelessWidget {
                                     title: Text(
                                       context.locale.autoSyncEvery60Seconds,
                                     ),
-                                    subtitle: const Text(
-                                        "Enjoy automatic syncing of clipboard items every 60 seconds, keeping your devices up-to-date without manual intervention."),
+                                    subtitle: Text(context
+                                        .locale.autoSyncEvery60SecondsDesc),
                                   )
                                 ],
                               ),
                             ),
                           ),
-                          const SingleChildScrollView(
+                          SingleChildScrollView(
                             child: ListTile(
-                              title: Text("With PRO ✨"),
+                              title: Text(context.locale.withPro),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   height4,
-                                  Text("Everything included in Free +"),
+                                  Text(context.locale.withProDesc),
                                   height4,
                                   ListTile(
-                                    leading: Icon(Icons.security_rounded),
+                                    leading: const Icon(Icons.security_rounded),
+                                    title: Text(context.locale.supportE2EE),
+                                    subtitle: Text(
+                                      context.locale.supportE2EEDesc,
+                                    ),
+                                  ),
+                                  height4,
+                                  ListTile(
+                                    leading: const Icon(
+                                        Icons.collections_bookmark_rounded),
                                     title:
-                                        Text("Support End-to-End Encryption"),
+                                        Text(context.locale.upto50Collection),
                                     subtitle: Text(
-                                      "E2EE will make everything encrypted for superior privacy.",
+                                      context.locale.upto50CollectionDesc,
                                     ),
                                   ),
                                   height4,
                                   ListTile(
-                                    leading: Icon(
+                                    leading: const Icon(
                                         Icons.collections_bookmark_rounded),
-                                    title: Text("Up to 50 Collections"),
+                                    title: Text(context.locale.syncLast720Hr),
                                     subtitle: Text(
-                                      "Organize your clipboard items into up to 50 collections for ultimate management.",
+                                      context.locale.syncLast720HrDesc,
                                     ),
                                   ),
                                   height4,
                                   ListTile(
-                                    leading: Icon(
-                                        Icons.collections_bookmark_rounded),
-                                    title: Text("Syncing up to Last 720 Hours"),
+                                    leading: const Icon(Icons.sync_rounded),
+                                    title: Text(context.locale.realtimeSync),
                                     subtitle: Text(
-                                      "Enjoy extended access to your clipboard "
-                                      "history with syncing for the last 30 days.",
+                                      context.locale.realtimeSyncDesc,
                                     ),
                                   ),
                                   height4,
                                   ListTile(
-                                    leading: Icon(Icons.sync_rounded),
-                                    title: Text("Real Time Synchronization"),
+                                    leading:
+                                        const Icon(Icons.support_agent_rounded),
+                                    title: Text(context.locale.prioritySupport),
                                     subtitle: Text(
-                                      "Experience lightning-fast syncing every 5 seconds.",
+                                      context.locale.prioritySupportDesc,
                                     ),
                                   ),
                                   height4,
                                   ListTile(
-                                    leading: Icon(Icons.support_agent_rounded),
-                                    title: Text("Faster and Priority Support"),
+                                    leading:
+                                        const Icon(Icons.new_releases_rounded),
+                                    title: Text(
+                                        context.locale.earlyAccessToNewFeature),
                                     subtitle: Text(
-                                      "Get prompt and prioritized support as a PRO user.",
-                                    ),
-                                  ),
-                                  height4,
-                                  ListTile(
-                                    leading: Icon(Icons.new_releases_rounded),
-                                    title: Text("Early Access to New Features"),
-                                    subtitle: Text(
-                                      "Be the first to try out new features and updates.",
+                                      context
+                                          .locale.earlyAccessToNewFeatureDesc,
                                     ),
                                   ),
                                 ],
