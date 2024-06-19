@@ -13,6 +13,7 @@ import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/compact_mode_toggle.dart';
+import 'package:clipboard/widgets/hide_window_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
@@ -154,6 +155,7 @@ class HomePage extends StatelessWidget {
             width12,
             if (isDesktopPlatform) const PinToTopToggleButton(),
             if (isDesktopPlatform) const CompactModeToggleButton(),
+            if (isDesktopPlatform) const HideWindowButton(),
             width12,
           ],
         ),
