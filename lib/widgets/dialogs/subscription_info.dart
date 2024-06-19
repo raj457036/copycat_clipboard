@@ -1,6 +1,7 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
+import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -50,19 +51,42 @@ class SubscriptionInfoDialog extends StatelessWidget {
                 ),
               ),
               const Divider(),
-              ListTile(
-                title: Text(context.locale.currentPlan),
-                subtitle: SubscriptionBuilder(
+              SubscriptionBuilder(
+                  autoDowngrade: false,
                   builder: (context, state) {
-                    return Text(state.planName);
-                  },
-                ),
-                trailing: ElevatedButton.icon(
-                  onPressed: () => upgrade(context),
-                  icon: const Icon(Icons.upgrade_rounded),
-                  label: const Text('UPGRADE'),
-                ),
-              ),
+                    final expired = !state.isActive;
+                    final isTrial = state.isTrial;
+                    return ListTile(
+                      title: Text(context.locale.currentPlan),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(state.planName),
+                              if (expired) const Text(" • Expired")
+                            ],
+                          ),
+                          height2,
+                          if (isTrial && state.trialEnd != null)
+                            Text(
+                              "Trial till "
+                              "${dateTimeFormatter(context.locale.localeName).format(state.trialEnd!)}",
+                            ),
+                        ],
+                      ),
+                      trailing: expired
+                          ? ElevatedButton.icon(
+                              onPressed: () => upgrade(context),
+                              icon: const Icon(Icons.workspace_premium_rounded),
+                              label: const Text('UPGRADE'),
+                            )
+                          : null,
+                    );
+                  }),
               Expanded(
                 child: DefaultTabController(
                   length: 2,

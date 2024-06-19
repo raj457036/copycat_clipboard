@@ -47,7 +47,7 @@ class SyncStatusButton extends StatelessWidget {
             isSyncing = false;
             icon = Icons.sync_rounded;
             message = context.locale.lastSynced(
-              dateTimeFormatter.format(lastSynced),
+              dateTimeFormatter(context.locale.localeName).format(lastSynced),
             );
             break;
         }

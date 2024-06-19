@@ -51,7 +51,9 @@ class PauseTill extends StatelessWidget {
           subtitle: Text(
             context.locale.isPausedDesc(
               "$isActive",
-              isActive ? dateTimeFormatter.format(state) : '',
+              isActive
+                  ? dateTimeFormatter(context.locale.localeName).format(state)
+                  : '',
             ),
             style: textTheme.bodySmall?.copyWith(
               color: colors.outline,

@@ -60,7 +60,8 @@ class ClipCardOptionsHeader extends StatelessWidget {
     final textTheme = context.textTheme;
     final created = item.created.isToday()
         ? item.created.ago(context.locale.localeName)
-        : dateFormatter.format(item.created.toLocal());
+        : dateFormatter(context.locale.localeName)
+            .format(item.created.toLocal());
     return SizedBox.fromSize(
       size: const Size.fromHeight(42),
       child: LayoutBuilder(

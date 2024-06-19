@@ -22,6 +22,7 @@ const width12 = SizedBox(width: 12);
 const width16 = SizedBox(width: 16);
 
 // Heights
+const height2 = SizedBox(height: 2);
 const height4 = SizedBox(height: 4);
 const height5 = SizedBox(height: 5);
 const height6 = SizedBox(height: 6);
