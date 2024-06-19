@@ -23,7 +23,6 @@ class CreateCollectionButton extends StatelessWidget {
     final colors = context.colors;
     return SubscriptionBuilder(
       builder: (context, subscription) {
-        if (subscription == null) return const SizedBox.shrink();
         return BlocSelector<ClipCollectionCubit, ClipCollectionState,
             (int, int)>(
           selector: (state) {

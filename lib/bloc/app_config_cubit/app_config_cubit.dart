@@ -40,17 +40,17 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   }
 
   (AppConfig, bool) applyForSubscription(
-      AppConfig config, Subscription subscription) {
-    bool changed = false;
-    if (subscription.syncInterval <= config.autoSyncInterval) {
-      config = config.copyWith(autoSyncInterval: $90S)..applyId(config);
-      changed = true;
+    AppConfig config,
+    Subscription subscription,
+  ) {
+    if (subscription.isFree || !subscription.isActive) {
+      config = config.copyWith(
+        autoSyncInterval: $90S,
+        autoEncrypt: false,
+      )..applyId(config);
+      return (config, true);
     }
-    if (!subscription.encrypt) {
-      config = config.copyWith(autoEncrypt: false)..applyId(config);
-      changed = true;
-    }
-    return (config, changed);
+    return (config, false);
   }
 
   Future<void> load(Subscription? subscription) async {

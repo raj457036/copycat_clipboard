@@ -45,11 +45,21 @@ class Subscription with _$Subscription, IsarIdMixin {
   }
 
   @ignore
+  bool get isTrial {
+    return trialStart != null && trialEnd != null && subId == "TRIAL";
+  }
+
+  @ignore
+  bool get isFree => planName == "Free";
+
+  @ignore
   bool get isActive {
     if (planName == "Free") return true;
-    return (activeTill != null && activeTill!.isAfter(now())) ||
-        (trialStart != null && trialStart!.isBefore(now())) &&
-            (trialEnd != null && trialEnd!.isAfter(now()));
+    if (subId == "TRIAL") {
+      return (trialStart != null && trialStart!.isBefore(now())) &&
+          (trialEnd != null && trialEnd!.isAfter(now()));
+    }
+    return (activeTill != null && activeTill!.isAfter(now()));
   }
 
   factory Subscription.fromJson(Map<String, dynamic> json) =>
