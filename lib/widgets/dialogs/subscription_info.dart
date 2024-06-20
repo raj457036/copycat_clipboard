@@ -80,7 +80,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
                             ),
                         ],
                       ),
-                      trailing: expired
+                      trailing: expired || state.isFree
                           ? ElevatedButton.icon(
                               onPressed: () => upgrade(context),
                               icon: const Icon(Icons.workspace_premium_rounded),

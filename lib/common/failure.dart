@@ -10,6 +10,7 @@ class Failure {
   });
 
   factory Failure.fromException(Object e) {
+    if (e is Failure) return e;
     return Failure(
       message: e.toString(),
       code: e.runtimeType.toString(),

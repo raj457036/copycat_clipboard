@@ -1,7 +1,10 @@
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -21,6 +24,8 @@ class ApplyCouponDialog extends StatefulWidget {
 }
 
 class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
+  String? errorMessage;
+  bool loading = false;
   late final TextEditingController couponController;
 
   @override
@@ -38,6 +43,25 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
   Future<void> applyForPro() async {
     const betaProForm = "https://forms.gle/iuX3XDrvMJPLLtix5";
     launchUrlString(betaProForm);
+  }
+
+  Future<void> apply() async {
+    final cubit = context.read<AuthCubit>();
+    setState(() {
+      loading = true;
+    });
+    final failure = await cubit.applyPromoCode(couponController.text);
+    if (failure != null) {
+      setState(() {
+        errorMessage = failure.message;
+        loading = false;
+      });
+    } else {
+      showTextSnackbar("Subscription Updated");
+      if (mounted) {
+        context.pop();
+      }
+    }
   }
 
   @override
@@ -79,10 +103,12 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
               ),
               height10,
               TextFormField(
+                enabled: !loading,
                 controller: couponController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Coupon Code',
                   helperText: 'Enter your coupon code',
+                  errorText: errorMessage,
                 ),
               ),
             ],
@@ -91,11 +117,11 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => context.pop(),
+          onPressed: loading ? null : () => context.pop(),
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: loading ? null : apply,
           child: const Text('Apply'),
         ),
       ],
