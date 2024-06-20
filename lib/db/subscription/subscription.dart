@@ -46,7 +46,7 @@ class Subscription with _$Subscription, IsarIdMixin {
 
   @ignore
   bool get isTrial {
-    return trialStart != null && trialEnd != null && subId == "TRIAL";
+    return trialStart != null && trialEnd != null && subId == "Trial";
   }
 
   @ignore
@@ -55,7 +55,7 @@ class Subscription with _$Subscription, IsarIdMixin {
   @ignore
   bool get isActive {
     if (planName == "Free") return true;
-    if (subId == "TRIAL") {
+    if (subId == "Trial") {
       return (trialStart != null && trialStart!.isBefore(now())) &&
           (trialEnd != null && trialEnd!.isAfter(now()));
     }

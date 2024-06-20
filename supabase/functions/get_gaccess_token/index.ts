@@ -2,14 +2,9 @@
 
 /// <reference types="https://esm.sh/v135/@supabase/functions-js@2.3.1/src/edge-runtime.d.ts" />
 import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.42.4";
+import { corsHeaders } from "../utils/cors.ts";
 import { GTokenResponse, refreshGoogleToken } from "../utils/google.ts";
 import { getSupabaseClient } from "../utils/supabase.ts";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey",
-  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-};
 
 type SetupTokenPayload = {
   code?: string;

@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SubscriptionRepository {
   FailureOr<Subscription?> get();
+  FailureOr<Subscription> applyPromoCoupon(String code);
 }
 
 @LazySingleton(as: SubscriptionRepository)
@@ -40,6 +41,16 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
         return Left(Failure.fromException(e));
       }
       return Right(sub);
+    }
+  }
+
+  @override
+  FailureOr<Subscription> applyPromoCoupon(String code) async {
+    try {
+      final success = await remote.applyPromoCoupon(code);
+      return Right(success);
+    } catch (e) {
+      return Left(Failure.fromException(e));
     }
   }
 }

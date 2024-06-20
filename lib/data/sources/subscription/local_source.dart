@@ -36,4 +36,9 @@ class LocalSubscriptionSource implements SubscriptionSource {
     if (sub != null) subscription.applyId(sub);
     await db.writeTxn(() => db.subscriptions.put(subscription));
   }
+
+  @override
+  Future<Subscription> applyPromoCoupon(String code) {
+    throw UnimplementedError();
+  }
 }

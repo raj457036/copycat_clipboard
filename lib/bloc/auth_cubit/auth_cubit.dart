@@ -72,6 +72,18 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  Future<Failure?> applyPromoCode(String code) async {
+    final result = await subRepo.applyPromoCoupon(code);
+    return result.fold((l) => l, (r) {
+      emit(AuthState.authenticated(
+        session: session!,
+        user: session!.user,
+        subscription: r,
+      ));
+      return null;
+    });
+  }
+
   Future<void> fetchSubscription() async {
     if (session != null) {
       await authenticated(session!, session!.user);
