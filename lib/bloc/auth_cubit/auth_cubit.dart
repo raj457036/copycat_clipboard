@@ -6,6 +6,7 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/repositories/subscription.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:clipboard/routes/routes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -90,6 +91,19 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> setupAnalytics() async {
+    final user = session!.user;
+    await analytics.setUserId(id: user.id);
+    await analytics.setUserProperty(
+      name: "name",
+      value: user.userMetadata?["display_name"],
+    );
+    await analytics.setUserProperty(
+      name: "email",
+      value: user.email,
+    );
+  }
+
   Future<void> authenticated(Session session, User user) async {
     final subResult = await subRepo.get();
 
@@ -100,6 +114,8 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (r) => r ?? Subscription.free(user.id),
     );
+
+    setupAnalytics();
 
     emit(AuthState.authenticated(
       session: session,
