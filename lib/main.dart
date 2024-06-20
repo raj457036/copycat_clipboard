@@ -24,6 +24,7 @@ import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -110,6 +111,8 @@ class AppContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
+
+    final router_ = router([FirebaseAnalyticsObserver(analytics: analytics)]);
     return BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
       selector: (state) {
         return (state.config.themeMode, state.config.locale);
@@ -118,10 +121,10 @@ class AppContent extends StatelessWidget {
         final (theme, langCode) = state;
         return MaterialApp.router(
           scaffoldMessengerKey: scaffoldMessengerKey,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
-          routerDelegate: router.routerDelegate,
-          backButtonDispatcher: router.backButtonDispatcher,
+          routeInformationParser: router_.routeInformationParser,
+          routeInformationProvider: router_.routeInformationProvider,
+          routerDelegate: router_.routerDelegate,
+          backButtonDispatcher: router_.backButtonDispatcher,
           themeMode: theme,
           theme: ThemeData(
             useMaterial3: true,
