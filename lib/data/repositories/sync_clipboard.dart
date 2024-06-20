@@ -84,11 +84,14 @@ class SyncRepositoryImpl implements SyncRepository {
       query = query.or(orQ.join(','));
 
       final docs = await query.order("modified").range(offset, offset + limit);
-      final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
+      final clips = (await Future.wait(docs
+              .map((e) => ClipboardItem.fromJson(e))
+              .map((e) => e.decrypt())))
+          .toList();
       return Right(
         PaginatedResult(
-          results: items,
-          hasMore: items.length > limit,
+          results: clips,
+          hasMore: clips.length > limit,
         ),
       );
     } catch (e) {
