@@ -24,7 +24,8 @@ import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,21 +36,13 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_io/io.dart';
-import 'package:uuid/uuid.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'common/bloc_config.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // final secret = EncryptionSecret.generate();
-  // await EncrypterWorker.instance.start(secret.serialized);
-
-  // final encrypted = await EncrypterWorker.instance.encrypt("Hello world!");
-  // print(encrypted);
-  // final decrypted = await EncrypterWorker.instance.decrypt(encrypted);
-  // print(decrypted);
 
   if (isDesktopPlatform) {
     await windowManager.ensureInitialized();
@@ -94,29 +87,21 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   if (kDebugMode) {
     Bloc.observer = CustomBlocObserver();
   }
   await configureDependencies();
   runApp(const MainApp());
-}
-
-Future<void> screenshotAsFile(
-  BuildContext context,
-  DeviceScreenshot screenshot,
-) async {
-  final filePath = await FilePicker.platform.saveFile(
-    dialogTitle: 'Save to',
-    type: FileType.image,
-    fileName: 'screenshot_${const Uuid().v4()}.png',
-    bytes: screenshot.bytes,
-  );
-
-  if (filePath != null) {
-    final file = File(filePath);
-
-    file.writeAsBytesSync(screenshot.bytes);
-  }
 }
 
 class AppContent extends StatelessWidget {

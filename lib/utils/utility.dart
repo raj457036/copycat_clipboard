@@ -3,10 +3,13 @@ import 'dart:math' as math;
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:device_preview_screenshot/device_preview_screenshot.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import "package:universal_io/io.dart";
+import 'package:uuid/uuid.dart';
 import 'package:uuid/v4.dart';
 
 /// Simple wrapper around [Future.delayed] to wait for few seconds.
@@ -140,4 +143,22 @@ Color? hexToColor(ClipboardItem item) {
 
 Color getFg(Color bg) {
   return bg.computeLuminance() < 0.35 ? Colors.white54 : Colors.black54;
+}
+
+Future<void> screenshotAsFile(
+  BuildContext context,
+  DeviceScreenshot screenshot,
+) async {
+  final filePath = await FilePicker.platform.saveFile(
+    dialogTitle: 'Save to',
+    type: FileType.image,
+    fileName: 'screenshot_${const Uuid().v4()}.png',
+    bytes: screenshot.bytes,
+  );
+
+  if (filePath != null) {
+    final file = File(filePath);
+
+    file.writeAsBytesSync(screenshot.bytes);
+  }
 }

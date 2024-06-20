@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "892296995692-18bkkorqb2g2suf8sb1l45s71gutto59.apps.googleusercontent.com",
+          "client_id": "892296995692-qh4gj970dkvf4m3aur0ol0an2l70lvsj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,12 +27,13 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "892296995692-18bkkorqb2g2suf8sb1l45s71gutto59.apps.googleusercontent.com",
+              "client_id": "892296995692-qh4gj970dkvf4m3aur0ol0an2l70lvsj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-2217728188815563~9689168977"
     }
   ],
   "configuration_version": "1"

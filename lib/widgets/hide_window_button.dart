@@ -7,10 +7,14 @@ class HideWindowButton extends StatelessWidget {
     super.key,
   });
 
+  Future<void> hideWindow() async {
+    await windowManager.hide();
+  }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: windowManager.hide,
+      onPressed: hideWindow,
       icon: const Icon(Icons.visibility_off_rounded),
       tooltip: context.locale.hideWindow,
     );
