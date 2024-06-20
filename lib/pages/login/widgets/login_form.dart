@@ -4,6 +4,7 @@ import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
+import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
@@ -84,22 +85,41 @@ class LoginForm extends StatelessWidget {
                     child: su_auth.SupaEmailAuth(
                       onSignUpComplete: (su_auth.AuthResponse response) {
                         if (response.session != null && response.user != null) {
-                          context
-                              .read<AuthCubit>()
-                              .authenticated(response.session!, response.user!);
+                          final cubit = context.read<AuthCubit>();
+                          cubit.authenticated(
+                            response.session!,
+                            response.user!,
+                          );
+                          analytics.logSignUp(
+                            signUpMethod: "Email",
+                            parameters: {
+                              "userId": response.user!.id,
+                              "email": response.user!.email!,
+                            },
+                          );
                         }
                       },
                       onSignInComplete: (su_auth.AuthResponse response) {
                         if (response.session != null && response.user != null) {
-                          context
-                              .read<AuthCubit>()
-                              .authenticated(response.session!, response.user!);
+                          final cubit = context.read<AuthCubit>();
+                          cubit.authenticated(
+                            response.session!,
+                            response.user!,
+                          );
+                          analytics.logLogin(
+                            loginMethod: "Email",
+                            parameters: {
+                              "userId": response.user!.id,
+                              "email": response.user!.email!,
+                            },
+                          );
                         }
                       },
                       onError: (error) {
-                        context.read<AuthCubit>().unauthenticated(
-                              Failure.fromException(error),
-                            );
+                        final cubit = context.read<AuthCubit>();
+                        cubit.unauthenticated(
+                          Failure.fromException(error),
+                        );
 
                         if (error is su_auth.AuthException) {
                           showTextSnackbar(error.message);
