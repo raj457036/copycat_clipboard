@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/gestures.dart';
@@ -57,6 +58,12 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
         loading = false;
       });
     } else {
+      analytics.logEvent(
+        name: "Apply Promo Code",
+        parameters: {
+          "promo_code": couponController.text,
+        },
+      );
       showTextSnackbar("Subscription Updated");
       if (mounted) {
         context.pop();
