@@ -1,3 +1,7 @@
+🎉 Version: 0.1.13+33
+
+- Performance improvements and stability enhancements
+
 🎉 Version: 0.1.12+30
 
 - Performance improvements and optimizations.
