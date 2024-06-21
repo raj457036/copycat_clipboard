@@ -9,13 +9,14 @@ import {
 
 const applyPromoCoupon = async (
   serviceClient: SupabaseClient,
+  email: string,
   userId: string,
   code: string,
 ) => {
   const results = await serviceClient.from("promo_coupons").select().eq(
     "code",
     code,
-  ).eq("userId", userId).is("claimedAt", null).limit(1);
+  ).eq("email", email).is("claimedAt", null).limit(1);
 
   if (!results.data || results.data.length === 0) {
     return {
@@ -40,7 +41,7 @@ const applyPromoCoupon = async (
   };
 
   const subscription = await serviceClient.from("subscription").upsert({
-    userId: promo.userId,
+    userId: userId,
     modified: new Date().toISOString(),
     planName: proPlan.planName,
     subId: "Trial",
@@ -61,6 +62,7 @@ const applyPromoCoupon = async (
   if (subscription.status === 201 || subscription.status === 200) {
     await serviceClient.from("promo_coupons").update({
       claimedAt: now.toISOString(),
+      claimedBy: userId,
     }).eq("id", promo.id);
     return {
       status: subscription.status,
@@ -93,7 +95,8 @@ Deno.serve(async (req) => {
   const serviceClient = getSupabaseServiceClient();
   const user = await supabaseClient.auth.getUser();
   const userId = user.data.user?.id;
-  if (!userId) {
+  const email = user.data.user?.email;
+  if (!userId || !email) {
     return new Response(
       JSON.stringify({
         error: "User not found",
@@ -122,7 +125,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const result = await applyPromoCoupon(serviceClient, userId, code);
+  const result = await applyPromoCoupon(serviceClient, email, userId, code);
 
   return new Response(
     JSON.stringify(result),
