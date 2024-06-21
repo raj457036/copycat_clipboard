@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CopyCat Clipboard"
-#define MyAppVersion "0.1.6+23"
+#define MyAppVersion "0.1.13+33"
 #define MyAppPublisher "Entility Studio"
 #define MyAppExeName "Clipboard.exe"
 #define MyAppAssocName MyAppName + ""
@@ -43,6 +43,9 @@ Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\clipboar
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\connectivity_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\emoji_picker_flutter_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\flutter_platform_alert_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\firebase_core_plugin.lib"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\Clipboard.lib"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\Clipboard.exp"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64/runner\Release\tray_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Flutter Projects\clipboard\build\windows\x64\runner\Release\hotkey_manager_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
