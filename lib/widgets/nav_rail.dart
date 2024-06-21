@@ -71,7 +71,7 @@ class LeftNavRail extends StatelessWidget {
                     child: floatingActionButton,
                   ),
                   labelType: NavigationRailLabelType.all,
-                  groupAlignment: 0,
+                  groupAlignment: -.6,
                   elevation: 1,
                   selectedIndex: navbarActiveIndex,
                   onDestinationSelected: (idx) => onNavItemTapped(context, idx),
