@@ -66,7 +66,10 @@ class LeftNavRail extends StatelessWidget {
                     ),
                   ],
                   trailing: const AttentionButton(),
-                  leading: floatingActionButton,
+                  leading: SizedBox(
+                    height: navbarActiveIndex == 1 ? 90 : 120,
+                    child: floatingActionButton,
+                  ),
                   labelType: NavigationRailLabelType.all,
                   groupAlignment: 0,
                   elevation: 1,
