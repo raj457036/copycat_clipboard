@@ -39,10 +39,12 @@ class LocalClipboardSource implements ClipboardSource {
     if (search == null && collectionId == null) {
       resultsQuery = db.clipboardItems.filter();
     } else {
-      var filter = db.clipboardItems.filter().encryptedEqualTo(false);
+      var filter = db.clipboardItems.filter();
 
       if (collectionId != null) {
         filter = filter.collectionIdEqualTo(collectionId);
+      } else {
+        filter = filter.encryptedEqualTo(false);
       }
 
       for (final word in Isar.splitWords(search ?? "")) {

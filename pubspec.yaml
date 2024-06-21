@@ -77,6 +77,7 @@ dependencies:
   encrypt: ^5.0.3
   firebase_analytics: ^11.0.1
   firebase_core: ^3.1.0
+  firebase_core_desktop: ^1.0.2
   firebase_crashlytics: ^4.0.1
 
 dev_dependencies:
@@ -94,6 +95,7 @@ dependency_overrides:
   device_info_plus: ^9.0.2
   intl: ^0.19.0
   analyzer: ^6.4.1
+  firebase_core_platform_interface: ^4.5.0
 
 flutter:
   uses-material-design: true
