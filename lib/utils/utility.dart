@@ -123,6 +123,9 @@ bool get isDesktopPlatform =>
 
 bool get isMobilePlatform => Platform.isIOS || Platform.isAndroid;
 
+bool get isAnalyticsSupported =>
+    Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
+
 Color? hexToColor(ClipboardItem item) {
   if (item.textCategory != TextCategory.color) return null;
   String hex = item.text!.replaceAll('#', '');

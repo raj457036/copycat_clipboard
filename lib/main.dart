@@ -92,11 +92,13 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  if (isAnalyticsSupported) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
 
   if (kDebugMode) {
     Bloc.observer = CustomBlocObserver();
@@ -112,7 +114,9 @@ class AppContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
 
-    final router_ = router([FirebaseAnalyticsObserver(analytics: analytics)]);
+    final router_ = router([
+      if (isAnalyticsSupported) FirebaseAnalyticsObserver(analytics: analytics)
+    ]);
     return BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
       selector: (state) {
         return (state.config.themeMode, state.config.locale);

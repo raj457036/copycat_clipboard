@@ -7,6 +7,7 @@ import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -90,13 +91,15 @@ class LoginForm extends StatelessWidget {
                             response.session!,
                             response.user!,
                           );
-                          analytics.logSignUp(
-                            signUpMethod: "Email",
-                            parameters: {
-                              "userId": response.user!.id,
-                              "email": response.user!.email!,
-                            },
-                          );
+                          if (isAnalyticsSupported) {
+                            analytics.logSignUp(
+                              signUpMethod: "Email",
+                              parameters: {
+                                "userId": response.user!.id,
+                                "email": response.user!.email!,
+                              },
+                            );
+                          }
                         }
                       },
                       onSignInComplete: (su_auth.AuthResponse response) {
@@ -106,13 +109,15 @@ class LoginForm extends StatelessWidget {
                             response.session!,
                             response.user!,
                           );
-                          analytics.logLogin(
-                            loginMethod: "Email",
-                            parameters: {
-                              "userId": response.user!.id,
-                              "email": response.user!.email!,
-                            },
-                          );
+                          if (isAnalyticsSupported) {
+                            analytics.logLogin(
+                              loginMethod: "Email",
+                              parameters: {
+                                "userId": response.user!.id,
+                                "email": response.user!.email!,
+                              },
+                            );
+                          }
                         }
                       },
                       onError: (error) {

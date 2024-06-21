@@ -473,14 +473,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-  firebase_core_platform_interface:
+  firebase_core_dart:
     dependency: transitive
     description:
-      name: firebase_core_platform_interface
-      sha256: "1003a5a03a61fc9a22ef49f37cbcb9e46c86313a7b2e7029b9390cf8c6fc32cb"
+      name: firebase_core_dart
+      sha256: ccb96c29ae686f43ad80f8f0893717361b7959a88b276c5e2c3627d12a9f1de8
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "1.0.1"
+  firebase_core_desktop:
+    dependency: "direct main"
+    description:
+      name: firebase_core_desktop
+      sha256: "5bb8ba325739c82efe0535f758afb0613a104c50e3ac5c6ecb6de2657cebb4ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
+  firebase_core_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_core_platform_interface
+      sha256: b63e3be6c96ef5c33bdec1aab23c91eb00696f6452f0519401d640938c94cba2
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.8.0"
   firebase_core_web:
     dependency: transitive
     description:

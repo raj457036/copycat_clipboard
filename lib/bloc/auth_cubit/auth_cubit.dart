@@ -7,6 +7,7 @@ import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/repositories/subscription.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/routes/routes.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -92,6 +93,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> setupAnalytics() async {
+    if (!isAnalyticsSupported) return;
     final user = session!.user;
     await analytics.setUserId(id: user.id);
     await analytics.setUserProperty(
