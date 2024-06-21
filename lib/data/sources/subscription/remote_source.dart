@@ -44,7 +44,6 @@ class RemoteSubscriptionSource implements SubscriptionSource {
 
       return Subscription.fromJson(response.data["subscription"]);
     } on FunctionException catch (e) {
-      logger.e(e);
       throw Failure(
         message: e.details["error"] ?? "Invalid Code",
         code: "promo-failed",
