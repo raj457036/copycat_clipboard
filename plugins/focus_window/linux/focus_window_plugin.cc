@@ -41,7 +41,7 @@ static FlMethodResponse *paste_content()
   }
 
   // Simulate pressing Ctrl+V
-  simulate_key_press(display, XStringToKeysym("Control_L"));
+  XTestFakeKeyEvent(display, XKeysymToKeycode(display, XStringToKeysym("Control_L")), True, 0);
   simulate_key_press(display, XStringToKeysym("V"));
   XTestFakeKeyEvent(display, XKeysymToKeycode(display, XStringToKeysym("Control_L")), False, 0);
 
