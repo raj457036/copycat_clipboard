@@ -1,0 +1,6 @@
+framework module focus_window {
+  umbrella header "focus_window-umbrella.h"
+
+  export *
+  module * { export * }
+}
