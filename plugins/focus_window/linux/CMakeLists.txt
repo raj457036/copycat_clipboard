@@ -86,6 +86,11 @@ target_link_libraries(${TEST_RUNNER} PRIVATE flutter)
 target_link_libraries(${TEST_RUNNER} PRIVATE PkgConfig::GTK)
 target_link_libraries(${TEST_RUNNER} PRIVATE gtest_main gmock)
 
+# X11 library for key press simulation
+find_package(X11 REQUIRED)
+include_directories(${X11_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES} Xtst)
+
 # Enable automatic test discovery.
 include(GoogleTest)
 gtest_discover_tests(${TEST_RUNNER})
