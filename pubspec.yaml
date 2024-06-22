@@ -47,7 +47,7 @@ dependencies:
       url: https://github.com/raj457036/flutter-auth-ui.git
   supabase_flutter: ^2.5.5
   app_links: ^6.1.1
-  device_preview: ^1.1.0
+  device_preview: ^1.2.0
   toastification: ^2.0.0
   async: ^2.11.0
   win32_registry: ^1.1.3
@@ -67,7 +67,6 @@ dependencies:
       ref: master
       path: "platform_device_id"
   google_mobile_ads: ^5.1.0
-  handy_window: ^0.4.0
   focus_window:
     path: ./plugins/focus_window
   package_info_plus: ^8.0.0

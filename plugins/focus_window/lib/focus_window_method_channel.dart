@@ -47,6 +47,8 @@ class MethodChannelFocusWindow extends FocusWindowPlatform {
     if (Platform.isMacOS) {
       await methodChannel.invokeMethod<void>("pasteContent", {});
     }
-    if (Platform.isLinux) {}
+    if (Platform.isLinux) {
+      await methodChannel.invokeMethod<void>("pasteContent", {});
+    }
   }
 }
