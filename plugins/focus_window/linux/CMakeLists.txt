@@ -39,15 +39,7 @@ target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
 target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter)
-
-# Find and link X11 and Xtst libraries
-find_package(X11 REQUIRED)
-include_directories(${X11_INCLUDE_DIR})
-target_link_libraries(${PLUGIN_NAME} ${X11_LIBRARIES} Xtst)
-
-# Provide a path to your Flutter engine
-set(FLUTTER_LIBRARY "/path/to/flutter/engine")
-add_subdirectory(${FLUTTER_LIBRARY})
+target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GTK)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
@@ -91,8 +83,8 @@ add_executable(${TEST_RUNNER}
 apply_standard_settings(${TEST_RUNNER})
 target_include_directories(${TEST_RUNNER} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_link_libraries(${TEST_RUNNER} PRIVATE flutter)
+target_link_libraries(${TEST_RUNNER} PRIVATE PkgConfig::GTK)
 target_link_libraries(${TEST_RUNNER} PRIVATE gtest_main gmock)
-target_link_libraries(${TEST_RUNNER} PRIVATE ${X11_LIBRARIES} Xtst)
 
 # Enable automatic test discovery.
 include(GoogleTest)
