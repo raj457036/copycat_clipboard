@@ -83,3 +83,5 @@ void focus_window_plugin_register_with_registrar(FlPluginRegistrar *registrar)
                                             g_object_unref);
 
   g_object_unref(plugin);
+
+}

@@ -37,7 +37,6 @@ class WindowFocusManager extends StatefulWidget {
 
 class WindowFocusManagerState extends State<WindowFocusManager>
     with WindowListener {
-  bool _focused = true;
   int? lastWindowId;
 
   late final AppConfigCubit appConfigCubit;
@@ -57,7 +56,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   Future<bool> toggleWindow() async {
     late final bool focused;
     if (Platform.isLinux) {
-      focused = _focused;
+      focused = await windowManager.isVisible();
     } else {
       focused = await windowManager.isFocused();
     }
@@ -65,14 +64,12 @@ class WindowFocusManagerState extends State<WindowFocusManager>
       await restore();
       await Future.delayed(Durations.short1);
       await windowManager.hide();
-      _focused = false;
       return true;
     } else {
       await record();
       await windowManager.show();
       await Future.delayed(Durations.short1);
       await windowManager.focus();
-      _focused = true;
       return false;
     }
   }
