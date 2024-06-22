@@ -92,7 +92,8 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
     );
 
     if (result.name == "positiveButton") {
-      SystemNavigator.pop(animated: true);
+      await SystemNavigator.pop(animated: true);
+      exit(0);
     }
   }
 
