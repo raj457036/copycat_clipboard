@@ -9,7 +9,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   flutter_platform_alert
   focus_window
   gtk
-  handy_window
   hotkey_manager_linux
   irondash_engine_context
   isar_flutter_libs

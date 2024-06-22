@@ -3,8 +3,11 @@
 #include <flutter_linux/flutter_linux.h>
 #include <gtk/gtk.h>
 #include <sys/utsname.h>
-
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/extensions/XTest.h>
 #include <cstring>
+#include <unistd.h>
 
 #include "focus_window_plugin_private.h"
 
@@ -18,6 +21,33 @@ struct _FocusWindowPlugin {
 
 G_DEFINE_TYPE(FocusWindowPlugin, focus_window_plugin, g_object_get_type())
 
+// Function to simulate key press using X11
+static void simulate_key_press(Display* display, KeySym keysym) {
+  KeyCode keycode = XKeysymToKeycode(display, keysym);
+  XTestFakeKeyEvent(display, keycode, True, 0);
+  XTestFakeKeyEvent(display, keycode, False, 0);
+  XFlush(display);
+}
+
+// Function to paste content using X11
+static FlMethodResponse* paste_content() {
+  Display* display = XOpenDisplay(nullptr);
+  if (display == nullptr) {
+    g_autoptr(FlValue) result = fl_value_new_string("Failed to open X display");
+    return FL_METHOD_RESPONSE(fl_method_error_response_new("XOpenDisplayError", "Failed to open X display", result));
+  }
+
+  // Simulate pressing Ctrl+V
+  simulate_key_press(display, XStringToKeysym("Control_L"));
+  simulate_key_press(display, XStringToKeysym("V"));
+  XTestFakeKeyEvent(display, XKeysymToKeycode(display, XStringToKeysym("Control_L")), False, 0);
+  
+  XCloseDisplay(display);
+
+  g_autoptr(FlValue) result = fl_value_new_string("Pasted content successfully");
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
 // Called when a method call is received from Flutter.
 static void focus_window_plugin_handle_method_call(
     FocusWindowPlugin* self,
@@ -28,6 +58,8 @@ static void focus_window_plugin_handle_method_call(
 
   if (strcmp(method, "getPlatformVersion") == 0) {
     response = get_platform_version();
+  } else if (strcmp(method, "pasteContent") == 0) {
+    response = paste_content();
   } else {
     response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
   }

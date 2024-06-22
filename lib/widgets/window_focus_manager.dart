@@ -4,6 +4,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_window/focus_window.dart';
+import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowFocusManager extends StatefulWidget {
@@ -36,6 +37,7 @@ class WindowFocusManager extends StatefulWidget {
 
 class WindowFocusManagerState extends State<WindowFocusManager>
     with WindowListener {
+  bool _focused = true;
   int? lastWindowId;
 
   late final AppConfigCubit appConfigCubit;
@@ -53,17 +55,24 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   /// returns true when unfocused and false when focused
   Future<bool> toggleWindow() async {
-    final focused = await windowManager.isFocused();
+    late final bool focused;
+    if (Platform.isLinux) {
+      focused = _focused;
+    } else {
+      focused = await windowManager.isFocused();
+    }
     if (focused) {
       await restore();
       await Future.delayed(Durations.short1);
       await windowManager.hide();
+      _focused = false;
       return true;
     } else {
       await record();
-      await windowManager.show(inactive: false);
+      await windowManager.show();
       await Future.delayed(Durations.short1);
       await windowManager.focus();
+      _focused = true;
       return false;
     }
   }
