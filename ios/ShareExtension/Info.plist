@@ -6,12 +6,12 @@
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
-            <key>IntentsSupported</key>
-            <array>
-                <string>INSendMessageIntent</string>
-            </array>
-            <key>NSExtensionActivationRule</key>
-            <string>SUBQUERY (
+			<key>IntentsSupported</key>
+			<array>
+				<string>INSendMessageIntent</string>
+			</array>
+			<key>NSExtensionActivationRule</key>
+			<string>SUBQUERY (
                 extensionItems,
                 $extensionItem,
                 SUBQUERY (
@@ -27,11 +27,11 @@
                 ).@count == 1
             ).@count == 1
             </string>
-            <key>PHSupportedMediaTypes</key>
-            <array>
-                <string>Video</string>
-                <string>Image</string>
-            </array>
+			<key>PHSupportedMediaTypes</key>
+			<array>
+				<string>Video</string>
+				<string>Image</string>
+			</array>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
