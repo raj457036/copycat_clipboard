@@ -142,6 +142,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
             if (keyId == null || enc1 == null) {
               return AlertDialog(
+                insetPadding: const EdgeInsets.all(padding10),
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -200,6 +201,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
             if (enc2Key == null) {
               return AlertDialog(
+                // insetPadding: const EdgeInsets.all(padding10),
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,

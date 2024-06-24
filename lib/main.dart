@@ -162,9 +162,12 @@ class AppContent extends StatelessWidget {
           locale: Locale(langCode.isEmpty ? "en" : langCode),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => NetworkObserver(
-            child: ShareListener.fromPlatform(
-              child: child ?? const SizedBox.shrink(),
+          builder: (context, child) => GestureDetector(
+            onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+            child: NetworkObserver(
+              child: ShareListener.fromPlatform(
+                child: child ?? const SizedBox.shrink(),
+              ),
             ),
           ),
         );
@@ -221,6 +224,7 @@ class MainApp extends StatelessWidget {
 
     if (kDebugMode) {
       return DevicePreview(
+        enabled: true,
         tools: const [
           ...DevicePreview.defaultTools,
           DevicePreviewScreenshot(
