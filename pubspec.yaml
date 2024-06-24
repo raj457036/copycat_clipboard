@@ -78,7 +78,7 @@ dependencies:
   firebase_core: ^3.1.0
   firebase_core_desktop: ^1.0.2
   firebase_crashlytics: ^4.0.1
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

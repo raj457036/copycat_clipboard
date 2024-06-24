@@ -46,32 +46,7 @@ class _ShareListenerState extends State<ShareListener> {
       logger.i("Received initial shared media!");
       await putMediaToClipboard(media);
       await handler.resetInitialSharedMedia();
-      showTextSnackbar(
-        // ignore: use_build_context_synchronously
-        "✅ ${context.locale.done}",
-        closePrevious: true,
-        duration: 15,
-        isProgress: true,
-        action: SnackBarAction(
-          // ignore: use_build_context_synchronously
-          label: context.locale.backToApp,
-          onPressed: () {
-            SystemNavigator.pop(animated: true);
-          },
-        ),
-      );
-    }
-
-    handler.sharedMediaStream.listen((SharedMedia media) async {
-      if (!mounted) return;
-      logger.i("Received shared media: $media");
-      showTextSnackbar(
-        context.locale.pastingTheSharedContent,
-        isLoading: true,
-      );
-      if (!mounted) return;
-      try {
-        await putMediaToClipboard(media);
+      if (Platform.isAndroid) {
         showTextSnackbar(
           // ignore: use_build_context_synchronously
           "✅ ${context.locale.done}",
@@ -86,6 +61,35 @@ class _ShareListenerState extends State<ShareListener> {
             },
           ),
         );
+      }
+    }
+
+    handler.sharedMediaStream.listen((SharedMedia media) async {
+      if (!mounted) return;
+      logger.i("Received shared media: $media");
+      showTextSnackbar(
+        context.locale.pastingTheSharedContent,
+        isLoading: true,
+      );
+      if (!mounted) return;
+      try {
+        await putMediaToClipboard(media);
+        if (Platform.isAndroid) {
+          showTextSnackbar(
+            // ignore: use_build_context_synchronously
+            "✅ ${context.locale.done}",
+            closePrevious: true,
+            duration: 15,
+            isProgress: true,
+            action: SnackBarAction(
+              // ignore: use_build_context_synchronously
+              label: context.locale.backToApp,
+              onPressed: () {
+                SystemNavigator.pop(animated: true);
+              },
+            ),
+          );
+        }
       } catch (e) {
         // ignore: use_build_context_synchronously
         showTextSnackbar("❌ ${context.locale.failed}", closePrevious: true);
