@@ -65,11 +65,11 @@ PODS:
   - Firebase/Crashlytics (10.27.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 10.27.0)
-  - firebase_analytics (11.0.1):
+  - firebase_analytics (11.1.0):
     - Firebase/Analytics (= 10.27.0)
     - firebase_core
     - Flutter
-  - firebase_core (3.1.0):
+  - firebase_core (3.1.1):
     - Firebase/CoreOnly (= 10.27.0)
     - Flutter
   - firebase_crashlytics (4.0.1):
@@ -387,8 +387,8 @@ SPEC CHECKSUMS:
   emoji_picker_flutter: fe2e6151c5b548e975d546e6eeb567daf0962a58
   file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
   Firebase: 26b040b20866a55f55eb3611b9fcf3ae64816b86
-  firebase_analytics: 0627e95b73eb9e04f59167687ed5bc3f6fb50f23
-  firebase_core: 483cfad66d24d8f3c233f31db4263830c625c909
+  firebase_analytics: cc6e3ca8f159facf99fb1ceb2d81bda9cc811556
+  firebase_core: f8d0424c45e0f1e596811085fc12c638d628457c
   firebase_crashlytics: 8f04c663c8734f97c4ccbe81b8511ce7060e3b28
   FirebaseAnalytics: f9211b719db260cc91aebee8bb539cb367d0dfd1
   FirebaseCore: a2b95ae4ce7c83ceecfbbbe3b6f1cddc7415a808
