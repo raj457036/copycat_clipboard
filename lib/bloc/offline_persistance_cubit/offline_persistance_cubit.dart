@@ -10,6 +10,7 @@ import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:share_plus/share_plus.dart';
@@ -115,16 +116,30 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     }
   }
 
-  Future<void> shareClipboardItem(ClipboardItem item) async {
+  Future<void> shareClipboardItem(
+    BuildContext context,
+    ClipboardItem item,
+  ) async {
+    // _onShare method:
+    final box = context.findRenderObject() as RenderBox?;
+
+    Rect? origin;
+
+    if (box != null) {
+      origin = box.localToGlobal(Offset.zero) & box.size;
+    }
+
     switch (item.type) {
       case ClipItemType.text:
         await Share.share(
           item.text!,
           subject: item.title,
+          sharePositionOrigin: origin,
         );
       case ClipItemType.url:
         await Share.shareUri(
           Uri.parse(item.url!),
+          sharePositionOrigin: origin,
         );
       case ClipItemType.media:
       case ClipItemType.file:
@@ -133,6 +148,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
           [XFile(item.localPath!)],
           subject: item.title,
           text: item.description,
+          sharePositionOrigin: origin,
         );
     }
   }
