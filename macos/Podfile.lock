@@ -28,11 +28,11 @@ PODS:
   - Firebase/Crashlytics (10.27.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 10.27.0)
-  - firebase_analytics (11.0.1):
+  - firebase_analytics (11.1.0):
     - Firebase/Analytics (= 10.27.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (3.1.0):
+  - firebase_core (3.1.1):
     - Firebase/CoreOnly (~> 10.27.0)
     - FlutterMacOS
   - firebase_crashlytics (4.0.1):
@@ -328,8 +328,8 @@ SPEC CHECKSUMS:
   device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
   Firebase: 26b040b20866a55f55eb3611b9fcf3ae64816b86
-  firebase_analytics: 2370857414db883542ff3cc0cf4634d1de55b37b
-  firebase_core: 3cf30a8be4c850f7192bf9597f5939d0c3af706b
+  firebase_analytics: 79d06f2ac1e2dd7aae0a79cc3ccf708df81424f1
+  firebase_core: df33f64432203e675060e475de6ea8127eb8398a
   firebase_crashlytics: e1cab8da891bf7000cdf8e09fd7b14f348d92b6e
   FirebaseAnalytics: f9211b719db260cc91aebee8bb539cb367d0dfd1
   FirebaseCore: a2b95ae4ce7c83ceecfbbbe3b6f1cddc7415a808
