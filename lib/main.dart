@@ -108,6 +108,10 @@ Future<void> main() async {
   runApp(const MainApp());
 }
 
+final router_ = router([
+  if (isAnalyticsSupported) FirebaseAnalyticsObserver(analytics: analytics)
+]);
+
 class AppContent extends StatelessWidget {
   const AppContent({super.key});
 
@@ -115,9 +119,6 @@ class AppContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
 
-    final router_ = router([
-      if (isAnalyticsSupported) FirebaseAnalyticsObserver(analytics: analytics)
-    ]);
     return BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
       selector: (state) {
         return (state.config.themeMode, state.config.locale);

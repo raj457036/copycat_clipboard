@@ -10,4 +10,5 @@ class RouteConstants {
   static const String driveConnect = "drive-connect";
   static const String preview = "preview";
   static const String resetPassword = "reset-password";
+  static const String accountDetails = "account-details";
 }

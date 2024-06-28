@@ -7,6 +7,7 @@ import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,22 +19,32 @@ class SplashPage extends StatelessWidget {
     super.key,
   });
 
+  Future<void> checkForAuth(BuildContext context) async {
+    final authCubit = context.read<AuthCubit>();
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (authCubit.subscription != null) {
+      authDone(context, authCubit.subscription!);
+    }
+  }
+
+  Future<void> authDone(BuildContext context, Subscription subscription) async {
+    await context.read<AppConfigCubit>().load(subscription);
+    context.read<ClipCollectionCubit>().fetch();
+    context.read<SyncManagerCubit>().syncChanges();
+    context.read<OfflinePersistanceCubit>().startListners();
+    context.read<DriveSetupCubit>().fetch();
+    context.goNamed(RouteConstants.home);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-      Durations.long1,
-      context.read<AuthCubit>().checkForAuthentication,
-    );
+    checkForAuth(context);
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
           case AuthenticatedAuthState(:final subscription):
-            await context.read<AppConfigCubit>().load(subscription);
-            context.read<ClipCollectionCubit>().fetch();
-            context.read<SyncManagerCubit>().syncChanges();
-            context.read<OfflinePersistanceCubit>().startListners();
-            context.read<DriveSetupCubit>().fetch();
-            context.goNamed(RouteConstants.home);
+            authDone(context, subscription);
             break;
           case UnauthenticatedAuthState():
             context.goNamed(RouteConstants.login);
