@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ResetPasswordButton extends StatelessWidget {
-  const ResetPasswordButton({super.key});
+  final bool iconButton;
+  const ResetPasswordButton({
+    super.key,
+    this.iconButton = true,
+  });
 
   Future<void> resetPassword(BuildContext context) async {
     context.pushNamed(RouteConstants.resetPassword);
@@ -11,9 +15,16 @@ class ResetPasswordButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton.filledTonal(
+    if (iconButton) {
+      return IconButton.filledTonal(
+        icon: const Icon(Icons.lock_person_rounded),
+        tooltip: 'Reset Password',
+        onPressed: () => resetPassword(context),
+      );
+    }
+    return ElevatedButton.icon(
       icon: const Icon(Icons.lock_person_rounded),
-      tooltip: 'Reset Password',
+      label: const Text('Reset Password'),
       onPressed: () => resetPassword(context),
     );
   }

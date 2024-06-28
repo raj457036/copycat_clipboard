@@ -9,6 +9,7 @@ import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
 import "package:clipboard/di/di.dart";
+import "package:clipboard/pages/account/page.dart";
 import "package:clipboard/pages/collections/page.dart";
 import "package:clipboard/pages/collections/pages/create_edit/page.dart";
 import "package:clipboard/pages/collections/pages/details/page.dart";
@@ -73,6 +74,15 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
           path: '/reset-password',
           builder: (context, state) {
             return ResetPasswordPage(
+              key: state.pageKey,
+            );
+          },
+        ),
+        GoRoute(
+          name: RouteConstants.accountDetails,
+          path: '/account-details',
+          builder: (context, state) {
+            return AccountPage(
               key: state.pageKey,
             );
           },

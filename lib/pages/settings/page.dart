@@ -13,6 +13,7 @@ import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/widgets/account_detail_button.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
@@ -36,7 +37,9 @@ class SettingsPage extends StatelessWidget {
           ActivePlanAction(compact: isMobile),
           width12,
           const ResetPasswordButton(),
-          width4,
+          width12,
+          const AccountDetailButton(),
+          width12,
           const LogoutButton(),
           width12,
         ],
