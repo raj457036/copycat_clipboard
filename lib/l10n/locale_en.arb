@@ -228,7 +228,7 @@
     "recordKeyboardShortcut": "Record keyboard shortcut.",
     "recordKeyboardShortcutDesc": "Type your shortcut using your keyboard and click ",
     "subscription": "Subscription",
-    "beta": "BETA",
+    "beta": "PUBLIC BETA",
     "featureListDetail": "CopyCat Clipboard is currently in the Beta phase. While we strive for a seamless experience, you may encounter occasional bugs. Stay tuned for upcoming features and enhancements.",
     "currentPlan": "Current Plan",
     "currentPlanLabel": "Current Plan • {LABEL}",

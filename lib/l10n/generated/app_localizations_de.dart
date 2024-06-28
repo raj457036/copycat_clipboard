@@ -475,7 +475,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get subscription => 'Abonnement';
 
   @override
-  String get beta => 'BETA';
+  String get beta => 'PUBLIC BETA';
 
   @override
   String get featureListDetail =>

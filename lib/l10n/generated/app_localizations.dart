@@ -948,7 +948,7 @@ abstract class AppLocalizations {
   /// No description provided for @beta.
   ///
   /// In en, this message translates to:
-  /// **'BETA'**
+  /// **'PUBLIC BETA'**
   String get beta;
 
   /// No description provided for @featureListDetail.

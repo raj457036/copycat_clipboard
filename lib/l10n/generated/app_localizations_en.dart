@@ -472,7 +472,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription => 'Subscription';
 
   @override
-  String get beta => 'BETA';
+  String get beta => 'PUBLIC BETA';
 
   @override
   String get featureListDetail =>

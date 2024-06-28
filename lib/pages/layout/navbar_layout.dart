@@ -46,6 +46,7 @@ class _NavBarPageState extends State<NavBarPage> {
                 NavigationBar(
                   selectedIndex: widget.navbarActiveIndex,
                   onDestinationSelected: (idx) => onNavItemTapped(context, idx),
+                  // labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
                   destinations: [
                     NavigationDestination(
                       icon: const Icon(Icons.paste_rounded),
