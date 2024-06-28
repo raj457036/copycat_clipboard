@@ -17,7 +17,6 @@ import 'package:clipboard/widgets/account_detail_button.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
-import 'package:clipboard/widgets/reset_password_button.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +34,6 @@ class SettingsPage extends StatelessWidget {
         title: Text(context.locale.settings),
         actions: [
           ActivePlanAction(compact: isMobile),
-          width12,
-          const ResetPasswordButton(),
           width12,
           const AccountDetailButton(),
           width12,

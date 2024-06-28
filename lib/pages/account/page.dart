@@ -15,8 +15,8 @@ class AccountPage extends StatelessWidget {
   Future<void> deleteAccount(BuildContext context) async {
     final answer = await const ConfirmDialog(
       title: "Account Delete Request",
-      message:
-          "You will be redirected to the account delete request form, are you sure?",
+      message: "You will be redirected to the account"
+          " delete request form, are you sure?",
     ).open(context);
 
     if (answer) {
@@ -94,7 +94,7 @@ class AccountPage extends StatelessWidget {
       body: Align(
         alignment: isPhone ? Alignment.topCenter : Alignment.center,
         child: ConstrainedBox(
-          constraints: BoxConstraints.loose(const Size(550, 550)),
+          constraints: BoxConstraints.loose(const Size(550, 350)),
           child: isPhone ? content : Card.outlined(child: content),
         ),
       ),

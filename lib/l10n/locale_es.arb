@@ -228,7 +228,7 @@
     "recordKeyboardShortcut": "Grabar atajo de teclado.",
     "recordKeyboardShortcutDesc": "Escribe tu atajo usando tu teclado y haz clic ",
     "subscription": "Suscripción",
-    "beta": "BETA",
+    "beta": "PUBLIC BETA",
     "featureListDetail": "CopyCat Clipboard está actualmente en fase Beta. Mientras nos esforzamos por ofrecer una experiencia sin problemas, puede que encuentres errores ocasionales. Mantente atento a las próximas características y mejoras.",
     "currentPlan": "Plan Actual",
     "currentPlanLabel": "Plan Actual • {LABEL}",

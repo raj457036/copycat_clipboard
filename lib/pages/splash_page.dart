@@ -21,6 +21,7 @@ class SplashPage extends StatelessWidget {
 
   Future<void> checkForAuth(BuildContext context) async {
     final authCubit = context.read<AuthCubit>();
+    authCubit.checkForAuthentication();
     await Future.delayed(const Duration(seconds: 2));
 
     if (authCubit.subscription != null) {
