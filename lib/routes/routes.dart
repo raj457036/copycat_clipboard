@@ -6,6 +6,7 @@ import "package:clipboard/bloc/collection_clips_cubit/collection_clips_cubit.dar
 import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
 import "package:clipboard/bloc/search_cubit/search_cubit.dart";
+import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
 import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/collections/page.dart";
@@ -31,7 +32,6 @@ import "package:go_router/go_router.dart";
 
 final analytics = FirebaseAnalytics.instance;
 
-final rootNavKey = GlobalKey<NavigatorState>();
 const rootLocation = "/";
 GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
       observers: observers,

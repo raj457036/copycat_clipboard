@@ -37,6 +37,7 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_io/io.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'common/bloc_config.dart';
@@ -162,11 +163,15 @@ class AppContent extends StatelessWidget {
           locale: Locale(langCode.isEmpty ? "en" : langCode),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => GestureDetector(
-            onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-            child: NetworkObserver(
-              child: ShareListener.fromPlatform(
-                child: child ?? const SizedBox.shrink(),
+          builder: (context, child) => UpgradeAlert(
+            navigatorKey: rootNavKey,
+            shouldPopScope: () => true,
+            child: GestureDetector(
+              onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+              child: NetworkObserver(
+                child: ShareListener.fromPlatform(
+                  child: child ?? const SizedBox.shrink(),
+                ),
               ),
             ),
           ),
