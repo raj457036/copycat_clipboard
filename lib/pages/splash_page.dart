@@ -25,7 +25,8 @@ class SplashPage extends StatelessWidget {
     await Future.delayed(const Duration(seconds: 2));
 
     if (authCubit.subscription != null) {
-      authDone(context, authCubit.subscription!);
+      if (!context.mounted) return;
+      await authDone(context, authCubit.subscription!);
     }
   }
 
@@ -40,7 +41,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    checkForAuth(context);
+    Future.delayed(const Duration(seconds: 1), () => checkForAuth(context));
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {

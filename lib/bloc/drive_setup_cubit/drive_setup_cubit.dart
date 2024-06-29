@@ -62,17 +62,21 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
     emit(const DriveSetupState.unknown());
   }
 
-  Future<void> fetch() async {
+  Future<bool> fetch() async {
     emit(const DriveSetupState.fetching());
     final result = await repo.getDriveCredentials();
     emit(result.fold(
       (l) => DriveSetupState.setupError(failure: l),
       (r) => DriveSetupState.setupDone(token: r),
     ));
+
+    return result.isRight();
   }
 
   Future<void> startSetup() async {
     emit(const DriveSetupState.unknown());
+    final foundAlready = await fetch();
+    if (foundAlready) return;
     final result = await repo.launchConsentPage();
     emit(result.fold(
       (l) => DriveSetupState.setupError(failure: l),
