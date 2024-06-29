@@ -67,7 +67,10 @@ class DriveCredentialRepositoryImpl implements DriveCredentialRepository {
             "scopes",
           ].join(","))
           .eq("userId", userId);
-      final doc = await query.single();
+      final doc = await query.limit(1).maybeSingle();
+      if (doc == null) {
+        return const Left(driveFailure);
+      }
       return Right(DriveAccessToken.fromJson(doc));
     } catch (e) {
       return Left(Failure.fromException(e));
