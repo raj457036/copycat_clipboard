@@ -2,6 +2,7 @@
 
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
@@ -37,8 +38,10 @@ class LogoutButton extends StatelessWidget {
         isLoading: true,
         closePrevious: true,
       );
+      EncrypterWorker.instance.dispose();
       context.read<OfflinePersistanceCubit>().stopListners();
       context.read<OfflinePersistanceCubit>().reset();
+      context.read<ClipCollectionCubit>().reset();
       context.read<SyncManagerCubit>().reset();
       context.read<DriveSetupCubit>().reset();
       if (isDesktopPlatform) {

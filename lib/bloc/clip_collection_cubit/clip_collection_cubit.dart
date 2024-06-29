@@ -23,6 +23,11 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
     @Named("device_id") this.deviceId,
   ) : super(const ClipCollectionState.initial());
 
+  Future<void> reset() async {
+    await repo.deleteAll();
+    emit(const ClipCollectionState.initial());
+  }
+
   Future<ClipCollection?> get(int id) async {
     ClipCollection? collection = state.mapOrNull(
       loaded: (loaded) => loaded.collections.findFirst((e) => e.id == id),

@@ -13,23 +13,40 @@ class MediaClipCard extends StatelessWidget {
 
   const MediaClipCard({super.key, required this.item});
 
-  ImageProvider getPreview() {
+  Image getPreview() {
     if (item.fileMimeType!.startsWith("image")) {
       if (item.localPath != null) {
-        return FileImage(File(item.localPath!));
+        return Image.file(
+          File(item.localPath!),
+          gaplessPlayback: true,
+          fit: BoxFit.cover,
+        );
       }
       if (item.imgBlurHash == null) {
-        return const AssetImage(AssetConstants.placeholderImage);
+        return Image.asset(
+          AssetConstants.placeholderImage,
+          fit: BoxFit.cover,
+        );
       }
       try {
         final image_ = BlurHash.decode(item.imgBlurHash!).toImage(35, 20);
         final bin = Uint8List.fromList(img.encodeJpg(image_));
-        return MemoryImage(bin);
+        return Image.memory(
+          bin,
+          gaplessPlayback: true,
+          fit: BoxFit.cover,
+        );
       } catch (e) {
-        return const AssetImage(AssetConstants.placeholderImage);
+        return Image.asset(
+          AssetConstants.placeholderImage,
+          fit: BoxFit.cover,
+        );
       }
     }
-    return const AssetImage(AssetConstants.placeholderImage);
+    return Image.asset(
+      AssetConstants.placeholderImage,
+      fit: BoxFit.cover,
+    );
   }
 
   Widget getIcon() {
@@ -58,10 +75,6 @@ class MediaClipCard extends StatelessWidget {
             width2,
           ],
         );
-        // return const Icon(
-        //   Icons.ondemand_video_rounded,
-        //   color: Colors.white,
-        // );
       }
       if (item.fileMimeType!.startsWith("audio")) {
         return const Icon(
@@ -81,19 +94,26 @@ class MediaClipCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: radius8,
       child: SizedBox.expand(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: getPreview(),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Align(
+          child: Stack(
+        children: [
+          Positioned.fill(child: getPreview()),
+          Align(
             alignment: const Alignment(0.95, 0.95),
             child: getIcon(),
           ),
-        ),
-      ),
+        ],
+      )
+
+          // DecoratedBox(
+          //   decoration: BoxDecoration(
+          //     image: DecorationImage(
+          //       image: getPreview(),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          //   child:
+          // ),
+          ),
     );
   }
 }

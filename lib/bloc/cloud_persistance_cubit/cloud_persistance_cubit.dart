@@ -37,7 +37,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   ) : super(const CloudPersistanceState.initial());
 
   Future<void> persist(ClipboardItem item, {int retryCount = 0}) async {
-    emit(const CloudPersistanceState.initial());
+    // emit(const CloudPersistanceState.initial());
 
     if (!appConfig.isSyncEnabled) {
       if (item.userIntent) {
@@ -133,8 +133,10 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
     return blurHash;
   }
 
-  Future<void> _uploadAndCreate(ClipboardItem item,
-      {int retryCount = 0}) async {
+  Future<void> _uploadAndCreate(
+    ClipboardItem item, {
+    int retryCount = 0,
+  }) async {
     if (!appConfig.canUploadFile(item.fileSize!) && !item.userIntent) {
       logger.i("Auto upload is disabled for files over the limit.");
       emit(
