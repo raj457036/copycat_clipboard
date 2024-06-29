@@ -210,7 +210,7 @@ class GoogleDriveService implements DriveService {
         gfile,
         uploadMedia: media,
         uploadOptions: ResumableUploadOptions(
-          chunkSize: length < $10MB ? $5MB : $20MB,
+          chunkSize: length < $10MB ? $2MB : $10MB,
         ),
       );
 

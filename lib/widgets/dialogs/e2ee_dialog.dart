@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as su;
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
+import 'package:window_manager/window_manager.dart';
 
 class E2EESettingDialog extends StatefulWidget {
   const E2EESettingDialog({super.key});
@@ -74,6 +75,9 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
       if (importedKeyId == keyId && key != null) {
         appConfigCubit.setE2EEKey(key);
       }
+      if (isDesktopPlatform) {
+        windowManager.show();
+      }
     } catch (e) {
       setState(() => invalidImportedKey = true);
     }
@@ -101,6 +105,9 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
         context.pop();
         showTextSnackbar(context.locale.exportSuccess);
       }
+    }
+    if (isDesktopPlatform) {
+      windowManager.show();
     }
   }
 

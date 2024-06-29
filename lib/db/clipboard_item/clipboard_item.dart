@@ -312,5 +312,5 @@ class ClipboardItem with _$ClipboardItem, IsarIdMixin {
       localPath == null;
 
   @ignore
-  bool get isSyncing => uploading || downloading;
+  bool get isSyncing => (uploading || downloading) && driveFileId == null;
 }
