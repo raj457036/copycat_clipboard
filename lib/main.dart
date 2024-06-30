@@ -51,6 +51,7 @@ Future<void> main() async {
 
     if (kDebugMode) {
       await hotKeyManager.unregisterAll();
+      await Upgrader.clearSavedSettings();
     }
 
     final packageInfo = await PackageInfo.fromPlatform();
@@ -125,50 +126,50 @@ class AppContent extends StatelessWidget {
       },
       builder: (context, state) {
         final (theme, langCode) = state;
-        return MaterialApp.router(
-          scaffoldMessengerKey: scaffoldMessengerKey,
-          routeInformationParser: router_.routeInformationParser,
-          routeInformationProvider: router_.routeInformationProvider,
-          routerDelegate: router_.routerDelegate,
-          backButtonDispatcher: router_.backButtonDispatcher,
-          themeMode: theme,
-          theme: ThemeData(
-            useMaterial3: true,
-            textTheme: textTheme.apply(
-              bodyColor: lightColorScheme.onSurface,
-              displayColor: lightColorScheme.onSurface,
-            ),
-            colorScheme: lightColorScheme,
-            brightness: Brightness.light,
-            inputDecorationTheme: const InputDecorationTheme(
-              border: OutlineInputBorder(
-                borderRadius: radius12,
+        return GestureDetector(
+          onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          child: MaterialApp.router(
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            routeInformationParser: router_.routeInformationParser,
+            routeInformationProvider: router_.routeInformationProvider,
+            routerDelegate: router_.routerDelegate,
+            backButtonDispatcher: router_.backButtonDispatcher,
+            themeMode: theme,
+            theme: ThemeData(
+              useMaterial3: true,
+              textTheme: textTheme.apply(
+                bodyColor: lightColorScheme.onSurface,
+                displayColor: lightColorScheme.onSurface,
+              ),
+              colorScheme: lightColorScheme,
+              brightness: Brightness.light,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: radius12,
+                ),
               ),
             ),
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            textTheme: textTheme.apply(
-              bodyColor: darkColorScheme.onSurface,
-              displayColor: darkColorScheme.onSurface,
-            ),
-            colorScheme: darkColorScheme,
-            brightness: Brightness.dark,
-            inputDecorationTheme: const InputDecorationTheme(
-              border: OutlineInputBorder(
-                borderRadius: radius12,
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              textTheme: textTheme.apply(
+                bodyColor: darkColorScheme.onSurface,
+                displayColor: darkColorScheme.onSurface,
+              ),
+              colorScheme: darkColorScheme,
+              brightness: Brightness.dark,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: radius12,
+                ),
               ),
             ),
-          ),
-          debugShowCheckedModeBanner: false,
-          locale: Locale(langCode.isEmpty ? "en" : langCode),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => UpgradeAlert(
-            navigatorKey: rootNavKey,
-            shouldPopScope: () => true,
-            child: GestureDetector(
-              onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+            debugShowCheckedModeBanner: false,
+            locale: Locale(langCode.isEmpty ? "en" : langCode),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => UpgradeAlert(
+              navigatorKey: rootNavKey,
+              shouldPopScope: () => true,
               child: NetworkObserver(
                 child: ShareListener.fromPlatform(
                   child: child ?? const SizedBox.shrink(),
@@ -189,31 +190,15 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<AppConfigCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<SyncManagerCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<OfflinePersistanceCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<CloudPersistanceCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<ClipCollectionCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<DriveSetupCubit>(
-          create: (context) => sl(),
-        ),
+        BlocProvider<AuthCubit>(create: (context) => sl()),
+        BlocProvider<AppConfigCubit>(create: (context) => sl()),
+        BlocProvider<SyncManagerCubit>(create: (context) => sl()),
+        BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
+        BlocProvider<CloudPersistanceCubit>(create: (context) => sl()),
+        BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
+        BlocProvider<DriveSetupCubit>(create: (context) => sl()),
         if (isDesktopPlatform)
-          BlocProvider<WindowActionCubit>(
-            create: (context) => sl()..fetch(),
-          ),
+          BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
       child: EventBridge(
         child: WindowFocusManager.fromPlatform(
