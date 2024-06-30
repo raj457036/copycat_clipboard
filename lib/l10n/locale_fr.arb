@@ -340,5 +340,14 @@
                 "type": "String"
             }
         }
-    }
+    },
+
+    "displayName": "Nom d'Affichage",
+    "email": "Email",
+    "accountSettings": "Paramètres du Compte",
+    "dangerZone": "Zone de Danger",
+    "requestAccountDeletion": "Demander la Suppression du Compte",
+    "myAccount": "Mon Compte",
+    "accountDeleteDialogTitle": "Demande de Suppression de Compte",
+    "accountDeleteDialogDesc": "Vous serez redirigé vers le formulaire de demande de suppression de compte, êtes-vous sûr ?"
 }

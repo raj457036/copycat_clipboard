@@ -340,5 +340,14 @@
                 "type": "String"
             }
         }
-    }
+    },
+
+    "displayName": "Nombre para Mostrar",
+    "email": "Correo Electrónico",
+    "accountSettings": "Configuración de la Cuenta",
+    "dangerZone": "Zona de Peligro",
+    "requestAccountDeletion": "Solicitar Eliminación de Cuenta",
+    "myAccount": "Mi Cuenta",
+    "accountDeleteDialogTitle": "Solicitud de Eliminación de Cuenta",
+    "accountDeleteDialogDesc": "Serás redirigido al formulario de solicitud de eliminación de cuenta, ¿estás seguro?"
 }
