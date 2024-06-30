@@ -79,6 +79,8 @@ dependencies:
   firebase_core_desktop: ^1.0.2
   firebase_crashlytics: ^4.0.1
   upgrader: ^10.3.0
+  purchases_flutter: ^6.29.4
+  purchases_ui_flutter: ^6.29.4
   
 dev_dependencies:
   flutter_test:

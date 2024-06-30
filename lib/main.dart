@@ -5,6 +5,7 @@ import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
@@ -190,6 +191,9 @@ class MainApp extends StatelessWidget {
     final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
+          create: (context) => sl(),
+        ),
+        BlocProvider<MonetizationCubit>(
           create: (context) => sl(),
         ),
         BlocProvider<AppConfigCubit>(
