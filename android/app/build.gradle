@@ -53,7 +53,7 @@ android {
         applicationId "com.entilitystudio.CopyCat"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -83,4 +83,7 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.8.1')
     implementation 'com.google.firebase:firebase-analytics:17.4.1'
+    
+    def billing_version = "7.0.0"
+    implementation "com.android.billingclient:billing:$billing_version"
 }

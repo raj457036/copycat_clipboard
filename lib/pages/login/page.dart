@@ -4,6 +4,7 @@ import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/key.dart';
@@ -36,8 +37,9 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
-          case AuthenticatedAuthState(:final subscription):
+          case AuthenticatedAuthState(:final subscription, :final user):
             await context.read<AppConfigCubit>().load(subscription);
+            context.read<MonetizationCubit>().login(user.id);
             context.read<ClipCollectionCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();
             context.read<OfflinePersistanceCubit>().startListners();
