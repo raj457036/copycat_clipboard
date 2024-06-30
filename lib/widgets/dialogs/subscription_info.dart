@@ -5,7 +5,6 @@ import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
   const SubscriptionInfoDialog({super.key});
@@ -87,13 +86,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
                               icon: const Icon(Icons.workspace_premium_rounded),
                               label: Text(context.locale.upgrade),
                             )
-                          : ElevatedButton(
-                              child: const Text("Purchase"),
-                              onPressed: () async {
-                                await RevenueCatUI.presentPaywallIfNeeded(
-                                    "requiredEntitlementId");
-                              },
-                            ),
+                          : null,
                     ),
                     Expanded(
                       child: DefaultTabController(
