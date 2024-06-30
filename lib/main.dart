@@ -45,51 +45,64 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeServices();
+  runApp(const MainApp());
+}
 
+Future<void> initializeServices() async {
+  if (kDebugMode) {
+    Bloc.observer = CustomBlocObserver();
+    await Upgrader.clearSavedSettings();
+  }
   if (isDesktopPlatform) {
-    await windowManager.ensureInitialized();
-
-    if (kDebugMode) {
-      await hotKeyManager.unregisterAll();
-      await Upgrader.clearSavedSettings();
-    }
-
-    final packageInfo = await PackageInfo.fromPlatform();
-    launchAtStartup.setup(
-      appName: packageInfo.appName,
-      appPath: Platform.resolvedExecutable,
-    );
-
-    WindowOptions windowOptions = WindowOptions(
-      size: initialWindowSize,
-      minimumSize: minimumWindowSize,
-      center: true,
-      title: "CopyCat Clipboard",
-      titleBarStyle:
-          Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
-      windowButtonVisibility: false,
-    );
-    windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-      await windowManager.setClosable(false);
-      await windowManager.setSkipTaskbar(true);
-      if (Platform.isMacOS) {
-        await windowManager.setVisibleOnAllWorkspaces(
-          false,
-          visibleOnFullScreen: true,
-        );
-      }
-    });
-
-    await updateWindowsRegistry();
+    await initializeDesktopServices();
   } else {
     unawaited(MobileAds.instance.initialize());
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  await initializeFirebase();
+  await configureDependencies();
+}
 
+Future<void> initializeDesktopServices() async {
+  await windowManager.ensureInitialized();
+
+  if (kDebugMode) {
+    await hotKeyManager.unregisterAll();
+  }
+
+  final packageInfo = await PackageInfo.fromPlatform();
+  launchAtStartup.setup(
+    appName: packageInfo.appName,
+    appPath: Platform.resolvedExecutable,
+  );
+
+  WindowOptions windowOptions = WindowOptions(
+    size: initialWindowSize,
+    minimumSize: minimumWindowSize,
+    center: true,
+    title: "CopyCat Clipboard",
+    titleBarStyle:
+        Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
+    windowButtonVisibility: false,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
+    await windowManager.setClosable(false);
+    await windowManager.setSkipTaskbar(true);
+    if (Platform.isMacOS) {
+      await windowManager.setVisibleOnAllWorkspaces(false,
+          visibleOnFullScreen: true);
+    }
+  });
+
+  await updateWindowsRegistry();
+}
+
+Future<void> initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -101,12 +114,6 @@ Future<void> main() async {
       return true;
     };
   }
-
-  if (kDebugMode) {
-    Bloc.observer = CustomBlocObserver();
-  }
-  await configureDependencies();
-  runApp(const MainApp());
 }
 
 final router_ = router([
@@ -167,13 +174,9 @@ class AppContent extends StatelessWidget {
             locale: Locale(langCode.isEmpty ? "en" : langCode),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            builder: (context, child) => UpgradeAlert(
-              navigatorKey: rootNavKey,
-              shouldPopScope: () => true,
-              child: NetworkObserver(
-                child: ShareListener.fromPlatform(
-                  child: child ?? const SizedBox.shrink(),
-                ),
+            builder: (context, child) => NetworkObserver(
+              child: ShareListener.fromPlatform(
+                child: child ?? const SizedBox.shrink(),
               ),
             ),
           ),
