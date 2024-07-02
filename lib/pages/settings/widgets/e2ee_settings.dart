@@ -1,5 +1,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/widgets/badges.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialog.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
@@ -32,9 +33,9 @@ class E2EESettings extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ListTile(
-                  title: const Text("End-to-End Encryption Vault"),
-                  subtitle: const Text(
-                    "Access your E2EE vault settings",
+                  title: Text(context.locale.endToEndVault),
+                  subtitle: Text(
+                    context.locale.accessE2eeVault,
                   ),
                   // enabled: subscription.encrypt,
                   trailing: const Icon(Icons.chevron_right_rounded),
@@ -45,15 +46,15 @@ class E2EESettings extends StatelessWidget {
                   onChanged: setup && subscription.encrypt
                       ? (value) => toggleAutoEncrypt(context, value)
                       : null,
-                  title: const Row(
+                  title: Row(
                     children: [
-                      Text("Encrypt Clipboard"),
+                      Text(context.locale.encryptClipboard),
                       width8,
-                      ProBadge(),
+                      const ProBadge(),
                     ],
                   ),
-                  subtitle: const Text(
-                    "Encrypt clipboard before syncing with the cloud.",
+                  subtitle: Text(
+                    context.locale.encryptClipboardDesc,
                   ),
                 ),
               ],

@@ -1490,6 +1490,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{planName} • Expired'**
   String expiredPlan(String planName);
+
+  /// No description provided for @displayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayName;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @accountSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Settings'**
+  String get accountSettings;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
+  String get dangerZone;
+
+  /// No description provided for @requestAccountDeletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Account Deletion'**
+  String get requestAccountDeletion;
+
+  /// No description provided for @myAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'My Account'**
+  String get myAccount;
+
+  /// No description provided for @accountDeleteDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Delete Request'**
+  String get accountDeleteDialogTitle;
+
+  /// No description provided for @accountDeleteDialogDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be redirected to the account delete request form, are you sure?'**
+  String get accountDeleteDialogDesc;
 }
 
 class _AppLocalizationsDelegate
