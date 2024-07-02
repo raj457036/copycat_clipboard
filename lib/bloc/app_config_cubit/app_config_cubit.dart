@@ -45,7 +45,7 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   ) {
     if (subscription.isFree || !subscription.isActive) {
       config = config.copyWith(
-        autoSyncInterval: $90S,
+        autoSyncInterval: $60S,
         autoEncrypt: false,
       )..applyId(config);
       return (config, true);
@@ -53,7 +53,7 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     return (config, false);
   }
 
-  Future<void> load(Subscription? subscription) async {
+  Future<void> load([Subscription? subscription]) async {
     emit(state.copyWith(isLoading: true));
     final appConfig = await repo.get();
 
@@ -68,6 +68,8 @@ class AppConfigCubit extends Cubit<AppConfigState> {
           } else {
             emit(state.copyWith(config: r, isLoading: false));
           }
+        } else {
+          emit(state.copyWith(config: r, isLoading: false));
         }
       },
     );

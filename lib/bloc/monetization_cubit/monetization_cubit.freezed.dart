@@ -19,19 +19,20 @@ mixin _$MonetizationState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(CustomerInfo customer) active,
+    required TResult Function(CustomerInfo customer, Subscription subscription)
+        active,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(CustomerInfo customer)? active,
+    TResult? Function(CustomerInfo customer, Subscription subscription)? active,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(CustomerInfo customer)? active,
+    TResult Function(CustomerInfo customer, Subscription subscription)? active,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,7 +115,8 @@ class _$MonetizationUnknownImpl implements MonetizationUnknown {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(CustomerInfo customer) active,
+    required TResult Function(CustomerInfo customer, Subscription subscription)
+        active,
   }) {
     return unknown();
   }
@@ -123,7 +125,7 @@ class _$MonetizationUnknownImpl implements MonetizationUnknown {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(CustomerInfo customer)? active,
+    TResult? Function(CustomerInfo customer, Subscription subscription)? active,
   }) {
     return unknown?.call();
   }
@@ -132,7 +134,7 @@ class _$MonetizationUnknownImpl implements MonetizationUnknown {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(CustomerInfo customer)? active,
+    TResult Function(CustomerInfo customer, Subscription subscription)? active,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -183,9 +185,10 @@ abstract class _$$MonetizationActiveImplCopyWith<$Res> {
           $Res Function(_$MonetizationActiveImpl) then) =
       __$$MonetizationActiveImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({CustomerInfo customer});
+  $Res call({CustomerInfo customer, Subscription subscription});
 
   $CustomerInfoCopyWith<$Res> get customer;
+  $SubscriptionCopyWith<$Res> get subscription;
 }
 
 /// @nodoc
@@ -200,12 +203,17 @@ class __$$MonetizationActiveImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? customer = null,
+    Object? subscription = null,
   }) {
     return _then(_$MonetizationActiveImpl(
       customer: null == customer
           ? _value.customer
           : customer // ignore: cast_nullable_to_non_nullable
               as CustomerInfo,
+      subscription: null == subscription
+          ? _value.subscription
+          : subscription // ignore: cast_nullable_to_non_nullable
+              as Subscription,
     ));
   }
 
@@ -216,19 +224,30 @@ class __$$MonetizationActiveImplCopyWithImpl<$Res>
       return _then(_value.copyWith(customer: value));
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $SubscriptionCopyWith<$Res> get subscription {
+    return $SubscriptionCopyWith<$Res>(_value.subscription, (value) {
+      return _then(_value.copyWith(subscription: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$MonetizationActiveImpl implements MonetizationActive {
-  const _$MonetizationActiveImpl({required this.customer});
+  const _$MonetizationActiveImpl(
+      {required this.customer, required this.subscription});
 
   @override
   final CustomerInfo customer;
+  @override
+  final Subscription subscription;
 
   @override
   String toString() {
-    return 'MonetizationState.active(customer: $customer)';
+    return 'MonetizationState.active(customer: $customer, subscription: $subscription)';
   }
 
   @override
@@ -237,11 +256,13 @@ class _$MonetizationActiveImpl implements MonetizationActive {
         (other.runtimeType == runtimeType &&
             other is _$MonetizationActiveImpl &&
             (identical(other.customer, customer) ||
-                other.customer == customer));
+                other.customer == customer) &&
+            (identical(other.subscription, subscription) ||
+                other.subscription == subscription));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, customer);
+  int get hashCode => Object.hash(runtimeType, customer, subscription);
 
   @JsonKey(ignore: true)
   @override
@@ -254,29 +275,30 @@ class _$MonetizationActiveImpl implements MonetizationActive {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(CustomerInfo customer) active,
+    required TResult Function(CustomerInfo customer, Subscription subscription)
+        active,
   }) {
-    return active(customer);
+    return active(customer, subscription);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function(CustomerInfo customer)? active,
+    TResult? Function(CustomerInfo customer, Subscription subscription)? active,
   }) {
-    return active?.call(customer);
+    return active?.call(customer, subscription);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(CustomerInfo customer)? active,
+    TResult Function(CustomerInfo customer, Subscription subscription)? active,
     required TResult orElse(),
   }) {
     if (active != null) {
-      return active(customer);
+      return active(customer, subscription);
     }
     return orElse();
   }
@@ -314,10 +336,12 @@ class _$MonetizationActiveImpl implements MonetizationActive {
 }
 
 abstract class MonetizationActive implements MonetizationState {
-  const factory MonetizationActive({required final CustomerInfo customer}) =
-      _$MonetizationActiveImpl;
+  const factory MonetizationActive(
+      {required final CustomerInfo customer,
+      required final Subscription subscription}) = _$MonetizationActiveImpl;
 
   CustomerInfo get customer;
+  Subscription get subscription;
   @JsonKey(ignore: true)
   _$$MonetizationActiveImplCopyWith<_$MonetizationActiveImpl> get copyWith =>
       throw _privateConstructorUsedError;

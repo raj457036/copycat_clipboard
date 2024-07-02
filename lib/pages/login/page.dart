@@ -37,8 +37,8 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
-          case AuthenticatedAuthState(:final subscription, :final user):
-            await context.read<AppConfigCubit>().load(subscription);
+          case AuthenticatedAuthState(:final user):
+            context.read<AppConfigCubit>().load();
             context.read<MonetizationCubit>().login(user.id);
             context.read<ClipCollectionCubit>().fetch();
             context.read<SyncManagerCubit>().syncChanges();

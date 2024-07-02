@@ -44,6 +44,25 @@ class Subscription with _$Subscription, IsarIdMixin {
     );
   }
 
+  static Subscription pro(String userId, DateTime activeTill) {
+    return Subscription(
+      created: now(),
+      modified: now(),
+      userId: userId,
+      planName: "Pro",
+      subId: "",
+      source: "",
+      activeTill: activeTill,
+      ads: false,
+      collections: 50,
+      syncHours: 720,
+      syncInterval: 5,
+      maxSyncDevices: 5,
+      encrypt: true,
+      edit: true,
+    );
+  }
+
   @ignore
   bool get isTrial {
     return trialStart != null && trialEnd != null && subId == "Trial";

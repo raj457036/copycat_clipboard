@@ -128,61 +128,70 @@ class AppContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
 
-    return BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
-      selector: (state) {
-        return (state.config.themeMode, state.config.locale);
+    return BlocListener<MonetizationCubit, MonetizationState>(
+      listener: (context, state) {
+        switch (state) {
+          case MonetizationActive(:final subscription):
+            context.read<SyncManagerCubit>().syncHours = subscription.syncHours;
+            context.read<AppConfigCubit>().load(subscription);
+        }
       },
-      builder: (context, state) {
-        final (theme, langCode) = state;
-        return GestureDetector(
-          onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-          child: MaterialApp.router(
-            scaffoldMessengerKey: scaffoldMessengerKey,
-            routeInformationParser: router_.routeInformationParser,
-            routeInformationProvider: router_.routeInformationProvider,
-            routerDelegate: router_.routerDelegate,
-            backButtonDispatcher: router_.backButtonDispatcher,
-            themeMode: theme,
-            theme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: lightColorScheme.onSurface,
-                displayColor: lightColorScheme.onSurface,
+      child: BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
+        selector: (state) {
+          return (state.config.themeMode, state.config.locale);
+        },
+        builder: (context, state) {
+          final (theme, langCode) = state;
+          return GestureDetector(
+            onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+            child: MaterialApp.router(
+              scaffoldMessengerKey: scaffoldMessengerKey,
+              routeInformationParser: router_.routeInformationParser,
+              routeInformationProvider: router_.routeInformationProvider,
+              routerDelegate: router_.routerDelegate,
+              backButtonDispatcher: router_.backButtonDispatcher,
+              themeMode: theme,
+              theme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: lightColorScheme.onSurface,
+                  displayColor: lightColorScheme.onSurface,
+                ),
+                colorScheme: lightColorScheme,
+                brightness: Brightness.light,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: radius12,
+                  ),
+                ),
               ),
-              colorScheme: lightColorScheme,
-              brightness: Brightness.light,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: radius12,
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: darkColorScheme.onSurface,
+                  displayColor: darkColorScheme.onSurface,
+                ),
+                colorScheme: darkColorScheme,
+                brightness: Brightness.dark,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: radius12,
+                  ),
+                ),
+              ),
+              debugShowCheckedModeBanner: false,
+              locale: Locale(langCode.isEmpty ? "en" : langCode),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              builder: (context, child) => NetworkObserver(
+                child: ShareListener.fromPlatform(
+                  child: child ?? const SizedBox.shrink(),
                 ),
               ),
             ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: darkColorScheme.onSurface,
-                displayColor: darkColorScheme.onSurface,
-              ),
-              colorScheme: darkColorScheme,
-              brightness: Brightness.dark,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: radius12,
-                ),
-              ),
-            ),
-            debugShowCheckedModeBanner: false,
-            locale: Locale(langCode.isEmpty ? "en" : langCode),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            builder: (context, child) => NetworkObserver(
-              child: ShareListener.fromPlatform(
-                child: child ?? const SizedBox.shrink(),
-              ),
-            ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -8,7 +8,6 @@ import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,17 +23,13 @@ class SplashPage extends StatelessWidget {
   Future<void> checkForAuth(BuildContext context) async {
     final authCubit = context.read<AuthCubit>();
     authCubit.checkForAuthentication();
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (authCubit.subscription != null) {
-      if (!context.mounted) return;
-      await authDone(context, authCubit.subscription!, authCubit.session!.user);
-    }
   }
 
   Future<void> authDone(
-      BuildContext context, Subscription subscription, su.User user) async {
-    await context.read<AppConfigCubit>().load(subscription);
+    BuildContext context,
+    su.User user,
+  ) async {
+    context.read<AppConfigCubit>().load();
     context.read<MonetizationCubit>().login(user.id);
     context.read<ClipCollectionCubit>().fetch();
     context.read<SyncManagerCubit>().syncChanges();
@@ -49,8 +44,8 @@ class SplashPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
-          case AuthenticatedAuthState(:final subscription, :final user):
-            authDone(context, subscription, user);
+          case AuthenticatedAuthState(:final user):
+            authDone(context, user);
 
             break;
           case UnauthenticatedAuthState():

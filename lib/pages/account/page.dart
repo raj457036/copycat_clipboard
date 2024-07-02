@@ -94,7 +94,7 @@ class AccountPage extends StatelessWidget {
       body: Align(
         alignment: isPhone ? Alignment.topCenter : Alignment.center,
         child: ConstrainedBox(
-          constraints: BoxConstraints.loose(const Size(550, 350)),
+          constraints: BoxConstraints.loose(const Size(550, 400)),
           child: isPhone ? content : Card.outlined(child: content),
         ),
       ),

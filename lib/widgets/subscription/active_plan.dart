@@ -10,20 +10,25 @@ class ActivePlanAction extends StatelessWidget {
     this.compact = false,
   });
 
-  Future<void> action(BuildContext context) async {
-    const SubscriptionInfoDialog().open(context);
+  Future<void> action(
+    BuildContext context, {
+    bool entitlementGrantMode = false,
+  }) async {
+    SubscriptionInfoDialog(entitlementGrantMode: entitlementGrantMode)
+        .open(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return SubscriptionBuilder(
       builder: (context, subscription) {
-        String label = subscription.planName;
+        String label = subscription?.planName ?? "?";
         if (!compact) {
           label = context.locale.currentPlanLabel(label);
         }
         return ElevatedButton.icon(
           onPressed: () => action(context),
+          onLongPress: () => action(context, entitlementGrantMode: true),
           icon: const Icon(Icons.loyalty_rounded),
           label: Text(label),
         );

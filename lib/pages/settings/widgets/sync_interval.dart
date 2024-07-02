@@ -56,39 +56,42 @@ class AutoSyncInterval extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: padding10),
                   borderRadius: radius12,
                   items: [
-                    DropdownMenuItem(
-                      enabled: subscription.syncInterval <= $5S,
-                      value: $5S,
-                      child: Row(
-                        children: [
-                          Text(context.locale.$5Sec),
-                          width8,
-                          const ProBadge(),
-                        ],
+                    if (subscription != null)
+                      DropdownMenuItem(
+                        enabled: subscription.syncInterval <= $5S,
+                        value: $5S,
+                        child: Row(
+                          children: [
+                            Text(context.locale.$5Sec),
+                            width8,
+                            const ProBadge(),
+                          ],
+                        ),
                       ),
-                    ),
-                    DropdownMenuItem(
-                      enabled: subscription.syncInterval <= $5S,
-                      value: $15S,
-                      child: Row(
-                        children: [
-                          Text(context.locale.$15Sec),
-                          width8,
-                          const ProBadge(),
-                        ],
+                    if (subscription != null)
+                      DropdownMenuItem(
+                        enabled: subscription.syncInterval <= $5S,
+                        value: $15S,
+                        child: Row(
+                          children: [
+                            Text(context.locale.$15Sec),
+                            width8,
+                            const ProBadge(),
+                          ],
+                        ),
                       ),
-                    ),
-                    DropdownMenuItem(
-                      enabled: subscription.syncInterval <= $5S,
-                      value: $30S,
-                      child: Row(
-                        children: [
-                          Text(context.locale.$30Sec),
-                          width8,
-                          const ProBadge(),
-                        ],
+                    if (subscription != null)
+                      DropdownMenuItem(
+                        enabled: subscription.syncInterval <= $5S,
+                        value: $30S,
+                        child: Row(
+                          children: [
+                            Text(context.locale.$30Sec),
+                            width8,
+                            const ProBadge(),
+                          ],
+                        ),
                       ),
-                    ),
                     DropdownMenuItem(
                       value: $60S,
                       child: Text(context.locale.$60Sec),
