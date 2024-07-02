@@ -788,4 +788,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String expiredPlan(String planName) {
     return '$planName • Expirado';
   }
+
+  @override
+  String get displayName => 'Nombre para Mostrar';
+
+  @override
+  String get email => 'Correo Electrónico';
+
+  @override
+  String get accountSettings => 'Configuración de la Cuenta';
+
+  @override
+  String get dangerZone => 'Zona de Peligro';
+
+  @override
+  String get requestAccountDeletion => 'Solicitar Eliminación de Cuenta';
+
+  @override
+  String get myAccount => 'Mi Cuenta';
+
+  @override
+  String get accountDeleteDialogTitle => 'Solicitud de Eliminación de Cuenta';
+
+  @override
+  String get accountDeleteDialogDesc =>
+      'Serás redirigido al formulario de solicitud de eliminación de cuenta, ¿estás seguro?';
 }

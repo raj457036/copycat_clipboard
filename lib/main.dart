@@ -46,50 +46,64 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeServices();
+  runApp(const MainApp());
+}
 
+Future<void> initializeServices() async {
+  if (kDebugMode) {
+    Bloc.observer = CustomBlocObserver();
+    await Upgrader.clearSavedSettings();
+  }
   if (isDesktopPlatform) {
-    await windowManager.ensureInitialized();
-
-    if (kDebugMode) {
-      await hotKeyManager.unregisterAll();
-    }
-
-    final packageInfo = await PackageInfo.fromPlatform();
-    launchAtStartup.setup(
-      appName: packageInfo.appName,
-      appPath: Platform.resolvedExecutable,
-    );
-
-    WindowOptions windowOptions = WindowOptions(
-      size: initialWindowSize,
-      minimumSize: minimumWindowSize,
-      center: true,
-      title: "CopyCat",
-      titleBarStyle:
-          Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
-      windowButtonVisibility: false,
-    );
-    windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-      await windowManager.setClosable(false);
-      await windowManager.setSkipTaskbar(true);
-      if (Platform.isMacOS) {
-        await windowManager.setVisibleOnAllWorkspaces(
-          false,
-          visibleOnFullScreen: true,
-        );
-      }
-    });
-
-    await updateWindowsRegistry();
+    await initializeDesktopServices();
   } else {
     unawaited(MobileAds.instance.initialize());
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  await initializeFirebase();
+  await configureDependencies();
+}
 
+Future<void> initializeDesktopServices() async {
+  await windowManager.ensureInitialized();
+
+  if (kDebugMode) {
+    await hotKeyManager.unregisterAll();
+  }
+
+  final packageInfo = await PackageInfo.fromPlatform();
+  launchAtStartup.setup(
+    appName: packageInfo.appName,
+    appPath: Platform.resolvedExecutable,
+  );
+
+  WindowOptions windowOptions = WindowOptions(
+    size: initialWindowSize,
+    minimumSize: minimumWindowSize,
+    center: true,
+    title: "CopyCat Clipboard",
+    titleBarStyle:
+        Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
+    windowButtonVisibility: false,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
+    await windowManager.setClosable(false);
+    await windowManager.setSkipTaskbar(true);
+    if (Platform.isMacOS) {
+      await windowManager.setVisibleOnAllWorkspaces(false,
+          visibleOnFullScreen: true);
+    }
+  });
+
+  await updateWindowsRegistry();
+}
+
+Future<void> initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -101,12 +115,6 @@ Future<void> main() async {
       return true;
     };
   }
-
-  if (kDebugMode) {
-    Bloc.observer = CustomBlocObserver();
-  }
-  await configureDependencies();
-  runApp(const MainApp());
 }
 
 final router_ = router([
@@ -126,54 +134,50 @@ class AppContent extends StatelessWidget {
       },
       builder: (context, state) {
         final (theme, langCode) = state;
-        return MaterialApp.router(
-          scaffoldMessengerKey: scaffoldMessengerKey,
-          routeInformationParser: router_.routeInformationParser,
-          routeInformationProvider: router_.routeInformationProvider,
-          routerDelegate: router_.routerDelegate,
-          backButtonDispatcher: router_.backButtonDispatcher,
-          themeMode: theme,
-          theme: ThemeData(
-            useMaterial3: true,
-            textTheme: textTheme.apply(
-              bodyColor: lightColorScheme.onSurface,
-              displayColor: lightColorScheme.onSurface,
-            ),
-            colorScheme: lightColorScheme,
-            brightness: Brightness.light,
-            inputDecorationTheme: const InputDecorationTheme(
-              border: OutlineInputBorder(
-                borderRadius: radius12,
+        return GestureDetector(
+          onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          child: MaterialApp.router(
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            routeInformationParser: router_.routeInformationParser,
+            routeInformationProvider: router_.routeInformationProvider,
+            routerDelegate: router_.routerDelegate,
+            backButtonDispatcher: router_.backButtonDispatcher,
+            themeMode: theme,
+            theme: ThemeData(
+              useMaterial3: true,
+              textTheme: textTheme.apply(
+                bodyColor: lightColorScheme.onSurface,
+                displayColor: lightColorScheme.onSurface,
               ),
-            ),
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            textTheme: textTheme.apply(
-              bodyColor: darkColorScheme.onSurface,
-              displayColor: darkColorScheme.onSurface,
-            ),
-            colorScheme: darkColorScheme,
-            brightness: Brightness.dark,
-            inputDecorationTheme: const InputDecorationTheme(
-              border: OutlineInputBorder(
-                borderRadius: radius12,
-              ),
-            ),
-          ),
-          debugShowCheckedModeBanner: false,
-          locale: Locale(langCode.isEmpty ? "en" : langCode),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => UpgradeAlert(
-            navigatorKey: rootNavKey,
-            shouldPopScope: () => true,
-            child: GestureDetector(
-              onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-              child: NetworkObserver(
-                child: ShareListener.fromPlatform(
-                  child: child ?? const SizedBox.shrink(),
+              colorScheme: lightColorScheme,
+              brightness: Brightness.light,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: radius12,
                 ),
+              ),
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              textTheme: textTheme.apply(
+                bodyColor: darkColorScheme.onSurface,
+                displayColor: darkColorScheme.onSurface,
+              ),
+              colorScheme: darkColorScheme,
+              brightness: Brightness.dark,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: radius12,
+                ),
+              ),
+            ),
+            debugShowCheckedModeBanner: false,
+            locale: Locale(langCode.isEmpty ? "en" : langCode),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => NetworkObserver(
+              child: ShareListener.fromPlatform(
+                child: child ?? const SizedBox.shrink(),
               ),
             ),
           ),
@@ -190,34 +194,16 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<MonetizationCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<AppConfigCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<SyncManagerCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<OfflinePersistanceCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<CloudPersistanceCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<ClipCollectionCubit>(
-          create: (context) => sl(),
-        ),
-        BlocProvider<DriveSetupCubit>(
-          create: (context) => sl(),
-        ),
+        BlocProvider<AuthCubit>(create: (context) => sl()),
+        BlocProvider<AppConfigCubit>(create: (context) => sl()),
+        BlocProvider<MonetizationCubit>(create: (context) => sl()),
+        BlocProvider<SyncManagerCubit>(create: (context) => sl()),
+        BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
+        BlocProvider<CloudPersistanceCubit>(create: (context) => sl()),
+        BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
+        BlocProvider<DriveSetupCubit>(create: (context) => sl()),
         if (isDesktopPlatform)
-          BlocProvider<WindowActionCubit>(
-            create: (context) => sl()..fetch(),
-          ),
+          BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
       child: EventBridge(
         child: WindowFocusManager.fromPlatform(

@@ -1,6 +1,7 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/reset_password_button.dart';
@@ -13,10 +14,9 @@ class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
 
   Future<void> deleteAccount(BuildContext context) async {
-    final answer = await const ConfirmDialog(
-      title: "Account Delete Request",
-      message: "You will be redirected to the account"
-          " delete request form, are you sure?",
+    final answer = await ConfirmDialog(
+      title: context.locale.accountDeleteDialogTitle,
+      message: context.locale.accountDeleteDialogDesc,
     ).open(context);
 
     if (answer) {
@@ -42,17 +42,17 @@ class AccountPage extends StatelessWidget {
         return Column(
           children: [
             ListTile(
-              title: const Text("Display Name"),
+              title: Text(context.locale.displayName),
               subtitle: Text(state.userMetadata?["display_name"] ?? ""),
             ),
             ListTile(
-              title: const Text("Email"),
+              title: Text(context.locale.email),
               subtitle: Text(state.email!),
             ),
             const Divider(),
-            const ListTile(
-              title: Text("Account Settings"),
-              subtitle: Padding(
+            ListTile(
+              title: Text(context.locale.accountSettings),
+              subtitle: const Padding(
                 padding: EdgeInsets.only(top: padding16),
                 child: OverflowBar(
                   alignment: MainAxisAlignment.start,
@@ -64,7 +64,7 @@ class AccountPage extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-              title: const Text("Danger Zone"),
+              title: Text(context.locale.dangerZone),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: padding16),
                 child: OverflowBar(
@@ -73,7 +73,7 @@ class AccountPage extends StatelessWidget {
                     ElevatedButton.icon(
                       icon: const Icon(Icons.remove_circle_outline_rounded),
                       onPressed: () => deleteAccount(context),
-                      label: const Text("Request Account Deletion"),
+                      label: Text(context.locale.requestAccountDeletion),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colors.error,
                         foregroundColor: colors.onError,
@@ -89,7 +89,7 @@ class AccountPage extends StatelessWidget {
     );
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Account"),
+        title: Text(context.locale.myAccount),
       ),
       body: Align(
         alignment: isPhone ? Alignment.topCenter : Alignment.center,

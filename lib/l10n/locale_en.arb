@@ -342,5 +342,14 @@
                 "type": "String"
             }
         }
-    }
+    },
+
+    "displayName": "Display Name",
+    "email": "Email",
+    "accountSettings": "Account Settings",
+    "dangerZone": "Danger Zone",
+    "requestAccountDeletion": "Request Account Deletion",
+    "myAccount": "My Account",
+    "accountDeleteDialogTitle": "Account Delete Request",
+    "accountDeleteDialogDesc": "You will be redirected to the account delete request form, are you sure?"
 }

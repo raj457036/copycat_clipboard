@@ -340,5 +340,14 @@
                 "type": "String"
             }
         }
-    }
+    },
+
+    "displayName": "Anzeigename",
+    "email": "E-Mail",
+    "accountSettings": "Kontoeinstellungen",
+    "dangerZone": "Gefahrenzone",
+    "requestAccountDeletion": "Antrag auf Kontolöschung",
+    "myAccount": "Mein Konto",
+    "accountDeleteDialogTitle": "Antrag auf Kontolöschung",
+    "accountDeleteDialogDesc": "Sie werden zum Formular für den Antrag auf Kontolöschung weitergeleitet, sind Sie sicher?"
 }
