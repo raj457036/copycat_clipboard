@@ -39,6 +39,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   final ClipCollectionRepository clipCollectionRepository;
   final String deviceId;
 
+  int? syncHours;
   bool syncing = false;
   Timer? autoSyncTimer;
 
@@ -75,16 +76,16 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   }
 
   DateTime getLastSyncedTime(DateTime? current) {
-    final subscription = auth.subscription!;
+    assert(syncHours != null, "syncing not configured");
 
     if (current != null) {
       final diff = now().difference(current);
-      if (diff.inHours < subscription.syncHours) {
+      if (diff.inHours < syncHours!) {
         return current;
       }
     }
 
-    return now().subtract(Duration(hours: subscription.syncHours));
+    return now().subtract(Duration(hours: syncHours!));
   }
 
   Future<SyncStatus?> getSyncInfo() async {
@@ -382,7 +383,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     bool silent = false,
     bool force = false,
   }) async {
-    if (syncing) return;
+    if (syncing || syncHours == null) return;
     if (auth.state is! AuthenticatedAuthState) return;
     syncing = true;
     try {

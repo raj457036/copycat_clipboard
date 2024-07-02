@@ -1,6 +1,7 @@
 import 'dart:math' show max;
 
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:clipboard/constants/numbers/values.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/dialogs/create_collection.dart';
@@ -27,9 +28,12 @@ class CreateCollectionButton extends StatelessWidget {
             (int, int)>(
           selector: (state) {
             if (state is ClipCollectionLoaded) {
-              return (subscription.collections, state.collections.length);
+              return (
+                subscription?.collections ?? defaultCollectionCount,
+                state.collections.length
+              );
             }
-            return (subscription.collections, 0);
+            return (subscription?.collections ?? defaultCollectionCount, 0);
           },
           builder: (context, state) {
             final (collection, count) = state;

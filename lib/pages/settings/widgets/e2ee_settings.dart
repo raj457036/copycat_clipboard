@@ -41,22 +41,23 @@ class E2EESettings extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: () => const E2EESettingDialog().show(context),
                 ),
-                SwitchListTile(
-                  value: autoEncrypt,
-                  onChanged: setup && subscription.encrypt
-                      ? (value) => toggleAutoEncrypt(context, value)
-                      : null,
-                  title: Row(
-                    children: [
-                      Text(context.locale.encryptClipboard),
-                      width8,
-                      const ProBadge(),
-                    ],
+                if (subscription != null)
+                  SwitchListTile(
+                    value: autoEncrypt,
+                    onChanged: setup && subscription.encrypt
+                        ? (value) => toggleAutoEncrypt(context, value)
+                        : null,
+                    title: Row(
+                      children: [
+                        Text(context.locale.encryptClipboard),
+                        width8,
+                        const ProBadge(),
+                      ],
+                    ),
+                    subtitle: Text(
+                      context.locale.encryptClipboardDesc,
+                    ),
                   ),
-                  subtitle: Text(
-                    context.locale.encryptClipboardDesc,
-                  ),
-                ),
               ],
             );
           },

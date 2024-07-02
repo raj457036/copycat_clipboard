@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -12,29 +13,59 @@ part 'monetization_state.dart';
 @singleton
 class MonetizationCubit extends Cubit<MonetizationState> {
   bool _setupDone = false;
-  MonetizationCubit() : super(const MonetizationState.unknown());
+  MonetizationCubit() : super(const MonetizationState.unknown()) {
+    Purchases.addCustomerInfoUpdateListener(onCustomerInfoUpdate);
+  }
+
+  @override
+  Future<void> close() async {
+    await super.close();
+    Purchases.removeCustomerInfoUpdateListener(onCustomerInfoUpdate);
+  }
+
+  void onCustomerInfoUpdate(CustomerInfo info) {
+    final proEntitlement = info.entitlements.active["pro features"];
+    late Subscription subscription;
+    if (proEntitlement != null) {
+      final activeTill = DateTime.parse(proEntitlement.expirationDate!);
+      subscription = Subscription.pro(
+        info.originalAppUserId,
+        activeTill,
+      );
+    } else {
+      subscription = Subscription.free(info.originalAppUserId);
+    }
+
+    emit(MonetizationState.active(customer: info, subscription: subscription));
+  }
 
   Future<void> login(String userId) async {
     await setupRevenuCat(userId);
     if (!_setupDone) return;
-    final result = await Purchases.logIn(userId);
-    emit(MonetizationState.active(customer: result.customerInfo));
+    await Purchases.logIn(userId);
+    try {
+      final result = await Purchases.getCustomerInfo();
+      onCustomerInfoUpdate(result);
+    } catch (e) {
+      logger.e("Couldn't get customer info", error: e);
+    }
   }
 
   Future<void> logout() async {
     emit(const MonetizationState.unknown());
   }
 
-  Future<Offering?> fetchOfferings() async {
+  Future<List<Package>?> fetchOfferings() async {
     try {
       final offerings = await Purchases.getOfferings();
       if (offerings.current != null) {
         // Display current offering with offerings.current
-        return offerings.current;
+        return offerings.current?.availablePackages;
       }
     } on PlatformException catch (e) {
       // optional error handling
       logger.e(e);
+      return [];
     }
     return null;
   }

@@ -5,7 +5,6 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/repositories/subscription.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -47,9 +46,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   Session? get session => sbClient.auth.currentSession;
 
-  Subscription? get subscription =>
-      state.whenOrNull(authenticated: (_, __, sub) => sub);
-
   checkForAuthentication() {
     if (session != null) {
       authenticated(
@@ -80,7 +76,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthState.authenticated(
         session: session!,
         user: session!.user,
-        subscription: r,
       ));
       return null;
     });
@@ -107,22 +102,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> authenticated(Session session, User user) async {
-    final subResult = await subRepo.get();
-
-    final sub = subResult.fold(
-      (l) {
-        logger.e(l);
-        return Subscription.free(user.id);
-      },
-      (r) => r ?? Subscription.free(user.id),
-    );
-
     setupAnalytics();
 
     emit(AuthState.authenticated(
       session: session,
       user: user,
-      subscription: sub,
     ));
   }
 

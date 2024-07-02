@@ -1,11 +1,11 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef SubscriptionWidgetBuilder = Widget Function(
   BuildContext context,
-  Subscription subscription,
+  Subscription? subscription,
 );
 
 class SubscriptionBuilder extends StatelessWidget {
@@ -20,17 +20,12 @@ class SubscriptionBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AuthCubit, AuthState, Subscription>(
+    return BlocSelector<MonetizationCubit, MonetizationState, Subscription?>(
       selector: (state) {
-        return state.maybeMap(
-          authenticated: (state) {
-            if (autoDowngrade && !state.subscription.isActive) {
-              return Subscription.free(state.user.id);
-            }
-
-            return state.subscription;
+        return state.whenOrNull(
+          active: (info, subscription) {
+            return subscription;
           },
-          orElse: () => Subscription.free("anon"),
         );
       },
       builder: builder,

@@ -2,17 +2,33 @@
 
 import { SupabaseClient } from "https://esm.sh/v135/@supabase/supabase-js@2.42.4/dist/module/index.js";
 import { corsHeaders } from "../utils/cors.ts";
+import RevenueCat from "../utils/revenuecat.ts";
 import {
   getSupabaseClient,
   getSupabaseServiceClient,
 } from "../utils/supabase.ts";
 
+const proPlanEntitlementId = "pro features";
+
 const applyPromoCoupon = async (
+  rc: RevenueCat,
   serviceClient: SupabaseClient,
   email: string,
   userId: string,
   code: string,
 ) => {
+  const customer = await rc.getCustomerInfo(userId);
+
+  if (!customer) {
+    const expiry = customer.entitlements[proPlanEntitlementId].expires_date;
+    if (expiry && new Date(expiry).getTime() > Date.now()) {
+      return {
+        error: "You already have the Pro plan.",
+        status: 409,
+      };
+    }
+  }
+
   const results = await serviceClient.from("promo_coupons").select().eq(
     "code",
     code,
@@ -29,49 +45,20 @@ const applyPromoCoupon = async (
   const now = new Date();
   const expiryDate = new Date(now.setDate(now.getDate() + promo.duration));
 
-  const proPlan = {
-    planName: "Pro",
-    syncHr: 720,
-    collections: 50,
-    syncInt: 5,
-    ads: false,
-    edit: true,
-    encrypt: true,
-    devices: 10,
-  };
+  const updatedCustomer = await rc.grantEntitlement(
+    userId,
+    proPlanEntitlementId,
+    expiryDate.getTime(),
+  );
 
-  const subscription = await serviceClient.from("subscription").upsert({
-    userId: userId,
-    modified: new Date().toISOString(),
-    planName: proPlan.planName,
-    subId: "Trial",
-    source: "Promo",
-    trialStart: new Date().toISOString(),
-    trialEnd: expiryDate.toISOString(),
-    collections: proPlan.collections,
-    syncHr: proPlan.syncHr,
-    ads: proPlan.ads,
-    edit: proPlan.edit,
-    encrypt: proPlan.encrypt,
-    devices: proPlan.devices,
-    syncInt: proPlan.syncInt,
-  }, {
-    onConflict: "userId",
-  }).select();
+  await serviceClient.from("promo_coupons").update({
+    claimedAt: now.toISOString(),
+    claimedBy: userId,
+  }).eq("id", promo.id);
 
-  if (subscription.status === 201 || subscription.status === 200) {
-    await serviceClient.from("promo_coupons").update({
-      claimedAt: now.toISOString(),
-      claimedBy: userId,
-    }).eq("id", promo.id);
-    return {
-      status: subscription.status,
-      subscription: subscription.data?.at(0),
-    };
-  }
   return {
-    status: 400,
-    error: "Something went wrong!",
+    status: 201,
+    customer: updatedCustomer,
   };
 };
 
@@ -124,8 +111,9 @@ Deno.serve(async (req) => {
       },
     );
   }
+  const rc = RevenueCat.fromEnv();
 
-  const result = await applyPromoCoupon(serviceClient, email, userId, code);
+  const result = await applyPromoCoupon(rc, serviceClient, email, userId, code);
 
   return new Response(
     JSON.stringify(result),

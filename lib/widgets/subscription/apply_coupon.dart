@@ -1,7 +1,6 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/routes/routes.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/gestures.dart';
@@ -76,10 +75,9 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;
     return AlertDialog(
       title: const Text(
-        'Apply Coupon',
+        'Granted Entitlement',
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
@@ -88,42 +86,42 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                title: Text(
-                  "Beta • Invite Only",
-                  style: textTheme.titleMedium?.copyWith(
-                    color: Colors.deepOrange,
-                  ),
-                ),
-                subtitle: Text.rich(
-                  TextSpan(
-                      text:
-                          "CopyCat Clipboard Pro is currently available by invitation only. We are diligently working to make it accessible to everyone soon. ",
-                      children: [
-                        TextSpan(
-                          text: "\nApply for an invitation here.",
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: Colors.deepOrange,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = applyForPro,
-                        )
-                      ]),
+              Text.rich(
+                TextSpan(
+                  text: "Granted Entitlement Codes are shared with specific"
+                      " individuals for custom entitlements. You can check if"
+                      " invitations are still available by ",
+                  children: [
+                    TextSpan(
+                      text: "clicking here.",
+                      style: const TextStyle(
+                        color: Colors.deepOrange,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = applyForPro,
+                    ),
+                  ],
                 ),
               ),
-              height10,
+              height16,
               TextFormField(
                 enabled: !loading,
                 controller: couponController,
                 decoration: InputDecoration(
-                  labelText: 'Coupon Code',
-                  helperText: 'Enter your coupon code',
+                  labelText: "Code",
+                  helperText: 'Enter the code and press Submit',
                   errorText: errorMessage,
                 ),
               ),
             ],
           ),
         ),
+      ),
+      contentPadding: const EdgeInsets.only(
+        top: 16,
+        bottom: 0,
+        left: 16,
+        right: 16,
       ),
       actions: [
         TextButton(
@@ -132,7 +130,7 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
         ),
         TextButton(
           onPressed: loading ? null : apply,
-          child: const Text('Apply'),
+          child: const Text('Submit'),
         ),
       ],
     );

@@ -2,12 +2,18 @@ import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
-  const SubscriptionInfoDialog({super.key});
+  final bool entitlementGrantMode;
+  const SubscriptionInfoDialog({
+    super.key,
+    this.entitlementGrantMode = false,
+  });
 
   Future<void> open(BuildContext context) async {
     return await showDialog(
@@ -16,8 +22,18 @@ class SubscriptionInfoDialog extends StatelessWidget {
     );
   }
 
+  Future<void> upgradeByPromoCode(BuildContext context) async {
+    if (entitlementGrantMode) {
+      const ApplyCouponDialog().open(context);
+    }
+  }
+
   Future<void> upgrade(BuildContext context) async {
-    const ApplyCouponDialog().open(context);
+    if (isMobilePlatform) {
+      await RevenueCatUI.presentPaywall(
+        displayCloseButton: true,
+      );
+    }
   }
 
   @override
@@ -27,6 +43,13 @@ class SubscriptionInfoDialog extends StatelessWidget {
       return SubscriptionBuilder(
           autoDowngrade: false,
           builder: (context, state) {
+            if (state == null) {
+              return AlertDialog(
+                title: Text(context.locale.subscription),
+                content: Text(context.locale.nothingHere),
+              );
+            }
+
             final expired = !state.isActive;
             final isTrial = state.isTrial;
             return AlertDialog(
@@ -83,6 +106,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
                       trailing: expired || state.isFree
                           ? ElevatedButton.icon(
                               onPressed: () => upgrade(context),
+                              onLongPress: () => upgradeByPromoCode(context),
                               icon: const Icon(Icons.workspace_premium_rounded),
                               label: Text(context.locale.upgrade),
                             )
