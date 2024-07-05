@@ -4,9 +4,11 @@ import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
+import 'package:clipboard/widgets/subscription/paywall/paywall.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
+import 'package:universal_io/io.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
   final bool entitlementGrantMode;
@@ -33,6 +35,10 @@ class SubscriptionInfoDialog extends StatelessWidget {
       await RevenueCatUI.presentPaywall(
         displayCloseButton: true,
       );
+      return;
+    }
+    if (Platform.isMacOS) {
+      const CustomPaywallDialog().open(context);
     }
   }
 
