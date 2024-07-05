@@ -4,15 +4,21 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-extension MaterialStateExtension<T> on T {
+extension WidgetStateExtension<T> on T {
   /// Convert into material state property
-  MaterialStateProperty<T> get msp => MaterialStateProperty.all(this);
+  WidgetStateProperty<T> get msp => WidgetStateProperty.all(this);
 }
 
 extension StringExtension on String {
   String sub({int start = 0, int? end}) {
     final end_ = min(end ?? length, length);
     return substring(start, end_);
+  }
+
+  String get title {
+    if (isEmpty) return this;
+    if (length == 1) return toUpperCase();
+    return "${this[0].toUpperCase()}${substring(1)}";
   }
 }
 
