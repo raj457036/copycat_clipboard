@@ -8,8 +8,6 @@ import {
   getSupabaseServiceClient,
 } from "../utils/supabase.ts";
 
-const proPlanEntitlementId = "pro features";
-
 const applyPromoCoupon = async (
   rc: RevenueCat,
   serviceClient: SupabaseClient,
@@ -17,18 +15,6 @@ const applyPromoCoupon = async (
   userId: string,
   code: string,
 ) => {
-  const customer = await rc.getCustomerInfo(userId);
-
-  if (!customer) {
-    const expiry = customer.entitlements[proPlanEntitlementId].expires_date;
-    if (expiry && new Date(expiry).getTime() > Date.now()) {
-      return {
-        error: "You already have the Pro plan.",
-        status: 409,
-      };
-    }
-  }
-
   const results = await serviceClient.from("promo_coupons").select().eq(
     "code",
     code,
@@ -42,12 +28,30 @@ const applyPromoCoupon = async (
   }
 
   const promo = results.data[0];
+  const planEntitlementId = promo.plan;
+  const customer = await rc.getCustomerInfo(userId);
+
+  if (customer) {
+    const isActive = customer.entitlements[planEntitlementId].isActive;
+    if (isActive) {
+      return {
+        error: "You already have an active plan.",
+        status: 409,
+      };
+    }
+  } else {
+    return {
+      error: "Customer not found",
+      status: 404,
+    };
+  }
+
   const now = new Date();
   const expiryDate = new Date(now.setDate(now.getDate() + promo.duration));
 
   const updatedCustomer = await rc.grantEntitlement(
     userId,
-    proPlanEntitlementId,
+    planEntitlementId,
     expiryDate.getTime(),
   );
 
