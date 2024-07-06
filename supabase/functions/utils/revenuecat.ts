@@ -74,11 +74,12 @@ export default class RevenueCat {
           "Authorization": `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({
-          expires_at: end_time,
+          end_time_ms: end_time,
         }),
       },
     );
 
-    return response.json();
+    const result = await response.json();
+    return result;
   }
 }

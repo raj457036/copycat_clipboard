@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/data/repositories/subscription.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,11 +16,9 @@ part 'auth_state.dart';
 @singleton
 class AuthCubit extends Cubit<AuthState> {
   SupabaseClient sbClient;
-  SubscriptionRepository subRepo;
 
   AuthCubit(
     this.sbClient,
-    this.subRepo,
   ) : super(const AuthState.unknown());
 
   /// validate the code and return a suitable page path
@@ -67,17 +64,6 @@ class AuthCubit extends Cubit<AuthState> {
       if (result.user != null) {
         emit(authState.copyWith(user: result.user!));
       }
-    });
-  }
-
-  Future<Failure?> applyPromoCode(String code) async {
-    final result = await subRepo.applyPromoCoupon(code);
-    return result.fold((l) => l, (r) {
-      emit(AuthState.authenticated(
-        session: session!,
-        user: session!.user,
-      ));
-      return null;
     });
   }
 

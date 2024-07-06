@@ -356,5 +356,19 @@
     "continue_": "Fortsetzen",
     "year": "Jahr",
     "month": "Monat",
-    "manageSubscriptions": "Abonnements Verwalten"
+    "manageSubscriptions": "Abonnements Verwalten",
+    "promoSub": "Sie nutzen ein Promo-Abonnement bis {TILL}",
+    "@promoSub": {
+        "placeholders": {
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "subscriptionUpdated": "Abonnement Aktualisiert",
+    "grantedEntitlement": "Zugewiesenes Recht",
+    "grantedEntitlementDesc": "Zugewiesene Berechtigungscodes werden mit bestimmten Personen für benutzerdefinierte Berechtigungen geteilt. Sie können überprüfen, ob Einladungen noch verfügbar sind, indem Sie ",
+    "clickingHere": "hier klicken.",
+    "enterCodeSubmit": "Geben Sie den Code ein und drücken Sie Absenden",
+    "submit": "Absenden"
 }

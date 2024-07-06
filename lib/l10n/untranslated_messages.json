@@ -1,1 +1,28 @@
-{}
+{
+  "de": [
+    "subscriptionUpdated",
+    "grantedEntitlement",
+    "grantedEntitlementDesc",
+    "clickingHere",
+    "enterCodeSubmit",
+    "submit"
+  ],
+
+  "es": [
+    "subscriptionUpdated",
+    "grantedEntitlement",
+    "grantedEntitlementDesc",
+    "clickingHere",
+    "enterCodeSubmit",
+    "submit"
+  ],
+
+  "fr": [
+    "subscriptionUpdated",
+    "grantedEntitlement",
+    "grantedEntitlementDesc",
+    "clickingHere",
+    "enterCodeSubmit",
+    "submit"
+  ]
+}

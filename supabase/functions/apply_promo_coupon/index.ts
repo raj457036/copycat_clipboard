@@ -1,6 +1,7 @@
 /// <reference types="https://esm.sh/v135/@supabase/functions-js@2.4.1/src/edge-runtime.d.ts" />
 
 import { SupabaseClient } from "https://esm.sh/v135/@supabase/supabase-js@2.42.4/dist/module/index.js";
+import { toCustomerInfo } from "../types/customer_info.ts";
 import { corsHeaders } from "../utils/cors.ts";
 import RevenueCat from "../utils/revenuecat.ts";
 import {
@@ -19,8 +20,6 @@ const applyPromoCoupon = async (
     "code",
     code,
   ).eq("email", email).is("claimedAt", null).limit(1);
-
-  console.log(results);
 
   if (!results.data || results.data.length === 0) {
     return {
@@ -65,7 +64,7 @@ const applyPromoCoupon = async (
 
   return {
     status: 201,
-    customer: updatedCustomer,
+    customer: toCustomerInfo(updatedCustomer),
   };
 };
 

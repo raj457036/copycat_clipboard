@@ -356,5 +356,19 @@
     "continue_": "Continuar",
     "year": "año",
     "month": "mes",
-    "manageSubscriptions": "Gestionar Suscripciones"
+    "manageSubscriptions": "Gestionar Suscripciones",
+    "promoSub": "Estás usando una suscripción promocional hasta {TILL}",
+    "@promoSub": {
+        "placeholders": {
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "subscriptionUpdated": "Suscripción Actualizada",
+    "grantedEntitlement": "Derecho Concedido",
+    "grantedEntitlementDesc": "Los Códigos de Derecho Concedido se comparten con personas específicas para derechos personalizados. Puedes verificar si las invitaciones aún están disponibles ",
+    "clickingHere": "haciendo clic aquí.",
+    "enterCodeSubmit": "Introduce el código y presiona Enviar",
+    "submit": "Enviar"
 }

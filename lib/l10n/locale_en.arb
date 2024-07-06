@@ -358,5 +358,19 @@
     "continue_": "Continue",
     "year": "year",
     "month": "month",
-    "manageSubscriptions": "Manage Subscriptions"
+    "manageSubscriptions": "Manage Subscriptions",
+    "promoSub": "You are using a promo subscription till {TILL}",
+    "@promoSub": {
+        "placeholders": {
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "subscriptionUpdated": "Subscription Updated",
+    "grantedEntitlement": "Granted Entitlement",
+    "grantedEntitlementDesc": "Granted Entitlement Codes are shared with specific individuals for custom entitlements. You can check if invitations are still available by ",
+    "clickingHere": "clicking here.",
+    "enterCodeSubmit": "Enter the code and press Submit",
+    "submit": "Submit"
 }

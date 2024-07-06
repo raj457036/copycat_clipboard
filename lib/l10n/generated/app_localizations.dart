@@ -1580,6 +1580,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage Subscriptions'**
   String get manageSubscriptions;
+
+  /// No description provided for @promoSub.
+  ///
+  /// In en, this message translates to:
+  /// **'You are using a promo subscription till {TILL}'**
+  String promoSub(String TILL);
+
+  /// No description provided for @subscriptionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Updated'**
+  String get subscriptionUpdated;
+
+  /// No description provided for @grantedEntitlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted Entitlement'**
+  String get grantedEntitlement;
+
+  /// No description provided for @grantedEntitlementDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted Entitlement Codes are shared with specific individuals for custom entitlements. You can check if invitations are still available by '**
+  String get grantedEntitlementDesc;
+
+  /// No description provided for @clickingHere.
+  ///
+  /// In en, this message translates to:
+  /// **'clicking here.'**
+  String get clickingHere;
+
+  /// No description provided for @enterCodeSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code and press Submit'**
+  String get enterCodeSubmit;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
 }
 
 class _AppLocalizationsDelegate

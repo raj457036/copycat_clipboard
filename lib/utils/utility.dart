@@ -120,6 +120,8 @@ Future<void> clearPersistedRootDir() async {
 
 bool get isDesktopPlatform =>
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+bool get revenuCatSupportedPlatform =>
+    Platform.isIOS || Platform.isMacOS || Platform.isAndroid;
 bool get isApplePlatform => Platform.isIOS || Platform.isMacOS;
 
 bool get isMobilePlatform => Platform.isIOS || Platform.isAndroid;

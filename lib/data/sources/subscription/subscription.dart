@@ -1,9 +1,10 @@
 import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 abstract class SubscriptionSource {
-  Future<Subscription?> get(String userId);
+  Future<CustomerInfo?> get(String userId);
 
   Future<void> save(Subscription subscription);
 
-  Future<Subscription> applyPromoCoupon(String code);
+  Future<CustomerInfo?> applyPromoCoupon(String code);
 }
