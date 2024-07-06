@@ -1,8 +1,8 @@
 import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/sources/subscription/subscription.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:injectable/injectable.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 @Named("remote")
@@ -17,14 +17,19 @@ class RemoteSubscriptionSource implements SubscriptionSource {
   FunctionsClient get function => client.functions;
 
   @override
-  Future<Subscription?> get(String userId) async {
+  Future<CustomerInfo?> get(String userId) async {
     try {
-      final response =
-          await db.from(table).select().eq("userId", userId).single();
-      return Subscription.fromJson(response);
-    } catch (e) {
-      logger.e(e);
-      return null;
+      final response = await function.invoke(
+        "get_rc_customer",
+        method: HttpMethod.get,
+      );
+
+      return CustomerInfo.fromJson(response.data["customer"]);
+    } on FunctionException catch (e) {
+      throw Failure(
+        message: e.details["error"] ?? "Invalid Customer",
+        code: "rc-customer-fetch-failed",
+      );
     }
   }
 
@@ -34,7 +39,7 @@ class RemoteSubscriptionSource implements SubscriptionSource {
   }
 
   @override
-  Future<Subscription> applyPromoCoupon(String code) async {
+  Future<CustomerInfo> applyPromoCoupon(String code) async {
     try {
       final response = await function.invoke(
         "apply_promo_coupon",
@@ -42,7 +47,9 @@ class RemoteSubscriptionSource implements SubscriptionSource {
         method: HttpMethod.post,
       );
 
-      return Subscription.fromJson(response.data["subscription"]);
+      return CustomerInfo.fromJson(
+        Map<String, dynamic>.from(response.data["customer"]),
+      );
     } on FunctionException catch (e) {
       throw Failure(
         message: e.details["error"] ?? "Invalid Code",

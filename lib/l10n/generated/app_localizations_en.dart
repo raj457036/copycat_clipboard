@@ -826,4 +826,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get manageSubscriptions => 'Manage Subscriptions';
+
+  @override
+  String promoSub(String TILL) {
+    return 'You are using a promo subscription till $TILL';
+  }
+
+  @override
+  String get subscriptionUpdated => 'Subscription Updated';
+
+  @override
+  String get grantedEntitlement => 'Granted Entitlement';
+
+  @override
+  String get grantedEntitlementDesc =>
+      'Granted Entitlement Codes are shared with specific individuals for custom entitlements. You can check if invitations are still available by ';
+
+  @override
+  String get clickingHere => 'clicking here.';
+
+  @override
+  String get enterCodeSubmit => 'Enter the code and press Submit';
+
+  @override
+  String get submit => 'Submit';
 }

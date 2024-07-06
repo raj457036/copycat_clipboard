@@ -1,7 +1,9 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
+import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
 import 'package:clipboard/widgets/subscription/paywall/paywall.dart';
@@ -44,10 +46,19 @@ class SubscriptionInfoDialog extends StatelessWidget {
     }
   }
 
-  Future<void> manageSubscription() async {
+  Future<void> manageSubscription(
+      BuildContext context, Subscription? subscription) async {
     final customer = await Purchases.getCustomerInfo();
     if (customer.managementURL != null) {
       launchUrlString(customer.managementURL!);
+      return;
+    }
+    if (subscription != null && subscription.source == "PROMO") {
+      // ignore: use_build_context_synchronously
+      final till = dateTimeFormatter(context.locale.localeName)
+          .format(subscription.activeTill!);
+      // ignore: use_build_context_synchronously
+      showTextSnackbar(context.locale.promoSub(till));
     }
   }
 
@@ -158,114 +169,119 @@ class SubscriptionInfoDialog extends StatelessWidget {
 
             final expired = !state.isActive;
             final isTrial = state.isTrial;
-            return AlertDialog(
-              title: Row(
-                children: [
-                  Text(context.locale.subscription),
-                  const Spacer(),
-                  const CloseButton(),
-                ],
-              ),
-              insetPadding: isMobile
-                  ? const EdgeInsets.all(padding8)
-                  : const EdgeInsets.symmetric(
-                      horizontal: 40.0, vertical: 24.0),
-              contentPadding: isMobile ? EdgeInsets.zero : null,
-              content: SizedBox(
-                width: 600,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: AlertDialog(
+                title: Row(
                   children: [
-                    ListTile(
-                      title: Text(
-                        context.locale.beta,
-                        style: const TextStyle(
-                          color: Colors.deepOrange,
-                          fontWeight: FontWeight.bold,
+                    Text(context.locale.subscription),
+                    const Spacer(),
+                    const CloseButton(),
+                  ],
+                ),
+                insetPadding: isMobile
+                    ? const EdgeInsets.all(padding8)
+                    : const EdgeInsets.symmetric(
+                        horizontal: 40.0, vertical: 24.0),
+                contentPadding: isMobile ? EdgeInsets.zero : null,
+                content: SizedBox(
+                  width: 600,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text(
+                          context.locale.beta,
+                          style: const TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          context.locale.featureListDetail,
                         ),
                       ),
-                      subtitle: Text(
-                        context.locale.featureListDetail,
-                      ),
-                    ),
-                    const Divider(),
-                    ListTile(
-                      title: Text(context.locale.currentPlan),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (expired)
-                            Text(context.locale.expiredPlan(state.planName))
-                          else
-                            Text(state.planName),
-                          height2,
-                          if (isTrial && state.trialEnd != null)
-                            Text(
-                              context.locale.trialTill(
-                                dateTimeFormatter(context.locale.localeName)
-                                    .format(state.trialEnd!),
-                              ),
-                            ),
-                        ],
-                      ),
-                      trailing: expired || state.isFree
-                          ? ElevatedButton.icon(
-                              onPressed: () => upgrade(context),
-                              onLongPress: () => upgradeByPromoCode(context),
-                              icon: const Icon(Icons.workspace_premium_rounded),
-                              label: Text(context.locale.upgrade),
-                            )
-                          : ElevatedButton(
-                              onPressed: manageSubscription,
-                              child: const Text("Manage Subscription"),
-                            ),
-                    ),
-                    Expanded(
-                      child: DefaultTabController(
-                        length: 2,
-                        child: Column(
+                      const Divider(),
+                      ListTile(
+                        title: Text(context.locale.currentPlan),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const TabBar(tabs: [
-                              Tab(text: "Free"),
-                              Tab(text: "Pro ✨"),
-                            ]),
-                            Expanded(
-                              child: TabBarView(children: [
-                                ListView.builder(
-                                  itemCount: freePlanIncludes.length,
-                                  itemBuilder: (context, index) {
-                                    final (icon, title, subtitle) =
-                                        freePlanIncludes[index];
-                                    return ListTile(
-                                      leading: icon,
-                                      title: Text(title),
-                                      subtitle: subtitle != null
-                                          ? Text(subtitle)
-                                          : null,
-                                    );
-                                  },
+                            if (expired)
+                              Text(context.locale.expiredPlan(state.planName))
+                            else
+                              Text(state.planName),
+                            height2,
+                            if (isTrial && state.trialEnd != null)
+                              Text(
+                                context.locale.trialTill(
+                                  dateTimeFormatter(context.locale.localeName)
+                                      .format(state.trialEnd!),
                                 ),
-                                ListView.builder(
-                                  itemCount: proPlanIncludes.length,
-                                  itemBuilder: (context, index) {
-                                    final (icon, title, subtitle) =
-                                        proPlanIncludes[index];
-                                    return ListTile(
-                                      leading: icon,
-                                      title: Text(title),
-                                      subtitle: Text(subtitle),
-                                    );
-                                  },
-                                ),
-                              ]),
-                            ),
+                              ),
                           ],
                         ),
+                        trailing: expired || state.isFree
+                            ? ElevatedButton.icon(
+                                onPressed: () => upgrade(context),
+                                onLongPress: () => upgradeByPromoCode(context),
+                                icon:
+                                    const Icon(Icons.workspace_premium_rounded),
+                                label: Text(context.locale.upgrade),
+                              )
+                            : ElevatedButton(
+                                onPressed: () =>
+                                    manageSubscription(context, state),
+                                child: Text(context.locale.manageSubscriptions),
+                              ),
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: DefaultTabController(
+                          length: 2,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const TabBar(tabs: [
+                                Tab(text: "Free"),
+                                Tab(text: "Pro ✨"),
+                              ]),
+                              Expanded(
+                                child: TabBarView(children: [
+                                  ListView.builder(
+                                    itemCount: freePlanIncludes.length,
+                                    itemBuilder: (context, index) {
+                                      final (icon, title, subtitle) =
+                                          freePlanIncludes[index];
+                                      return ListTile(
+                                        leading: icon,
+                                        title: Text(title),
+                                        subtitle: subtitle != null
+                                            ? Text(subtitle)
+                                            : null,
+                                      );
+                                    },
+                                  ),
+                                  ListView.builder(
+                                    itemCount: proPlanIncludes.length,
+                                    itemBuilder: (context, index) {
+                                      final (icon, title, subtitle) =
+                                          proPlanIncludes[index];
+                                      return ListTile(
+                                        leading: icon,
+                                        title: Text(title),
+                                        subtitle: Text(subtitle),
+                                      );
+                                    },
+                                  ),
+                                ]),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

@@ -1,13 +1,13 @@
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/sources/subscription/subscription.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SubscriptionRepository {
-  FailureOr<Subscription?> get();
-  FailureOr<Subscription> applyPromoCoupon(String code);
+  FailureOr<CustomerInfo?> get();
+  FailureOr<CustomerInfo?> applyPromoCoupon(String code);
 }
 
 @LazySingleton(as: SubscriptionRepository)
@@ -25,27 +25,18 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
   GoTrueClient get auth => client.auth;
 
   @override
-  FailureOr<Subscription?> get() async {
+  FailureOr<CustomerInfo?> get() async {
     final userId = auth.currentSession!.user.id;
     try {
-      final sub = await remote.get(userId);
-      if (sub != null) {
-        local.save(sub);
-        return Right(sub);
-      }
-      final freeSub = Subscription.free(userId);
-      return Right(freeSub);
+      final info = await remote.get(userId);
+      return Right(info);
     } catch (e) {
-      final sub = await local.get(userId);
-      if (sub == null) {
-        return Left(Failure.fromException(e));
-      }
-      return Right(sub);
+      return const Right(null);
     }
   }
 
   @override
-  FailureOr<Subscription> applyPromoCoupon(String code) async {
+  FailureOr<CustomerInfo?> applyPromoCoupon(String code) async {
     try {
       final success = await remote.applyPromoCoupon(code);
       return Right(success);

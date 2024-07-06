@@ -356,5 +356,19 @@
     "continue_": "Continuer",
     "year": "année",
     "month": "mois",
-    "manageSubscriptions": "Gérer les Abonnements"
+    "manageSubscriptions": "Gérer les Abonnements",
+    "promoSub": "Vous utilisez un abonnement promotionnel jusqu'à {TILL}",
+    "@promoSub": {
+        "placeholders": {
+            "TILL": {
+                "type": "String"
+            }
+        }
+    },
+    "subscriptionUpdated": "Abonnement Mis à Jour",
+    "grantedEntitlement": "Droit Accordé",
+    "grantedEntitlementDesc": "Les Codes de Droit Accordé sont partagés avec des individus spécifiques pour des droits personnalisés. Vous pouvez vérifier si des invitations sont encore disponibles en ",
+    "clickingHere": "cliquant ici.",
+    "enterCodeSubmit": "Entrez le code et appuyez sur Soumettre",
+    "submit": "Soumettre"
 }

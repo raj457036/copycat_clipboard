@@ -1,5 +1,6 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -47,7 +48,7 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
   }
 
   Future<void> apply() async {
-    final cubit = context.read<AuthCubit>();
+    final cubit = context.read<MonetizationCubit>();
     setState(() {
       loading = true;
     });
@@ -66,7 +67,10 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
           },
         );
       }
-      showTextSnackbar("Subscription Updated");
+      if (context.mounted) {
+        // ignore: use_build_context_synchronously
+        showTextSnackbar(context.locale.subscriptionUpdated);
+      }
       if (mounted) {
         context.pop();
       }
@@ -76,8 +80,8 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Granted Entitlement',
+      title: Text(
+        context.locale.grantedEntitlement,
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
@@ -88,12 +92,10 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
             children: [
               Text.rich(
                 TextSpan(
-                  text: "Granted Entitlement Codes are shared with specific"
-                      " individuals for custom entitlements. You can check if"
-                      " invitations are still available by ",
+                  text: context.locale.grantedEntitlementDesc,
                   children: [
                     TextSpan(
-                      text: "clicking here.",
+                      text: context.locale.clickingHere,
                       style: const TextStyle(
                         color: Colors.deepOrange,
                         decoration: TextDecoration.underline,
@@ -109,7 +111,7 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
                 controller: couponController,
                 decoration: InputDecoration(
                   labelText: "Code",
-                  helperText: 'Enter the code and press Submit',
+                  helperText: context.locale.enterCodeSubmit,
                   errorText: errorMessage,
                 ),
               ),
@@ -126,11 +128,11 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
       actions: [
         TextButton(
           onPressed: loading ? null : () => context.pop(),
-          child: const Text('Cancel'),
+          child: Text(context.locale.cancel),
         ),
         TextButton(
           onPressed: loading ? null : apply,
-          child: const Text('Submit'),
+          child: Text(context.locale.submit),
         ),
       ],
     );

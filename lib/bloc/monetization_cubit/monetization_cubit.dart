@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/data/repositories/subscription.dart';
 import 'package:clipboard/db/subscription/subscription.dart';
-import 'package:flutter/services.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -12,8 +14,10 @@ part 'monetization_state.dart';
 
 @singleton
 class MonetizationCubit extends Cubit<MonetizationState> {
+  final SubscriptionRepository repo;
   bool _setupDone = false;
-  MonetizationCubit() : super(const MonetizationState.unknown()) {
+
+  MonetizationCubit(this.repo) : super(const MonetizationState.unknown()) {
     Purchases.addCustomerInfoUpdateListener(onCustomerInfoUpdate);
   }
 
@@ -31,6 +35,7 @@ class MonetizationCubit extends Cubit<MonetizationState> {
       subscription = Subscription.pro(
         info.originalAppUserId,
         activeTill,
+        proEntitlement.productIdentifier == "rc_promo_pro features_custom",
       );
     } else {
       subscription = Subscription.free(info.originalAppUserId);
@@ -39,15 +44,32 @@ class MonetizationCubit extends Cubit<MonetizationState> {
     emit(MonetizationState.active(customer: info, subscription: subscription));
   }
 
+  Future<Failure?> applyPromoCode(String code) async {
+    final result = await repo.applyPromoCoupon(code);
+    return result.fold((l) => l, (r) {
+      if (r == null) return;
+      onCustomerInfoUpdate(r);
+      return null;
+    });
+  }
+
   Future<void> login(String userId) async {
-    await setupRevenuCat(userId);
-    if (!_setupDone) return;
-    await Purchases.logIn(userId);
-    try {
-      final result = await Purchases.getCustomerInfo();
-      onCustomerInfoUpdate(result);
-    } catch (e) {
-      logger.e("Couldn't get customer info", error: e);
+    if (_setupDone) return;
+    if (revenuCatSupportedPlatform) {
+      await setupRevenuCat(userId);
+      await Purchases.logIn(userId);
+      try {
+        final result = await Purchases.getCustomerInfo();
+        onCustomerInfoUpdate(result);
+      } catch (e) {
+        logger.e("Couldn't get customer info", error: e);
+      }
+    } else {
+      final result = await repo.get();
+      result.fold((l) => logger.e(l), (r) {
+        if (r == null) return;
+        onCustomerInfoUpdate(r);
+      });
     }
   }
 
@@ -55,26 +77,7 @@ class MonetizationCubit extends Cubit<MonetizationState> {
     emit(const MonetizationState.unknown());
   }
 
-  Future<List<Package>?> fetchOfferings() async {
-    try {
-      final offerings = await Purchases.getOfferings();
-      if (offerings.current != null) {
-        // Display current offering with offerings.current
-        return offerings.current?.availablePackages;
-      }
-    } on PlatformException catch (e) {
-      // optional error handling
-      logger.e(e);
-      return [];
-    }
-    return null;
-  }
-
   Future<void> setupRevenuCat(String userId) async {
-    if (_setupDone) {
-      return;
-    }
-
     await Purchases.setLogLevel(LogLevel.debug);
 
     PurchasesConfiguration? configuration;

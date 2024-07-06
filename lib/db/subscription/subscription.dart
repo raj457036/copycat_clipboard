@@ -44,14 +44,15 @@ class Subscription with _$Subscription, IsarIdMixin {
     );
   }
 
-  static Subscription pro(String userId, DateTime activeTill) {
+  static Subscription pro(String userId, DateTime activeTill,
+      [bool isPromo = false]) {
     return Subscription(
       created: now(),
       modified: now(),
       userId: userId,
       planName: "Pro",
       subId: "",
-      source: "",
+      source: isPromo ? "PROMO" : "",
       activeTill: activeTill,
       ads: false,
       collections: 50,
