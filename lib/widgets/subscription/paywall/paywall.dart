@@ -1,8 +1,6 @@
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/utils/snackbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +13,7 @@ class CustomPaywallDialog extends StatefulWidget {
   State<CustomPaywallDialog> createState() => CustomPaywallStateDialog();
 
   Future<void> open(BuildContext context) async {
-    return showCupertinoDialog<void>(
+    return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -28,7 +26,9 @@ class CustomPaywallDialog extends StatefulWidget {
 class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
   Offering? currentOffering;
   bool loading = true;
+  bool purchasing = false;
   Package? selectedPackage;
+  String? errorMessage;
 
   Future<void> loadOffering() async {
     final offerings = await Purchases.getOfferings();
@@ -52,16 +52,28 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
 
   Future<void> purchase() async {
     if (selectedPackage == null) return;
+    if (purchasing) return;
+
+    setState(() {
+      purchasing = true;
+      errorMessage = null;
+    });
     try {
       CustomerInfo customerInfo =
           await Purchases.purchasePackage(selectedPackage!);
 
       if (mounted) {
         Navigator.pop(context);
+        setState(() {
+          purchasing = false;
+          errorMessage = null;
+        });
       }
     } on PlatformException catch (e) {
-      if (mounted) Navigator.pop(context);
-      if (e.message != null) showTextSnackbar(e.message!);
+      setState(() {
+        purchasing = false;
+        errorMessage = e.message;
+      });
     }
   }
 
@@ -86,63 +98,98 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
     const loader = Center(
       child: CircularProgressIndicator(),
     );
-    return CupertinoAlertDialog(
-      content: loading
-          ? loader
-          : Column(
-              children: [
-                Image.asset(
-                  AssetConstants.copyCatIcon,
-                  width: 100,
-                ),
-                height16,
-                Text(
-                  "Unlock Premium Features",
-                  style: textTheme.titleLarge,
-                ),
-                height16,
-                Text(
-                  "Upgrade to CopyCat Pro today!",
-                  style: textTheme.bodyMedium,
-                ),
-                height16,
-                for (final package in currentOffering!.availablePackages)
-                  CupertinoListTile(
-                    backgroundColor: package == selectedPackage
-                        ? colors.primaryContainer
-                        : colors.surface,
-                    title: Text(
-                      package.packageType.name.title,
-                      style: textTheme.titleSmall?.copyWith(
-                        color: colors.onSurface,
-                      ),
-                    ),
-                    subtitle: Text(getPackagePricing(package)),
-                    leadingSize: 16,
-                    padding: const EdgeInsets.only(
-                      left: padding12,
-                      right: padding12,
-                      top: padding8,
-                      bottom: padding12,
-                    ),
-                    leading: package == selectedPackage
-                        ? const Icon(Icons.check_circle)
-                        : const Icon(Icons.circle_outlined),
-                    onTap: () => selectPacakge(package),
-                  ),
-                height20,
-                CupertinoButton.filled(
-                  disabledColor: colors.primaryContainer,
-                  onPressed: selectedPackage != null ? () => purchase() : null,
-                  child: const Text('Continue'),
-                ),
-                CupertinoButton(
-                  onPressed:
-                      selectedPackage != null ? () => context.pop() : null,
-                  child: const Text('Cancel'),
-                ),
-              ],
+
+    if (loading) {
+      return const AlertDialog(content: loader);
+    }
+
+    final packages = currentOffering!.availablePackages;
+    final plans = <Widget>[
+      for (final package in packages) ...[
+        ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: radius12,
+            side: BorderSide(
+              color: colors.outline,
             ),
+          ),
+          selected: package == selectedPackage,
+          selectedTileColor: colors.primaryContainer,
+          title: Text(
+            package.packageType.name.title,
+            style: textTheme.titleSmall?.copyWith(
+              color: colors.onSurface,
+            ),
+          ),
+          enabled: !purchasing,
+          subtitle: Text(getPackagePricing(package)),
+          leading: package == selectedPackage
+              ? const Icon(Icons.check_circle)
+              : const Icon(Icons.circle_outlined),
+          onTap: () => selectPacakge(package),
+          contentPadding: const EdgeInsets.only(
+            left: padding12,
+            right: padding12,
+            bottom: padding8,
+          ),
+        ),
+        height8
+      ]
+    ];
+
+    return AlertDialog(
+      content: ConstrainedBox(
+        constraints: BoxConstraints.loose(const Size.fromWidth(350)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              AssetConstants.copyCatIcon,
+              width: 100,
+            ),
+            height16,
+            Text(
+              "Unlock Premium Features",
+              style: textTheme.titleLarge,
+            ),
+            height16,
+            Text(
+              "Upgrade to CopyCat Pro today!",
+              style: textTheme.bodyMedium,
+            ),
+            if (errorMessage != null)
+              ListTile(
+                dense: true,
+                title: Text(
+                  errorMessage!,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colors.error,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                subtitle: const Text(
+                  "Please try again",
+                  textAlign: TextAlign.center,
+                ),
+              )
+            else
+              height12,
+            ...plans,
+            height10,
+            ElevatedButton(
+              onPressed: !purchasing && selectedPackage != null
+                  ? () => purchase()
+                  : null,
+              child: const Text('Continue'),
+            ),
+            height10,
+            TextButton(
+              onPressed: purchasing ? null : context.pop,
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
