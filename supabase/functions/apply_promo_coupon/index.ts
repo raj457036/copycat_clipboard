@@ -20,6 +20,8 @@ const applyPromoCoupon = async (
     code,
   ).eq("email", email).is("claimedAt", null).limit(1);
 
+  console.log(results);
+
   if (!results.data || results.data.length === 0) {
     return {
       error: "Coupon not found",
@@ -30,10 +32,11 @@ const applyPromoCoupon = async (
   const promo = results.data[0];
   const planEntitlementId = promo.plan;
   const customer = await rc.getCustomerInfo(userId);
-
   if (customer) {
-    const isActive = customer.entitlements[planEntitlementId].isActive;
-    if (isActive) {
+    const entitlement = customer.subscriber.entitlements[planEntitlementId];
+    if (
+      entitlement && new Date(entitlement.expires_date).getTime() > Date.now()
+    ) {
       return {
         error: "You already have an active plan.",
         status: 409,
