@@ -160,7 +160,7 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
               context.locale.unlockPremiumFeatures,
               style: textTheme.titleLarge,
             ),
-            height16,
+            height10,
             Text(
               context.locale.upgradeToPro,
               style: textTheme.bodyMedium,
@@ -181,7 +181,7 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
                 ),
               )
             else
-              height12,
+              height16,
             ...plans,
             height10,
             ElevatedButton(
