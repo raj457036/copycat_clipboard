@@ -814,4 +814,25 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get accountDeleteDialogDesc =>
       'Sie werden zum Formular für den Antrag auf Kontolöschung weitergeleitet, sind Sie sicher?';
+
+  @override
+  String get unlockPremiumFeatures => 'Premium-Funktionen freischalten';
+
+  @override
+  String get upgradeToPro => 'Upgrade zu CopyCat Pro noch heute!';
+
+  @override
+  String get tryAgain => 'Bitte versuche es erneut';
+
+  @override
+  String get continue_ => 'Fortsetzen';
+
+  @override
+  String get year => 'Jahr';
+
+  @override
+  String get month => 'Monat';
+
+  @override
+  String get manageSubscriptions => 'Abonnements Verwalten';
 }

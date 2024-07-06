@@ -53,99 +53,100 @@ class SubscriptionInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final isMobile = Breakpoints.isMobile(constraints.maxWidth);
-      final freePlanIncludes = [
-        (
-          null,
-          context.locale.included,
-          null,
-        ),
-        (
-          const Icon(Icons.paste_rounded),
-          context.locale.unlimitedClipboardItems,
-          context.locale.unlimitedClipboardItemsDesc,
-        ),
-        (
-          const Icon(Icons.devices),
-          context.locale.supportAllMajorPlatforms,
-          context.locale.supportAllMajorPlatformsDesc,
-        ),
-        (
-          const Icon(Icons.fiber_smart_record_outlined),
-          context.locale.supportsAppleUniversalClipboard,
-          context.locale.supportsAppleUniversalClipboardDesc,
-        ),
-        (
-          const Icon(Icons.storage_rounded),
-          context.locale.onDeviceStorage,
-          context.locale.onDeviceStorageDesc,
-        ),
-        (
-          const Icon(Icons.add_to_drive_rounded),
-          context.locale.googleDriveIntegration,
-          context.locale.googleDriveIntegrationDesc,
-        ),
-        (
-          const Icon(Icons.manage_search_rounded),
-          context.locale.instantSearch,
-          context.locale.instantSearchDesc,
-        ),
-        (
-          const Icon(Icons.cloud_sync_rounded),
-          context.locale.syncingUpToLast24Hours,
-          context.locale.syncingUpToLast24HoursDesc,
-        ),
-        (
-          const Icon(Icons.collections_bookmark_rounded),
-          context.locale.upTo3Collections,
-          context.locale.upTo3CollectionsDesc,
-        ),
-        (
-          const Icon(Icons.sync_alt_rounded),
-          context.locale.autoSyncEvery60Seconds,
-          context.locale.autoSyncEvery60SecondsDesc,
-        )
-      ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = Breakpoints.isMobile(constraints.maxWidth);
+        final freePlanIncludes = [
+          (
+            null,
+            context.locale.included,
+            null,
+          ),
+          (
+            const Icon(Icons.paste_rounded),
+            context.locale.unlimitedClipboardItems,
+            context.locale.unlimitedClipboardItemsDesc,
+          ),
+          (
+            const Icon(Icons.devices),
+            context.locale.supportAllMajorPlatforms,
+            context.locale.supportAllMajorPlatformsDesc,
+          ),
+          (
+            const Icon(Icons.fiber_smart_record_outlined),
+            context.locale.supportsAppleUniversalClipboard,
+            context.locale.supportsAppleUniversalClipboardDesc,
+          ),
+          (
+            const Icon(Icons.storage_rounded),
+            context.locale.onDeviceStorage,
+            context.locale.onDeviceStorageDesc,
+          ),
+          (
+            const Icon(Icons.add_to_drive_rounded),
+            context.locale.googleDriveIntegration,
+            context.locale.googleDriveIntegrationDesc,
+          ),
+          (
+            const Icon(Icons.manage_search_rounded),
+            context.locale.instantSearch,
+            context.locale.instantSearchDesc,
+          ),
+          (
+            const Icon(Icons.cloud_sync_rounded),
+            context.locale.syncingUpToLast24Hours,
+            context.locale.syncingUpToLast24HoursDesc,
+          ),
+          (
+            const Icon(Icons.collections_bookmark_rounded),
+            context.locale.upTo3Collections,
+            context.locale.upTo3CollectionsDesc,
+          ),
+          (
+            const Icon(Icons.sync_alt_rounded),
+            context.locale.autoSyncEvery60Seconds,
+            context.locale.autoSyncEvery60SecondsDesc,
+          )
+        ];
 
-      final proPlanIncludes = [
-        (
-          null,
-          context.locale.withPro,
-          context.locale.withProDesc,
-        ),
-        (
-          const Icon(Icons.security_rounded),
-          context.locale.supportE2EE,
-          context.locale.supportE2EEDesc,
-        ),
-        (
-          const Icon(Icons.collections_bookmark_rounded),
-          context.locale.upto50Collection,
-          context.locale.upto50CollectionDesc,
-        ),
-        (
-          const Icon(Icons.collections_bookmark_rounded),
-          context.locale.syncLast720Hr,
-          context.locale.syncLast720HrDesc,
-        ),
-        (
-          const Icon(Icons.sync_rounded),
-          context.locale.realtimeSync,
-          context.locale.realtimeSyncDesc,
-        ),
-        (
-          const Icon(Icons.support_agent_rounded),
-          context.locale.prioritySupport,
-          context.locale.prioritySupportDesc,
-        ),
-        (
-          const Icon(Icons.new_releases_rounded),
-          context.locale.earlyAccessToNewFeature,
-          context.locale.earlyAccessToNewFeatureDesc,
-        ),
-      ];
-      return SubscriptionBuilder(
+        final proPlanIncludes = [
+          (
+            null,
+            context.locale.withPro,
+            context.locale.withProDesc,
+          ),
+          (
+            const Icon(Icons.security_rounded),
+            context.locale.supportE2EE,
+            context.locale.supportE2EEDesc,
+          ),
+          (
+            const Icon(Icons.collections_bookmark_rounded),
+            context.locale.upto50Collection,
+            context.locale.upto50CollectionDesc,
+          ),
+          (
+            const Icon(Icons.collections_bookmark_rounded),
+            context.locale.syncLast720Hr,
+            context.locale.syncLast720HrDesc,
+          ),
+          (
+            const Icon(Icons.sync_rounded),
+            context.locale.realtimeSync,
+            context.locale.realtimeSyncDesc,
+          ),
+          (
+            const Icon(Icons.support_agent_rounded),
+            context.locale.prioritySupport,
+            context.locale.prioritySupportDesc,
+          ),
+          (
+            const Icon(Icons.new_releases_rounded),
+            context.locale.earlyAccessToNewFeature,
+            context.locale.earlyAccessToNewFeatureDesc,
+          ),
+        ];
+        return SubscriptionBuilder(
           autoDowngrade: false,
           builder: (context, state) {
             if (state == null) {
@@ -268,7 +269,9 @@ class SubscriptionInfoDialog extends StatelessWidget {
                 ),
               ),
             );
-          });
-    });
+          },
+        );
+      },
+    );
   }
 }

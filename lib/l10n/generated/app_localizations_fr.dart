@@ -814,4 +814,25 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get accountDeleteDialogDesc =>
       'Vous serez redirigé vers le formulaire de demande de suppression de compte, êtes-vous sûr ?';
+
+  @override
+  String get unlockPremiumFeatures => 'Débloquer les Fonctionnalités Premium';
+
+  @override
+  String get upgradeToPro => 'Passez à CopyCat Pro aujourd\'hui!';
+
+  @override
+  String get tryAgain => 'Veuillez réessayer';
+
+  @override
+  String get continue_ => 'Continuer';
+
+  @override
+  String get year => 'année';
+
+  @override
+  String get month => 'mois';
+
+  @override
+  String get manageSubscriptions => 'Gérer les Abonnements';
 }

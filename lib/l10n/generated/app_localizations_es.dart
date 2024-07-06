@@ -813,4 +813,25 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get accountDeleteDialogDesc =>
       'Serás redirigido al formulario de solicitud de eliminación de cuenta, ¿estás seguro?';
+
+  @override
+  String get unlockPremiumFeatures => 'Desbloquear Funciones Premium';
+
+  @override
+  String get upgradeToPro => '¡Actualiza a CopyCat Pro hoy!';
+
+  @override
+  String get tryAgain => 'Por favor, inténtalo de nuevo';
+
+  @override
+  String get continue_ => 'Continuar';
+
+  @override
+  String get year => 'año';
+
+  @override
+  String get month => 'mes';
+
+  @override
+  String get manageSubscriptions => 'Gestionar Suscripciones';
 }

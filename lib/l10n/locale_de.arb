@@ -349,5 +349,12 @@
     "requestAccountDeletion": "Antrag auf Kontolöschung",
     "myAccount": "Mein Konto",
     "accountDeleteDialogTitle": "Antrag auf Kontolöschung",
-    "accountDeleteDialogDesc": "Sie werden zum Formular für den Antrag auf Kontolöschung weitergeleitet, sind Sie sicher?"
+    "accountDeleteDialogDesc": "Sie werden zum Formular für den Antrag auf Kontolöschung weitergeleitet, sind Sie sicher?",
+    "unlockPremiumFeatures": "Premium-Funktionen freischalten",
+    "upgradeToPro": "Upgrade zu CopyCat Pro noch heute!",
+    "tryAgain": "Bitte versuche es erneut",
+    "continue_": "Fortsetzen",
+    "year": "Jahr",
+    "month": "Monat",
+    "manageSubscriptions": "Abonnements Verwalten"
 }

@@ -1538,6 +1538,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You will be redirected to the account delete request form, are you sure?'**
   String get accountDeleteDialogDesc;
+
+  /// No description provided for @unlockPremiumFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Premium Features'**
+  String get unlockPremiumFeatures;
+
+  /// No description provided for @upgradeToPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to CopyCat Pro today!'**
+  String get upgradeToPro;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again'**
+  String get tryAgain;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'year'**
+  String get year;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get month;
+
+  /// No description provided for @manageSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Subscriptions'**
+  String get manageSubscriptions;
 }
 
 class _AppLocalizationsDelegate
