@@ -349,5 +349,12 @@
     "requestAccountDeletion": "Solicitar Eliminación de Cuenta",
     "myAccount": "Mi Cuenta",
     "accountDeleteDialogTitle": "Solicitud de Eliminación de Cuenta",
-    "accountDeleteDialogDesc": "Serás redirigido al formulario de solicitud de eliminación de cuenta, ¿estás seguro?"
+    "accountDeleteDialogDesc": "Serás redirigido al formulario de solicitud de eliminación de cuenta, ¿estás seguro?",
+    "unlockPremiumFeatures": "Desbloquear Funciones Premium",
+    "upgradeToPro": "¡Actualiza a CopyCat Pro hoy!",
+    "tryAgain": "Por favor, inténtalo de nuevo",
+    "continue_": "Continuar",
+    "year": "año",
+    "month": "mes",
+    "manageSubscriptions": "Gestionar Suscripciones"
 }

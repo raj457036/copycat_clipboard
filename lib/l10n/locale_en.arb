@@ -351,5 +351,12 @@
     "requestAccountDeletion": "Request Account Deletion",
     "myAccount": "My Account",
     "accountDeleteDialogTitle": "Account Delete Request",
-    "accountDeleteDialogDesc": "You will be redirected to the account delete request form, are you sure?"
+    "accountDeleteDialogDesc": "You will be redirected to the account delete request form, are you sure?",
+    "unlockPremiumFeatures": "Unlock Premium Features",
+    "upgradeToPro": "Upgrade to CopyCat Pro today!",
+    "tryAgain": "Please try again",
+    "continue_": "Continue",
+    "year": "year",
+    "month": "month",
+    "manageSubscriptions": "Manage Subscriptions"
 }

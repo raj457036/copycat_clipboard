@@ -1,8 +1,11 @@
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -29,6 +32,7 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
   bool purchasing = false;
   Package? selectedPackage;
   String? errorMessage;
+  late final MonetizationCubit monetizationCubit;
 
   Future<void> loadOffering() async {
     final offerings = await Purchases.getOfferings();
@@ -41,6 +45,7 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
   @override
   void initState() {
     super.initState();
+    monetizationCubit = context.read<MonetizationCubit>();
     loadOffering();
   }
 
@@ -59,8 +64,9 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
       errorMessage = null;
     });
     try {
-      CustomerInfo customerInfo =
-          await Purchases.purchasePackage(selectedPackage!);
+      final customerInfo = await Purchases.purchasePackage(selectedPackage!);
+
+      monetizationCubit.onCustomerInfoUpdate(customerInfo);
 
       if (mounted) {
         Navigator.pop(context);
@@ -83,9 +89,11 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
     final priceStr = package.storeProduct.priceString;
     switch (package.packageType) {
       case PackageType.annual:
-        return "$priceStr/year ($currency ${(price / 12).toStringAsFixed(2)}/month)";
+        return "$priceStr/${context.locale.year}"
+            " ($currency ${(price / 12).toStringAsFixed(2)}"
+            "/${context.locale.month})";
       case PackageType.monthly:
-        return "$priceStr/month";
+        return "$priceStr/${context.locale.month}";
       default:
         return "-";
     }
@@ -149,12 +157,12 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
             ),
             height16,
             Text(
-              "Unlock Premium Features",
+              context.locale.unlockPremiumFeatures,
               style: textTheme.titleLarge,
             ),
             height16,
             Text(
-              "Upgrade to CopyCat Pro today!",
+              context.locale.upgradeToPro,
               style: textTheme.bodyMedium,
             ),
             if (errorMessage != null)
@@ -167,8 +175,8 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                subtitle: const Text(
-                  "Please try again",
+                subtitle: Text(
+                  context.locale.tryAgain,
                   textAlign: TextAlign.center,
                 ),
               )
@@ -180,12 +188,12 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
               onPressed: !purchasing && selectedPackage != null
                   ? () => purchase()
                   : null,
-              child: const Text('Continue'),
+              child: Text(context.locale.continue_),
             ),
             height10,
             TextButton(
               onPressed: purchasing ? null : context.pop,
-              child: const Text('Cancel'),
+              child: Text(context.locale.cancel),
             ),
           ],
         ),
