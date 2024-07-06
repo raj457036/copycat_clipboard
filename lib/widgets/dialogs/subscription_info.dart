@@ -7,8 +7,10 @@ import 'package:clipboard/widgets/subscription/apply_coupon.dart';
 import 'package:clipboard/widgets/subscription/paywall/paywall.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:universal_io/io.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
   final bool entitlementGrantMode;
@@ -42,10 +44,107 @@ class SubscriptionInfoDialog extends StatelessWidget {
     }
   }
 
+  Future<void> manageSubscription() async {
+    final customer = await Purchases.getCustomerInfo();
+    if (customer.managementURL != null) {
+      launchUrlString(customer.managementURL!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final isMobile = Breakpoints.isMobile(constraints.maxWidth);
+      final freePlanIncludes = [
+        (
+          null,
+          context.locale.included,
+          null,
+        ),
+        (
+          const Icon(Icons.paste_rounded),
+          context.locale.unlimitedClipboardItems,
+          context.locale.unlimitedClipboardItemsDesc,
+        ),
+        (
+          const Icon(Icons.devices),
+          context.locale.supportAllMajorPlatforms,
+          context.locale.supportAllMajorPlatformsDesc,
+        ),
+        (
+          const Icon(Icons.fiber_smart_record_outlined),
+          context.locale.supportsAppleUniversalClipboard,
+          context.locale.supportsAppleUniversalClipboardDesc,
+        ),
+        (
+          const Icon(Icons.storage_rounded),
+          context.locale.onDeviceStorage,
+          context.locale.onDeviceStorageDesc,
+        ),
+        (
+          const Icon(Icons.add_to_drive_rounded),
+          context.locale.googleDriveIntegration,
+          context.locale.googleDriveIntegrationDesc,
+        ),
+        (
+          const Icon(Icons.manage_search_rounded),
+          context.locale.instantSearch,
+          context.locale.instantSearchDesc,
+        ),
+        (
+          const Icon(Icons.cloud_sync_rounded),
+          context.locale.syncingUpToLast24Hours,
+          context.locale.syncingUpToLast24HoursDesc,
+        ),
+        (
+          const Icon(Icons.collections_bookmark_rounded),
+          context.locale.upTo3Collections,
+          context.locale.upTo3CollectionsDesc,
+        ),
+        (
+          const Icon(Icons.sync_alt_rounded),
+          context.locale.autoSyncEvery60Seconds,
+          context.locale.autoSyncEvery60SecondsDesc,
+        )
+      ];
+
+      final proPlanIncludes = [
+        (
+          null,
+          context.locale.withPro,
+          context.locale.withProDesc,
+        ),
+        (
+          const Icon(Icons.security_rounded),
+          context.locale.supportE2EE,
+          context.locale.supportE2EEDesc,
+        ),
+        (
+          const Icon(Icons.collections_bookmark_rounded),
+          context.locale.upto50Collection,
+          context.locale.upto50CollectionDesc,
+        ),
+        (
+          const Icon(Icons.collections_bookmark_rounded),
+          context.locale.syncLast720Hr,
+          context.locale.syncLast720HrDesc,
+        ),
+        (
+          const Icon(Icons.sync_rounded),
+          context.locale.realtimeSync,
+          context.locale.realtimeSyncDesc,
+        ),
+        (
+          const Icon(Icons.support_agent_rounded),
+          context.locale.prioritySupport,
+          context.locale.prioritySupportDesc,
+        ),
+        (
+          const Icon(Icons.new_releases_rounded),
+          context.locale.earlyAccessToNewFeature,
+          context.locale.earlyAccessToNewFeatureDesc,
+        ),
+      ];
       return SubscriptionBuilder(
           autoDowngrade: false,
           builder: (context, state) {
@@ -116,7 +215,10 @@ class SubscriptionInfoDialog extends StatelessWidget {
                               icon: const Icon(Icons.workspace_premium_rounded),
                               label: Text(context.locale.upgrade),
                             )
-                          : null,
+                          : ElevatedButton(
+                              onPressed: manageSubscription,
+                              child: const Text("Manage Subscription"),
+                            ),
                     ),
                     Expanded(
                       child: DefaultTabController(
@@ -130,178 +232,32 @@ class SubscriptionInfoDialog extends StatelessWidget {
                             ]),
                             Expanded(
                               child: TabBarView(children: [
-                                SingleChildScrollView(
-                                  child: ListTile(
-                                    title: Text(context.locale.included),
-                                    subtitle: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        height4,
-                                        ListTile(
-                                          leading:
-                                              const Icon(Icons.paste_rounded),
-                                          title: Text(
-                                            context
-                                                .locale.unlimitedClipboardItems,
-                                          ),
-                                          subtitle: Text(context.locale
-                                              .unlimitedClipboardItemsDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(Icons.devices),
-                                          title: Text(
-                                            context.locale
-                                                .supportAllMajorPlatforms,
-                                          ),
-                                          subtitle: Text(context.locale
-                                              .supportAllMajorPlatformsDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(Icons
-                                              .fiber_smart_record_outlined),
-                                          title: Text(context.locale
-                                              .supportsAppleUniversalClipboard),
-                                          subtitle: Text(context.locale
-                                              .supportsAppleUniversalClipboardDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading:
-                                              const Icon(Icons.storage_rounded),
-                                          title: Text(
-                                              context.locale.onDeviceStorage),
-                                          subtitle: Text(context
-                                              .locale.onDeviceStorageDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.add_to_drive_rounded),
-                                          title: Text(context
-                                              .locale.googleDriveIntegration),
-                                          subtitle: Text(context.locale
-                                              .googleDriveIntegrationDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.manage_search_rounded),
-                                          title: Text(
-                                              context.locale.instantSearch),
-                                          subtitle: Text(
-                                              context.locale.instantSearchDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.cloud_sync_rounded),
-                                          title: Text(context
-                                              .locale.syncingUpToLast24Hours),
-                                          subtitle: Text(context.locale
-                                              .syncingUpToLast24HoursDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(Icons
-                                              .collections_bookmark_rounded),
-                                          title: Text(
-                                              context.locale.upTo3Collections),
-                                          subtitle: Text(context
-                                              .locale.upTo3CollectionsDesc),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.sync_alt_rounded),
-                                          title: Text(
-                                            context
-                                                .locale.autoSyncEvery60Seconds,
-                                          ),
-                                          subtitle: Text(context.locale
-                                              .autoSyncEvery60SecondsDesc),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                ListView.builder(
+                                  itemCount: freePlanIncludes.length,
+                                  itemBuilder: (context, index) {
+                                    final (icon, title, subtitle) =
+                                        freePlanIncludes[index];
+                                    return ListTile(
+                                      leading: icon,
+                                      title: Text(title),
+                                      subtitle: subtitle != null
+                                          ? Text(subtitle)
+                                          : null,
+                                    );
+                                  },
                                 ),
-                                SingleChildScrollView(
-                                  child: ListTile(
-                                    title: Text(context.locale.withPro),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        height4,
-                                        Text(context.locale.withProDesc),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.security_rounded),
-                                          title:
-                                              Text(context.locale.supportE2EE),
-                                          subtitle: Text(
-                                            context.locale.supportE2EEDesc,
-                                          ),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(Icons
-                                              .collections_bookmark_rounded),
-                                          title: Text(
-                                              context.locale.upto50Collection),
-                                          subtitle: Text(
-                                            context.locale.upto50CollectionDesc,
-                                          ),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(Icons
-                                              .collections_bookmark_rounded),
-                                          title: Text(
-                                              context.locale.syncLast720Hr),
-                                          subtitle: Text(
-                                            context.locale.syncLast720HrDesc,
-                                          ),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading:
-                                              const Icon(Icons.sync_rounded),
-                                          title:
-                                              Text(context.locale.realtimeSync),
-                                          subtitle: Text(
-                                            context.locale.realtimeSyncDesc,
-                                          ),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.support_agent_rounded),
-                                          title: Text(
-                                              context.locale.prioritySupport),
-                                          subtitle: Text(
-                                            context.locale.prioritySupportDesc,
-                                          ),
-                                        ),
-                                        height4,
-                                        ListTile(
-                                          leading: const Icon(
-                                              Icons.new_releases_rounded),
-                                          title: Text(context
-                                              .locale.earlyAccessToNewFeature),
-                                          subtitle: Text(
-                                            context.locale
-                                                .earlyAccessToNewFeatureDesc,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                                ListView.builder(
+                                  itemCount: proPlanIncludes.length,
+                                  itemBuilder: (context, index) {
+                                    final (icon, title, subtitle) =
+                                        proPlanIncludes[index];
+                                    return ListTile(
+                                      leading: icon,
+                                      title: Text(title),
+                                      subtitle: Text(subtitle),
+                                    );
+                                  },
+                                ),
                               ]),
                             ),
                           ],
