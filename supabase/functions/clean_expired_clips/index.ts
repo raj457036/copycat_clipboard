@@ -4,6 +4,15 @@ import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.42.4";
 import { batchDeleteDriveFiles, refreshGoogleToken } from "../utils/google.ts";
 import { getSupabaseClient } from "../utils/supabase.ts";
 
+async function cleanExpiredClipCollections(client: SupabaseClient) {
+  const currentDate = new Date();
+
+  // Subtract 30 days from the current date
+  currentDate.setDate(currentDate.getDate() - 30);
+
+  await client.from("clip_collections").delete().lt("deletedAt", currentDate);
+}
+
 async function cleanExpiredMediaClips(client: SupabaseClient) {
   // current account query offset
   let aqOffset = 0;
@@ -96,6 +105,7 @@ async function cleanClipboards(
   client: SupabaseClient,
 ) {
   await cleanExpiredMediaClips(client);
+  await cleanExpiredClipCollections(client);
 }
 
 Deno.serve(async (req) => {
