@@ -370,5 +370,7 @@
     "grantedEntitlementDesc": "Les Codes de Droit Accordé sont partagés avec des individus spécifiques pour des droits personnalisés. Vous pouvez vérifier si des invitations sont encore disponibles en ",
     "clickingHere": "cliquant ici.",
     "enterCodeSubmit": "Entrez le code et appuyez sur Soumettre",
-    "submit": "Soumettre"
+    "submit": "Soumettre",
+    "subscribeInSupportedPlatform": "Pour accéder aux fonctionnalités premium de Copycat Clipboard, veuillez vous abonner via le Play Store ou l'Apple App Store. Votre abonnement sera synchronisé sur tous vos appareils, y compris Linux et Windows.",
+    "subscribeSupportedPlatformTitle": "Abonnez-vous à Copycat Clipboard"
 }

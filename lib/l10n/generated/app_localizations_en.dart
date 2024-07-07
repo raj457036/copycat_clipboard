@@ -850,4 +850,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submit => 'Submit';
+
+  @override
+  String get subscribeInSupportedPlatform =>
+      'To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows.';
+
+  @override
+  String get subscribeSupportedPlatformTitle =>
+      'Subscribe to Copycat Clipboard';
 }

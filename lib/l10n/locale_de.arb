@@ -370,5 +370,7 @@
     "grantedEntitlementDesc": "Zugewiesene Berechtigungscodes werden mit bestimmten Personen für benutzerdefinierte Berechtigungen geteilt. Sie können überprüfen, ob Einladungen noch verfügbar sind, indem Sie ",
     "clickingHere": "hier klicken.",
     "enterCodeSubmit": "Geben Sie den Code ein und drücken Sie Absenden",
-    "submit": "Absenden"
+    "submit": "Absenden",
+    "subscribeInSupportedPlatform": "Um auf Premium-Funktionen von Copycat Clipboard zuzugreifen, abonnieren Sie bitte über den Play Store oder den Apple App Store. Ihr Abonnement wird auf all Ihren Geräten, einschließlich Linux und Windows, synchronisiert.",
+    "subscribeSupportedPlatformTitle": "Abonnieren Sie Copycat Clipboard"
 }
