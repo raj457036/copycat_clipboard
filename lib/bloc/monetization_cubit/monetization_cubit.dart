@@ -18,13 +18,17 @@ class MonetizationCubit extends Cubit<MonetizationState> {
   bool _setupDone = false;
 
   MonetizationCubit(this.repo) : super(const MonetizationState.unknown()) {
-    Purchases.addCustomerInfoUpdateListener(onCustomerInfoUpdate);
+    if (revenuCatSupportedPlatform) {
+      Purchases.addCustomerInfoUpdateListener(onCustomerInfoUpdate);
+    }
   }
 
   @override
   Future<void> close() async {
     await super.close();
-    Purchases.removeCustomerInfoUpdateListener(onCustomerInfoUpdate);
+    if (revenuCatSupportedPlatform) {
+      Purchases.removeCustomerInfoUpdateListener(onCustomerInfoUpdate);
+    }
   }
 
   void onCustomerInfoUpdate(CustomerInfo info) {
