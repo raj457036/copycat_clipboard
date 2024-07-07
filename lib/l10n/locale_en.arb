@@ -373,5 +373,6 @@
     "clickingHere": "clicking here.",
     "enterCodeSubmit": "Enter the code and press Submit",
     "submit": "Submit",
-    "subscribeInSupportedPlatform": "To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows."
+    "subscribeInSupportedPlatform": "To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows.",
+    "subscribeSupportedPlatformTitle": "Subscribe to Copycat Clipboard"
 }
