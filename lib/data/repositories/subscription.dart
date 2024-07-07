@@ -13,12 +13,10 @@ abstract class SubscriptionRepository {
 @LazySingleton(as: SubscriptionRepository)
 class SubscriptionRepositoryImpl extends SubscriptionRepository {
   final SupabaseClient client;
-  final SubscriptionSource local;
   final SubscriptionSource remote;
 
   SubscriptionRepositoryImpl({
     required this.client,
-    @Named("local") required this.local,
     @Named("remote") required this.remote,
   });
 
