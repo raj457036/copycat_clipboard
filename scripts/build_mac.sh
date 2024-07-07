@@ -1,5 +1,5 @@
-flutter build macos --dart-define-from-file="local/prod.json" \
-&& create-dmg --window-pos 200 120 \                                  
+flutter build macos --dart-define-from-file="local/prod.json" && \
+create-dmg --window-pos 200 120 \
   --window-size 800 400 \
   --icon-size 100 \
   --icon "CopyCat.app" 200 190 \
