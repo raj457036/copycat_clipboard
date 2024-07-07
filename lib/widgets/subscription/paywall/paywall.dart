@@ -107,8 +107,15 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
     final colors = context.colors;
 
     if (!revenuCatSupportedPlatform) {
-      return const AlertDialog(
-        content: Text(""),
+      return AlertDialog(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [Text(context.locale.subscription), const CloseButton()],
+        ),
+        content: SizedBox(
+          width: 350,
+          child: Text(context.locale.subscribeInSupportedPlatform),
+        ),
       );
     }
 
