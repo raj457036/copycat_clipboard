@@ -9,7 +9,6 @@ import 'package:clipboard/widgets/subscription/paywall/paywall.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
-import 'package:universal_io/io.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
   final bool entitlementGrantMode;
@@ -38,9 +37,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
       );
       return;
     }
-    if (Platform.isMacOS) {
-      const CustomPaywallDialog().open(context);
-    }
+    const CustomPaywallDialog().open(context);
   }
 
   @override
@@ -144,7 +141,10 @@ class SubscriptionInfoDialog extends StatelessWidget {
             if (state == null) {
               return AlertDialog(
                 title: Text(context.locale.subscription),
-                content: Text(context.locale.nothingHere),
+                content: Text(
+                  context.locale.nothingHere,
+                  textAlign: TextAlign.center,
+                ),
               );
             }
 
@@ -203,7 +203,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
                               ),
                           ],
                         ),
-                        trailing: expired || state.isFree
+                        trailing: true || expired || state.isFree
                             ? ElevatedButton.icon(
                                 onPressed: () => upgrade(context),
                                 onLongPress: () => upgradeByPromoCode(context),
