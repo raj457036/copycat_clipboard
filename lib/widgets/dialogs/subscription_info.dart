@@ -203,7 +203,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
                               ),
                           ],
                         ),
-                        trailing: true || expired || state.isFree
+                        trailing: expired || state.isFree
                             ? ElevatedButton.icon(
                                 onPressed: () => upgrade(context),
                                 onLongPress: () => upgradeByPromoCode(context),
