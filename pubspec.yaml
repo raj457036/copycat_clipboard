@@ -82,6 +82,7 @@ dependencies:
   upgrader: ^10.3.0
   purchases_flutter: ^6.29.4
   purchases_ui_flutter: ^6.29.4
+  retry: ^3.1.2
   
 dev_dependencies:
   flutter_test:

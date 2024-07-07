@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:clipboard/common/failure.dart';
@@ -5,7 +6,9 @@ import 'package:clipboard/model/drive_access_token.dart';
 import 'package:dartz/dartz.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:injectable/injectable.dart';
+import 'package:retry/retry.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class DriveCredentialRepository {
@@ -80,10 +83,15 @@ class DriveCredentialRepositoryImpl implements DriveCredentialRepository {
   @override
   FailureOr<DriveAccessToken> setupDrive(String authCode) async {
     try {
-      final result = await client.functions.invoke(
-        "get_gaccess_token",
-        body: {"code": authCode},
-        method: HttpMethod.post,
+      final result = await retry(
+        () => client.functions
+            .invoke(
+              "get_gaccess_token",
+              body: {"code": authCode},
+              method: HttpMethod.post,
+            )
+            .timeout(const Duration(seconds: 30)),
+        retryIf: (e) => e is SocketException || e is TimeoutException,
       );
       return Right(DriveAccessToken.fromJson(jsonDecode(result.data)));
     } catch (e) {
@@ -99,9 +107,14 @@ class DriveCredentialRepositoryImpl implements DriveCredentialRepository {
   @override
   FailureOr<DriveAccessToken> refreshAccessToken() async {
     try {
-      final result = await client.functions.invoke(
-        "get_gaccess_token",
-        method: HttpMethod.get,
+      final result = await retry(
+        () => client.functions
+            .invoke(
+              "get_gaccess_token",
+              method: HttpMethod.get,
+            )
+            .timeout(const Duration(seconds: 30)),
+        retryIf: (e) => e is SocketException || e is TimeoutException,
       );
       return Right(DriveAccessToken.fromJson(jsonDecode(result.data)));
     } catch (e) {
