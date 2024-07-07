@@ -842,21 +842,21 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get subscriptionUpdated => 'Subscription Updated';
+  String get subscriptionUpdated => 'Abonnement Mis à Jour';
 
   @override
-  String get grantedEntitlement => 'Granted Entitlement';
+  String get grantedEntitlement => 'Droit Accordé';
 
   @override
   String get grantedEntitlementDesc =>
-      'Granted Entitlement Codes are shared with specific individuals for custom entitlements. You can check if invitations are still available by ';
+      'Les Codes de Droit Accordé sont partagés avec des individus spécifiques pour des droits personnalisés. Vous pouvez vérifier si des invitations sont encore disponibles en ';
 
   @override
-  String get clickingHere => 'clicking here.';
+  String get clickingHere => 'cliquant ici.';
 
   @override
-  String get enterCodeSubmit => 'Enter the code and press Submit';
+  String get enterCodeSubmit => 'Entrez le code et appuyez sur Soumettre';
 
   @override
-  String get submit => 'Submit';
+  String get submit => 'Soumettre';
 }

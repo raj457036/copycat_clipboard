@@ -841,21 +841,21 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionUpdated => 'Subscription Updated';
+  String get subscriptionUpdated => 'Suscripción Actualizada';
 
   @override
-  String get grantedEntitlement => 'Granted Entitlement';
+  String get grantedEntitlement => 'Derecho Concedido';
 
   @override
   String get grantedEntitlementDesc =>
-      'Granted Entitlement Codes are shared with specific individuals for custom entitlements. You can check if invitations are still available by ';
+      'Los Códigos de Derecho Concedido se comparten con personas específicas para derechos personalizados. Puedes verificar si las invitaciones aún están disponibles ';
 
   @override
-  String get clickingHere => 'clicking here.';
+  String get clickingHere => 'haciendo clic aquí.';
 
   @override
-  String get enterCodeSubmit => 'Enter the code and press Submit';
+  String get enterCodeSubmit => 'Introduce el código y presiona Enviar';
 
   @override
-  String get submit => 'Submit';
+  String get submit => 'Enviar';
 }

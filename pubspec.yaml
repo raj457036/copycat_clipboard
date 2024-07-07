@@ -1,7 +1,7 @@
 name: clipboard
 description: "CopyCat Clipboard: One Clipboard, Limitless Productivity"
 publish_to: 'none'
-version: 0.1.14+38
+version: 0.1.14+39
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -77,7 +77,8 @@ dependencies:
   firebase_analytics: ^11.1.0
   firebase_core: ^3.1.1
   firebase_core_desktop: ^1.0.2
-  firebase_crashlytics: ^4.0.1
+  firebase_crashlytics: ^4.0.2
+  firebase_remote_config: ^5.0.2
   upgrader: ^10.3.0
   purchases_flutter: ^6.29.4
   purchases_ui_flutter: ^6.29.4

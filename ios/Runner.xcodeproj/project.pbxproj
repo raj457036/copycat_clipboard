@@ -14,6 +14,7 @@
 		1F28EFAF2C2943CC00806814 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F28EFAE2C2943CC00806814 /* ShareViewController.swift */; };
 		1F28EFB22C2943CC00806814 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1F28EFB12C2943CC00806814 /* Base */; };
 		1F28EFB62C2943CC00806814 /* Share Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1F28EFAC2C2943CC00806814 /* Share Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1F6063DE2C3A83B10072FD24 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6063DD2C3A83B10072FD24 /* StoreKit.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -74,6 +75,7 @@
 		1F28EFB12C2943CC00806814 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		1F28EFB32C2943CC00806814 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F28EFBB2C29440000806814 /* Share Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Share Extension.entitlements"; sourceTree = "<group>"; };
+		1F6063DD2C3A83B10072FD24 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		20941D6C49F5E976DF7DD62B /* Pods-Share Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.release.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.release.xcconfig"; sourceTree = "<group>"; };
 		27D9EEB4270B74F4A02C1FC9 /* Pods-ShareExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.profile.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.profile.xcconfig"; sourceTree = "<group>"; };
 		2B98F31632B361E549E530C3 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0552557A33C49A2ED9C87B8E /* Pods_Runner.framework in Frameworks */,
+				1F6063DE2C3A83B10072FD24 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +150,7 @@
 		26732600F53F53D75BC5499F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1F6063DD2C3A83B10072FD24 /* StoreKit.framework */,
 				6EC9F74881672CA753963CD1 /* Pods_Runner.framework */,
 				4CA69E662620BC110AF71AEB /* Pods_RunnerTests.framework */,
 				77FB5C1C50C5046618E4481F /* Pods_ShareExtension.framework */,
@@ -287,7 +291,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				D32916227F280D31E202A571 /* [CP] Embed Pods Frameworks */,
 				D2C8199ACC7208E63509A4F9 /* [CP] Copy Pods Resources */,
-				1A226B4B7D8D772C1CEFC4B9 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
+				14F43D1BE10A56C98D145156 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
 			);
@@ -374,7 +378,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1A226B4B7D8D772C1CEFC4B9 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
+		14F43D1BE10A56C98D145156 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
