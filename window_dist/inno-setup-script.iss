@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CopyCat Clipboard"
-#define MyAppVersion "0.1.13+33"
+#define MyAppVersion "0.1.14+39"
 #define MyAppPublisher "Entility Studio"
 #define MyAppExeName "Clipboard.exe"
 #define MyAppAssocName MyAppName + ""
@@ -28,6 +28,8 @@ OutputBaseFilename=installer
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=..\assets\images\icons\icon.ico
+UninstallDisplayIcon=..\assets\images\icons\icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
