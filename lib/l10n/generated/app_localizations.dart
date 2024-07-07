@@ -1622,6 +1622,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submit'**
   String get submit;
+
+  /// No description provided for @subscribeInSupportedPlatform.
+  ///
+  /// In en, this message translates to:
+  /// **'To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows.'**
+  String get subscribeInSupportedPlatform;
+
+  /// No description provided for @subscribeSupportedPlatformTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to Copycat Clipboard'**
+  String get subscribeSupportedPlatformTitle;
 }
 
 class _AppLocalizationsDelegate

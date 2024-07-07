@@ -372,5 +372,7 @@
     "grantedEntitlementDesc": "Granted Entitlement Codes are shared with specific individuals for custom entitlements. You can check if invitations are still available by ",
     "clickingHere": "clicking here.",
     "enterCodeSubmit": "Enter the code and press Submit",
-    "submit": "Submit"
+    "submit": "Submit",
+    "subscribeInSupportedPlatform": "To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows.",
+    "subscribeSupportedPlatformTitle": "Subscribe to Copycat Clipboard"
 }
