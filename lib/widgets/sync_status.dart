@@ -25,6 +25,10 @@ class SyncStatusButton extends StatelessWidget {
             isSyncing = false;
             icon = Icons.sync_lock_rounded;
             message = context.locale.syncNotAvailable;
+            Future.delayed(
+              const Duration(seconds: 5),
+              () => syncChanges(context),
+            );
             break;
           case CheckingSyncState():
             disabled = true;
