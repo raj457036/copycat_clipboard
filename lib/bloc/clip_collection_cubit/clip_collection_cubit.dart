@@ -24,7 +24,6 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
   ) : super(const ClipCollectionState.initial());
 
   Future<void> reset() async {
-    await repo.deleteAll();
     emit(const ClipCollectionState.initial());
   }
 
