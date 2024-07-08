@@ -46,7 +46,7 @@ class _ShareListenerState extends State<ShareListener> {
       logger.i("Received initial shared media!");
       await putMediaToClipboard(media);
       await handler.resetInitialSharedMedia();
-      if (Platform.isAndroid) {
+      if (Platform.isAndroid && mounted) {
         showTextSnackbar(
           // ignore: use_build_context_synchronously
           "✅ ${context.locale.done}",
@@ -65,16 +65,19 @@ class _ShareListenerState extends State<ShareListener> {
     }
 
     handler.sharedMediaStream.listen((SharedMedia media) async {
-      if (!mounted) return;
       logger.i("Received shared media: $media");
-      showTextSnackbar(
-        context.locale.pastingTheSharedContent,
-        isLoading: true,
-      );
-      if (!mounted) return;
+      if (mounted) {
+        showTextSnackbar(
+          context.locale.pastingTheSharedContent,
+          isLoading: true,
+          duration: 10,
+        );
+      }
+
       try {
         await putMediaToClipboard(media);
-        if (Platform.isAndroid) {
+
+        if (Platform.isAndroid && mounted) {
           showTextSnackbar(
             // ignore: use_build_context_synchronously
             "✅ ${context.locale.done}",
@@ -92,13 +95,20 @@ class _ShareListenerState extends State<ShareListener> {
         }
       } catch (e) {
         // ignore: use_build_context_synchronously
-        showTextSnackbar("❌ ${context.locale.failed}", closePrevious: true);
+        if (mounted) {
+          showTextSnackbar("❌ ${context.locale.failed}", closePrevious: true);
+        }
+      } finally {
+        if (mounted) {
+          closeSnackbar();
+        }
       }
       // closeSnackbar();
     }, onError: (error) {
-      showFailureSnackbar(Failure.fromException(error));
+      if (mounted) {
+        showFailureSnackbar(Failure.fromException(error));
+      }
     });
-    if (!mounted) return;
   }
 
   Future<ClipItem?> getFileClipItem(String path, String category) async {
@@ -135,7 +145,7 @@ class _ShareListenerState extends State<ShareListener> {
   Future<void> putMediaToClipboard(SharedMedia media) async {
     final clips = <ClipItem>[];
 
-    if (media.content != null) {
+    if (media.content != null && media.content!.isNotEmpty) {
       final uri = Uri.tryParse(media.content!);
       final schema = uri?.scheme;
       final isSupported = supportedUriSchemas.contains(schema);

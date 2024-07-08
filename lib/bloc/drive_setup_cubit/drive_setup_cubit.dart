@@ -62,7 +62,7 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
       (r) => DriveSetupState.setupDone(token: r),
     ));
 
-    return result.isRight();
+    return result.fold((_) => false, (_) => !_.isExpired);
   }
 
   Future<void> startSetup() async {
