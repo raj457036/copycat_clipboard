@@ -5,7 +5,7 @@ Future<void> updateWindowsRegistry() async {
   if (!Platform.isWindows) return;
   String appPath = Platform.resolvedExecutable;
 
-  String protocolRegKey = 'Software\\Classes\\CopyCat';
+  String protocolRegKey = 'Software\\Classes\\clipboard';
   RegistryValue protocolRegValue = const RegistryValue(
     'URL Protocol',
     RegistryValueType.string,

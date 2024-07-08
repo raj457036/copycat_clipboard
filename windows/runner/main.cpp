@@ -34,7 +34,7 @@ bool SendAppLinkToInstance(const std::wstring &title)
 
     SetWindowPos(0, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE);
     SetForegroundWindow(hwnd);
-    // END Restore
+    // END (Optional) Restore
 
     // Window has been found, don't create another one.
     return true;
@@ -48,16 +48,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 {
 
   HWND hwnd = ::FindWindow(L"FLUTTER_RUNNER_WIN32_WINDOW", L"CopyCat Clipboard");
+
+  if (SendAppLinkToInstance(L"CopyCat Clipboard"))
+  {
+    return EXIT_SUCCESS;
+  }
+
   if (hwnd != NULL)
   {
     ::ShowWindow(hwnd, SW_NORMAL);
     ::SetForegroundWindow(hwnd);
     return EXIT_FAILURE;
-  }
-
-  if (SendAppLinkToInstance(L"CopyCat Clipboard"))
-  {
-    return EXIT_SUCCESS;
   }
   // Attach to console when present (e.g., 'flutter run') or create a
   // new console when running with a debugger.
