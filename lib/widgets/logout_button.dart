@@ -55,10 +55,12 @@ class LogoutButton extends StatelessWidget {
         if (isDesktopPlatform) context.read<WindowActionCubit>().reset(),
         context.read<AuthCubit>().logout(),
         context.read<AppConfigCubit>().reset(),
-        db.clipboardItems.clear(),
-        db.clipCollections.clear(),
-        db.syncStatus.clear(),
-        db.subscriptions.clear(),
+        db.writeTxn(() async {
+          await db.clipboardItems.clear();
+          await db.clipCollections.clear();
+          await db.syncStatus.clear();
+          await db.subscriptions.clear();
+        }),
       ]);
       context.goNamed(RouteConstants.login);
       showTextSnackbar(
