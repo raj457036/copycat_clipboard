@@ -807,10 +807,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'You will be redirected to the account delete request form, are you sure?';
 
   @override
-  String get unlockPremiumFeatures => 'Unlock Premium Features';
+  String get unlockPremiumFeatures => 'Unlock CopyCat PRO';
 
   @override
-  String get upgradeToPro => 'Upgrade to CopyCat Pro today!';
+  String get upgradeToPro =>
+      'Enjoy over 720 hours of synced history, more than 50 collections, end-to-end encryption, real-time sync, access to the newest features, and much more.';
 
   @override
   String get tryAgain => 'Please try again';

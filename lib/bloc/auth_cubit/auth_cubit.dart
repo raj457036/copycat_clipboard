@@ -67,12 +67,6 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> fetchSubscription() async {
-    if (session != null) {
-      await authenticated(session!, session!.user);
-    }
-  }
-
   Future<void> setupAnalytics() async {
     if (!isAnalyticsSupported) return;
     final user = session!.user;

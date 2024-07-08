@@ -50,7 +50,7 @@ class Subscription with _$Subscription, IsarIdMixin {
       created: now(),
       modified: now(),
       userId: userId,
-      planName: "Pro",
+      planName: "PRO ✨",
       subId: "",
       source: isPromo ? "PROMO" : "",
       activeTill: activeTill,

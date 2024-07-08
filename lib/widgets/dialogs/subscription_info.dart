@@ -1,6 +1,7 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
+import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
@@ -9,6 +10,7 @@ import 'package:clipboard/widgets/subscription/paywall/paywall.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
+import 'package:universal_io/io.dart';
 
 class SubscriptionInfoDialog extends StatelessWidget {
   final bool entitlementGrantMode;
@@ -42,6 +44,7 @@ class SubscriptionInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
     return LayoutBuilder(
       builder: (context, constraints) {
         final isMobile = Breakpoints.isMobile(constraints.maxWidth);
@@ -141,9 +144,11 @@ class SubscriptionInfoDialog extends StatelessWidget {
             if (state == null) {
               return AlertDialog(
                 title: Text(context.locale.subscription),
-                content: Text(
-                  context.locale.nothingHere,
-                  textAlign: TextAlign.center,
+                content: Center(
+                  child: Text(
+                    context.locale.nothingHere,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               );
             }
@@ -170,29 +175,38 @@ class SubscriptionInfoDialog extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      ListTile(
-                        title: Text(
-                          context.locale.beta,
-                          style: const TextStyle(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
+                      if (Platform.isAndroid ||
+                          Platform.isWindows ||
+                          Platform.isLinux) ...[
+                        ListTile(
+                          title: Text(
+                            context.locale.beta,
+                            style: const TextStyle(
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            context.locale.featureListDetail,
                           ),
                         ),
-                        subtitle: Text(
-                          context.locale.featureListDetail,
-                        ),
-                      ),
-                      const Divider(),
+                        const Divider(),
+                      ],
                       ListTile(
-                        title: Text(context.locale.currentPlan),
+                        title: Text(
+                          expired
+                              ? context.locale
+                                  .expiredPlan(context.locale.currentPlan)
+                              : context.locale.currentPlan,
+                        ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (expired)
-                              Text(context.locale.expiredPlan(state.planName))
-                            else
-                              Text(state.planName),
+                            Text(
+                              state.planName,
+                              style: textTheme.titleLarge,
+                            ),
                             height2,
                             if (isTrial && state.trialEnd != null)
                               Text(
@@ -216,12 +230,13 @@ class SubscriptionInfoDialog extends StatelessWidget {
                       Expanded(
                         child: DefaultTabController(
                           length: 2,
+                          initialIndex: 1,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const TabBar(tabs: [
                                 Tab(text: "Free"),
-                                Tab(text: "Pro ✨"),
+                                Tab(text: "PRO ✨"),
                               ]),
                               Expanded(
                                 child: TabBarView(children: [

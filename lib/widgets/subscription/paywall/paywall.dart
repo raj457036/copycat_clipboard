@@ -175,11 +175,13 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
             Text(
               context.locale.unlockPremiumFeatures,
               style: textTheme.titleLarge,
+              textAlign: TextAlign.center,
             ),
             height10,
             Text(
               context.locale.upgradeToPro,
               style: textTheme.bodyMedium,
+              textAlign: TextAlign.center,
             ),
             if (errorMessage != null)
               ListTile(
