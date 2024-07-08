@@ -49,12 +49,12 @@ class LogoutButton extends StatelessWidget {
 
       await Future.wait([
         context.read<MonetizationCubit>().logout(),
-        context.read<OfflinePersistanceCubit>().reset(),
         context.read<ClipCollectionCubit>().reset(),
         context.read<SyncManagerCubit>().reset(),
         if (isDesktopPlatform) context.read<WindowActionCubit>().reset(),
         context.read<AuthCubit>().logout(),
         context.read<AppConfigCubit>().reset(),
+        clearPersistedRootDir(),
         db.writeTxn(() async {
           await db.clipboardItems.clear();
           await db.clipCollections.clear();
@@ -62,6 +62,15 @@ class LogoutButton extends StatelessWidget {
           await db.subscriptions.clear();
         }),
       ]);
+      // if (Platform.isWindows) {
+      //   // restartApplication();
+      // } else {
+      //   context.goNamed(RouteConstants.login);
+      //   showTextSnackbar(
+      //     context.locale.logoutSuccess,
+      //     closePrevious: true,
+      //   );
+      // }
       context.goNamed(RouteConstants.login);
       showTextSnackbar(
         context.locale.logoutSuccess,

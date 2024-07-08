@@ -56,18 +56,36 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
 
   Future<bool> fetch() async {
     emit(const DriveSetupState.fetching());
-    final result = await repo.getDriveCredentials();
-    emit(result.fold(
-      (l) => DriveSetupState.setupError(failure: l),
-      (r) {
+    final response = await repo.getDriveCredentials();
+    final result = await response.fold(
+      (l) async => l,
+      (r) async {
         if (r.isExpired) {
-          return const DriveSetupState.setupError(failure: driveFailure);
+          final refreshed = await repo.refreshAccessToken();
+
+          return refreshed.fold(
+            (l) => l,
+            (r) => r,
+          );
         }
         return DriveSetupState.setupDone(token: r);
       },
-    ));
+    );
 
-    return result.fold((_) => false, (_) => !_.isExpired);
+    if (result is Failure) {
+      emit(DriveSetupState.setupError(failure: result));
+      return false;
+    } else if (result is DriveAccessToken) {
+      if (result.isExpired) {
+        emit(const DriveSetupState.setupError(failure: driveFailure));
+        return false;
+      } else {
+        emit(DriveSetupState.setupDone(token: result));
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 
   Future<void> startSetup() async {

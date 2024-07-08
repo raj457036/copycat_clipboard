@@ -1,4 +1,6 @@
+import 'dart:ffi';
 import 'dart:math' as math;
+import 'package:win32/win32.dart';
 
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
@@ -110,11 +112,15 @@ Future<void> clearPersistedRootDirPath([String? root]) async {
 }
 
 Future<void> clearPersistedRootDir() async {
-  final docDir = await getApplicationDocumentsDirectory();
-  final dirPath = p.join(docDir.path, "offline");
-  final dir = Directory(dirPath);
-  if (await dir.exists()) {
-    await dir.delete(recursive: true);
+  try {
+    final docDir = await getApplicationDocumentsDirectory();
+    final dirPath = p.join(docDir.path, "offline");
+    final dir = Directory(dirPath);
+    if (await dir.exists()) {
+      await dir.delete(recursive: true);
+    }
+  } catch (e) {
+    logger.e(e);
   }
 }
 

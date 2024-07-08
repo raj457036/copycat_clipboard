@@ -102,13 +102,6 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     return item;
   }
 
-  Future<void> reset() async {
-    await Future.wait([
-      repo.deleteAll(),
-      clearPersistedRootDir(),
-    ]);
-  }
-
   Future<void> paste() async {
     final clips = await clipboard.readClipboard(manual: true);
     if (clips != null) {

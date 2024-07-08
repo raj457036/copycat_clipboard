@@ -1381,6 +1381,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  restartfromos:
+    dependency: "direct main"
+    description:
+      name: restartfromos
+      sha256: "1f6e131be600aa8b40128df58f2025ab2723ce1c46d60b06746c55f4849096cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   retry:
     dependency: "direct main"
     description:
