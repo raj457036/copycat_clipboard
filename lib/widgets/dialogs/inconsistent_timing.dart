@@ -14,19 +14,23 @@ class InconsistentTiming extends StatelessWidget {
 
   Future<void> open() async {
     if (_visible) return;
-    await Future.delayed(const Duration(seconds: 3));
-    await windowManager.show();
+    await Future.delayed(const Duration(seconds: 5));
+    windowManager
+      ..show()
+      ..focus();
     _visible = true;
-    return showAdaptiveDialog(
-      context: rootNavKey.currentContext!,
-      barrierDismissible: false,
-      routeSettings: const RouteSettings(
-        name: "Inconsistent-Time",
-      ),
-      builder: (context) {
-        return this;
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAdaptiveDialog(
+        context: rootNavKey.currentContext!,
+        barrierDismissible: false,
+        routeSettings: const RouteSettings(
+          name: "Inconsistent-Time",
+        ),
+        builder: (context) {
+          return this;
+        },
+      );
+    });
   }
 
   Future<void> checkAgain(BuildContext context) async {
@@ -41,17 +45,29 @@ class InconsistentTiming extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      title: Text(context.locale.timeSyncWarning),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          height12,
-          Text(context.locale.timeSyncWarningNote1),
-          height10,
-          Text(context.locale.timeSyncWarningNote2),
-          height10,
-          Text(context.locale.timeSyncWarningNote3)
-        ],
+      title: Text(context.locale.timeSyncWarning, textAlign: TextAlign.center),
+      content: SizedBox(
+        width: 250,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            height12,
+            Text(
+              context.locale.timeSyncWarningNote1,
+              textAlign: TextAlign.center,
+            ),
+            height10,
+            Text(
+              context.locale.timeSyncWarningNote2,
+              textAlign: TextAlign.center,
+            ),
+            height10,
+            Text(
+              context.locale.timeSyncWarningNote3,
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
       ),
       actions: [
         TextButton(

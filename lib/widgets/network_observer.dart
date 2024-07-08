@@ -37,6 +37,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
     monetizationCubit = BlocProvider.of<MonetizationCubit>(context);
     driveSetupCubit = BlocProvider.of<DriveSetupCubit>(context);
     appConfigCubit = BlocProvider.of<AppConfigCubit>(context);
+    appConfigCubit.syncClocks();
   }
 
   Future<void> refetchStates() async {
