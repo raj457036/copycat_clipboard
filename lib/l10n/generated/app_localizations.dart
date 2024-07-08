@@ -1542,13 +1542,13 @@ abstract class AppLocalizations {
   /// No description provided for @unlockPremiumFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Unlock Premium Features'**
+  /// **'Unlock CopyCat PRO'**
   String get unlockPremiumFeatures;
 
   /// No description provided for @upgradeToPro.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to CopyCat Pro today!'**
+  /// **'Enjoy over 720 hours of synced history, more than 50 collections, end-to-end encryption, real-time sync, access to the newest features, and much more.'**
   String get upgradeToPro;
 
   /// No description provided for @tryAgain.

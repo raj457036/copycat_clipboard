@@ -58,9 +58,11 @@ class MonetizationCubit extends Cubit<MonetizationState> {
   }
 
   Future<void> login(String userId) async {
-    if (_setupDone) return;
     if (revenuCatSupportedPlatform) {
-      await setupRevenuCat(userId);
+      if (!_setupDone) {
+        await setupRevenuCat(userId);
+      }
+
       await Purchases.logIn(userId);
       try {
         final result = await Purchases.getCustomerInfo();

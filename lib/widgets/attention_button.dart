@@ -1,3 +1,4 @@
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
@@ -16,16 +17,24 @@ class AttentionDialog extends StatelessWidget {
     );
   }
 
-  Future<void> openHowToUse() async {
-    await launchUrlString(
-      "https://www.entilitystudio.com/copycat-clipboard/tutorials",
-    );
+  Future<void> openTutorialPage() async {
+    await launchUrlString(tutorialsUrl);
   }
 
-  Future<void> openTutorials() async {
-    await launchUrlString(
-      "https://youtube.com/playlist?list=PL_ka68u9FZVcNmCcyvTzI_-iOHevRHsCa&si=CH0Jh50WJKOkUU6n",
-    );
+  Future<void> openYoutubeTutorials() async {
+    await launchUrlString(youtubePlaylistUrl);
+  }
+
+  Future<void> openSupport() async {
+    await launchUrlString(supportUrl);
+  }
+
+  Future<void> openDiscord() async {
+    await launchUrlString(discordUrl);
+  }
+
+  Future<void> openGoogleGroup() async {
+    await launchUrlString(googleGroupUrl);
   }
 
   @override
@@ -45,7 +54,7 @@ class AttentionDialog extends StatelessWidget {
               children: [
                 if (isVisible)
                   Expanded(
-                    child: Column(
+                    child: ListView(
                       children: [
                         Text(
                           context.locale.whatsNew,
@@ -56,6 +65,7 @@ class AttentionDialog extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.important_devices_rounded),
                           title: Text(context.locale.feature1),
+                          isThreeLine: true,
                           subtitle: Text(
                             context.locale.feature1Desc,
                           ),
@@ -63,6 +73,7 @@ class AttentionDialog extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.history_rounded),
                           title: Text(context.locale.feature2),
+                          isThreeLine: true,
                           subtitle: Text(
                             context.locale.feature2Desc,
                           ),
@@ -70,6 +81,7 @@ class AttentionDialog extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.paste_rounded),
                           title: Text(context.locale.feature3),
+                          isThreeLine: true,
                           subtitle: Text(
                             context.locale.feature3Desc,
                           ),
@@ -78,6 +90,7 @@ class AttentionDialog extends StatelessWidget {
                           leading:
                               const Icon(Icons.collections_bookmark_rounded),
                           title: Text(context.locale.feature4),
+                          isThreeLine: true,
                           subtitle: Text(
                             context.locale.feature4Desc,
                           ),
@@ -87,36 +100,79 @@ class AttentionDialog extends StatelessWidget {
                   ),
                 if (isVisible) const VerticalDivider(),
                 Expanded(
-                    child: Column(
-                  children: [
-                    Text(
-                      context.locale.gettingStarted,
-                      textAlign: TextAlign.center,
-                      style: textTheme.headlineMedium,
-                    ),
-                    height8,
-                    ListTile(
-                      leading: const Icon(Icons.help_outline_rounded),
-                      title: Text(context.locale.howToUse),
-                      subtitle: Text(context.locale.howToUseDesc),
-                      trailing: const Icon(Icons.chevron_right_rounded),
-                      onTap: openHowToUse,
-                      shape:
-                          const RoundedRectangleBorder(borderRadius: radius12),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.video_collection_rounded),
-                      title: Text(context.locale.tutorials),
-                      subtitle: Text(
-                        context.locale.tutorialsDesc,
+                  child: ListView(
+                    children: [
+                      Text(
+                        context.locale.gettingStarted,
+                        textAlign: TextAlign.center,
+                        style: textTheme.headlineMedium,
                       ),
-                      trailing: const Icon(Icons.chevron_right_rounded),
-                      onTap: openTutorials,
-                      shape:
-                          const RoundedRectangleBorder(borderRadius: radius12),
-                    ),
-                  ],
-                ))
+                      height8,
+                      ListTile(
+                        leading: const Icon(Icons.help_outline_rounded),
+                        title: Text(context.locale.howToUse),
+                        subtitle: Text(context.locale.howToUseDesc),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: openTutorialPage,
+                        isThreeLine: true,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: radius12),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.video_collection_rounded),
+                        title: Text(context.locale.tutorials),
+                        subtitle: Text(
+                          context.locale.tutorialsDesc,
+                        ),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        isThreeLine: true,
+                        onTap: openYoutubeTutorials,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: radius12),
+                      ),
+                      const Divider(),
+                      ListTile(
+                        leading: const Icon(Icons.feedback),
+                        title: const Text("Share Your Feedback"),
+                        subtitle: const Text(
+                          "We value your thoughts!, Whether it’s a suggestion, a bug report, or just to say hello, your input is invaluable to us.",
+                        ),
+                        isThreeLine: true,
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: openSupport,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: radius12),
+                      ),
+                      const Divider(),
+                      ListTile(
+                        leading: const Icon(Icons.discord),
+                        title: const Text("Join Our Discord Community"),
+                        subtitle: const Text(
+                          "Connect with other users, share ideas, get updates, and chat directly with us.",
+                        ),
+                        isThreeLine: true,
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: openDiscord,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: radius12,
+                        ),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.group),
+                        title: const Text("Join Our Google Group"),
+                        subtitle: const Text(
+                          "Stay informed and collaborate with fellow users in our Google Group",
+                        ),
+                        isThreeLine: true,
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: openGoogleGroup,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: radius12,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

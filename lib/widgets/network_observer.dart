@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
+import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/network_status.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -21,15 +23,25 @@ class NetworkObserver extends StatefulWidget {
 class _NetworkObserverState extends State<NetworkObserver> {
   late StreamSubscription subscription;
   bool wasDisconnected = false;
+  late AuthCubit authCubit;
+  late MonetizationCubit monetizationCubit;
+  late DriveSetupCubit driveSetupCubit;
 
   @override
   void initState() {
     super.initState();
     networkObserver.listen(onConnectionChanged);
+    authCubit = BlocProvider.of<AuthCubit>(context);
+    monetizationCubit = BlocProvider.of<MonetizationCubit>(context);
   }
 
   Future<void> refetchStates() async {
-    context.read<AuthCubit>().fetchSubscription();
+    final userId = authCubit.userId;
+    if (userId == null) return;
+    await Future.wait([
+      monetizationCubit.login(userId),
+      driveSetupCubit.fetch(),
+    ]);
   }
 
   void onConnectionChanged(bool isConnected) {

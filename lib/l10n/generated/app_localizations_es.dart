@@ -815,10 +815,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Serás redirigido al formulario de solicitud de eliminación de cuenta, ¿estás seguro?';
 
   @override
-  String get unlockPremiumFeatures => 'Desbloquear Funciones Premium';
+  String get unlockPremiumFeatures => 'Desbloquear CopyCat PRO';
 
   @override
-  String get upgradeToPro => '¡Actualiza a CopyCat Pro hoy!';
+  String get upgradeToPro =>
+      'Disfruta de más de 720 horas de historial sincronizado, más de 50 colecciones, cifrado de extremo a extremo, sincronización en tiempo real, acceso a las últimas características y mucho más.';
 
   @override
   String get tryAgain => 'Por favor, inténtalo de nuevo';
