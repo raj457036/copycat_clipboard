@@ -29,12 +29,14 @@ class SplashPage extends StatelessWidget {
     BuildContext context,
     su.User user,
   ) async {
-    context.read<AppConfigCubit>().load();
-    context.read<MonetizationCubit>().login(user.id);
-    context.read<ClipCollectionCubit>().fetch();
-    context.read<SyncManagerCubit>().syncChanges();
-    context.read<OfflinePersistanceCubit>().startListners();
-    context.read<DriveSetupCubit>().fetch();
+    await Future.wait([
+      context.read<AppConfigCubit>().load(),
+      context.read<MonetizationCubit>().login(user.id),
+      context.read<ClipCollectionCubit>().fetch(),
+      context.read<SyncManagerCubit>().syncChanges(),
+      context.read<OfflinePersistanceCubit>().startListners(),
+      context.read<DriveSetupCubit>().fetch(),
+    ]);
     context.goNamed(RouteConstants.home);
   }
 
@@ -46,7 +48,6 @@ class SplashPage extends StatelessWidget {
         switch (state) {
           case AuthenticatedAuthState(:final user):
             authDone(context, user);
-
             break;
           case UnauthenticatedAuthState():
             context.goNamed(RouteConstants.login);

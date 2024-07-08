@@ -1628,6 +1628,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows.'**
   String get subscribeInSupportedPlatform;
+
+  /// No description provided for @timeSyncWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ Time Sync Warning'**
+  String get timeSyncWarning;
+
+  /// No description provided for @timeSyncWarningNote1.
+  ///
+  /// In en, this message translates to:
+  /// **'Inconsistent Device Time Detected'**
+  String get timeSyncWarningNote1;
+
+  /// No description provided for @timeSyncWarningNote2.
+  ///
+  /// In en, this message translates to:
+  /// **'To ensure accurate clipboard syncing, please check and correct your device\'s time settings.'**
+  String get timeSyncWarningNote2;
+
+  /// No description provided for @timeSyncWarningNote3.
+  ///
+  /// In en, this message translates to:
+  /// **'Inconsistent time settings may cause synchronization issues.'**
+  String get timeSyncWarningNote3;
+
+  /// No description provided for @checkAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Again'**
+  String get checkAgain;
 }
 
 class _AppLocalizationsDelegate

@@ -13,6 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:ntp/ntp.dart';
 
 part 'app_config_cubit.freezed.dart';
 part 'app_config_state.dart';
@@ -32,6 +33,36 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   void emit(AppConfigState state) {
     if (isClosed) return;
     super.emit(state);
+  }
+
+  Future<bool?> syncClocks() async {
+    try {
+      final currentInternetTime = await NTP.now();
+      final currentTime = DateTime.now();
+
+      final notInSameMoment =
+          currentInternetTime.difference(currentTime).inSeconds.abs() > 2;
+      if (notInSameMoment) {
+        emit(
+          state.copyWith(
+            config: state.config.copyWith(clockUnSynced: true)
+              ..applyId(state.config),
+          ),
+        );
+        return false;
+      } else {
+        emit(
+          state.copyWith(
+            config: state.config.copyWith(clockUnSynced: false)
+              ..applyId(state.config),
+          ),
+        );
+      }
+      return true;
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
   }
 
   Future<void> reset() async {
@@ -83,7 +114,8 @@ class AppConfigCubit extends Cubit<AppConfigState> {
 
   bool canCopyFile(int size) => state.config.dontCopyOver >= size;
 
-  bool get isSyncEnabled => state.config.enableSync;
+  bool get isSyncEnabled =>
+      !state.config.clockUnSynced && state.config.enableSync;
 
   bool get isEncryptionEnabled => state.config.autoEncrypt;
   bool get isE2EESetupDone => state.config.enc2 != null;

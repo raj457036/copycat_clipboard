@@ -9,6 +9,7 @@ import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,11 +30,15 @@ class EventBridge extends StatelessWidget {
               (previous.config.autoSyncInterval !=
                   current.config.autoSyncInterval) ||
               (previous.config.enc2 != current.config.enc2) ||
-              (previous.config.autoEncrypt != current.config.autoEncrypt),
+              (previous.config.autoEncrypt != current.config.autoEncrypt) ||
+              (previous.config.clockUnSynced != current.config.clockUnSynced),
           listener: (context, state) async {
             switch (state) {
               case AppConfigLoaded(:final config):
                 {
+                  if (config.clockUnSynced) {
+                    const InconsistentTiming().open();
+                  }
                   if (config.enableSync) {
                     context.read<SyncManagerCubit>().setupAutoSync(
                           Duration(seconds: config.autoSyncInterval),

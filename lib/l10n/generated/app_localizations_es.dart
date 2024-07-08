@@ -863,4 +863,22 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get subscribeInSupportedPlatform =>
       'Para acceder a las funciones premium en Copycat Clipboard, suscríbete a través de Play Store o Apple App Store. Tu suscripción se sincronizará en todos tus dispositivos, incluidos Linux y Windows.';
+
+  @override
+  String get timeSyncWarning => '⚠️ Advertencia de Sincronización de Tiempo';
+
+  @override
+  String get timeSyncWarningNote1 =>
+      'Se Detectó una Hora Inconsistente en el Dispositivo';
+
+  @override
+  String get timeSyncWarningNote2 =>
+      'Para garantizar una sincronización precisa del portapapeles, por favor verifica y corrige la configuración de la hora de tu dispositivo.';
+
+  @override
+  String get timeSyncWarningNote3 =>
+      'Las configuraciones de tiempo inconsistentes pueden causar problemas de sincronización.';
+
+  @override
+  String get checkAgain => 'Verificar Nuevamente';
 }
