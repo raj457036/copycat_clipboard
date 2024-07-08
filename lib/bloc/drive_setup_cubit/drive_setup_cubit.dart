@@ -59,7 +59,12 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
     final result = await repo.getDriveCredentials();
     emit(result.fold(
       (l) => DriveSetupState.setupError(failure: l),
-      (r) => DriveSetupState.setupDone(token: r),
+      (r) {
+        if (r.isExpired) {
+          return const DriveSetupState.setupError(failure: driveFailure);
+        }
+        return DriveSetupState.setupDone(token: r);
+      },
     ));
 
     return result.fold((_) => false, (_) => !_.isExpired);
