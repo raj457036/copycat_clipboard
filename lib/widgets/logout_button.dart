@@ -10,6 +10,10 @@ import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/services/encryption.dart';
+import 'package:clipboard/db/clip_collection/clipcollection.dart';
+import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:clipboard/db/sync_status/syncstatus.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -40,19 +44,23 @@ class LogoutButton extends StatelessWidget {
         closePrevious: true,
       );
       EncrypterWorker.instance.dispose();
-      context.read<MonetizationCubit>().logout();
       context.read<OfflinePersistanceCubit>().stopListners();
-      context.read<OfflinePersistanceCubit>().reset();
-      context.read<ClipCollectionCubit>().reset();
-      context.read<SyncManagerCubit>().reset();
       context.read<DriveSetupCubit>().reset();
-      if (isDesktopPlatform) {
-        context.read<WindowActionCubit>().reset();
-      }
-      context.read<AuthCubit>().logout();
+
+      await Future.wait([
+        context.read<MonetizationCubit>().logout(),
+        context.read<OfflinePersistanceCubit>().reset(),
+        context.read<ClipCollectionCubit>().reset(),
+        context.read<SyncManagerCubit>().reset(),
+        if (isDesktopPlatform) context.read<WindowActionCubit>().reset(),
+        context.read<AuthCubit>().logout(),
+        context.read<AppConfigCubit>().reset(),
+        db.clipboardItems.clear(),
+        db.clipCollections.clear(),
+        db.syncStatus.clear(),
+        db.subscriptions.clear(),
+      ]);
       context.goNamed(RouteConstants.login);
-      context.read<AppConfigCubit>().reset();
-      EncrypterWorker.instance.dispose();
       showTextSnackbar(
         context.locale.logoutSuccess,
         closePrevious: true,
