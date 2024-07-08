@@ -53,6 +53,7 @@ class AppConfig with _$AppConfig, IsarIdMixin {
     @ignore
     @JsonKey(includeFromJson: false, includeToJson: false)
     int? lastFocusedWindowId,
+    @ignore @Default(false) bool clockUnSynced,
   }) = _AppConfig;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) =>

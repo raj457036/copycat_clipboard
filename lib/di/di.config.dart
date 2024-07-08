@@ -8,10 +8,10 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:focus_window/focus_window.dart' as _i5;
+import 'package:focus_window/focus_window.dart' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:isar/isar.dart' as _i7;
+import 'package:isar/isar.dart' as _i6;
 import 'package:supabase_auth_ui/supabase_auth_ui.dart' as _i26;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i15;
 
@@ -34,8 +34,8 @@ import '../data/repositories/clipboard.dart' as _i16;
 import '../data/repositories/drive_credential.dart' as _i25;
 import '../data/repositories/subscription.dart' as _i32;
 import '../data/repositories/sync_clipboard.dart' as _i17;
-import '../data/services/clipboard_service.dart' as _i4;
-import '../data/services/google_services.dart' as _i6;
+import '../data/services/clipboard_service.dart' as _i5;
+import '../data/services/google_services.dart' as _i8;
 import '../data/sources/clip_collection/clip_collection.dart' as _i12;
 import '../data/sources/clip_collection/local_source.dart' as _i13;
 import '../data/sources/clip_collection/remote_source.dart' as _i22;
@@ -45,7 +45,7 @@ import '../data/sources/clipboard/remote_source.dart' as _i18;
 import '../data/sources/subscription/remote_source.dart' as _i20;
 import '../data/sources/subscription/subscription.dart' as _i19;
 import '../db/clip_collection/clipcollection.dart' as _i31;
-import 'modules.dart' as _i8;
+import 'modules.dart' as _i7;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -60,23 +60,23 @@ extension GetItInjectableX on _i1.GetIt {
     );
     final registerModule = _$RegisterModule();
     gh.factory<_i3.WindowActionCubit>(() => _i3.WindowActionCubit());
-    gh.singleton<_i4.ClipboardService>(() => _i4.ClipboardService());
-    gh.singleton<_i5.FocusWindow>(() => registerModule.focusWindow);
-    gh.lazySingleton<_i6.GoogleOAuth2Service>(() => _i6.GoogleOAuth2Service());
-    await gh.lazySingletonAsync<_i7.Isar>(
+    gh.singleton<_i4.FocusWindow>(() => registerModule.focusWindow);
+    gh.singleton<_i5.ClipboardService>(() => _i5.ClipboardService());
+    await gh.lazySingletonAsync<_i6.Isar>(
       () => registerModule.db,
       preResolve: true,
-      dispose: _i8.closeIsarDb,
+      dispose: _i7.closeIsarDb,
     );
+    gh.lazySingleton<_i8.GoogleOAuth2Service>(() => _i8.GoogleOAuth2Service());
     gh.lazySingleton<_i9.AppConfigRepository>(
-        () => _i9.AppConfigRepositoryImpl(gh<_i7.Isar>()));
+        () => _i9.AppConfigRepositoryImpl(gh<_i6.Isar>()));
     await gh.factoryAsync<String>(
       () => registerModule.deviceId,
       instanceName: 'device_id',
       preResolve: true,
     );
     gh.lazySingleton<_i10.ClipboardSource>(
-      () => _i11.LocalClipboardSource(gh<_i7.Isar>()),
+      () => _i11.LocalClipboardSource(gh<_i6.Isar>()),
       instanceName: 'local',
     );
     gh.factory<String>(
@@ -88,11 +88,11 @@ extension GetItInjectableX on _i1.GetIt {
       instanceName: 'supabase_key',
     );
     gh.lazySingleton<_i12.ClipCollectionSource>(
-      () => _i13.LocalClipCollectionSource(gh<_i7.Isar>()),
+      () => _i13.LocalClipCollectionSource(gh<_i6.Isar>()),
       instanceName: 'local',
     );
-    gh.lazySingleton<_i6.DriveService>(
-      () => _i6.GoogleDriveService(),
+    gh.lazySingleton<_i8.DriveService>(
+      () => _i8.GoogleDriveService(),
       instanceName: 'google_drive',
     );
     gh.singleton<_i14.AppConfigCubit>(
@@ -129,13 +129,13 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i23.OfflinePersistanceCubit(
               gh<_i21.AuthCubit>(),
               gh<_i16.ClipboardRepository>(instanceName: 'offline'),
-              gh<_i4.ClipboardService>(),
+              gh<_i5.ClipboardService>(),
               gh<_i14.AppConfigCubit>(),
               gh<String>(instanceName: 'device_id'),
             ));
     gh.factory<_i24.ClipboardCubit>(() => _i24.ClipboardCubit(
           gh<_i16.ClipboardRepository>(instanceName: 'offline'),
-          gh<_i7.Isar>(),
+          gh<_i6.Isar>(),
         ));
     gh.lazySingleton<_i25.DriveCredentialRepository>(
         () => _i25.DriveCredentialRepositoryImpl(gh<_i26.SupabaseClient>()));
@@ -169,7 +169,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i33.MonetizationCubit>(
         () => _i33.MonetizationCubit(gh<_i32.SubscriptionRepository>()));
     gh.singleton<_i34.SyncManagerCubit>(() => _i34.SyncManagerCubit(
-          gh<_i7.Isar>(),
+          gh<_i6.Isar>(),
           gh<_i21.AuthCubit>(),
           gh<_i17.SyncRepository>(),
           gh<_i29.ClipCollectionRepository>(),
@@ -182,7 +182,7 @@ extension GetItInjectableX on _i1.GetIt {
               gh<_i14.AppConfigCubit>(),
               gh<String>(instanceName: 'device_id'),
               gh<_i16.ClipboardRepository>(instanceName: 'cloud'),
-              gh<_i6.DriveService>(instanceName: 'google_drive'),
+              gh<_i8.DriveService>(instanceName: 'google_drive'),
             ));
     gh.lazySingleton<_i36.ClipCollectionCubit>(() => _i36.ClipCollectionCubit(
           gh<_i21.AuthCubit>(),
@@ -193,4 +193,4 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$RegisterModule extends _i8.RegisterModule {}
+class _$RegisterModule extends _i7.RegisterModule {}

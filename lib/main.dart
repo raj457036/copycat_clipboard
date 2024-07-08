@@ -71,6 +71,7 @@ Future<void> initializeServices() async {
 
 Future<void> initializeDesktopServices() async {
   await windowManager.ensureInitialized();
+  await updateWindowsRegistry();
 
   if (kDebugMode) {
     await hotKeyManager.unregisterAll();
@@ -86,6 +87,8 @@ Future<void> initializeDesktopServices() async {
     size: initialWindowSize,
     minimumSize: minimumWindowSize,
     center: true,
+    // make sure to change it in main.cpp ( windows ) &
+    // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
     titleBarStyle:
         Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
@@ -99,8 +102,6 @@ Future<void> initializeDesktopServices() async {
           visibleOnFullScreen: true);
     }
   });
-
-  await updateWindowsRegistry();
 }
 
 Future<void> initializeFirebase() async {

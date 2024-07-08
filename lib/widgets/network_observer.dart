@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
@@ -26,6 +27,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
   late AuthCubit authCubit;
   late MonetizationCubit monetizationCubit;
   late DriveSetupCubit driveSetupCubit;
+  late AppConfigCubit appConfigCubit;
 
   @override
   void initState() {
@@ -33,6 +35,8 @@ class _NetworkObserverState extends State<NetworkObserver> {
     networkObserver.listen(onConnectionChanged);
     authCubit = BlocProvider.of<AuthCubit>(context);
     monetizationCubit = BlocProvider.of<MonetizationCubit>(context);
+    driveSetupCubit = BlocProvider.of<DriveSetupCubit>(context);
+    appConfigCubit = BlocProvider.of<AppConfigCubit>(context);
   }
 
   Future<void> refetchStates() async {
@@ -41,6 +45,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
     await Future.wait([
       monetizationCubit.login(userId),
       driveSetupCubit.fetch(),
+      appConfigCubit.syncClocks(),
     ]);
   }
 

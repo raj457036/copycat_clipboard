@@ -1799,6 +1799,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
       locale: json['locale'] as String? ?? "en",
       enc2: json['enc2'] as String?,
       autoEncrypt: json['autoEncrypt'] as bool? ?? false,
+      clockUnSynced: json['clockUnSynced'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
@@ -1816,6 +1817,7 @@ Map<String, dynamic> _$$AppConfigImplToJson(_$AppConfigImpl instance) =>
       'locale': instance.locale,
       'enc2': instance.enc2,
       'autoEncrypt': instance.autoEncrypt,
+      'clockUnSynced': instance.clockUnSynced,
     };
 
 const _$ThemeModeEnumMap = {

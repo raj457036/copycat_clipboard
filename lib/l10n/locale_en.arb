@@ -373,5 +373,10 @@
     "clickingHere": "clicking here.",
     "enterCodeSubmit": "Enter the code and press Submit",
     "submit": "Submit",
-    "subscribeInSupportedPlatform": "To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows."
+    "subscribeInSupportedPlatform": "To access premium features on Copycat Clipboard, please subscribe through the Play Store or Apple App Store. Your subscription will be synced across all your devices, including Linux and Windows.",
+    "timeSyncWarning": "⚠️ Time Sync Warning",
+    "timeSyncWarningNote1": "Inconsistent Device Time Detected",
+    "timeSyncWarningNote2": "To ensure accurate clipboard syncing, please check and correct your device's time settings.",
+    "timeSyncWarningNote3": "Inconsistent time settings may cause synchronization issues.",
+    "checkAgain": "Check Again"
 }

@@ -371,5 +371,10 @@
     "clickingHere": "haciendo clic aquí.",
     "enterCodeSubmit": "Introduce el código y presiona Enviar",
     "submit": "Enviar",
-    "subscribeInSupportedPlatform": "Para acceder a las funciones premium en Copycat Clipboard, suscríbete a través de Play Store o Apple App Store. Tu suscripción se sincronizará en todos tus dispositivos, incluidos Linux y Windows."
+    "subscribeInSupportedPlatform": "Para acceder a las funciones premium en Copycat Clipboard, suscríbete a través de Play Store o Apple App Store. Tu suscripción se sincronizará en todos tus dispositivos, incluidos Linux y Windows.",
+    "timeSyncWarning": "⚠️ Advertencia de Sincronización de Tiempo",
+    "timeSyncWarningNote1": "Se Detectó una Hora Inconsistente en el Dispositivo",
+    "timeSyncWarningNote2": "Para garantizar una sincronización precisa del portapapeles, por favor verifica y corrige la configuración de la hora de tu dispositivo.",
+    "timeSyncWarningNote3": "Las configuraciones de tiempo inconsistentes pueden causar problemas de sincronización.",
+    "checkAgain": "Verificar Nuevamente"
 }

@@ -53,6 +53,8 @@ mixin _$AppConfig {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   int? get lastFocusedWindowId => throw _privateConstructorUsedError;
+  @ignore
+  bool get clockUnSynced => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -81,7 +83,8 @@ abstract class $AppConfigCopyWith<$Res> {
       bool autoEncrypt,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      int? lastFocusedWindowId});
+      int? lastFocusedWindowId,
+      @ignore bool clockUnSynced});
 }
 
 /// @nodoc
@@ -111,6 +114,7 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
     Object? enc2 = freezed,
     Object? autoEncrypt = null,
     Object? lastFocusedWindowId = freezed,
+    Object? clockUnSynced = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -169,6 +173,10 @@ class _$AppConfigCopyWithImpl<$Res, $Val extends AppConfig>
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
               as int?,
+      clockUnSynced: null == clockUnSynced
+          ? _value.clockUnSynced
+          : clockUnSynced // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -197,7 +205,8 @@ abstract class _$$AppConfigImplCopyWith<$Res>
       bool autoEncrypt,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      int? lastFocusedWindowId});
+      int? lastFocusedWindowId,
+      @ignore bool clockUnSynced});
 }
 
 /// @nodoc
@@ -225,6 +234,7 @@ class __$$AppConfigImplCopyWithImpl<$Res>
     Object? enc2 = freezed,
     Object? autoEncrypt = null,
     Object? lastFocusedWindowId = freezed,
+    Object? clockUnSynced = null,
   }) {
     return _then(_$AppConfigImpl(
       themeMode: null == themeMode
@@ -283,6 +293,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
           ? _value.lastFocusedWindowId
           : lastFocusedWindowId // ignore: cast_nullable_to_non_nullable
               as int?,
+      clockUnSynced: null == clockUnSynced
+          ? _value.clockUnSynced
+          : clockUnSynced // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -306,7 +320,8 @@ class _$AppConfigImpl extends _AppConfig {
       this.autoEncrypt = false,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.lastFocusedWindowId})
+      this.lastFocusedWindowId,
+      @ignore this.clockUnSynced = false})
       : super._();
 
   factory _$AppConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -369,10 +384,14 @@ class _$AppConfigImpl extends _AppConfig {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   final int? lastFocusedWindowId;
+  @override
+  @JsonKey()
+  @ignore
+  final bool clockUnSynced;
 
   @override
   String toString() {
-    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, locale: $locale, enc2: $enc2, autoEncrypt: $autoEncrypt, lastFocusedWindowId: $lastFocusedWindowId)';
+    return 'AppConfig(themeMode: $themeMode, enableSync: $enableSync, enableFileSync: $enableFileSync, dontUploadOver: $dontUploadOver, dontCopyOver: $dontCopyOver, pausedTill: $pausedTill, autoSyncInterval: $autoSyncInterval, toggleHotkey: $toggleHotkey, smartPaste: $smartPaste, launchAtStartup: $launchAtStartup, locale: $locale, enc2: $enc2, autoEncrypt: $autoEncrypt, lastFocusedWindowId: $lastFocusedWindowId, clockUnSynced: $clockUnSynced)';
   }
 
   @override
@@ -405,7 +424,9 @@ class _$AppConfigImpl extends _AppConfig {
             (identical(other.autoEncrypt, autoEncrypt) ||
                 other.autoEncrypt == autoEncrypt) &&
             (identical(other.lastFocusedWindowId, lastFocusedWindowId) ||
-                other.lastFocusedWindowId == lastFocusedWindowId));
+                other.lastFocusedWindowId == lastFocusedWindowId) &&
+            (identical(other.clockUnSynced, clockUnSynced) ||
+                other.clockUnSynced == clockUnSynced));
   }
 
   @JsonKey(ignore: true)
@@ -425,7 +446,8 @@ class _$AppConfigImpl extends _AppConfig {
       locale,
       enc2,
       autoEncrypt,
-      lastFocusedWindowId);
+      lastFocusedWindowId,
+      clockUnSynced);
 
   @JsonKey(ignore: true)
   @override
@@ -458,7 +480,8 @@ abstract class _AppConfig extends AppConfig {
       final bool autoEncrypt,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final int? lastFocusedWindowId}) = _$AppConfigImpl;
+      final int? lastFocusedWindowId,
+      @ignore final bool clockUnSynced}) = _$AppConfigImpl;
   _AppConfig._() : super._();
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -508,6 +531,9 @@ abstract class _AppConfig extends AppConfig {
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   int? get lastFocusedWindowId;
+  @override
+  @ignore
+  bool get clockUnSynced;
   @override
   @JsonKey(ignore: true)
   _$$AppConfigImplCopyWith<_$AppConfigImpl> get copyWith =>

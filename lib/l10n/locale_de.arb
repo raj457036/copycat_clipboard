@@ -371,5 +371,10 @@
     "clickingHere": "hier klicken.",
     "enterCodeSubmit": "Geben Sie den Code ein und drücken Sie Absenden",
     "submit": "Absenden",
-    "subscribeInSupportedPlatform": "Um auf Premium-Funktionen von Copycat Clipboard zuzugreifen, abonnieren Sie bitte über den Play Store oder den Apple App Store. Ihr Abonnement wird auf all Ihren Geräten, einschließlich Linux und Windows, synchronisiert."
+    "subscribeInSupportedPlatform": "Um auf Premium-Funktionen von Copycat Clipboard zuzugreifen, abonnieren Sie bitte über den Play Store oder den Apple App Store. Ihr Abonnement wird auf all Ihren Geräten, einschließlich Linux und Windows, synchronisiert.",
+    "timeSyncWarning": "⚠️ Zeit-Synchronisierungswarnung",
+    "timeSyncWarningNote1": "Inkonsistente Gerätezeit erkannt",
+    "timeSyncWarningNote2": "Um eine genaue Synchronisierung des Clipboards zu gewährleisten, überprüfen und korrigieren Sie bitte die Zeiteinstellungen Ihres Geräts.",
+    "timeSyncWarningNote3": "Inkonsistente Zeiteinstellungen können Synchronisierungsprobleme verursachen.",
+    "checkAgain": "Erneut überprüfen"
 }
