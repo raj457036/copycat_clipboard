@@ -22,8 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		06AF107AF564D0E42C362FB8 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A4AC6380DA4803AD1DD1F7 /* Pods_RunnerTests.framework */; };
+		1F02FB6A2C3D7DFC00EF9432 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 1F02FB692C3D7DFC00EF9432 /* LaunchAtLogin */; };
 		1F10425B2C311E970041DDA9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F10425A2C311E960041DDA9 /* StoreKit.framework */; };
-		1F26F2472BF8B141007DF7F8 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 1F26F2462BF8B141007DF7F8 /* LaunchAtLogin */; };
 		331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C80D7294CF71000263BE5 /* RunnerTests.swift */; };
 		335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */; };
 		33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC10F02044A3C60003C045 /* AppDelegate.swift */; };
@@ -108,8 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F02FB6A2C3D7DFC00EF9432 /* LaunchAtLogin in Frameworks */,
 				1F10425B2C311E970041DDA9 /* StoreKit.framework in Frameworks */,
-				1F26F2472BF8B141007DF7F8 /* LaunchAtLogin in Frameworks */,
 				C417DFBCE573141880AE174D /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,7 +260,7 @@
 			);
 			name = Runner;
 			packageProductDependencies = (
-				1F26F2462BF8B141007DF7F8 /* LaunchAtLogin */,
+				1F02FB692C3D7DFC00EF9432 /* LaunchAtLogin */,
 			);
 			productName = Runner;
 			productReference = 33CC10ED2044A3C60003C045 /* CopyCat.app */;
@@ -914,7 +914,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1F26F2462BF8B141007DF7F8 /* LaunchAtLogin */ = {
+		1F02FB692C3D7DFC00EF9432 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1F26F2452BF8B141007DF7F8 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
 			productName = LaunchAtLogin;
