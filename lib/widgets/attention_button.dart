@@ -133,10 +133,8 @@ class AttentionDialog extends StatelessWidget {
                       const Divider(),
                       ListTile(
                         leading: const Icon(Icons.feedback),
-                        title: const Text("Share Your Feedback"),
-                        subtitle: const Text(
-                          "We value your thoughts!, Whether it’s a suggestion, a bug report, or just to say hello, your input is invaluable to us.",
-                        ),
+                        title: Text(context.locale.shareYourFeedback),
+                        subtitle: Text(context.locale.shareYourFeedbackDesc),
                         isThreeLine: true,
                         trailing: const Icon(Icons.chevron_right_rounded),
                         onTap: openSupport,
@@ -146,10 +144,8 @@ class AttentionDialog extends StatelessWidget {
                       const Divider(),
                       ListTile(
                         leading: const Icon(Icons.discord),
-                        title: const Text("Join Our Discord Community"),
-                        subtitle: const Text(
-                          "Connect with other users, share ideas, get updates, and chat directly with us.",
-                        ),
+                        title: Text(context.locale.joinDiscord),
+                        subtitle: Text(context.locale.joinDiscordDesc),
                         isThreeLine: true,
                         trailing: const Icon(Icons.chevron_right_rounded),
                         onTap: openDiscord,
@@ -159,9 +155,9 @@ class AttentionDialog extends StatelessWidget {
                       ),
                       ListTile(
                         leading: const Icon(Icons.group),
-                        title: const Text("Join Our Google Group"),
-                        subtitle: const Text(
-                          "Stay informed and collaborate with fellow users in our Google Group",
+                        title: Text(context.locale.joinGoogleGroup),
+                        subtitle: Text(
+                          context.locale.joinGoogleGroupDesc,
                         ),
                         isThreeLine: true,
                         trailing: const Icon(Icons.chevron_right_rounded),

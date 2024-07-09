@@ -376,5 +376,11 @@
     "timeSyncWarningNote1": "Heure de l'Appareil Incohérente Détectée",
     "timeSyncWarningNote2": "Pour garantir une synchronisation précise du presse-papiers, veuillez vérifier et corriger les paramètres de l'heure de votre appareil.",
     "timeSyncWarningNote3": "Des paramètres de temps incohérents peuvent causer des problèmes de synchronisation.",
-    "checkAgain": "Vérifier de Nouveau"
+    "checkAgain": "Vérifier de Nouveau",
+    "shareYourFeedback": "Partagez Vos Commentaires",
+    "shareYourFeedbackDesc": "Nous apprécions vos pensées ! Que ce soit une suggestion, un rapport de bug ou simplement pour dire bonjour, votre avis est inestimable pour nous.",
+    "joinDiscord": "Rejoignez Notre Communauté Discord",
+    "joinDiscordDesc": "Connectez-vous avec d'autres utilisateurs, partagez des idées, recevez des mises à jour et discutez directement avec nous.",
+    "joinGoogleGroup": "Rejoignez Notre Groupe Google",
+    "joinGoogleGroupDesc": "Restez informé et collaborez avec d'autres utilisateurs dans notre groupe Google."
 }

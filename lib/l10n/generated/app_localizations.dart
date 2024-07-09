@@ -1658,6 +1658,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check Again'**
   String get checkAgain;
+
+  /// No description provided for @shareYourFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Feedback'**
+  String get shareYourFeedback;
+
+  /// No description provided for @shareYourFeedbackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We value your thoughts!, Whether it’s a suggestion, a bug report, or just to say hello, your input is invaluable to us.'**
+  String get shareYourFeedbackDesc;
+
+  /// No description provided for @joinDiscord.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Our Discord Community'**
+  String get joinDiscord;
+
+  /// No description provided for @joinDiscordDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with other users, share ideas, get updates, and chat directly with us.'**
+  String get joinDiscordDesc;
+
+  /// No description provided for @joinGoogleGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Our Google Group'**
+  String get joinGoogleGroup;
+
+  /// No description provided for @joinGoogleGroupDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay informed and collaborate with fellow users in our Google Group'**
+  String get joinGoogleGroupDesc;
 }
 
 class _AppLocalizationsDelegate

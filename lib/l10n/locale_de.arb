@@ -376,5 +376,11 @@
     "timeSyncWarningNote1": "Inkonsistente Gerätezeit erkannt",
     "timeSyncWarningNote2": "Um eine genaue Synchronisierung des Clipboards zu gewährleisten, überprüfen und korrigieren Sie bitte die Zeiteinstellungen Ihres Geräts.",
     "timeSyncWarningNote3": "Inkonsistente Zeiteinstellungen können Synchronisierungsprobleme verursachen.",
-    "checkAgain": "Erneut überprüfen"
+    "checkAgain": "Erneut überprüfen",
+    "shareYourFeedback": "Teilen Sie Ihr Feedback",
+    "shareYourFeedbackDesc": "Wir schätzen Ihre Meinung! Ob es ein Vorschlag, ein Fehlerbericht oder nur ein Hallo ist, Ihr Beitrag ist für uns von unschätzbarem Wert.",
+    "joinDiscord": "Treten Sie Unserer Discord-Community Bei",
+    "joinDiscordDesc": "Vernetzen Sie sich mit anderen Nutzern, teilen Sie Ideen, erhalten Sie Updates und chatten Sie direkt mit uns.",
+    "joinGoogleGroup": "Treten Sie Unserer Google-Gruppe Bei",
+    "joinGoogleGroupDesc": "Bleiben Sie informiert und arbeiten Sie mit anderen Nutzern in unserer Google-Gruppe zusammen."
 }

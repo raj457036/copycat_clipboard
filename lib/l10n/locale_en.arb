@@ -378,5 +378,11 @@
     "timeSyncWarningNote1": "Inconsistent Device Time Detected",
     "timeSyncWarningNote2": "To ensure accurate clipboard syncing, please check and correct your device's time settings.",
     "timeSyncWarningNote3": "Inconsistent time settings may cause synchronization issues.",
-    "checkAgain": "Check Again"
+    "checkAgain": "Check Again",
+    "shareYourFeedback": "Share Your Feedback",
+    "shareYourFeedbackDesc": "We value your thoughts!, Whether it’s a suggestion, a bug report, or just to say hello, your input is invaluable to us.",
+    "joinDiscord": "Join Our Discord Community",
+    "joinDiscordDesc": "Connect with other users, share ideas, get updates, and chat directly with us.",
+    "joinGoogleGroup": "Join Our Google Group",
+    "joinGoogleGroupDesc": "Stay informed and collaborate with fellow users in our Google Group"
 }

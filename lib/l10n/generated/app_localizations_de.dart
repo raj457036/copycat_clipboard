@@ -882,4 +882,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get checkAgain => 'Erneut überprüfen';
+
+  @override
+  String get shareYourFeedback => 'Teilen Sie Ihr Feedback';
+
+  @override
+  String get shareYourFeedbackDesc =>
+      'Wir schätzen Ihre Meinung! Ob es ein Vorschlag, ein Fehlerbericht oder nur ein Hallo ist, Ihr Beitrag ist für uns von unschätzbarem Wert.';
+
+  @override
+  String get joinDiscord => 'Treten Sie Unserer Discord-Community Bei';
+
+  @override
+  String get joinDiscordDesc =>
+      'Vernetzen Sie sich mit anderen Nutzern, teilen Sie Ideen, erhalten Sie Updates und chatten Sie direkt mit uns.';
+
+  @override
+  String get joinGoogleGroup => 'Treten Sie Unserer Google-Gruppe Bei';
+
+  @override
+  String get joinGoogleGroupDesc =>
+      'Bleiben Sie informiert und arbeiten Sie mit anderen Nutzern in unserer Google-Gruppe zusammen.';
 }
