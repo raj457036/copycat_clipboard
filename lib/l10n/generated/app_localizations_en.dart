@@ -872,4 +872,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkAgain => 'Check Again';
+
+  @override
+  String get shareYourFeedback => 'Share Your Feedback';
+
+  @override
+  String get shareYourFeedbackDesc =>
+      'We value your thoughts!, Whether it’s a suggestion, a bug report, or just to say hello, your input is invaluable to us.';
+
+  @override
+  String get joinDiscord => 'Join Our Discord Community';
+
+  @override
+  String get joinDiscordDesc =>
+      'Connect with other users, share ideas, get updates, and chat directly with us.';
+
+  @override
+  String get joinGoogleGroup => 'Join Our Google Group';
+
+  @override
+  String get joinGoogleGroupDesc =>
+      'Stay informed and collaborate with fellow users in our Google Group';
 }
