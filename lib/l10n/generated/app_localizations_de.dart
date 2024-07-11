@@ -903,4 +903,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get joinGoogleGroupDesc =>
       'Bleiben Sie informiert und arbeiten Sie mit anderen Nutzern in unserer Google-Gruppe zusammen.';
+
+  @override
+  String get rebuildingDB => '⏱️ Datenbank wird neu aufgebaut\nBitte warten...';
 }

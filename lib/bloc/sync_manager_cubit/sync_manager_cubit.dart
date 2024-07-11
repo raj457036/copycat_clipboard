@@ -27,6 +27,7 @@ Future<void> syncChanges(BuildContext context) async {
   if (context.mounted) {
     showTextSnackbar(context.locale.done, closePrevious: true);
   }
+  closeSnackbar();
 }
 
 const _syncId = 1;
@@ -260,6 +261,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     while (hasMore) {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getDeletedClipboardItems(
+        limit: 1000,
         userId: auth.userId!,
         lastSynced: syncInfo.lastSync,
         offset: offset,
@@ -316,6 +318,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     while (hasMore) {
       emit(const SyncManagerState.checking());
       final result = await syncRepo.getLatestClipboardItems(
+        limit: 1000,
         userId: auth.userId!,
         lastSynced: getLastSyncedTime(lastSync?.lastSync),
         offset: offset,
@@ -333,10 +336,12 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
         for (var i = 0; i < items.length; i++) {
           final item = items[i];
-          final result = await db.txn(() async => await db.clipboardItems
-              .filter()
-              .serverIdEqualTo(item.serverId)
-              .findFirst());
+          final result = await db.txn(
+            () async => await db.clipboardItems
+                .filter()
+                .serverIdEqualTo(item.serverId)
+                .findFirst(),
+          );
           if (result == null) {
             items[i] = item.copyWith(lastSynced: now());
             added++;
@@ -387,8 +392,11 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     if (auth.state is! AuthenticatedAuthState) return;
     syncing = true;
     try {
-      emit(const SyncManagerState.checking());
       final syncInfo = await getSyncInfo();
+      final needRebuilding = syncInfo == null;
+      emit(SyncManagerState.checking(
+        needDbRebuilding: needRebuilding,
+      ));
 
       final results = await Future.wait([
         if (clipboard) syncClipboardItems(syncInfo, silent: silent),
@@ -412,11 +420,13 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     bool hasUpdate = false,
   }) async {
     final lastSync0 = await getSyncInfo();
+    final firstBuild = lastSync0 == null;
     final syncTime = now();
     if (!hasUpdate) {
       emit(SyncManagerState.synced(
         lastSynced: lastSync0?.lastSync ?? syncTime,
         refreshLocalCache: refreshLocalCache,
+        firstBuild: firstBuild,
       ));
     } else {
       final updatedSyncStatus =
@@ -426,6 +436,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
       emit(SyncManagerState.synced(
         lastSynced: syncTime,
         refreshLocalCache: refreshLocalCache,
+        firstBuild: firstBuild,
       ));
     }
   }

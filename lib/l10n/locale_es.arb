@@ -382,5 +382,6 @@
     "joinDiscord": "Únete a Nuestra Comunidad de Discord",
     "joinDiscordDesc": "Conéctate con otros usuarios, comparte ideas, recibe actualizaciones y chatea directamente con nosotros.",
     "joinGoogleGroup": "Únete a Nuestro Grupo de Google",
-    "joinGoogleGroupDesc": "Mantente informado y colabora con otros usuarios en nuestro Grupo de Google"
+    "joinGoogleGroupDesc": "Mantente informado y colabora con otros usuarios en nuestro Grupo de Google",
+    "rebuildingDB": "⏱️ Reconstruyendo Base de Datos\nPor Favor Espera..."
 }

@@ -1694,6 +1694,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stay informed and collaborate with fellow users in our Google Group'**
   String get joinGoogleGroupDesc;
+
+  /// No description provided for @rebuildingDB.
+  ///
+  /// In en, this message translates to:
+  /// **'⏱️ Rebuilding Database\nPlease Wait...'**
+  String get rebuildingDB;
 }
 
 class _AppLocalizationsDelegate

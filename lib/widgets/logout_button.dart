@@ -10,10 +10,6 @@ import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/services/encryption.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
-import 'package:clipboard/db/sync_status/syncstatus.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -55,12 +51,7 @@ class LogoutButton extends StatelessWidget {
         context.read<AuthCubit>().logout(),
         context.read<AppConfigCubit>().reset(),
         clearPersistedRootDir(),
-        db.writeTxn(() async {
-          await db.clipboardItems.clear();
-          await db.clipCollections.clear();
-          await db.syncStatus.clear();
-          await db.subscriptions.clear();
-        }),
+        db.writeTxn(() => db.clear()),
       ]);
       // if (Platform.isWindows) {
       //   // restartApplication();
