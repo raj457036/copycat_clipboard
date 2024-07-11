@@ -20,6 +20,7 @@ import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:clipboard/widgets/network_observer.dart';
+import 'package:clipboard/widgets/rebuilding_db.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
@@ -219,8 +220,10 @@ class MainApp extends StatelessWidget {
         child: WindowFocusManager.fromPlatform(
           child: TrayManager.fromPlatform(
             child: const SystemShortcutListener(
-              child: AppLinkListener(
-                child: AppContent(),
+              child: RebuildingDbOverlay(
+                child: AppLinkListener(
+                  child: AppContent(),
+                ),
               ),
             ),
           ),

@@ -19,7 +19,7 @@ mixin _$SyncManagerState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -27,14 +27,15 @@ mixin _$SyncManagerState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -42,13 +43,15 @@ mixin _$SyncManagerState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -56,7 +59,9 @@ mixin _$SyncManagerState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -157,7 +162,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -165,7 +170,8 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
     return unknown();
@@ -175,7 +181,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -183,7 +189,9 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
     return unknown?.call();
   }
@@ -192,7 +200,7 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -200,7 +208,9 @@ class _$UnknownSyncStateImpl implements UnknownSyncState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -269,6 +279,8 @@ abstract class _$$CheckingSyncStateImplCopyWith<$Res> {
   factory _$$CheckingSyncStateImplCopyWith(_$CheckingSyncStateImpl value,
           $Res Function(_$CheckingSyncStateImpl) then) =
       __$$CheckingSyncStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool needDbRebuilding});
 }
 
 /// @nodoc
@@ -278,32 +290,59 @@ class __$$CheckingSyncStateImplCopyWithImpl<$Res>
   __$$CheckingSyncStateImplCopyWithImpl(_$CheckingSyncStateImpl _value,
       $Res Function(_$CheckingSyncStateImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? needDbRebuilding = null,
+  }) {
+    return _then(_$CheckingSyncStateImpl(
+      needDbRebuilding: null == needDbRebuilding
+          ? _value.needDbRebuilding
+          : needDbRebuilding // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$CheckingSyncStateImpl implements CheckingSyncState {
-  const _$CheckingSyncStateImpl();
+  const _$CheckingSyncStateImpl({this.needDbRebuilding = false});
+
+  @override
+  @JsonKey()
+  final bool needDbRebuilding;
 
   @override
   String toString() {
-    return 'SyncManagerState.checking()';
+    return 'SyncManagerState.checking(needDbRebuilding: $needDbRebuilding)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CheckingSyncStateImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$CheckingSyncStateImpl &&
+            (identical(other.needDbRebuilding, needDbRebuilding) ||
+                other.needDbRebuilding == needDbRebuilding));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, needDbRebuilding);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CheckingSyncStateImplCopyWith<_$CheckingSyncStateImpl> get copyWith =>
+      __$$CheckingSyncStateImplCopyWithImpl<_$CheckingSyncStateImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -311,17 +350,18 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
-    return checking();
+    return checking(needDbRebuilding);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -329,16 +369,18 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
-    return checking?.call();
+    return checking?.call(needDbRebuilding);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -346,11 +388,13 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (checking != null) {
-      return checking();
+      return checking(needDbRebuilding);
     }
     return orElse();
   }
@@ -407,7 +451,13 @@ class _$CheckingSyncStateImpl implements CheckingSyncState {
 }
 
 abstract class CheckingSyncState implements SyncManagerState {
-  const factory CheckingSyncState() = _$CheckingSyncStateImpl;
+  const factory CheckingSyncState({final bool needDbRebuilding}) =
+      _$CheckingSyncStateImpl;
+
+  bool get needDbRebuilding;
+  @JsonKey(ignore: true)
+  _$$CheckingSyncStateImplCopyWith<_$CheckingSyncStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -477,7 +527,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -485,7 +535,8 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
     return failed(failure);
@@ -495,7 +546,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -503,7 +554,9 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
     return failed?.call(failure);
   }
@@ -512,7 +565,7 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -520,7 +573,9 @@ class _$SyncCheckFailedStateImpl implements SyncCheckFailedState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (failed != null) {
@@ -664,7 +719,7 @@ class _$SyncingStateImpl implements SyncingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -672,7 +727,8 @@ class _$SyncingStateImpl implements SyncingState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
     return syncing(progress, total);
@@ -682,7 +738,7 @@ class _$SyncingStateImpl implements SyncingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -690,7 +746,9 @@ class _$SyncingStateImpl implements SyncingState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
     return syncing?.call(progress, total);
   }
@@ -699,7 +757,7 @@ class _$SyncingStateImpl implements SyncingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -707,7 +765,9 @@ class _$SyncingStateImpl implements SyncingState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (syncing != null) {
@@ -859,7 +919,7 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -867,7 +927,8 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
     return partlySynced(clipboard, collections);
@@ -877,7 +938,7 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -885,7 +946,9 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
     return partlySynced?.call(clipboard, collections);
   }
@@ -894,7 +957,7 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -902,7 +965,9 @@ class _$PartlySyncedSyncStateImpl implements PartlySyncedSyncState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (partlySynced != null) {
@@ -1074,7 +1139,7 @@ class _$ClipboardSyncedSyncStateImpl implements ClipboardSyncedSyncState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -1082,7 +1147,8 @@ class _$ClipboardSyncedSyncStateImpl implements ClipboardSyncedSyncState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
     return clipboardSynced(added, updated, deleted, silent);
@@ -1092,7 +1158,7 @@ class _$ClipboardSyncedSyncStateImpl implements ClipboardSyncedSyncState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -1100,7 +1166,9 @@ class _$ClipboardSyncedSyncStateImpl implements ClipboardSyncedSyncState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
     return clipboardSynced?.call(added, updated, deleted, silent);
   }
@@ -1109,7 +1177,7 @@ class _$ClipboardSyncedSyncStateImpl implements ClipboardSyncedSyncState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -1117,7 +1185,9 @@ class _$ClipboardSyncedSyncStateImpl implements ClipboardSyncedSyncState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (clipboardSynced != null) {
@@ -1296,7 +1366,7 @@ class _$ClipCollectionSyncedSyncStateImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -1304,7 +1374,8 @@ class _$ClipCollectionSyncedSyncStateImpl
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
     return collectionSynced(added, updated, deleted, silent);
@@ -1314,7 +1385,7 @@ class _$ClipCollectionSyncedSyncStateImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -1322,7 +1393,9 @@ class _$ClipCollectionSyncedSyncStateImpl
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
     return collectionSynced?.call(added, updated, deleted, silent);
   }
@@ -1331,7 +1404,7 @@ class _$ClipCollectionSyncedSyncStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -1339,7 +1412,9 @@ class _$ClipCollectionSyncedSyncStateImpl
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (collectionSynced != null) {
@@ -1422,7 +1497,7 @@ abstract class _$$SyncedStateImplCopyWith<$Res> {
           _$SyncedStateImpl value, $Res Function(_$SyncedStateImpl) then) =
       __$$SyncedStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DateTime lastSynced, bool refreshLocalCache});
+  $Res call({DateTime lastSynced, bool refreshLocalCache, bool firstBuild});
 }
 
 /// @nodoc
@@ -1438,6 +1513,7 @@ class __$$SyncedStateImplCopyWithImpl<$Res>
   $Res call({
     Object? lastSynced = null,
     Object? refreshLocalCache = null,
+    Object? firstBuild = null,
   }) {
     return _then(_$SyncedStateImpl(
       lastSynced: null == lastSynced
@@ -1448,6 +1524,10 @@ class __$$SyncedStateImplCopyWithImpl<$Res>
           ? _value.refreshLocalCache
           : refreshLocalCache // ignore: cast_nullable_to_non_nullable
               as bool,
+      firstBuild: null == firstBuild
+          ? _value.firstBuild
+          : firstBuild // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -1456,17 +1536,21 @@ class __$$SyncedStateImplCopyWithImpl<$Res>
 
 class _$SyncedStateImpl implements SyncedState {
   const _$SyncedStateImpl(
-      {required this.lastSynced, this.refreshLocalCache = false});
+      {required this.lastSynced,
+      this.refreshLocalCache = false,
+      required this.firstBuild});
 
   @override
   final DateTime lastSynced;
   @override
   @JsonKey()
   final bool refreshLocalCache;
+  @override
+  final bool firstBuild;
 
   @override
   String toString() {
-    return 'SyncManagerState.synced(lastSynced: $lastSynced, refreshLocalCache: $refreshLocalCache)';
+    return 'SyncManagerState.synced(lastSynced: $lastSynced, refreshLocalCache: $refreshLocalCache, firstBuild: $firstBuild)';
   }
 
   @override
@@ -1477,11 +1561,14 @@ class _$SyncedStateImpl implements SyncedState {
             (identical(other.lastSynced, lastSynced) ||
                 other.lastSynced == lastSynced) &&
             (identical(other.refreshLocalCache, refreshLocalCache) ||
-                other.refreshLocalCache == refreshLocalCache));
+                other.refreshLocalCache == refreshLocalCache) &&
+            (identical(other.firstBuild, firstBuild) ||
+                other.firstBuild == firstBuild));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lastSynced, refreshLocalCache);
+  int get hashCode =>
+      Object.hash(runtimeType, lastSynced, refreshLocalCache, firstBuild);
 
   @JsonKey(ignore: true)
   @override
@@ -1493,7 +1580,7 @@ class _$SyncedStateImpl implements SyncedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function() checking,
+    required TResult Function(bool needDbRebuilding) checking,
     required TResult Function(Failure failure) failed,
     required TResult Function(int progress, int total) syncing,
     required TResult Function(bool clipboard, bool collections) partlySynced,
@@ -1501,17 +1588,18 @@ class _$SyncedStateImpl implements SyncedState {
         clipboardSynced,
     required TResult Function(int added, int updated, int deleted, bool silent)
         collectionSynced,
-    required TResult Function(DateTime lastSynced, bool refreshLocalCache)
+    required TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)
         synced,
   }) {
-    return synced(lastSynced, refreshLocalCache);
+    return synced(lastSynced, refreshLocalCache, firstBuild);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
-    TResult? Function()? checking,
+    TResult? Function(bool needDbRebuilding)? checking,
     TResult? Function(Failure failure)? failed,
     TResult? Function(int progress, int total)? syncing,
     TResult? Function(bool clipboard, bool collections)? partlySynced,
@@ -1519,16 +1607,18 @@ class _$SyncedStateImpl implements SyncedState {
         clipboardSynced,
     TResult? Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult? Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult? Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
   }) {
-    return synced?.call(lastSynced, refreshLocalCache);
+    return synced?.call(lastSynced, refreshLocalCache, firstBuild);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function()? checking,
+    TResult Function(bool needDbRebuilding)? checking,
     TResult Function(Failure failure)? failed,
     TResult Function(int progress, int total)? syncing,
     TResult Function(bool clipboard, bool collections)? partlySynced,
@@ -1536,11 +1626,13 @@ class _$SyncedStateImpl implements SyncedState {
         clipboardSynced,
     TResult Function(int added, int updated, int deleted, bool silent)?
         collectionSynced,
-    TResult Function(DateTime lastSynced, bool refreshLocalCache)? synced,
+    TResult Function(
+            DateTime lastSynced, bool refreshLocalCache, bool firstBuild)?
+        synced,
     required TResult orElse(),
   }) {
     if (synced != null) {
-      return synced(lastSynced, refreshLocalCache);
+      return synced(lastSynced, refreshLocalCache, firstBuild);
     }
     return orElse();
   }
@@ -1599,10 +1691,12 @@ class _$SyncedStateImpl implements SyncedState {
 abstract class SyncedState implements SyncManagerState {
   const factory SyncedState(
       {required final DateTime lastSynced,
-      final bool refreshLocalCache}) = _$SyncedStateImpl;
+      final bool refreshLocalCache,
+      required final bool firstBuild}) = _$SyncedStateImpl;
 
   DateTime get lastSynced;
   bool get refreshLocalCache;
+  bool get firstBuild;
   @JsonKey(ignore: true)
   _$$SyncedStateImplCopyWith<_$SyncedStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
