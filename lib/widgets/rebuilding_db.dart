@@ -31,11 +31,13 @@ class _RebuildingDbOverlayState extends State<RebuildingDbOverlay> {
         }
       },
       child: rebuilding
-          ? const Scaffold(
-              body: Center(
-                child: Text(
-                  "⏱️ Rebuilding Database\nPlease Wait...",
-                  textAlign: TextAlign.center,
+          ? const MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Text(
+                    "⏱️ Rebuilding Database\nPlease Wait...",
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             )
