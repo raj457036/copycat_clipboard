@@ -1,22 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
-import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/pages/login/widgets/login_form.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/attention_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -37,15 +29,7 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         switch (state) {
-          case AuthenticatedAuthState(:final user):
-            context.read<AppConfigCubit>().load();
-            context.read<MonetizationCubit>().login(user.id);
-            context.read<ClipCollectionCubit>().fetch();
-            context.read<SyncManagerCubit>().syncChanges();
-            context.read<OfflinePersistanceCubit>().startListners();
-            context.read<DriveSetupCubit>().fetch();
-            context.goNamed(RouteConstants.home);
-
+          case AuthenticatedAuthState():
             Future.delayed(
               const Duration(seconds: 2),
               showIntoDialog,

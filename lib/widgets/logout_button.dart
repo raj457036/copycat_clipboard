@@ -8,7 +8,6 @@ import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
-import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/l10n.dart';
@@ -17,7 +16,6 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:isar/isar.dart';
 
 class LogoutButton extends StatelessWidget {
@@ -53,16 +51,7 @@ class LogoutButton extends StatelessWidget {
         clearPersistedRootDir(),
         db.writeTxn(() => db.clear()),
       ]);
-      // if (Platform.isWindows) {
-      //   // restartApplication();
-      // } else {
-      //   context.goNamed(RouteConstants.login);
-      //   showTextSnackbar(
-      //     context.locale.logoutSuccess,
-      //     closePrevious: true,
-      //   );
-      // }
-      context.goNamed(RouteConstants.login);
+
       showTextSnackbar(
         context.locale.logoutSuccess,
         closePrevious: true,

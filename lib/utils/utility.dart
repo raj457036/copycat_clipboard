@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:math' as math;
-import 'package:win32/win32.dart';
 
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
