@@ -1,67 +1,18 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as su;
-import 'package:window_manager/window_manager.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({
     super.key,
   });
 
-  Future<void> checkForAuth(BuildContext context) async {
-    final authCubit = context.read<AuthCubit>();
-    authCubit.checkForAuthentication();
-  }
-
-  Future<void> authDone(
-    BuildContext context,
-    su.User user,
-  ) async {
-    await Future.wait([
-      context.read<AppConfigCubit>().load(),
-      context.read<MonetizationCubit>().login(user.id),
-      context.read<ClipCollectionCubit>().fetch(),
-      context.read<SyncManagerCubit>().syncChanges(),
-      context.read<OfflinePersistanceCubit>().startListners(),
-      context.read<DriveSetupCubit>().fetch(),
-    ]);
-    context.goNamed(RouteConstants.home);
-  }
-
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 1), () => checkForAuth(context));
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) async {
-        switch (state) {
-          case AuthenticatedAuthState(:final user):
-            authDone(context, user);
-            break;
-          case UnauthenticatedAuthState():
-            context.goNamed(RouteConstants.login);
-            context.read<OfflinePersistanceCubit>().stopListners();
-            if (isDesktopPlatform) {
-              await windowManager.show();
-            }
-          default:
-        }
-      },
-      child: const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+    context.read<AuthCubit>().checkForAuthentication();
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

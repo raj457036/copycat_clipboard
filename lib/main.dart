@@ -18,6 +18,7 @@ import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
+import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:clipboard/widgets/network_observer.dart';
 import 'package:clipboard/widgets/rebuilding_db.dart';
@@ -129,7 +130,6 @@ class AppContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
-
     return BlocListener<MonetizationCubit, MonetizationState>(
       listener: (context, state) {
         switch (state) {
@@ -216,13 +216,15 @@ class MainApp extends StatelessWidget {
         if (isDesktopPlatform)
           BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
-      child: EventBridge(
-        child: WindowFocusManager.fromPlatform(
-          child: TrayManager.fromPlatform(
-            child: const SystemShortcutListener(
-              child: RebuildingDbOverlay(
-                child: AppLinkListener(
-                  child: AppContent(),
+      child: AuthListener(
+        child: EventBridge(
+          child: WindowFocusManager.fromPlatform(
+            child: TrayManager.fromPlatform(
+              child: const SystemShortcutListener(
+                child: RebuildingDbOverlay(
+                  child: AppLinkListener(
+                    child: AppContent(),
+                  ),
                 ),
               ),
             ),
