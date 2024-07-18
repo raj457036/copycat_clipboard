@@ -9,12 +9,19 @@ class Failure {
     required this.code,
   });
 
-  factory Failure.fromException(Object e) {
+  factory Failure.fromException(dynamic e) {
     if (e is Failure) return e;
-    return Failure(
-      message: e.toString(),
-      code: e.runtimeType.toString(),
-    );
+    try {
+      return Failure(
+        message: e.message,
+        code: e.runtimeType.toString(),
+      );
+    } catch (e) {
+      return Failure(
+        message: e.toString(),
+        code: e.runtimeType.toString(),
+      );
+    }
   }
 
   @override
