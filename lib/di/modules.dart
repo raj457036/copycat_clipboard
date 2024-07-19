@@ -17,6 +17,7 @@ abstract class RegisterModule {
   @LazySingleton(dispose: closeIsarDb)
   Future<Isar> get db async {
     final dir = await getApplicationDocumentsDirectory();
+
     final isar = await Isar.open(
       [
         ClipboardItemSchema,

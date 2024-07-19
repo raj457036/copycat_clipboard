@@ -55,9 +55,7 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
   if (navbarActiveIndex == 2) {
     return const Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        CreateCollectionButton(),
-      ],
+      children: [CreateCollectionButton(), height8, SyncStatusButton()],
     );
   }
   return null;

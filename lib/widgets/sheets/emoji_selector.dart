@@ -24,21 +24,21 @@ class EmojiSelectorSheet extends StatelessWidget {
             config: Config(
               checkPlatformCompatibility: true,
               bottomActionBarConfig: BottomActionBarConfig(
-                backgroundColor: colorScheme.background,
-                buttonColor: colorScheme.background,
-                buttonIconColor: colorScheme.onBackground,
+                backgroundColor: colorScheme.surface,
+                buttonColor: colorScheme.surface,
+                buttonIconColor: colorScheme.onSurface,
               ),
               searchViewConfig: SearchViewConfig(
-                backgroundColor: colorScheme.background,
-                buttonColor: colorScheme.background,
-                buttonIconColor: colorScheme.onBackground,
+                backgroundColor: colorScheme.surface,
+                buttonColor: colorScheme.surface,
+                buttonIconColor: colorScheme.onSurface,
               ),
               categoryViewConfig: CategoryViewConfig(
-                backgroundColor: colorScheme.background,
+                backgroundColor: colorScheme.surface,
                 recentTabBehavior: RecentTabBehavior.NONE,
               ),
               emojiViewConfig: EmojiViewConfig(
-                backgroundColor: colorScheme.background,
+                backgroundColor: colorScheme.surface,
               ),
             ),
             // textEditingController:

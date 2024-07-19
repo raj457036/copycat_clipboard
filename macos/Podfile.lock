@@ -209,7 +209,7 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
-  - purchases_flutter (6.30.1):
+  - purchases_flutter (6.30.2):
     - FlutterMacOS
     - PurchasesHybridCommon (= 11.1.0)
   - PurchasesHybridCommon (11.1.0):
@@ -400,7 +400,7 @@ SPEC CHECKSUMS:
   platform_device_id_macos: f763bb55f088be804d61b96eb4710b8ab6598e94
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  purchases_flutter: 06520f6e47692642b5f452d504b65765e6c51ec5
+  purchases_flutter: 3407100959d2aeb636507b2c98970d850dae57ae
   PurchasesHybridCommon: 4022d5944cb30ec44ba5159e42aa161fe0e30175
   RevenueCat: 3d934653b7e8b09af88fd47e9e84cfaf5d0a89ba
   screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38

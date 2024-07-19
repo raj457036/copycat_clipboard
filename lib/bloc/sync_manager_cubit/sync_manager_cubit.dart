@@ -153,19 +153,19 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         final items = r.results;
         if (items.isEmpty) return;
 
-        for (var i = 0; i < items.length; i++) {
-          final item = items[i];
-          final result = await db.txn(
-            () async => await db.clipCollections
+        await db.writeTxn(
+          () async {
+            final count = await db.clipCollections
                 .filter()
-                .serverIdEqualTo(item.serverId)
-                .findFirst(),
-          );
-          if (result != null) {
-            await clipCollectionRepository.delete(result);
-            deleted++;
-          }
-        }
+                .anyOf(
+                  items,
+                  (q, _) => q.serverIdEqualTo(_.serverId),
+                )
+                .deleteAll();
+
+            deleted += count;
+          },
+        );
       });
 
       if (result.isLeft()) break;
@@ -204,22 +204,26 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
         if (items.isEmpty) return;
 
-        for (var i = 0; i < items.length; i++) {
-          final item = items[i];
-          final result = await db.txn(() async => await db.clipCollections
+        final foundedCount = await db.txn(() async {
+          final foundCollections = await db.clipCollections
               .filter()
-              .serverIdEqualTo(item.serverId)
-              .findFirst());
-          if (result == null) {
-            items[i] = item.copyWith(lastSynced: now());
-            added++;
-          } else {
-            items[i] = item.copyWith(
-              lastSynced: result.lastSynced,
-            )..applyId(result);
-            updated++;
+              .anyOf(items, (q, _) => q.serverIdEqualTo(_.serverId))
+              .findAll();
+
+          for (var found in foundCollections) {
+            final index =
+                items.indexWhere((item) => item.serverId == found.serverId);
+            if (index != -1) {
+              items[index] = items[index].copyWith(
+                lastSynced: found.lastSynced,
+              )..applyId(found);
+            }
           }
-        }
+          return foundCollections.length;
+        });
+
+        added += r.results.length - foundedCount;
+        updated += foundedCount;
 
         await db.writeTxn(() async {
           await db.clipCollections.putAll(items);
@@ -273,27 +277,30 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
         offset += r.results.length;
         // Apply changes to local db
         final items = r.results;
-        final deletedIds = <int>[];
 
         if (items.isEmpty) return;
 
-        for (var i = 0; i < items.length; i++) {
-          final item = items[i];
-          final result = await db.txn(
-            () async => await db.clipboardItems
+        final deletedCount = await db.writeTxn(
+          () async {
+            final deletedClips = await db.clipboardItems
                 .filter()
-                .serverIdEqualTo(item.serverId)
-                .findFirst(),
-          );
-          if (result != null) {
-            deletedIds.add(result.id);
-            deleted++;
-          }
-        }
+                .anyOf(
+                  items,
+                  (q, _) => q.serverIdEqualTo(_.serverId),
+                )
+                .findAll();
 
-        await db.writeTxn(() async {
-          await db.clipboardItems.deleteAll(deletedIds);
-        });
+            // Clean up deleted clips (files if any)
+            await Future.wait(deletedClips.map((e) => e.cleanUp()));
+
+            await db.clipboardItems
+                .deleteAll(deletedClips.map((e) => e.id).toList());
+
+            return deletedClips.length;
+          },
+        );
+
+        deleted += deletedCount;
       });
 
       if (result.isLeft()) break;
@@ -334,25 +341,27 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
         if (items.isEmpty) return;
 
-        for (var i = 0; i < items.length; i++) {
-          final item = items[i];
-          final result = await db.txn(
-            () async => await db.clipboardItems
-                .filter()
-                .serverIdEqualTo(item.serverId)
-                .findFirst(),
-          );
-          if (result == null) {
-            items[i] = item.copyWith(lastSynced: now());
-            added++;
-          } else {
-            items[i] = item.copyWith(
-              lastSynced: result.lastSynced,
-              localPath: result.localPath,
-            )..applyId(result);
-            updated++;
+        final foundedCount = await db.txn(() async {
+          final foundCollections = await db.clipboardItems
+              .filter()
+              .anyOf(items, (q, _) => q.serverIdEqualTo(_.serverId))
+              .findAll();
+
+          for (var found in foundCollections) {
+            final index =
+                items.indexWhere((item) => item.serverId == found.serverId);
+            if (index != -1) {
+              items[index] = items[index].copyWith(
+                lastSynced: found.lastSynced,
+                localPath: found.localPath,
+              )..applyId(found);
+            }
           }
-        }
+          return foundCollections.length;
+        });
+
+        added += r.results.length - foundedCount;
+        updated += foundedCount;
 
         await db.writeTxn(() async {
           await db.clipboardItems.putAll(items);

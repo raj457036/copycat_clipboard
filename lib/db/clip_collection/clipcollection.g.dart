@@ -114,6 +114,19 @@ const ClipCollectionSchema = CollectionSchema(
           caseSensitive: false,
         )
       ],
+    ),
+    r'collection-server-id': IndexSchema(
+      id: 5681499332743652391,
+      name: r'collection-server-id',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'serverId',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
     )
   },
   links: {},
@@ -278,6 +291,14 @@ extension ClipCollectionQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'descriptionWords'),
+      );
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhere> anyServerId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'collection-server-id'),
       );
     });
   }
@@ -633,6 +654,121 @@ extension ClipCollectionQueryWhere
               upper: [''],
             ));
       }
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'collection-server-id',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'collection-server-id',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdEqualTo(int? serverId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'collection-server-id',
+        value: [serverId],
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdNotEqualTo(int? serverId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'collection-server-id',
+              lower: [],
+              upper: [serverId],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'collection-server-id',
+              lower: [serverId],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'collection-server-id',
+              lower: [serverId],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'collection-server-id',
+              lower: [],
+              upper: [serverId],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdGreaterThan(
+    int? serverId, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'collection-server-id',
+        lower: [serverId],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdLessThan(
+    int? serverId, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'collection-server-id',
+        lower: [],
+        upper: [serverId],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<ClipCollection, ClipCollection, QAfterWhereClause>
+      serverIdBetween(
+    int? lowerServerId,
+    int? upperServerId, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'collection-server-id',
+        lower: [lowerServerId],
+        includeLower: includeLower,
+        upper: [upperServerId],
+        includeUpper: includeUpper,
+      ));
     });
   }
 }
