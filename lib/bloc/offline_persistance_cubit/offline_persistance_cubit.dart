@@ -107,7 +107,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   Future<void> paste() async {
     final clips = await clipboard.readClipboard(manual: true);
     if (clips != null) {
-      await onClips(clips);
+      await onClips(clips, manualPaste: true);
     }
   }
 
