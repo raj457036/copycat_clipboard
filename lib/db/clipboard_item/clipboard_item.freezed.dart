@@ -21,6 +21,7 @@ ClipboardItem _$ClipboardItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ClipboardItem {
   @JsonKey(name: "id", includeToJson: false)
+  @Index()
   int? get serverId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced => throw _privateConstructorUsedError;
@@ -102,7 +103,7 @@ abstract class $ClipboardItemCopyWith<$Res> {
       _$ClipboardItemCopyWithImpl<$Res, ClipboardItem>;
   @useResult
   $Res call(
-      {@JsonKey(name: "id", includeToJson: false) int? serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
@@ -355,7 +356,7 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "id", includeToJson: false) int? serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
@@ -601,7 +602,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClipboardItemImpl extends _ClipboardItem {
   _$ClipboardItemImpl(
-      {@JsonKey(name: "id", includeToJson: false) this.serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() this.serverId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) this.localPath,
       @JsonKey(name: "created") @DateTimeConverter() required this.created,
@@ -656,6 +657,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
   @override
   @JsonKey(name: "id", includeToJson: false)
+  @Index()
   final int? serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -897,7 +899,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
 abstract class _ClipboardItem extends ClipboardItem {
   factory _ClipboardItem(
-      {@JsonKey(name: "id", includeToJson: false) final int? serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() final int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -959,6 +961,7 @@ abstract class _ClipboardItem extends ClipboardItem {
 
   @override
   @JsonKey(name: "id", includeToJson: false)
+  @Index()
   int? get serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
