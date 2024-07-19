@@ -21,6 +21,7 @@ ClipCollection _$ClipCollectionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ClipCollection {
   @JsonKey(name: "id", includeToJson: false)
+  @Index(name: "collection-server-id")
   int? get serverId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced => throw _privateConstructorUsedError;
@@ -51,7 +52,9 @@ abstract class $ClipCollectionCopyWith<$Res> {
       _$ClipCollectionCopyWithImpl<$Res, ClipCollection>;
   @useResult
   $Res call(
-      {@JsonKey(name: "id", includeToJson: false) int? serverId,
+      {@JsonKey(name: "id", includeToJson: false)
+      @Index(name: "collection-server-id")
+      int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
@@ -142,7 +145,9 @@ abstract class _$$ClipCollectionImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "id", includeToJson: false) int? serverId,
+      {@JsonKey(name: "id", includeToJson: false)
+      @Index(name: "collection-server-id")
+      int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(name: "created") @DateTimeConverter() DateTime created,
@@ -226,7 +231,9 @@ class __$$ClipCollectionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClipCollectionImpl extends _ClipCollection {
   _$ClipCollectionImpl(
-      {@JsonKey(name: "id", includeToJson: false) this.serverId,
+      {@JsonKey(name: "id", includeToJson: false)
+      @Index(name: "collection-server-id")
+      this.serverId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.lastSynced,
       @JsonKey(name: "created") @DateTimeConverter() required this.created,
       @JsonKey(name: "modified") @DateTimeConverter() required this.modified,
@@ -243,6 +250,7 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
   @override
   @JsonKey(name: "id", includeToJson: false)
+  @Index(name: "collection-server-id")
   final int? serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -320,7 +328,9 @@ class _$ClipCollectionImpl extends _ClipCollection {
 
 abstract class _ClipCollection extends ClipCollection {
   factory _ClipCollection(
-      {@JsonKey(name: "id", includeToJson: false) final int? serverId,
+      {@JsonKey(name: "id", includeToJson: false)
+      @Index(name: "collection-server-id")
+      final int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final DateTime? lastSynced,
       @JsonKey(name: "created")
@@ -342,6 +352,7 @@ abstract class _ClipCollection extends ClipCollection {
 
   @override
   @JsonKey(name: "id", includeToJson: false)
+  @Index(name: "collection-server-id")
   int? get serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)

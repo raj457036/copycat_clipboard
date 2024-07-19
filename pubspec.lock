@@ -1377,18 +1377,18 @@ packages:
     dependency: "direct main"
     description:
       name: purchases_flutter
-      sha256: ce3ce16d94e51300f28a2ef7eaf84617decf87e904d6c6f7a226b0f5af6b0c10
+      sha256: "83f58c4ef331c06af0548b009632ec2c45b119b87bf02a74f8f77a40e0f64bad"
       url: "https://pub.dev"
     source: hosted
-    version: "6.30.1"
+    version: "6.30.2"
   purchases_ui_flutter:
     dependency: "direct main"
     description:
       name: purchases_ui_flutter
-      sha256: "3858544fbc8cd3bf0c4b9b2c28d891a85c881a98f4069c0f2c7faedc9f971b49"
+      sha256: cbc125b5a4c267ad1b63707a2207eadff89018dec40b99a9a7fa0eba594ab87f
       url: "https://pub.dev"
     source: hosted
-    version: "6.30.1"
+    version: "6.30.2"
   realtime_client:
     dependency: transitive
     description:
@@ -1405,14 +1405,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  restartfromos:
-    dependency: "direct main"
-    description:
-      name: restartfromos
-      sha256: "1f6e131be600aa8b40128df58f2025ab2723ce1c46d60b06746c55f4849096cd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   retry:
     dependency: "direct main"
     description:

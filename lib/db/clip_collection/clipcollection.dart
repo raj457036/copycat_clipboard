@@ -13,7 +13,9 @@ class ClipCollection with _$ClipCollection, IsarIdMixin {
   ClipCollection._();
 
   factory ClipCollection({
-    @JsonKey(name: "id", includeToJson: false) int? serverId,
+    @JsonKey(name: "id", includeToJson: false)
+    @Index(name: "collection-server-id")
+    int? serverId,
     @JsonKey(includeFromJson: false, includeToJson: false) DateTime? lastSynced,
     @JsonKey(name: "created") @DateTimeConverter() required DateTime created,
     @JsonKey(name: "modified") @DateTimeConverter() required DateTime modified,

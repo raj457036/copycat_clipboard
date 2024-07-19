@@ -2,6 +2,7 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -122,7 +123,10 @@ class SyncRepositoryImpl implements SyncRepository {
         query = query.neq("deviceId", excludeDeviceId);
       }
       final docs = await query.order("modified").range(offset, offset + limit);
-      final items = docs.map((e) => ClipCollection.fromJson(e)).toList();
+      final items = docs
+          .map((e) => ClipCollection.fromJson(e))
+          .map((e) => e.copyWith(lastSynced: now()))
+          .toList();
       return Right(
         PaginatedResult(
           results: items,

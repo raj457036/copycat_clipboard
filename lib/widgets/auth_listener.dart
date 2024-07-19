@@ -9,9 +9,11 @@ import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:window_manager/window_manager.dart';
 
 class AuthListener extends StatelessWidget {
   final Widget child;
@@ -32,6 +34,9 @@ class AuthListener extends StatelessWidget {
             logger.i("Auth State Unknown or Authenticating or Unauthenticated");
             rootNavKey.currentContext?.goNamed(RouteConstants.login);
             closeSnackbar();
+            if (isDesktopPlatform) {
+              windowManager.show();
+            }
             break;
           case AuthenticatedAuthState(:final user):
             {
