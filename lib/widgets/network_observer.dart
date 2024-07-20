@@ -5,10 +5,10 @@ import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/network_status.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class NetworkObserver extends StatefulWidget {
   final Widget child;
@@ -29,10 +29,24 @@ class _NetworkObserverState extends State<NetworkObserver> {
   late DriveSetupCubit driveSetupCubit;
   late AppConfigCubit appConfigCubit;
 
+  late final Stream<bool> networkObserver;
+
+  bool transformNetworkStatus(InternetStatus event) {
+    return event == InternetStatus.connected;
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
-    networkObserver.listen(onConnectionChanged);
+    networkObserver =
+        InternetConnection().onStatusChange.map(transformNetworkStatus);
+    subscription = networkObserver.listen(onConnectionChanged);
     authCubit = BlocProvider.of<AuthCubit>(context);
     monetizationCubit = BlocProvider.of<MonetizationCubit>(context);
     driveSetupCubit = BlocProvider.of<DriveSetupCubit>(context);

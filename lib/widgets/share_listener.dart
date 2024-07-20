@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
@@ -32,10 +34,18 @@ class ShareListener extends StatefulWidget {
 }
 
 class _ShareListenerState extends State<ShareListener> {
+  StreamSubscription? subscription;
+
   @override
   void initState() {
     super.initState();
     initPlatformState();
+  }
+
+  @override
+  void dispose() {
+    subscription?.cancel();
+    super.dispose();
   }
 
   Future<void> initPlatformState() async {
@@ -64,7 +74,7 @@ class _ShareListenerState extends State<ShareListener> {
       }
     }
 
-    handler.sharedMediaStream.listen((SharedMedia media) async {
+    subscription = handler.sharedMediaStream.listen((SharedMedia media) async {
       logger.i("Received shared media: $media");
       if (mounted) {
         showTextSnackbar(

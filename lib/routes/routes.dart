@@ -27,7 +27,9 @@ import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/search_page_shortcut.dart";
 import "package:clipboard/utils/utility.dart";
+import "package:clipboard/widgets/network_observer.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
+import "package:clipboard/widgets/share_listener.dart";
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -129,23 +131,28 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               _ => 0,
             };
 
-            final upgrader = Upgrader(
-              storeController: UpgraderStoreController(
-                onMacOS: () => UpgraderAppcastStore(appcastURL: macAppcastUrl),
-                onWindows: () =>
-                    UpgraderAppcastStore(appcastURL: windowsAppcastUrl),
-                onLinux: () =>
-                    UpgraderAppcastStore(appcastURL: linuxAppcastUrl),
+            final navPage = NetworkObserver(
+              key: const ValueKey("network-observer"),
+              child: ShareListener.fromPlatform(
+                child: NavBarPage(
+                  navbarActiveIndex: activeIndex,
+                  depth: depth,
+                  child: child,
+                ),
               ),
             );
 
-            final navPage = NavBarPage(
-              navbarActiveIndex: activeIndex,
-              depth: depth,
-              child: child,
-            );
-
             if (activeIndex != 1) {
+              final upgrader = Upgrader(
+                storeController: UpgraderStoreController(
+                  onMacOS: () =>
+                      UpgraderAppcastStore(appcastURL: macAppcastUrl),
+                  onWindows: () =>
+                      UpgraderAppcastStore(appcastURL: windowsAppcastUrl),
+                  onLinux: () =>
+                      UpgraderAppcastStore(appcastURL: linuxAppcastUrl),
+                ),
+              );
               return UpgradeAlert(
                 navigatorKey: rootNavKey,
                 upgrader: upgrader,
