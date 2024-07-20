@@ -21,7 +21,8 @@
       "flutterMode": "profile",
       "args": [
         "--dart-define-from-file",
-        "local/prod.json"
+        "local/prod.json",
+        "--verbose"
       ]
     },
     {
