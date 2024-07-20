@@ -21,6 +21,6 @@ const freePlan = PlanFeatures(
   maxSyncCount: 100,
   maxCollection: 2,
   maxClipsPerCollection: 10,
-  maxAutoSyncFrequency: $30S,
+  maxAutoSyncFrequency: $20S,
   maxAutoSyncFileSize: $20MB,
 );

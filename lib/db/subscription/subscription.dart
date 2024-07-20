@@ -26,7 +26,7 @@ class Subscription with _$Subscription, IsarIdMixin {
     @Default(3) int collections,
     @JsonKey(name: "syncHr") @Default(24) int syncHours,
     @Default(true) bool ads,
-    @JsonKey(name: "syncInt") @Default($60S) int syncInterval,
+    @JsonKey(name: "syncInt") @Default($45S) int syncInterval,
     @Default(false) bool edit,
     @Default(false) bool encrypt,
     @DateTimeConverter() DateTime? activeTill,

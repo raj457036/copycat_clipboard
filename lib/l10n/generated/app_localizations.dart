@@ -1254,32 +1254,62 @@ abstract class AppLocalizations {
   /// No description provided for @$5Sec.
   ///
   /// In en, this message translates to:
-  /// **'5 Sec'**
+  /// **'Instant'**
   String get $5Sec;
 
-  /// No description provided for @$15Sec.
+  /// No description provided for @$10Sec.
   ///
   /// In en, this message translates to:
-  /// **'15 Sec'**
-  String get $15Sec;
+  /// **'Rapid'**
+  String get $10Sec;
 
-  /// No description provided for @$30Sec.
+  /// No description provided for @$20Sec.
   ///
   /// In en, this message translates to:
-  /// **'30 Sec'**
-  String get $30Sec;
+  /// **'Swift'**
+  String get $20Sec;
+
+  /// No description provided for @$45Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get $45Sec;
 
   /// No description provided for @$60Sec.
   ///
   /// In en, this message translates to:
-  /// **'60 Sec'**
+  /// **'Casual'**
   String get $60Sec;
 
-  /// No description provided for @$90Sec.
+  /// No description provided for @$5MB.
   ///
   /// In en, this message translates to:
-  /// **'90 Sec'**
-  String get $90Sec;
+  /// **'Small (5 MB)'**
+  String get $5MB;
+
+  /// No description provided for @$10MB.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard (10 MB)'**
+  String get $10MB;
+
+  /// No description provided for @$20MB.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium (20 MB)'**
+  String get $20MB;
+
+  /// No description provided for @$50MB.
+  ///
+  /// In en, this message translates to:
+  /// **'Large (50 MB)'**
+  String get $50MB;
+
+  /// No description provided for @$100MB.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra Large (100 MB)'**
+  String get $100MB;
 
   /// No description provided for @e2eeNotSetup.
   ///

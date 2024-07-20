@@ -655,19 +655,34 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cryptez le presse-papiers avant de le synchroniser avec le cloud.';
 
   @override
-  String get $5Sec => '5 s';
+  String get $5Sec => 'Instantané';
 
   @override
-  String get $15Sec => '15 s';
+  String get $10Sec => 'Rapide';
 
   @override
-  String get $30Sec => '30 s';
+  String get $20Sec => 'Vif';
 
   @override
-  String get $60Sec => '60 s';
+  String get $45Sec => 'Équilibré';
 
   @override
-  String get $90Sec => '90 s';
+  String get $60Sec => 'Décontracté';
+
+  @override
+  String get $5MB => 'Petit (5 MB)';
+
+  @override
+  String get $10MB => 'Standard (10 MB)';
+
+  @override
+  String get $20MB => 'Moyen (20 MB)';
+
+  @override
+  String get $50MB => 'Grand (50 MB)';
+
+  @override
+  String get $100MB => 'Très Grand (100 MB)';
 
   @override
   String get e2eeNotSetup => 'E2EE n\'est pas encore configuré.';
