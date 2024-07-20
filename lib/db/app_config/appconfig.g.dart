@@ -1792,7 +1792,7 @@ _$AppConfigImpl _$$AppConfigImplFromJson(Map<String, dynamic> json) =>
       pausedTill: json['pausedTill'] == null
           ? null
           : DateTime.parse(json['pausedTill'] as String),
-      autoSyncInterval: (json['autoSyncInterval'] as num?)?.toInt() ?? $90S,
+      autoSyncInterval: (json['autoSyncInterval'] as num?)?.toInt() ?? $60S,
       toggleHotkey: json['toggleHotkey'] as String?,
       smartPaste: json['smartPaste'] as bool? ?? false,
       launchAtStartup: json['launchAtStartup'] as bool? ?? false,

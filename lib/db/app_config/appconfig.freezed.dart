@@ -311,7 +311,7 @@ class _$AppConfigImpl extends _AppConfig {
       this.dontUploadOver = $10MB,
       this.dontCopyOver = $10MB,
       this.pausedTill,
-      this.autoSyncInterval = $90S,
+      this.autoSyncInterval = $60S,
       this.toggleHotkey,
       this.smartPaste = false,
       this.launchAtStartup = false,

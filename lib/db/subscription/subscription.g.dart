@@ -2321,7 +2321,7 @@ _$SubscriptionImpl _$$SubscriptionImplFromJson(Map<String, dynamic> json) =>
       collections: (json['collections'] as num?)?.toInt() ?? 3,
       syncHours: (json['syncHr'] as num?)?.toInt() ?? 24,
       ads: json['ads'] as bool? ?? true,
-      syncInterval: (json['syncInt'] as num?)?.toInt() ?? $60S,
+      syncInterval: (json['syncInt'] as num?)?.toInt() ?? $45S,
       edit: json['edit'] as bool? ?? false,
       encrypt: json['encrypt'] as bool? ?? false,
       activeTill: _$JsonConverterFromJson<String, DateTime>(

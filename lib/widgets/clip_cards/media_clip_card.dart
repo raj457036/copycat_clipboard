@@ -19,6 +19,7 @@ class MediaClipCard extends StatelessWidget {
         return Image(
           image: ResizeImage(
             FileImage(File(item.localPath!)),
+            width: 480,
             policy: ResizeImagePolicy.fit,
           ),
           gaplessPlayback: true,

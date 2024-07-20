@@ -42,13 +42,13 @@ class DontAutoUploadOver extends StatelessWidget {
               value: state,
               padding: const EdgeInsets.symmetric(horizontal: padding16),
               borderRadius: radius12,
-              items: const [
+              items: [
                 DropdownMenuItem(
                   value: $5MB,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox.square(
+                      const SizedBox.square(
                         dimension: 24,
                         child: Icon(
                           Icons.circle,
@@ -56,7 +56,7 @@ class DontAutoUploadOver extends StatelessWidget {
                         ),
                       ),
                       width12,
-                      Text("5 MB"),
+                      Text(context.locale.$5MB),
                     ],
                   ),
                 ),
@@ -65,7 +65,7 @@ class DontAutoUploadOver extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox.square(
+                      const SizedBox.square(
                         dimension: 24,
                         child: Icon(
                           Icons.circle,
@@ -73,7 +73,7 @@ class DontAutoUploadOver extends StatelessWidget {
                         ),
                       ),
                       width12,
-                      Text("10 MB"),
+                      Text(context.locale.$10MB),
                     ],
                   ),
                 ),
@@ -82,7 +82,7 @@ class DontAutoUploadOver extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox.square(
+                      const SizedBox.square(
                         dimension: 24,
                         child: Icon(
                           Icons.circle,
@@ -90,7 +90,7 @@ class DontAutoUploadOver extends StatelessWidget {
                         ),
                       ),
                       width12,
-                      Text("20 MB"),
+                      Text(context.locale.$20MB),
                     ],
                   ),
                 ),
@@ -99,7 +99,7 @@ class DontAutoUploadOver extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox.square(
+                      const SizedBox.square(
                         dimension: 24,
                         child: Icon(
                           Icons.circle,
@@ -107,7 +107,7 @@ class DontAutoUploadOver extends StatelessWidget {
                         ),
                       ),
                       width12,
-                      Text("50 MB"),
+                      Text(context.locale.$50MB),
                     ],
                   ),
                 ),
@@ -116,9 +116,9 @@ class DontAutoUploadOver extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.circle, size: 24),
+                      const Icon(Icons.circle, size: 24),
                       width12,
-                      Text("100 MB"),
+                      Text(context.locale.$100MB),
                     ],
                   ),
                 ),

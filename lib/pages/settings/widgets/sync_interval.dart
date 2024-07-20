@@ -23,14 +23,14 @@ class AutoSyncInterval extends StatelessWidget {
             switch (state) {
               case AppConfigLoaded(:final config):
                 final val = config.autoSyncInterval.isNegative
-                    ? $60S
+                    ? $45S
                     : config.autoSyncInterval;
                 return (
                   val,
                   config.enableSync,
                 );
               default:
-                return ($60S, false);
+                return ($45S, false);
             }
           },
           builder: (context, state) {
@@ -71,10 +71,10 @@ class AutoSyncInterval extends StatelessWidget {
                     if (subscription != null)
                       DropdownMenuItem(
                         enabled: subscription.syncInterval <= $5S,
-                        value: $15S,
+                        value: $10S,
                         child: Row(
                           children: [
-                            Text(context.locale.$15Sec),
+                            Text(context.locale.$10Sec),
                             width8,
                             const ProBadge(),
                           ],
@@ -83,25 +83,22 @@ class AutoSyncInterval extends StatelessWidget {
                     if (subscription != null)
                       DropdownMenuItem(
                         enabled: subscription.syncInterval <= $5S,
-                        value: $30S,
+                        value: $20S,
                         child: Row(
                           children: [
-                            Text(context.locale.$30Sec),
+                            Text(context.locale.$20Sec),
                             width8,
                             const ProBadge(),
                           ],
                         ),
                       ),
                     DropdownMenuItem(
-                      value: $60S,
-                      child: Text(context.locale.$60Sec),
+                      value: $45S,
+                      child: Text(context.locale.$45Sec),
                     ),
                     DropdownMenuItem(
-                      value: $90S,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(context.locale.$90Sec),
-                      ),
+                      value: $60S,
+                      child: Text(context.locale.$60Sec),
                     ),
                   ],
                   onChanged: enabled

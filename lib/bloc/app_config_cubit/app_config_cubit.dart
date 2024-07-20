@@ -67,7 +67,7 @@ class AppConfigCubit extends Cubit<AppConfigState> {
 
   Future<void> reset() async {
     setE2EEKey(null);
-    changeAutoSyncDuration($90S);
+    changeAutoSyncDuration($60S);
   }
 
   (AppConfig, bool) applyForSubscription(
@@ -76,7 +76,7 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   ) {
     if (subscription.isFree || !subscription.isActive) {
       config = config.copyWith(
-        autoSyncInterval: $60S,
+        autoSyncInterval: $45S,
         autoEncrypt: false,
       )..applyId(config);
       return (config, true);

@@ -646,19 +646,34 @@ class AppLocalizationsEn extends AppLocalizations {
       'Encrypt clipboard before syncing with the cloud.';
 
   @override
-  String get $5Sec => '5 Sec';
+  String get $5Sec => 'Instant';
 
   @override
-  String get $15Sec => '15 Sec';
+  String get $10Sec => 'Rapid';
 
   @override
-  String get $30Sec => '30 Sec';
+  String get $20Sec => 'Swift';
 
   @override
-  String get $60Sec => '60 Sec';
+  String get $45Sec => 'Balanced';
 
   @override
-  String get $90Sec => '90 Sec';
+  String get $60Sec => 'Casual';
+
+  @override
+  String get $5MB => 'Small (5 MB)';
+
+  @override
+  String get $10MB => 'Standard (10 MB)';
+
+  @override
+  String get $20MB => 'Medium (20 MB)';
+
+  @override
+  String get $50MB => 'Large (50 MB)';
+
+  @override
+  String get $100MB => 'Extra Large (100 MB)';
 
   @override
   String get e2eeNotSetup => 'E2EE not setup yet.';

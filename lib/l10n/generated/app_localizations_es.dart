@@ -654,19 +654,34 @@ class AppLocalizationsEs extends AppLocalizations {
       'Cifre el portapapeles antes de sincronizarlo con la nube.';
 
   @override
-  String get $5Sec => '5 Seg';
+  String get $5Sec => 'Instantáneo';
 
   @override
-  String get $15Sec => '15 Seg';
+  String get $10Sec => 'Rápido';
 
   @override
-  String get $30Sec => '30 Seg';
+  String get $20Sec => 'Veloz';
 
   @override
-  String get $60Sec => '60 Seg';
+  String get $45Sec => 'Equilibrado';
 
   @override
-  String get $90Sec => '90 Seg';
+  String get $60Sec => 'Casual';
+
+  @override
+  String get $5MB => 'Pequeño (5 MB)';
+
+  @override
+  String get $10MB => 'Estándar (10 MB)';
+
+  @override
+  String get $20MB => 'Mediano (20 MB)';
+
+  @override
+  String get $50MB => 'Grande (50 MB)';
+
+  @override
+  String get $100MB => 'Extra Grande (100 MB)';
 
   @override
   String get e2eeNotSetup => 'E2EE no está configurado aún.';

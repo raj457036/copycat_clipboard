@@ -32,7 +32,7 @@ class AppConfig with _$AppConfig, IsarIdMixin {
     DateTime? pausedTill,
 
     // Auto Sync Interval
-    @Default($90S) int autoSyncInterval,
+    @Default($60S) int autoSyncInterval,
 
     // System show/hide toggle hotkey
     String? toggleHotkey,

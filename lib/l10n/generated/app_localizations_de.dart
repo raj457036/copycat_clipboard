@@ -653,19 +653,34 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verschlüsseln Sie die Zwischenablage, bevor Sie sie mit der Cloud synchronisieren.';
 
   @override
-  String get $5Sec => '5 Sek';
+  String get $5Sec => 'Sofort';
 
   @override
-  String get $15Sec => '15 Sek';
+  String get $10Sec => 'Schnell';
 
   @override
-  String get $30Sec => '30 Sek';
+  String get $20Sec => 'Zügig';
 
   @override
-  String get $60Sec => '60 Sek';
+  String get $45Sec => 'Ausgewogen';
 
   @override
-  String get $90Sec => '90 Sek';
+  String get $60Sec => 'Locker';
+
+  @override
+  String get $5MB => 'Klein (5 MB)';
+
+  @override
+  String get $10MB => 'Standard (10 MB)';
+
+  @override
+  String get $20MB => 'Mittel (20 MB)';
+
+  @override
+  String get $50MB => 'Groß (50 MB)';
+
+  @override
+  String get $100MB => 'Extra Groß (100 MB)';
 
   @override
   String get e2eeNotSetup => 'E2EE noch nicht eingerichtet.';
