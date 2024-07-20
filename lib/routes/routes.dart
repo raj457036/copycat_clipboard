@@ -8,7 +8,6 @@ import "package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cub
 import "package:clipboard/bloc/search_cubit/search_cubit.dart";
 import "package:clipboard/constants/key.dart";
 import "package:clipboard/constants/strings/route_constants.dart";
-import "package:clipboard/constants/strings/strings.dart";
 import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/account/page.dart";
 import "package:clipboard/pages/collections/page.dart";
@@ -26,15 +25,11 @@ import "package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/search_page_shortcut.dart";
-import "package:clipboard/utils/utility.dart";
-import "package:clipboard/widgets/network_observer.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
-import "package:clipboard/widgets/share_listener.dart";
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
-import "package:upgrader/upgrader.dart";
 
 final analytics = FirebaseAnalytics.instance;
 
@@ -131,40 +126,14 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               _ => 0,
             };
 
-            final navPage = NetworkObserver(
-              key: const ValueKey("network-observer"),
-              child: ShareListener.fromPlatform(
-                child: NavBarPage(
-                  navbarActiveIndex: activeIndex,
-                  depth: depth,
-                  child: child,
-                ),
-              ),
+            final navPage = NavBarPage(
+              navbarActiveIndex: activeIndex,
+              depth: depth,
+              child: child,
             );
 
             if (activeIndex != 1) {
-              final upgrader = Upgrader(
-                storeController: UpgraderStoreController(
-                  onMacOS: () =>
-                      UpgraderAppcastStore(appcastURL: macAppcastUrl),
-                  onWindows: () =>
-                      UpgraderAppcastStore(appcastURL: windowsAppcastUrl),
-                  onLinux: () =>
-                      UpgraderAppcastStore(appcastURL: linuxAppcastUrl),
-                ),
-              );
-              return UpgradeAlert(
-                navigatorKey: rootNavKey,
-                upgrader: upgrader,
-                showIgnore: false,
-                shouldPopScope: () => true,
-                dialogStyle: isApplePlatform
-                    ? UpgradeDialogStyle.cupertino
-                    : UpgradeDialogStyle.material,
-                child: SearchPageShortcut(
-                  child: navPage,
-                ),
-              );
+              return SearchPageShortcut(child: navPage);
             }
 
             return SearchFoucsKeyboardShortcut(child: navPage);
