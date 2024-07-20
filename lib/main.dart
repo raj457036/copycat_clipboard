@@ -105,11 +105,10 @@ Future<void> initializeDesktopServices() async {
 }
 
 Future<void> initializeFirebase() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   if (isAnalyticsSupported) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -142,48 +141,45 @@ class AppContent extends StatelessWidget {
         },
         builder: (context, state) {
           final (theme, langCode) = state;
-          return GestureDetector(
-            onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-            child: MaterialApp.router(
-              scaffoldMessengerKey: scaffoldMessengerKey,
-              routeInformationParser: router_.routeInformationParser,
-              routeInformationProvider: router_.routeInformationProvider,
-              routerDelegate: router_.routerDelegate,
-              backButtonDispatcher: router_.backButtonDispatcher,
-              themeMode: theme,
-              theme: ThemeData(
-                useMaterial3: true,
-                textTheme: textTheme.apply(
-                  bodyColor: lightColorScheme.onSurface,
-                  displayColor: lightColorScheme.onSurface,
-                ),
-                colorScheme: lightColorScheme,
-                brightness: Brightness.light,
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: OutlineInputBorder(
-                    borderRadius: radius12,
-                  ),
+          return MaterialApp.router(
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            routeInformationParser: router_.routeInformationParser,
+            routeInformationProvider: router_.routeInformationProvider,
+            routerDelegate: router_.routerDelegate,
+            backButtonDispatcher: router_.backButtonDispatcher,
+            themeMode: theme,
+            theme: ThemeData(
+              useMaterial3: true,
+              textTheme: textTheme.apply(
+                bodyColor: lightColorScheme.onSurface,
+                displayColor: lightColorScheme.onSurface,
+              ),
+              colorScheme: lightColorScheme,
+              brightness: Brightness.light,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: radius12,
                 ),
               ),
-              darkTheme: ThemeData(
-                useMaterial3: true,
-                textTheme: textTheme.apply(
-                  bodyColor: darkColorScheme.onSurface,
-                  displayColor: darkColorScheme.onSurface,
-                ),
-                colorScheme: darkColorScheme,
-                brightness: Brightness.dark,
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: OutlineInputBorder(
-                    borderRadius: radius12,
-                  ),
-                ),
-              ),
-              debugShowCheckedModeBanner: false,
-              locale: Locale(langCode.isEmpty ? "en" : langCode),
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
             ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              textTheme: textTheme.apply(
+                bodyColor: darkColorScheme.onSurface,
+                displayColor: darkColorScheme.onSurface,
+              ),
+              colorScheme: darkColorScheme,
+              brightness: Brightness.dark,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: radius12,
+                ),
+              ),
+            ),
+            debugShowCheckedModeBanner: false,
+            locale: Locale(langCode.isEmpty ? "en" : langCode),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
           );
         },
       ),
@@ -209,14 +205,17 @@ class MainApp extends StatelessWidget {
         if (isDesktopPlatform)
           BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
-      child: AuthListener(
-        child: EventBridge(
-          child: WindowFocusManager.fromPlatform(
-            child: TrayManager.fromPlatform(
-              child: const SystemShortcutListener(
-                child: RebuildingDbOverlay(
-                  child: AppLinkListener(
-                    child: AppContent(),
+      child: GestureDetector(
+        onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+        child: AuthListener(
+          child: EventBridge(
+            child: WindowFocusManager.fromPlatform(
+              child: TrayManager.fromPlatform(
+                child: const SystemShortcutListener(
+                  child: RebuildingDbOverlay(
+                    child: AppLinkListener(
+                      child: AppContent(),
+                    ),
                   ),
                 ),
               ),
