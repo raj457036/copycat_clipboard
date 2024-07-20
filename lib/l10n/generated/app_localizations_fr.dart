@@ -593,7 +593,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get realtimeSyncDesc =>
-      'Expérimentez une synchronisation ultra-rapide toutes les 5 secondes.';
+      'Expérimentez une synchronisation ultra-rapide.';
 
   @override
   String get prioritySupport => 'Support Rapide et Prioritaire';

@@ -1140,7 +1140,7 @@ abstract class AppLocalizations {
   /// No description provided for @realtimeSyncDesc.
   ///
   /// In en, this message translates to:
-  /// **'Experience lightning-fast syncing every 5 seconds.'**
+  /// **'Experience lightning-fast syncing.'**
   String get realtimeSyncDesc;
 
   /// No description provided for @prioritySupport.

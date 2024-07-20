@@ -1,5 +1,7 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
+import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
+import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/e2ee_settings.dart';
@@ -19,12 +21,16 @@ import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final info = sl<PackageInfo>();
+    final version = info.version;
+    final build = info.buildNumber;
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
     final floatingActionButton =
@@ -110,6 +116,19 @@ class SettingsPage extends StatelessWidget {
                         ),
                         height10,
                         const E2EESettings(),
+                        const Divider(),
+                        AboutListTile(
+                          dense: true,
+                          icon: const Icon(Icons.info_outline),
+                          applicationName: "CopyCat Clipboard",
+                          applicationIcon: Image.asset(
+                            AssetConstants.copyCatIcon,
+                            width: 60,
+                          ),
+                          applicationVersion: "$version+$build",
+                          applicationLegalese:
+                              "Copyright (c) 2024 Entility Studio",
+                        ),
                       ],
                     ),
                   ),

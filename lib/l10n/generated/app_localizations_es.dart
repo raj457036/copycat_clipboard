@@ -592,8 +592,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get realtimeSync => 'Sincronización en Tiempo Real';
 
   @override
-  String get realtimeSyncDesc =>
-      'Experimenta una sincronización ultrarrápida cada 5 segundos.';
+  String get realtimeSyncDesc => 'Experimenta una sincronización ultrarrápida.';
 
   @override
   String get prioritySupport => 'Soporte Rápido y Prioritario';

@@ -7,6 +7,7 @@ import "package:flutter/foundation.dart";
 import "package:focus_window/focus_window.dart";
 import "package:injectable/injectable.dart";
 import "package:isar/isar.dart";
+import "package:package_info_plus/package_info_plus.dart";
 import "package:path_provider/path_provider.dart";
 import "package:platform_device_id/platform_device_id.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
@@ -38,6 +39,9 @@ abstract class RegisterModule {
   @Named("device_id")
   Future<String> get deviceId async =>
       (await PlatformDeviceId.getDeviceId) ?? "";
+
+  @preResolve
+  Future<PackageInfo> get packageInfo async => await PackageInfo.fromPlatform();
 
   @singleton
   FocusWindow get focusWindow => FocusWindow();

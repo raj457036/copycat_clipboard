@@ -584,8 +584,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get realtimeSync => 'Real Time Synchronization';
 
   @override
-  String get realtimeSyncDesc =>
-      'Experience lightning-fast syncing every 5 seconds.';
+  String get realtimeSyncDesc => 'Experience lightning-fast syncing.';
 
   @override
   String get prioritySupport => 'Faster and Priority Support';
