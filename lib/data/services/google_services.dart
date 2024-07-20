@@ -135,13 +135,14 @@ class GoogleDriveService implements DriveService {
     if (item.driveFileId == null || item.rootDir == null) return item;
 
     final client = authClient;
+    StreamSubscription? subscription;
 
     final completer = Completer();
     _downloadOperations[item.id] = completer;
     completer.future.then((value) => client.close());
 
     if (onProgress != null) {
-      client
+      subscription = client
           .setProgressListener()
           .listen((value) => onProgress(value.$1, value.$2));
     }
@@ -167,6 +168,7 @@ class GoogleDriveService implements DriveService {
       logger.e(e, error: e);
       return item;
     } finally {
+      subscription?.cancel();
       client.close();
       _downloadOperations.remove(item.id);
     }
@@ -182,13 +184,13 @@ class GoogleDriveService implements DriveService {
     final completer = Completer();
     _uploadOperations[item.id] = completer;
     completer.future.then((value) => client.close());
-
+    StreamSubscription? subscription;
     try {
       final io.File file = io.File(item.localPath!);
       final length = await file.length();
 
       if (onProgress != null) {
-        client
+        subscription = client
             .setProgressListener(contentLength: length)
             .listen((value) => onProgress(value.$1, value.$2));
       }
@@ -223,6 +225,7 @@ class GoogleDriveService implements DriveService {
       logger.e(e, error: e);
       return item;
     } finally {
+      subscription?.cancel();
       client.close();
       _uploadOperations.remove(item.id);
     }

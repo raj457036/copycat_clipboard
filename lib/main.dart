@@ -20,9 +20,7 @@ import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
-import 'package:clipboard/widgets/network_observer.dart';
 import 'package:clipboard/widgets/rebuilding_db.dart';
-import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
@@ -185,11 +183,6 @@ class AppContent extends StatelessWidget {
               locale: Locale(langCode.isEmpty ? "en" : langCode),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => NetworkObserver(
-                child: ShareListener.fromPlatform(
-                  child: child ?? const SizedBox.shrink(),
-                ),
-              ),
             ),
           );
         },
