@@ -33,10 +33,10 @@ dependencies:
   isar_flutter_libs: 3.1.0+1
   uuid: ^4.4.2
   rxdart: ^0.27.5
-  internet_connection_checker_plus: ^2.5.0
+  internet_connection_checker_plus: ^2.3.0 
   url_launcher: ^6.3.0
-  googleapis: ^13.2.0
-  file_picker: ^8.0.6
+  googleapis: ^13.1.0
+  file_picker: ^8.0.5
   http: ^1.2.2
   blurhash_dart: ^1.2.1
   mime: ^1.0.5
@@ -47,7 +47,7 @@ dependencies:
       url: https://github.com/raj457036/flutter-auth-ui.git
   supabase_flutter: ^2.5.8
   app_links: ^6.1.4
-  device_preview: ^1.2.0
+  device_preview: ^1.1.0
   toastification: ^2.0.0
   async: ^2.11.0
   win32_registry: ^1.1.3
