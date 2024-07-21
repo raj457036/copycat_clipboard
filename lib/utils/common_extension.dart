@@ -6,7 +6,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 extension WidgetStateExtension<T> on T {
   /// Convert into material state property
-  WidgetStateProperty<T> get msp => WidgetStateProperty.all(this);
+  MaterialStateProperty<T> get msp => MaterialStateProperty.all(this);
 }
 
 extension StringExtension on String {
