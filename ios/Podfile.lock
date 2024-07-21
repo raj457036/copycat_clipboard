@@ -65,9 +65,6 @@ PODS:
   - Firebase/Crashlytics (10.28.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 10.28.0)
-  - Firebase/RemoteConfig (10.28.0):
-    - Firebase/CoreOnly
-    - FirebaseRemoteConfig (~> 10.28.0)
   - firebase_analytics (11.2.0):
     - Firebase/Analytics (= 10.28.0)
     - firebase_core
@@ -79,12 +76,6 @@ PODS:
     - Firebase/Crashlytics (= 10.28.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (5.0.3):
-    - Firebase/RemoteConfig (= 10.28.0)
-    - firebase_core
-    - Flutter
-  - FirebaseABTesting (10.29.0):
-    - FirebaseCore (~> 10.0)
   - FirebaseAnalytics (10.28.0):
     - FirebaseAnalytics/AdIdSupport (= 10.28.0)
     - FirebaseCore (~> 10.0)
@@ -125,14 +116,6 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseRemoteConfig (10.28.0):
-    - FirebaseABTesting (~> 10.0)
-    - FirebaseCore (~> 10.0)
-    - FirebaseInstallations (~> 10.0)
-    - FirebaseRemoteConfigInterop (~> 10.23)
-    - FirebaseSharedSwift (~> 10.0)
-    - GoogleUtilities/Environment (~> 7.8)
-    - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseRemoteConfigInterop (10.29.0)
   - FirebaseSessions (10.29.0):
     - FirebaseCore (~> 10.5)
@@ -143,7 +126,6 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.13)
     - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesSwift (~> 2.1)
-  - FirebaseSharedSwift (10.29.0)
   - Flutter (1.0.0)
   - flutter_platform_alert (0.0.1):
     - Flutter
@@ -298,7 +280,6 @@ DEPENDENCIES:
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
-  - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_platform_alert (from `.symlinks/plugins/flutter_platform_alert/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
@@ -326,17 +307,14 @@ SPEC REPOS:
     - DKImagePickerController
     - DKPhotoGallery
     - Firebase
-    - FirebaseABTesting
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
     - FirebaseCrashlytics
     - FirebaseInstallations
-    - FirebaseRemoteConfig
     - FirebaseRemoteConfigInterop
     - FirebaseSessions
-    - FirebaseSharedSwift
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -379,8 +357,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_crashlytics:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
-  firebase_remote_config:
-    :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
     :path: Flutter
   flutter_platform_alert:
@@ -438,18 +414,14 @@ SPEC CHECKSUMS:
   firebase_analytics: e51d02e2da883fd058f2a4f151f6a80acdfe67aa
   firebase_core: a9d0180d5285527884d07a41eb4a9ec9ed12cdb6
   firebase_crashlytics: 12b2b1ecfc50f6c551c68e491ae156b2b7d41273
-  firebase_remote_config: 5f92bfc62c3ef2c657bf3d703ffa4be29082280f
-  FirebaseABTesting: d87f56707159bae64e269757a6e963d490f2eebe
   FirebaseAnalytics: 1e06fe7d246af7230b08d1d9cdca54a4624dd461
   FirebaseCore: 857dc1c6dd1255675047404d8466f7dfaac5d779
   FirebaseCoreExtension: 705ca5b14bf71d2564a0ddc677df1fc86ffa600f
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   FirebaseCrashlytics: f51e12b93f8e1134bbed602ed22df33804d55ccf
   FirebaseInstallations: 913cf60d0400ebd5d6b63a28b290372ab44590dd
-  FirebaseRemoteConfig: f0879a8dccf4e8905716ed849569130efaeab3e2
   FirebaseRemoteConfigInterop: 6efda51fb5e2f15b16585197e26eaa09574e8a4d
   FirebaseSessions: dbd14adac65ce996228652c1fc3a3f576bdf3ecc
-  FirebaseSharedSwift: 20530f495084b8d840f78a100d8c5ee613375f6e
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_platform_alert: 6a241c90f3cc350d0286deeefee9f52bee957019
   Google-Mobile-Ads-SDK: 5a6d005a6cb5b5e8f4c7b69ca05cdea79c181139
