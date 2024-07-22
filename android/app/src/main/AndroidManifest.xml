@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <!-- Accepts URIs that begin with YOUR_SCHEME://YOUR_HOST -->
                 <data android:scheme="clipboard" android:host="drive-connect"/>
+                <data android:scheme="clipboard" android:host="auth"/>
             </intent-filter>
 
             <!-- Share intents -->

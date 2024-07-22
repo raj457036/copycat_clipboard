@@ -25,16 +25,25 @@
 
     <script>
       const path = location.pathname;
+      let clipboardAppLink;
 
       if (path.startsWith("/auth")) {
-        location.href = "clipboard://auth/" + location.search;
+        clipboardAppLink = "clipboard://auth" + location.search;
       } else {
-        location.href = "clipboard://drive-connect" + location.search;
+        clipboardAppLink = "clipboard://drive-connect" + location.search;
+      }
+
+      if (clipboardAppLink) {
+        location.href = clipboardAppLink;
       }
 
       setTimeout(() => {
-        document.querySelector("#msg").innerText =
-          "Done! You may now close this window.";
+        document.querySelector("#msg").innerHTML = `
+          <div>
+            <p>Done! You may now close this window.</p>
+            <p>Didn't opened the app yet? <a style="color: #7469B6" href="${clipboardAppLink}">Click here</a></p>
+          </div>
+          `;
       }, 2000);
     </script>
   </body>
