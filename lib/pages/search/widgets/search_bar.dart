@@ -1,8 +1,8 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
+import 'package:clipboard/common/events.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

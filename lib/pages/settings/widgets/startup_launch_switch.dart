@@ -1,8 +1,6 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/utility.dart';
-import 'package:clipboard/widgets/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,14 +26,7 @@ class StartUpLaunchSwitch extends StatelessWidget {
           onChanged: (value) {
             context.read<AppConfigCubit>().setLaunchAtStartup(value);
           },
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(context.locale.launchAtStartup),
-              width8,
-              const ExperimentalBadge(),
-            ],
-          ),
+          title: Text(context.locale.launchAtStartup),
           subtitle: Text(
             context.locale.launchAtStartupDesc,
           ),

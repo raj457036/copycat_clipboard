@@ -206,14 +206,7 @@
             }
         }
     },
-    "lastSynced": "Last synced at {TIMESTAMP}",
-    "@lastSynced": {
-        "placeholders": {
-            "TIMESTAMP": {
-                "type": "String"
-            }
-        }
-    },
+    "synced": "✅ Changes Synced",
     "showWindow": "Show Window",
     "hideWindow": "Hide Window",
     "hideWindowDesc": "Tip: Use keyboard shortcut to show the clipboard.",

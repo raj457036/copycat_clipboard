@@ -43,6 +43,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
   int? syncHours;
   bool syncing = false;
   Timer? autoSyncTimer;
+  DateTime? lastManualSyncTS;
 
   SyncManagerCubit(
     this.db,
@@ -67,7 +68,7 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
     autoSyncTimer = Timer.periodic(
       duration,
-      (timer) => syncChanges(silent: true),
+      (timer) => syncChanges(silent: true, auto: true),
     );
   }
 
@@ -390,15 +391,23 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
     return false;
   }
 
-  Future<void> syncChanges({
+  Future<Failure?> syncChanges({
     bool clipboard = true,
     bool collections = true,
     bool repairRelations = true,
     bool silent = false,
     bool force = false,
+    bool auto = false,
   }) async {
-    if (syncing || syncHours == null) return;
-    if (auth.state is! AuthenticatedAuthState) return;
+    if (!auto && lastManualSyncTS != null) {
+      final diff = now().difference(lastManualSyncTS!).inSeconds;
+      if (diff < 3) {
+        emit(const SyncManagerState.failed(frequentSyncing));
+        return frequentSyncing;
+      }
+    }
+    if (syncing || syncHours == null) return null;
+    if (auth.state is! AuthenticatedAuthState) return null;
     syncing = true;
     try {
       final syncInfo = await getSyncInfo();
@@ -419,9 +428,13 @@ class SyncManagerCubit extends Cubit<SyncManagerState> {
 
       final hasUpdate = results.any((element) => element);
       await updateSyncTime(refreshLocalCache: !silent, hasUpdate: hasUpdate);
+      if (!auto) {
+        lastManualSyncTS = now();
+      }
     } finally {
       syncing = false;
     }
+    return null;
   }
 
   Future<void> updateSyncTime({

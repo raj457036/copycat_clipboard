@@ -426,9 +426,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String lastSynced(String TIMESTAMP) {
-    return 'Zuletzt synchronisiert um $TIMESTAMP';
-  }
+  String get synced => '✅ Änderungen Synchronisiert';
 
   @override
   String get showWindow => 'Fenster anzeigen';

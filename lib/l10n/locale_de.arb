@@ -206,14 +206,7 @@
             }
         }
     },
-    "lastSynced": "Zuletzt synchronisiert um {TIMESTAMP}",
-    "@lastSynced": {
-        "placeholders": {
-            "TIMESTAMP": {
-                "type": "String"
-            }
-        }
-    },
+    "synced": "✅ Änderungen Synchronisiert",
     "showWindow": "Fenster anzeigen",
     "hideWindow": "Fenster ausblenden",
     "hideWindowDesc": "Tipp: Verwenden Sie die Tastenkombination, um den Zwischenspeicher anzuzeigen.",

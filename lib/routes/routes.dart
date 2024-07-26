@@ -21,10 +21,9 @@ import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/reset_password/page.dart";
 import "package:clipboard/pages/search/page.dart";
-import "package:clipboard/pages/search/widgets/search_keyboard_shortcut.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
-import "package:clipboard/routes/keyboard_shortcuts/search_page_shortcut.dart";
+import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/material.dart";
@@ -132,11 +131,10 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               child: child,
             );
 
-            if (activeIndex != 1) {
-              return SearchPageShortcut(child: navPage);
-            }
-
-            return SearchFoucsKeyboardShortcut(child: navPage);
+            return KeyboardShortcutProvider(
+              activePageIndex: activeIndex,
+              child: navPage,
+            );
           },
           routes: [
             GoRoute(

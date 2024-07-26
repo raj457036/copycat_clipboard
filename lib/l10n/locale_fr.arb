@@ -206,14 +206,7 @@
             }
         }
     },
-    "lastSynced": "Dernière synchronisation à {TIMESTAMP}",
-    "@lastSynced": {
-        "placeholders": {
-            "TIMESTAMP": {
-                "type": "String"
-            }
-        }
-    },
+    "synced": "✅ Changements Synchronisés",
     "showWindow": "Afficher la Fenêtre",
     "hideWindow": "Masquer la Fenêtre",
     "hideWindowDesc": "Conseil : Utilisez le raccourci clavier pour afficher le presse-papiers.",

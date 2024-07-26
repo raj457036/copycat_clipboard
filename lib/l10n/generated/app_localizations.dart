@@ -855,11 +855,11 @@ abstract class AppLocalizations {
   /// **'Syncing Check Failed: {MESSAGE}'**
   String syncingCheckFailed(String MESSAGE);
 
-  /// No description provided for @lastSynced.
+  /// No description provided for @synced.
   ///
   /// In en, this message translates to:
-  /// **'Last synced at {TIMESTAMP}'**
-  String lastSynced(String TIMESTAMP);
+  /// **'✅ Changes Synced'**
+  String get synced;
 
   /// No description provided for @showWindow.
   ///
