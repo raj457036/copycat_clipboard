@@ -4,6 +4,7 @@ import 'package:clipboard/common/events.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,6 +44,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       ).msp,
       leading: const Icon(Icons.search_rounded),
       hintText: context.locale.searchInClipboard,
+      trailing: [if (isDesktopPlatform) Text("$metaKey + F")],
       autoFocus: true,
       // trailing: [
       //   IconButton(
