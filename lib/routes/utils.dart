@@ -1,11 +1,10 @@
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/utils/clipboard_actions.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/create_collection_button.dart';
 import 'package:clipboard/widgets/sync_status.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 void onNavItemTapped(BuildContext context, int index) {
@@ -31,16 +30,8 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
   if (navbarActiveIndex == 0) {
     final actions = [
       FloatingActionButton(
-        onPressed: () async {
-          showTextSnackbar(
-            "Pasting to clipboard",
-            isLoading: true,
-            closePrevious: true,
-          );
-          await context.read<OfflinePersistanceCubit>().paste();
-          showTextSnackbar("Paste success", closePrevious: true);
-        },
-        tooltip: 'Paste',
+        onPressed: () => pasteContent(context),
+        tooltip: isDesktopPlatform ? "Paste • $metaKey + V" : 'Paste',
         heroTag: "paste-fab",
         child: const Icon(Icons.content_paste_go_rounded),
       ),

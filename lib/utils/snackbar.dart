@@ -14,7 +14,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
   ScaffoldMessengerState? state = scaffoldMessengerKey.currentState;
 
   if (closePrevious) {
-    state?.removeCurrentSnackBar();
+    state?.removeCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
   }
   return state?.showSnackBar(snackBar);
 }

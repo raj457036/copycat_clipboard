@@ -1,9 +1,9 @@
 import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/attention_button.dart';
 import 'package:flutter/material.dart';
-import 'package:universal_io/io.dart';
 
 class LeftNavRail extends StatelessWidget {
   final Widget child;
@@ -19,7 +19,6 @@ class LeftNavRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final metaKey = Platform.isMacOS ? "⌘" : "control";
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (Breakpoints.isMobile(constraints.maxWidth)) {
@@ -34,7 +33,10 @@ class LeftNavRail extends StatelessWidget {
                 child: NavigationRail(
                   destinations: [
                     NavigationRailDestination(
-                      icon: const Icon(Icons.paste_rounded),
+                      icon: Tooltip(
+                        message: "$metaKey + D",
+                        child: const Icon(Icons.paste_rounded),
+                      ),
                       label: Text(
                         context.locale.clipboard,
                         overflow: TextOverflow.ellipsis,
@@ -42,7 +44,7 @@ class LeftNavRail extends StatelessWidget {
                     ),
                     NavigationRailDestination(
                       icon: Tooltip(
-                        message: "Keyboard : $metaKey + F",
+                        message: "$metaKey + F",
                         child: const Icon(Icons.content_paste_search_rounded),
                       ),
                       label: Text(
@@ -51,7 +53,10 @@ class LeftNavRail extends StatelessWidget {
                       ),
                     ),
                     NavigationRailDestination(
-                      icon: const Icon(Icons.collections_bookmark),
+                      icon: Tooltip(
+                        message: "$metaKey + C",
+                        child: const Icon(Icons.collections_bookmark),
+                      ),
                       label: Text(
                         context.locale.collection,
                         overflow: TextOverflow.ellipsis,

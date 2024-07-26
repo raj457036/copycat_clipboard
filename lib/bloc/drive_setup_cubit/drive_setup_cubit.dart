@@ -77,7 +77,7 @@ class DriveSetupCubit extends Cubit<DriveSetupState> {
       return false;
     } else if (result is DriveAccessToken) {
       if (result.isExpired) {
-        emit(const DriveSetupState.setupError(failure: driveFailure));
+        emit(const DriveSetupState.setupError(failure: frequentSyncing));
         return false;
       } else {
         emit(DriveSetupState.setupDone(token: result));

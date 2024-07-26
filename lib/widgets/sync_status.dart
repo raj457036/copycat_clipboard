@@ -1,7 +1,7 @@
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/utils/datetime_extension.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/syncing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,19 +46,17 @@ class SyncStatusButton extends StatelessWidget {
             icon = Icons.sync_problem_rounded;
             message = context.locale.syncingCheckFailed(failure.message);
             break;
-          case SyncedState(:final lastSynced):
+          case SyncedState():
             disabled = false;
             isSyncing = false;
             icon = Icons.sync_rounded;
-            message = context.locale.lastSynced(
-              dateTimeFormatter(context.locale.localeName).format(lastSynced),
-            );
+            message = context.locale.synced;
             break;
         }
 
         return FloatingActionButton.small(
           onPressed: disabled ? null : () => syncChanges(context),
-          tooltip: message,
+          tooltip: "$message • $metaKey + R",
           heroTag: "sync-fab",
           backgroundColor: colors.secondary,
           foregroundColor: colors.onSecondary,

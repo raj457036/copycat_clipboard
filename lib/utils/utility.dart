@@ -172,3 +172,5 @@ Future<void> screenshotAsFile(
     file.writeAsBytesSync(screenshot.bytes);
   }
 }
+
+final metaKey = Platform.isMacOS ? "⌘" : "ctrl";

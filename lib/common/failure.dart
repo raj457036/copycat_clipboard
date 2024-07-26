@@ -45,4 +45,9 @@ const driveFailure = Failure(
   code: 'gdrive_not_available',
 );
 
+const frequentSyncing = Failure(
+  message: 'Too frequent request.',
+  code: 'frequent-sync-request',
+);
+
 typedef FailureOr<T> = Future<Either<Failure, T>>;

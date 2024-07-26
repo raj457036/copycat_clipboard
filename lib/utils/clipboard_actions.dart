@@ -93,3 +93,13 @@ Future<void> openFile(ClipboardItem item) async {
     }
   }
 }
+
+Future<void> pasteContent(BuildContext context) async {
+  showTextSnackbar(
+    "Pasting to clipboard",
+    isLoading: true,
+    closePrevious: true,
+  );
+  await context.read<OfflinePersistanceCubit>().paste();
+  showTextSnackbar("Paste success", closePrevious: true);
+}

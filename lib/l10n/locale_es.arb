@@ -206,14 +206,7 @@
             }
         }
     },
-    "lastSynced": "Última sincronización a las {TIMESTAMP}",
-    "@lastSynced": {
-        "placeholders": {
-            "TIMESTAMP": {
-                "type": "String"
-            }
-        }
-    },
+    "synced": "✅ Cambios Sincronizados",
     "showWindow": "Mostrar Ventana",
     "hideWindow": "Ocultar Ventana",
     "hideWindowDesc": "Consejo: Usa el atajo de teclado para mostrar el portapapeles.",
