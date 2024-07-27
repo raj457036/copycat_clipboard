@@ -9,7 +9,5 @@ part 'syncstatus.g.dart';
 @Collection(ignore: {"copyWith"})
 class SyncStatus with _$SyncStatus, IsarIdMixin {
   SyncStatus._();
-  factory SyncStatus({
-    DateTime? lastSync,
-  }) = _SyncStatus;
+  factory SyncStatus({DateTime? lastSync}) = _SyncStatus;
 }

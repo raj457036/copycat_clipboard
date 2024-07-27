@@ -5,13 +5,19 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
   clipboard_watcher
+  emoji_picker_flutter
+  flutter_platform_alert
+  focus_window
+  gtk
+  hotkey_manager_linux
   irondash_engine_context
   isar_flutter_libs
+  platform_device_id_linux
   screen_retriever
   super_native_extensions
+  tray_manager
   url_launcher_linux
   window_manager
-  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

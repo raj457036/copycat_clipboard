@@ -22,6 +22,7 @@ const width12 = SizedBox(width: 12);
 const width16 = SizedBox(width: 16);
 
 // Heights
+const height2 = SizedBox(height: 2);
 const height4 = SizedBox(height: 4);
 const height5 = SizedBox(height: 5);
 const height6 = SizedBox(height: 6);
@@ -33,3 +34,28 @@ const height20 = SizedBox(height: 20);
 const height24 = SizedBox(height: 24);
 const height32 = SizedBox(height: 32);
 const height54 = SizedBox(height: 54);
+
+// radius
+const radius8 = BorderRadius.all(
+  Radius.circular(8),
+);
+const radius12 = BorderRadius.all(
+  Radius.circular(12),
+);
+
+const radiusBottom12 = BorderRadius.vertical(
+  bottom: Radius.circular(12),
+);
+
+// edge insets
+const insetLTR16 = EdgeInsets.only(
+  left: padding16,
+  right: padding16,
+  bottom: padding16,
+);
+
+const insetAll16 = EdgeInsets.all(padding16);
+
+const initialWindowSize = Size(1280, 720);
+const minimumWindowSize = Size(365, 550);
+const compactWindowSize = Size(365, 780);

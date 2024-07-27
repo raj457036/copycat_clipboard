@@ -3,16 +3,24 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links
   awesome_notifications
   clipboard_watcher
   connectivity_plus
+  emoji_picker_flutter
+  firebase_core
+  flutter_platform_alert
+  focus_window
+  hotkey_manager_windows
   irondash_engine_context
   isar_flutter_libs
+  platform_device_id_windows
   screen_retriever
+  share_plus
   super_native_extensions
+  tray_manager
   url_launcher_windows
   window_manager
-  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

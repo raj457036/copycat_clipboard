@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "clipboard-419514"
+  },
+  "targets": {
+    "clipboard-419514": {
+      "hosting": {
+        "drive-redirect": [
+          "clipboard-419514"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

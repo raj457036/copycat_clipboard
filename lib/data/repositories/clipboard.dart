@@ -2,20 +2,36 @@ import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
 import 'package:clipboard/data/sources/clipboard/clipboard.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/enums/sort.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ClipboardRepository {
+  FailureOr<ClipboardItem?> get({int? id, String? serverId});
   FailureOr<ClipboardItem> create(ClipboardItem item);
 
   FailureOr<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
+    int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   });
 
   FailureOr<ClipboardItem> update(ClipboardItem item);
 
   FailureOr<bool> delete(ClipboardItem item);
+
+  FailureOr<void> deleteAll();
+
+  FailureOr<ClipboardItem?> getLatest();
+
+  FailureOr<void> decryptPending();
 }
 
 @Named("cloud")
@@ -30,6 +46,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> create(ClipboardItem item) async {
     try {
+      item = item.copyWith(modified: now())..applyId(item);
       final result = await remote.create(item);
       return Right(result);
     } catch (e) {
@@ -41,9 +58,24 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   FailureOr<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
+    int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   }) async {
     try {
-      final result = await remote.getList(limit: limit, offset: offset);
+      final result = await remote.getList(
+        limit: limit,
+        offset: offset,
+        collectionId: collectionId,
+        sortBy: sortBy,
+        order: order,
+        search: search,
+        types: types,
+        category: category,
+      );
 
       return Right(result);
     } catch (e) {
@@ -54,6 +86,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
+      item = item.copyWith(modified: now())..applyId(item);
       final result = await remote.update(item);
       return Right(result);
     } catch (e) {
@@ -69,6 +102,32 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
     } catch (e) {
       return Left(Failure.fromException(e));
     }
+  }
+
+  @override
+  FailureOr<void> deleteAll() async {
+    // no-op
+    return const Right(null);
+  }
+
+  @override
+  FailureOr<ClipboardItem?> get({int? id, String? serverId}) async {
+    try {
+      final result = await remote.get(serverId: serverId);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<ClipboardItem?> getLatest() {
+    throw UnimplementedError();
+  }
+
+  @override
+  FailureOr<void> decryptPending() {
+    throw UnimplementedError();
   }
 }
 
@@ -95,9 +154,24 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
   FailureOr<PaginatedResult<ClipboardItem>> getList({
     int limit = 50,
     int offset = 0,
+    String? search,
+    List<String>? category,
+    List<ClipItemType>? types,
+    int? collectionId,
+    ClipboardSortKey? sortBy,
+    SortOrder order = SortOrder.desc,
   }) async {
     try {
-      final result = await local.getList(limit: limit, offset: offset);
+      final result = await local.getList(
+        limit: limit,
+        offset: offset,
+        search: search,
+        types: types,
+        category: category,
+        collectionId: collectionId,
+        sortBy: sortBy,
+        order: order,
+      );
 
       return Right(result);
     } catch (e) {
@@ -120,6 +194,46 @@ class ClipboardRepositoryOfflineImpl implements ClipboardRepository {
     try {
       await local.delete(item);
       return const Right(true);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<void> deleteAll() async {
+    try {
+      await local.deleteAll();
+      return const Right(null);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<ClipboardItem?> get({int? id, String? serverId}) async {
+    try {
+      final result = await local.get(id: id);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<ClipboardItem?> getLatest() async {
+    try {
+      final result = await local.getLatest();
+      return Right(result);
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<void> decryptPending() async {
+    try {
+      await local.decryptPending();
+      return const Right(null);
     } catch (e) {
       return Left(Failure.fromException(e));
     }

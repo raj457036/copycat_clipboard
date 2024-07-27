@@ -20,25 +20,33 @@ ClipboardItem _$ClipboardItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClipboardItem {
-  @JsonKey(name: "\$id", includeToJson: false)
-  String? get serverId => throw _privateConstructorUsedError;
+  @JsonKey(name: "id", includeToJson: false)
+  @Index()
+  int? get serverId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath => throw _privateConstructorUsedError;
-  @JsonKey(name: "\$createdAt")
+  @JsonKey(name: "created")
+  @DateTimeConverter()
   DateTime get created => throw _privateConstructorUsedError;
-  @JsonKey(name: "\$updatedAt")
+  @JsonKey(name: "modified")
+  @DateTimeConverter()
   DateTime get modified => throw _privateConstructorUsedError;
+  String? get deviceId => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   ClipItemType get type => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @DateTimeConverter()
   DateTime? get deletedAt => throw _privateConstructorUsedError;
   bool get encrypted => throw _privateConstructorUsedError; // Text related
   String? get text => throw _privateConstructorUsedError;
-  String? get url => throw _privateConstructorUsedError; // Files related
+  String? get url => throw _privateConstructorUsedError;
+  @Enumerated(EnumType.name)
+  TextCategory? get textCategory =>
+      throw _privateConstructorUsedError; // Files related
   String? get fileName => throw _privateConstructorUsedError;
   String? get fileMimeType => throw _privateConstructorUsedError;
   String? get fileExtension => throw _privateConstructorUsedError;
@@ -50,18 +58,37 @@ mixin _$ClipboardItem {
   String? get sourceUrl => throw _privateConstructorUsedError;
   String? get sourceApp => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
-  PlatformOS get os => throw _privateConstructorUsedError; // local only
+  PlatformOS get os => throw _privateConstructorUsedError; // Collection
+  @JsonKey(name: "collectionId")
+  int? get serverCollectionId => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get collectionId => throw _privateConstructorUsedError; // local only
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get localOnly => throw _privateConstructorUsedError; // Stats
   int get copiedCount => throw _privateConstructorUsedError;
+  @DateTimeConverter()
   DateTime? get lastCopied =>
       throw _privateConstructorUsedError; // non persistant state
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? get downloading => throw _privateConstructorUsedError;
+  bool get downloading => throw _privateConstructorUsedError;
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get downloadProgress => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get uploading => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  double? get uploadProgress => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Failure? get failure => throw _privateConstructorUsedError;
+
+  /// This clip is manually triggered to upload, sync or persist.
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get userIntent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -76,20 +103,22 @@ abstract class $ClipboardItemCopyWith<$Res> {
       _$ClipboardItemCopyWithImpl<$Res, ClipboardItem>;
   @useResult
   $Res call(
-      {@JsonKey(name: "\$id", includeToJson: false) String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      @JsonKey(name: "\$createdAt") DateTime created,
-      @JsonKey(name: "\$updatedAt") DateTime modified,
+      @JsonKey(name: "created") @DateTimeConverter() DateTime created,
+      @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
+      String? deviceId,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
       String? title,
       String? description,
-      DateTime? deletedAt,
+      @DateTimeConverter() DateTime? deletedAt,
       bool encrypted,
       String? text,
       String? url,
+      @Enumerated(EnumType.name) TextCategory? textCategory,
       String? fileName,
       String? fileMimeType,
       String? fileExtension,
@@ -99,15 +128,29 @@ abstract class $ClipboardItemCopyWith<$Res> {
       String? sourceUrl,
       String? sourceApp,
       @Enumerated(EnumType.name) PlatformOS os,
+      @JsonKey(name: "collectionId") int? serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
-      DateTime? lastCopied,
+      @DateTimeConverter() DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      bool? downloading,
+      bool downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      double? downloadProgress});
+      double? downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      double? uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      Failure? failure,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool userIntent});
 }
 
 /// @nodoc
@@ -128,6 +171,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? localPath = freezed,
     Object? created = null,
     Object? modified = null,
+    Object? deviceId = freezed,
     Object? type = null,
     Object? userId = null,
     Object? title = freezed,
@@ -136,6 +180,7 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? encrypted = null,
     Object? text = freezed,
     Object? url = freezed,
+    Object? textCategory = freezed,
     Object? fileName = freezed,
     Object? fileMimeType = freezed,
     Object? fileExtension = freezed,
@@ -145,17 +190,23 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
     Object? sourceUrl = freezed,
     Object? sourceApp = freezed,
     Object? os = null,
+    Object? serverCollectionId = freezed,
+    Object? collectionId = freezed,
     Object? localOnly = null,
     Object? copiedCount = null,
     Object? lastCopied = freezed,
-    Object? downloading = freezed,
+    Object? downloading = null,
     Object? downloadProgress = freezed,
+    Object? uploading = null,
+    Object? uploadProgress = freezed,
+    Object? failure = freezed,
+    Object? userIntent = null,
   }) {
     return _then(_value.copyWith(
       serverId: freezed == serverId
           ? _value.serverId
           : serverId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       lastSynced: freezed == lastSynced
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
@@ -172,6 +223,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.modified
           : modified // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      deviceId: freezed == deviceId
+          ? _value.deviceId
+          : deviceId // ignore: cast_nullable_to_non_nullable
+              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -204,6 +259,10 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      textCategory: freezed == textCategory
+          ? _value.textCategory
+          : textCategory // ignore: cast_nullable_to_non_nullable
+              as TextCategory?,
       fileName: freezed == fileName
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
@@ -240,6 +299,14 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.os
           : os // ignore: cast_nullable_to_non_nullable
               as PlatformOS,
+      serverCollectionId: freezed == serverCollectionId
+          ? _value.serverCollectionId
+          : serverCollectionId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      collectionId: freezed == collectionId
+          ? _value.collectionId
+          : collectionId // ignore: cast_nullable_to_non_nullable
+              as int?,
       localOnly: null == localOnly
           ? _value.localOnly
           : localOnly // ignore: cast_nullable_to_non_nullable
@@ -252,14 +319,30 @@ class _$ClipboardItemCopyWithImpl<$Res, $Val extends ClipboardItem>
           ? _value.lastCopied
           : lastCopied // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      downloading: freezed == downloading
+      downloading: null == downloading
           ? _value.downloading
           : downloading // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       downloadProgress: freezed == downloadProgress
           ? _value.downloadProgress
           : downloadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
+      uploading: null == uploading
+          ? _value.uploading
+          : uploading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      uploadProgress: freezed == uploadProgress
+          ? _value.uploadProgress
+          : uploadProgress // ignore: cast_nullable_to_non_nullable
+              as double?,
+      failure: freezed == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure?,
+      userIntent: null == userIntent
+          ? _value.userIntent
+          : userIntent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -273,20 +356,22 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "\$id", includeToJson: false) String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) String? localPath,
-      @JsonKey(name: "\$createdAt") DateTime created,
-      @JsonKey(name: "\$updatedAt") DateTime modified,
+      @JsonKey(name: "created") @DateTimeConverter() DateTime created,
+      @JsonKey(name: "modified") @DateTimeConverter() DateTime modified,
+      String? deviceId,
       @Enumerated(EnumType.name) ClipItemType type,
       String userId,
       String? title,
       String? description,
-      DateTime? deletedAt,
+      @DateTimeConverter() DateTime? deletedAt,
       bool encrypted,
       String? text,
       String? url,
+      @Enumerated(EnumType.name) TextCategory? textCategory,
       String? fileName,
       String? fileMimeType,
       String? fileExtension,
@@ -296,15 +381,29 @@ abstract class _$$ClipboardItemImplCopyWith<$Res>
       String? sourceUrl,
       String? sourceApp,
       @Enumerated(EnumType.name) PlatformOS os,
+      @JsonKey(name: "collectionId") int? serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false) int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false) bool localOnly,
       int copiedCount,
-      DateTime? lastCopied,
+      @DateTimeConverter() DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      bool? downloading,
+      bool downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      double? downloadProgress});
+      double? downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      double? uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      Failure? failure,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool userIntent});
 }
 
 /// @nodoc
@@ -323,6 +422,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? localPath = freezed,
     Object? created = null,
     Object? modified = null,
+    Object? deviceId = freezed,
     Object? type = null,
     Object? userId = null,
     Object? title = freezed,
@@ -331,6 +431,7 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? encrypted = null,
     Object? text = freezed,
     Object? url = freezed,
+    Object? textCategory = freezed,
     Object? fileName = freezed,
     Object? fileMimeType = freezed,
     Object? fileExtension = freezed,
@@ -340,17 +441,23 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
     Object? sourceUrl = freezed,
     Object? sourceApp = freezed,
     Object? os = null,
+    Object? serverCollectionId = freezed,
+    Object? collectionId = freezed,
     Object? localOnly = null,
     Object? copiedCount = null,
     Object? lastCopied = freezed,
-    Object? downloading = freezed,
+    Object? downloading = null,
     Object? downloadProgress = freezed,
+    Object? uploading = null,
+    Object? uploadProgress = freezed,
+    Object? failure = freezed,
+    Object? userIntent = null,
   }) {
     return _then(_$ClipboardItemImpl(
       serverId: freezed == serverId
           ? _value.serverId
           : serverId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       lastSynced: freezed == lastSynced
           ? _value.lastSynced
           : lastSynced // ignore: cast_nullable_to_non_nullable
@@ -367,6 +474,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.modified
           : modified // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      deviceId: freezed == deviceId
+          ? _value.deviceId
+          : deviceId // ignore: cast_nullable_to_non_nullable
+              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -399,6 +510,10 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      textCategory: freezed == textCategory
+          ? _value.textCategory
+          : textCategory // ignore: cast_nullable_to_non_nullable
+              as TextCategory?,
       fileName: freezed == fileName
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
@@ -435,6 +550,14 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.os
           : os // ignore: cast_nullable_to_non_nullable
               as PlatformOS,
+      serverCollectionId: freezed == serverCollectionId
+          ? _value.serverCollectionId
+          : serverCollectionId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      collectionId: freezed == collectionId
+          ? _value.collectionId
+          : collectionId // ignore: cast_nullable_to_non_nullable
+              as int?,
       localOnly: null == localOnly
           ? _value.localOnly
           : localOnly // ignore: cast_nullable_to_non_nullable
@@ -447,14 +570,30 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
           ? _value.lastCopied
           : lastCopied // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      downloading: freezed == downloading
+      downloading: null == downloading
           ? _value.downloading
           : downloading // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       downloadProgress: freezed == downloadProgress
           ? _value.downloadProgress
           : downloadProgress // ignore: cast_nullable_to_non_nullable
               as double?,
+      uploading: null == uploading
+          ? _value.uploading
+          : uploading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      uploadProgress: freezed == uploadProgress
+          ? _value.uploadProgress
+          : uploadProgress // ignore: cast_nullable_to_non_nullable
+              as double?,
+      failure: freezed == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure?,
+      userIntent: null == userIntent
+          ? _value.userIntent
+          : userIntent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -463,19 +602,21 @@ class __$$ClipboardItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClipboardItemImpl extends _ClipboardItem {
   _$ClipboardItemImpl(
-      {@JsonKey(name: "\$id", includeToJson: false) this.serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() this.serverId,
       @JsonKey(includeFromJson: false, includeToJson: false) this.lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false) this.localPath,
-      @JsonKey(name: "\$createdAt") required this.created,
-      @JsonKey(name: "\$updatedAt") required this.modified,
+      @JsonKey(name: "created") @DateTimeConverter() required this.created,
+      @JsonKey(name: "modified") @DateTimeConverter() required this.modified,
+      this.deviceId,
       @Enumerated(EnumType.name) required this.type,
-      required this.userId,
+      this.userId = kLocalUserId,
       this.title,
       this.description,
-      this.deletedAt,
+      @DateTimeConverter() this.deletedAt,
       this.encrypted = false,
       this.text,
       this.url,
+      @Enumerated(EnumType.name) this.textCategory,
       this.fileName,
       this.fileMimeType,
       this.fileExtension,
@@ -485,24 +626,39 @@ class _$ClipboardItemImpl extends _ClipboardItem {
       this.sourceUrl,
       this.sourceApp,
       @Enumerated(EnumType.name) required this.os,
+      @JsonKey(name: "collectionId") this.serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false) this.collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.localOnly = false,
       this.copiedCount = 0,
-      this.lastCopied,
+      @DateTimeConverter() this.lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.downloading,
+      this.downloading = false,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.downloadProgress})
+      this.downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.uploading = false,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.failure,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.userIntent = false})
       : super._();
 
   factory _$ClipboardItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClipboardItemImplFromJson(json);
 
   @override
-  @JsonKey(name: "\$id", includeToJson: false)
-  final String? serverId;
+  @JsonKey(name: "id", includeToJson: false)
+  @Index()
+  final int? serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   final DateTime? lastSynced;
@@ -510,21 +666,27 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final String? localPath;
   @override
-  @JsonKey(name: "\$createdAt")
+  @JsonKey(name: "created")
+  @DateTimeConverter()
   final DateTime created;
   @override
-  @JsonKey(name: "\$updatedAt")
+  @JsonKey(name: "modified")
+  @DateTimeConverter()
   final DateTime modified;
+  @override
+  final String? deviceId;
   @override
   @Enumerated(EnumType.name)
   final ClipItemType type;
   @override
+  @JsonKey()
   final String userId;
   @override
   final String? title;
   @override
   final String? description;
   @override
+  @DateTimeConverter()
   final DateTime? deletedAt;
   @override
   @JsonKey()
@@ -534,6 +696,9 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   final String? text;
   @override
   final String? url;
+  @override
+  @Enumerated(EnumType.name)
+  final TextCategory? textCategory;
 // Files related
   @override
   final String? fileName;
@@ -557,6 +722,13 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @override
   @Enumerated(EnumType.name)
   final PlatformOS os;
+// Collection
+  @override
+  @JsonKey(name: "collectionId")
+  final int? serverCollectionId;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final int? collectionId;
 // local only
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -566,20 +738,39 @@ class _$ClipboardItemImpl extends _ClipboardItem {
   @JsonKey()
   final int copiedCount;
   @override
+  @DateTimeConverter()
   final DateTime? lastCopied;
 // non persistant state
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  final bool? downloading;
+  final bool downloading;
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   final double? downloadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool uploading;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final double? uploadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final Failure? failure;
+
+  /// This clip is manually triggered to upload, sync or persist.
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool userIntent;
 
   @override
   String toString() {
-    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress)';
+    return 'ClipboardItem(serverId: $serverId, lastSynced: $lastSynced, localPath: $localPath, created: $created, modified: $modified, deviceId: $deviceId, type: $type, userId: $userId, title: $title, description: $description, deletedAt: $deletedAt, encrypted: $encrypted, text: $text, url: $url, textCategory: $textCategory, fileName: $fileName, fileMimeType: $fileMimeType, fileExtension: $fileExtension, driveFileId: $driveFileId, fileSize: $fileSize, imgBlurHash: $imgBlurHash, sourceUrl: $sourceUrl, sourceApp: $sourceApp, os: $os, serverCollectionId: $serverCollectionId, collectionId: $collectionId, localOnly: $localOnly, copiedCount: $copiedCount, lastCopied: $lastCopied, downloading: $downloading, downloadProgress: $downloadProgress, uploading: $uploading, uploadProgress: $uploadProgress, failure: $failure, userIntent: $userIntent)';
   }
 
   @override
@@ -596,6 +787,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.created, created) || other.created == created) &&
             (identical(other.modified, modified) ||
                 other.modified == modified) &&
+            (identical(other.deviceId, deviceId) ||
+                other.deviceId == deviceId) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
@@ -607,6 +800,8 @@ class _$ClipboardItemImpl extends _ClipboardItem {
                 other.encrypted == encrypted) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.url, url) || other.url == url) &&
+            (identical(other.textCategory, textCategory) ||
+                other.textCategory == textCategory) &&
             (identical(other.fileName, fileName) ||
                 other.fileName == fileName) &&
             (identical(other.fileMimeType, fileMimeType) ||
@@ -624,6 +819,10 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.sourceApp, sourceApp) ||
                 other.sourceApp == sourceApp) &&
             (identical(other.os, os) || other.os == os) &&
+            (identical(other.serverCollectionId, serverCollectionId) ||
+                other.serverCollectionId == serverCollectionId) &&
+            (identical(other.collectionId, collectionId) ||
+                other.collectionId == collectionId) &&
             (identical(other.localOnly, localOnly) ||
                 other.localOnly == localOnly) &&
             (identical(other.copiedCount, copiedCount) ||
@@ -633,7 +832,14 @@ class _$ClipboardItemImpl extends _ClipboardItem {
             (identical(other.downloading, downloading) ||
                 other.downloading == downloading) &&
             (identical(other.downloadProgress, downloadProgress) ||
-                other.downloadProgress == downloadProgress));
+                other.downloadProgress == downloadProgress) &&
+            (identical(other.uploading, uploading) ||
+                other.uploading == uploading) &&
+            (identical(other.uploadProgress, uploadProgress) ||
+                other.uploadProgress == uploadProgress) &&
+            (identical(other.failure, failure) || other.failure == failure) &&
+            (identical(other.userIntent, userIntent) ||
+                other.userIntent == userIntent));
   }
 
   @JsonKey(ignore: true)
@@ -645,6 +851,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         localPath,
         created,
         modified,
+        deviceId,
         type,
         userId,
         title,
@@ -653,6 +860,7 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         encrypted,
         text,
         url,
+        textCategory,
         fileName,
         fileMimeType,
         fileExtension,
@@ -662,11 +870,17 @@ class _$ClipboardItemImpl extends _ClipboardItem {
         sourceUrl,
         sourceApp,
         os,
+        serverCollectionId,
+        collectionId,
         localOnly,
         copiedCount,
         lastCopied,
         downloading,
-        downloadProgress
+        downloadProgress,
+        uploading,
+        uploadProgress,
+        failure,
+        userIntent
       ]);
 
   @JsonKey(ignore: true)
@@ -685,21 +899,27 @@ class _$ClipboardItemImpl extends _ClipboardItem {
 
 abstract class _ClipboardItem extends ClipboardItem {
   factory _ClipboardItem(
-      {@JsonKey(name: "\$id", includeToJson: false) final String? serverId,
+      {@JsonKey(name: "id", includeToJson: false) @Index() final int? serverId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final DateTime? lastSynced,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final String? localPath,
-      @JsonKey(name: "\$createdAt") required final DateTime created,
-      @JsonKey(name: "\$updatedAt") required final DateTime modified,
+      @JsonKey(name: "created")
+      @DateTimeConverter()
+      required final DateTime created,
+      @JsonKey(name: "modified")
+      @DateTimeConverter()
+      required final DateTime modified,
+      final String? deviceId,
       @Enumerated(EnumType.name) required final ClipItemType type,
-      required final String userId,
+      final String userId,
       final String? title,
       final String? description,
-      final DateTime? deletedAt,
+      @DateTimeConverter() final DateTime? deletedAt,
       final bool encrypted,
       final String? text,
       final String? url,
+      @Enumerated(EnumType.name) final TextCategory? textCategory,
       final String? fileName,
       final String? fileMimeType,
       final String? fileExtension,
@@ -709,24 +929,40 @@ abstract class _ClipboardItem extends ClipboardItem {
       final String? sourceUrl,
       final String? sourceApp,
       @Enumerated(EnumType.name) required final PlatformOS os,
+      @JsonKey(name: "collectionId") final int? serverCollectionId,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final int? collectionId,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final bool localOnly,
       final int copiedCount,
-      final DateTime? lastCopied,
+      @DateTimeConverter() final DateTime? lastCopied,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final bool? downloading,
+      final bool downloading,
       @ignore
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final double? downloadProgress}) = _$ClipboardItemImpl;
+      final double? downloadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool uploading,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final double? uploadProgress,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final Failure? failure,
+      @ignore
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool userIntent}) = _$ClipboardItemImpl;
   _ClipboardItem._() : super._();
 
   factory _ClipboardItem.fromJson(Map<String, dynamic> json) =
       _$ClipboardItemImpl.fromJson;
 
   @override
-  @JsonKey(name: "\$id", includeToJson: false)
-  String? get serverId;
+  @JsonKey(name: "id", includeToJson: false)
+  @Index()
+  int? get serverId;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime? get lastSynced;
@@ -734,11 +970,15 @@ abstract class _ClipboardItem extends ClipboardItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get localPath;
   @override
-  @JsonKey(name: "\$createdAt")
+  @JsonKey(name: "created")
+  @DateTimeConverter()
   DateTime get created;
   @override
-  @JsonKey(name: "\$updatedAt")
+  @JsonKey(name: "modified")
+  @DateTimeConverter()
   DateTime get modified;
+  @override
+  String? get deviceId;
   @override
   @Enumerated(EnumType.name)
   ClipItemType get type;
@@ -749,6 +989,7 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   String? get description;
   @override
+  @DateTimeConverter()
   DateTime? get deletedAt;
   @override
   bool get encrypted;
@@ -756,6 +997,9 @@ abstract class _ClipboardItem extends ClipboardItem {
   String? get text;
   @override
   String? get url;
+  @override
+  @Enumerated(EnumType.name)
+  TextCategory? get textCategory;
   @override // Files related
   String? get fileName;
   @override
@@ -776,21 +1020,46 @@ abstract class _ClipboardItem extends ClipboardItem {
   @override
   @Enumerated(EnumType.name)
   PlatformOS get os;
+  @override // Collection
+  @JsonKey(name: "collectionId")
+  int? get serverCollectionId;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get collectionId;
   @override // local only
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get localOnly;
   @override // Stats
   int get copiedCount;
   @override
+  @DateTimeConverter()
   DateTime? get lastCopied;
   @override // non persistant state
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? get downloading;
+  bool get downloading;
   @override
   @ignore
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? get downloadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get uploading;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  double? get uploadProgress;
+  @override
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Failure? get failure;
+  @override
+
+  /// This clip is manually triggered to upload, sync or persist.
+  @ignore
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get userIntent;
   @override
   @JsonKey(ignore: true)
   _$$ClipboardItemImplCopyWith<_$ClipboardItemImpl> get copyWith =>

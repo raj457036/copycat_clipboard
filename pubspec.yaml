@@ -1,7 +1,7 @@
 name: clipboard
-description: "A universal clipboard"
+description: "CopyCat Clipboard: One Clipboard, Limitless Productivity"
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.21+49
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -11,42 +11,79 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  super_clipboard: ^0.8.10
-  appwrite: ^11.0.1 
-  injectable: ^2.4.1
-  flutter_bloc: ^8.1.5
+  super_clipboard: ^0.8.17
+  injectable: ^2.4.2
+  flutter_bloc: ^8.1.6
   bloc: ^8.1.4
   freezed_annotation: ^2.4.1
   awesome_notifications: ^0.9.3+1
   path: ^1.9.0
-  path_provider: ^2.1.2
-  json_annotation: ^4.8.1
-  get_it: ^7.6.8
-  go_router: ^13.2.2
-  logging: ^1.2.0
+  path_provider: ^2.1.3
+  json_annotation: ^4.9.0
+  get_it: ^7.7.0
+  go_router: ^14.2.1
+  logger: ^2.4.0
   dartz: ^0.10.1
   form_validator: ^2.1.1
   google_fonts: ^6.2.1
-  flutter_layout_grid: ^2.0.6
-  flutter_platform_widgets: ^6.1.0
-  responsive_framework: ^1.4.0
-  window_manager: ^0.3.8
+  window_manager: ^0.3.9
   clipboard_watcher: ^0.2.1
-  timeago: ^3.6.1
-  flutter_context_menu: ^0.1.3
+  timeago: ^3.7.0
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1
-  uuid: ^4.3.3
-  rxdart: ^0.27.7
-  internet_connection_checker_plus: ^2.3.0
-  url_launcher: ^6.2.5
+  uuid: ^4.4.2
+  rxdart: ^0.27.5
+  internet_connection_checker_plus: ^2.3.0 
+  url_launcher: ^6.3.0
   googleapis: ^13.1.0
-  file_picker: ^8.0.0+1
-  http: ^1.0.0
+  file_picker: ^8.0.5
+  http: ^1.2.2
   blurhash_dart: ^1.2.1
   mime: ^1.0.5
-  image: ^4.1.7
-
+  image: ^4.2.0
+  intl: ^0.19.0
+  supabase_auth_ui:
+    git:
+      url: https://github.com/raj457036/flutter-auth-ui.git
+  supabase_flutter: ^2.5.8
+  app_links: ^6.1.4
+  device_preview: ^1.2.0
+  toastification: ^2.0.0
+  async: ^2.11.0
+  win32_registry: ^1.1.3
+  share_handler: ^0.0.21
+  share_plus: ^9.0.0
+  universal_io: ^2.2.2
+  easy_worker: ^1.0.1
+  emoji_picker_flutter: ^2.2.0
+  duration: ^3.0.13
+  open_filex: ^4.4.0
+  hotkey_manager: ^0.2.3
+  launch_at_startup: ^0.3.1
+  atom_event_bus: ^0.0.5
+  platform_device_id:
+    git:
+      url: https://github.com/raj457036/platform_device_id.git
+      ref: master
+      path: "platform_device_id"
+  google_mobile_ads: ^5.1.0
+  focus_window:
+    path: ./plugins/focus_window
+  package_info_plus: ^8.0.0
+  tray_manager: ^0.2.3
+  flutter_platform_alert: ^0.5.1
+  device_preview_screenshot: ^1.0.0
+  encrypt: ^5.0.3
+  firebase_analytics: ^11.1.0
+  firebase_core: ^3.1.1
+  firebase_core_desktop: ^1.0.2
+  firebase_crashlytics: ^4.0.2
+  upgrader: ^10.3.0
+  purchases_flutter: ^6.30.2
+  purchases_ui_flutter: ^6.30.2
+  retry: ^3.1.2
+  ntp: ^2.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -56,15 +93,28 @@ dev_dependencies:
   isar_generator: 3.1.0+1
   freezed: 2.4.7
   json_serializable: ^6.7.1
-  
+  flutter_launcher_icons: "^0.13.1" 
 
 dependency_overrides:
   device_info_plus: ^9.0.2
   intl: ^0.19.0
   analyzer: ^6.4.1
+  firebase_core_platform_interface: ^4.5.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
     - assets/images/
+    - assets/images/icons/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  windows:
+    generate: true
+  macos:
+    generate: true
+  image_path: "assets/images/icons/icon.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true

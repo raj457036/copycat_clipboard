@@ -1,0 +1,1 @@
+const defaultCollectionCount = 3;

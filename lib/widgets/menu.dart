@@ -1,6 +1,5 @@
-import 'package:clipboard/utils/common_extension.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 enum MenuItemType { option, divider }
 
@@ -52,9 +51,9 @@ class Menu extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'Select an option',
-                style: TextStyle(
+              Text(
+                context.locale.selectAnOption,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -67,7 +66,7 @@ class Menu extends StatelessWidget {
                         leading: Icon(menuItem.icon),
                         title: Text(menuItem.text!),
                         onTap: () {
-                          context.pop();
+                          Navigator.pop(context);
                           menuItem.onPressed?.call();
                         },
                       ),
@@ -112,13 +111,12 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
-
+    final width = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: child,
       onLongPress: () => openOptionDialog(context),
       onSecondaryTapDown: (detail) {
-        if (isMobile) {
+        if (width <= 600) {
           openOptionDialog(context);
           return;
         }

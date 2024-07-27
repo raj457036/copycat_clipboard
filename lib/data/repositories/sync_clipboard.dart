@@ -1,64 +1,93 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/paginated_results.dart';
+import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-abstract class SyncClipboardRepository {
-  FailureOr<PaginatedResult<ClipboardItem>> getLatestItems({
+abstract class SyncRepository {
+  FailureOr<PaginatedResult<ClipCollection>> getLatestClipCollections({
     required String userId,
     int limit = 100,
     int offset = 0,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   });
 
-  FailureOr<PaginatedResult<ClipboardItem>> getDeletedItems({
+  FailureOr<PaginatedResult<ClipboardItem>> getLatestClipboardItems({
     required String userId,
     int limit = 100,
     int offset = 0,
+    String? excludeDeviceId,
+    DateTime? lastSynced,
+  });
+
+  FailureOr<PaginatedResult<ClipCollection>> getDeletedClipCollections({
+    required String userId,
+    int limit = 100,
+    int offset = 0,
+    String? excludeDeviceId,
+    DateTime? lastSynced,
+  });
+
+  FailureOr<PaginatedResult<ClipboardItem>> getDeletedClipboardItems({
+    required String userId,
+    int limit = 100,
+    int offset = 0,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   });
 }
 
-@LazySingleton(as: SyncClipboardRepository)
-class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
-  final Databases db;
-  final String databaseId;
-  final String collectionId;
+@LazySingleton(as: SyncRepository)
+class SyncRepositoryImpl implements SyncRepository {
+  final SupabaseClient client;
+  final String clipboardItemsTable = "clipboard_items";
+  final String clipCollectionsTable = "clip_collections";
 
-  SyncClipboardRepositoryImpl(
-    this.db,
-    @Named("databaseId") this.databaseId,
-    @Named("clipboardCollectionId") this.collectionId,
-  );
+  SyncRepositoryImpl(this.client);
+
+  PostgrestClient get db => client.rest;
 
   @override
-  FailureOr<PaginatedResult<ClipboardItem>> getDeletedItems({
+  FailureOr<PaginatedResult<ClipboardItem>> getLatestClipboardItems({
     required String userId,
     int limit = 100,
     int offset = 0,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   }) async {
     try {
-      final docs = await db.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        queries: [
-          Query.equal("userId", userId),
-          Query.isNotNull("deletedAt"),
-          Query.greaterThanEqual("deletedAt", lastSynced),
-          Query.orderDesc("\$updatedAt"),
-          Query.limit(limit),
-          Query.offset(offset),
-        ],
-      );
-      final items =
-          docs.documents.map((e) => ClipboardItem.fromJson(e.data)).toList();
+      var query = db
+          .from(clipboardItemsTable)
+          .select()
+          .eq("userId", userId)
+          .isFilter("deletedAt", null);
+
+      if (lastSynced != null) {
+        final isoDate = lastSynced
+            .subtract(const Duration(seconds: 5))
+            .toUtc()
+            .toIso8601String();
+        query = query.gt("modified", isoDate);
+      }
+
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
+      }
+
+      final docs = await query.order("modified").range(offset, offset + limit);
+      final clips = (await Future.wait(docs
+              .map((e) => ClipboardItem.fromJson(e))
+              .map((e) => e.copyWith(lastSynced: now()))
+              .map((e) => e.decrypt())))
+          .toList();
       return Right(
         PaginatedResult(
-          results: items,
-          hasMore: items.length == limit,
+          results: clips,
+          hasMore: clips.length > limit,
         ),
       );
     } catch (e) {
@@ -67,32 +96,114 @@ class SyncClipboardRepositoryImpl implements SyncClipboardRepository {
   }
 
   @override
-  FailureOr<PaginatedResult<ClipboardItem>> getLatestItems({
+  FailureOr<PaginatedResult<ClipCollection>> getLatestClipCollections({
     required String userId,
     int limit = 100,
     int offset = 0,
+    String? excludeDeviceId,
     DateTime? lastSynced,
   }) async {
     try {
-      final docs = await db.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        queries: [
-          Query.equal("userId", userId),
-          if (lastSynced != null)
-            Query.greaterThan(
-                "\$updatedAt", lastSynced.toUtc().toIso8601String()),
-          Query.orderDesc("\$updatedAt"),
-          Query.limit(limit),
-          Query.offset(offset),
-        ],
-      );
-      final items =
-          docs.documents.map((e) => ClipboardItem.fromJson(e.data)).toList();
+      var query = db
+          .from(clipCollectionsTable)
+          .select()
+          .eq("userId", userId)
+          .isFilter("deletedAt", null);
+
+      if (lastSynced != null) {
+        final isoDate = lastSynced
+            .subtract(const Duration(seconds: 5))
+            .toUtc()
+            .toIso8601String();
+        query = query.gt(
+          "modified",
+          isoDate,
+        );
+      }
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
+      }
+      final docs = await query.order("modified").range(offset, offset + limit);
+      final items = docs
+          .map((e) => ClipCollection.fromJson(e))
+          .map((e) => e.copyWith(lastSynced: now()))
+          .toList();
       return Right(
         PaginatedResult(
           results: items,
-          hasMore: limit == items.length,
+          hasMore: items.length > limit,
+        ),
+      );
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<PaginatedResult<ClipboardItem>> getDeletedClipboardItems({
+    required String userId,
+    int limit = 100,
+    int offset = 0,
+    String? excludeDeviceId,
+    DateTime? lastSynced,
+  }) async {
+    if (lastSynced == null) return Right(PaginatedResult.empty());
+    try {
+      final isoDate = lastSynced
+          .subtract(const Duration(seconds: 5))
+          .toUtc()
+          .toIso8601String();
+      var query = db
+          .from(clipboardItemsTable)
+          .select()
+          .eq("userId", userId)
+          .gte("deletedAt", isoDate);
+
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
+      }
+      final docs = await query.order("modified").range(offset, offset + limit);
+      final items = docs.map((e) => ClipboardItem.fromJson(e)).toList();
+      return Right(
+        PaginatedResult(
+          results: items,
+          hasMore: items.length > limit,
+        ),
+      );
+    } catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  FailureOr<PaginatedResult<ClipCollection>> getDeletedClipCollections({
+    required String userId,
+    int limit = 100,
+    int offset = 0,
+    String? excludeDeviceId,
+    DateTime? lastSynced,
+  }) async {
+    if (lastSynced == null) return Right(PaginatedResult.empty());
+    try {
+      final isoDate = lastSynced
+          .subtract(const Duration(seconds: 5))
+          .toUtc()
+          .toIso8601String();
+      var query = db
+          .from(clipCollectionsTable)
+          .select()
+          .eq("userId", userId)
+          .gte("deletedAt", isoDate);
+
+      if (excludeDeviceId != null && excludeDeviceId != "") {
+        query = query.neq("deviceId", excludeDeviceId);
+      }
+      final docs = await query.order("modified").range(offset, offset + limit);
+      final items = docs.map((e) => ClipCollection.fromJson(e)).toList();
+      return Right(
+        PaginatedResult(
+          results: items,
+          hasMore: items.length > limit,
         ),
       );
     } catch (e) {

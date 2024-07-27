@@ -1,0 +1,2 @@
+flutter build macos --verbose --dart-define-from-file="local/prod.json" --obfuscate --split-debug-info=./build-symbols && \
+create-dmg --overwrite --identity="Apple Development: Raj Singh (X57UNFWL7W)" build/macos/Build/Products/Release/CopyCat.app

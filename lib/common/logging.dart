@@ -1,3 +1,3 @@
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 
-final logger = Logger("Clipboard");
+final logger = Logger();

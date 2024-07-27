@@ -21,9 +21,13 @@ mixin _$OfflinePersistanceState {
     required TResult Function() initial,
     required TResult Function(ClipboardItem item) creatingItem,
     required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
     required TResult Function(ClipboardItem item, bool created, bool synced)
         saved,
-    required TResult Function(Failure failure) error,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,8 +35,12 @@ mixin _$OfflinePersistanceState {
     TResult? Function()? initial,
     TResult? Function(ClipboardItem item)? creatingItem,
     TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
     TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult? Function(Failure failure)? error,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,8 +48,12 @@ mixin _$OfflinePersistanceState {
     TResult Function()? initial,
     TResult Function(ClipboardItem item)? creatingItem,
     TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
     TResult Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult Function(Failure failure)? error,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -50,7 +62,12 @@ mixin _$OfflinePersistanceState {
     required TResult Function(OfflinePersistanceInitial value) initial,
     required TResult Function(OfflinePersistanceCreating value) creatingItem,
     required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
     required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
     required TResult Function(OfflinePersistanceError value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -59,7 +76,11 @@ mixin _$OfflinePersistanceState {
     TResult? Function(OfflinePersistanceInitial value)? initial,
     TResult? Function(OfflinePersistanceCreating value)? creatingItem,
     TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult? Function(OfflinePersistanceError value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -68,7 +89,11 @@ mixin _$OfflinePersistanceState {
     TResult Function(OfflinePersistanceInitial value)? initial,
     TResult Function(OfflinePersistanceCreating value)? creatingItem,
     TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult Function(OfflinePersistanceError value)? error,
     required TResult orElse(),
   }) =>
@@ -139,9 +164,13 @@ class _$OfflinePersistanceInitialImpl implements OfflinePersistanceInitial {
     required TResult Function() initial,
     required TResult Function(ClipboardItem item) creatingItem,
     required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
     required TResult Function(ClipboardItem item, bool created, bool synced)
         saved,
-    required TResult Function(Failure failure) error,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
   }) {
     return initial();
   }
@@ -152,8 +181,12 @@ class _$OfflinePersistanceInitialImpl implements OfflinePersistanceInitial {
     TResult? Function()? initial,
     TResult? Function(ClipboardItem item)? creatingItem,
     TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
     TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult? Function(Failure failure)? error,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
   }) {
     return initial?.call();
   }
@@ -164,8 +197,12 @@ class _$OfflinePersistanceInitialImpl implements OfflinePersistanceInitial {
     TResult Function()? initial,
     TResult Function(ClipboardItem item)? creatingItem,
     TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
     TResult Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult Function(Failure failure)? error,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -180,7 +217,12 @@ class _$OfflinePersistanceInitialImpl implements OfflinePersistanceInitial {
     required TResult Function(OfflinePersistanceInitial value) initial,
     required TResult Function(OfflinePersistanceCreating value) creatingItem,
     required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
     required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
     required TResult Function(OfflinePersistanceError value) error,
   }) {
     return initial(this);
@@ -192,7 +234,11 @@ class _$OfflinePersistanceInitialImpl implements OfflinePersistanceInitial {
     TResult? Function(OfflinePersistanceInitial value)? initial,
     TResult? Function(OfflinePersistanceCreating value)? creatingItem,
     TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult? Function(OfflinePersistanceError value)? error,
   }) {
     return initial?.call(this);
@@ -204,7 +250,11 @@ class _$OfflinePersistanceInitialImpl implements OfflinePersistanceInitial {
     TResult Function(OfflinePersistanceInitial value)? initial,
     TResult Function(OfflinePersistanceCreating value)? creatingItem,
     TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult Function(OfflinePersistanceError value)? error,
     required TResult orElse(),
   }) {
@@ -300,9 +350,13 @@ class _$OfflinePersistanceCreatingImpl implements OfflinePersistanceCreating {
     required TResult Function() initial,
     required TResult Function(ClipboardItem item) creatingItem,
     required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
     required TResult Function(ClipboardItem item, bool created, bool synced)
         saved,
-    required TResult Function(Failure failure) error,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
   }) {
     return creatingItem(item);
   }
@@ -313,8 +367,12 @@ class _$OfflinePersistanceCreatingImpl implements OfflinePersistanceCreating {
     TResult? Function()? initial,
     TResult? Function(ClipboardItem item)? creatingItem,
     TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
     TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult? Function(Failure failure)? error,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
   }) {
     return creatingItem?.call(item);
   }
@@ -325,8 +383,12 @@ class _$OfflinePersistanceCreatingImpl implements OfflinePersistanceCreating {
     TResult Function()? initial,
     TResult Function(ClipboardItem item)? creatingItem,
     TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
     TResult Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult Function(Failure failure)? error,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
     required TResult orElse(),
   }) {
     if (creatingItem != null) {
@@ -341,7 +403,12 @@ class _$OfflinePersistanceCreatingImpl implements OfflinePersistanceCreating {
     required TResult Function(OfflinePersistanceInitial value) initial,
     required TResult Function(OfflinePersistanceCreating value) creatingItem,
     required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
     required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
     required TResult Function(OfflinePersistanceError value) error,
   }) {
     return creatingItem(this);
@@ -353,7 +420,11 @@ class _$OfflinePersistanceCreatingImpl implements OfflinePersistanceCreating {
     TResult? Function(OfflinePersistanceInitial value)? initial,
     TResult? Function(OfflinePersistanceCreating value)? creatingItem,
     TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult? Function(OfflinePersistanceError value)? error,
   }) {
     return creatingItem?.call(this);
@@ -365,7 +436,11 @@ class _$OfflinePersistanceCreatingImpl implements OfflinePersistanceCreating {
     TResult Function(OfflinePersistanceInitial value)? initial,
     TResult Function(OfflinePersistanceCreating value)? creatingItem,
     TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult Function(OfflinePersistanceError value)? error,
     required TResult orElse(),
   }) {
@@ -467,9 +542,13 @@ class _$OfflinePersistanceUpdatingImpl implements OfflinePersistanceUpdating {
     required TResult Function() initial,
     required TResult Function(ClipboardItem item) creatingItem,
     required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
     required TResult Function(ClipboardItem item, bool created, bool synced)
         saved,
-    required TResult Function(Failure failure) error,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
   }) {
     return updatingItem(item);
   }
@@ -480,8 +559,12 @@ class _$OfflinePersistanceUpdatingImpl implements OfflinePersistanceUpdating {
     TResult? Function()? initial,
     TResult? Function(ClipboardItem item)? creatingItem,
     TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
     TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult? Function(Failure failure)? error,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
   }) {
     return updatingItem?.call(item);
   }
@@ -492,8 +575,12 @@ class _$OfflinePersistanceUpdatingImpl implements OfflinePersistanceUpdating {
     TResult Function()? initial,
     TResult Function(ClipboardItem item)? creatingItem,
     TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
     TResult Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult Function(Failure failure)? error,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
     required TResult orElse(),
   }) {
     if (updatingItem != null) {
@@ -508,7 +595,12 @@ class _$OfflinePersistanceUpdatingImpl implements OfflinePersistanceUpdating {
     required TResult Function(OfflinePersistanceInitial value) initial,
     required TResult Function(OfflinePersistanceCreating value) creatingItem,
     required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
     required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
     required TResult Function(OfflinePersistanceError value) error,
   }) {
     return updatingItem(this);
@@ -520,7 +612,11 @@ class _$OfflinePersistanceUpdatingImpl implements OfflinePersistanceUpdating {
     TResult? Function(OfflinePersistanceInitial value)? initial,
     TResult? Function(OfflinePersistanceCreating value)? creatingItem,
     TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult? Function(OfflinePersistanceError value)? error,
   }) {
     return updatingItem?.call(this);
@@ -532,7 +628,11 @@ class _$OfflinePersistanceUpdatingImpl implements OfflinePersistanceUpdating {
     TResult Function(OfflinePersistanceInitial value)? initial,
     TResult Function(OfflinePersistanceCreating value)? creatingItem,
     TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult Function(OfflinePersistanceError value)? error,
     required TResult orElse(),
   }) {
@@ -550,6 +650,390 @@ abstract class OfflinePersistanceUpdating implements OfflinePersistanceState {
   ClipboardItem get item;
   @JsonKey(ignore: true)
   _$$OfflinePersistanceUpdatingImplCopyWith<_$OfflinePersistanceUpdatingImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OfflinePersistanceDeletingImplCopyWith<$Res> {
+  factory _$$OfflinePersistanceDeletingImplCopyWith(
+          _$OfflinePersistanceDeletingImpl value,
+          $Res Function(_$OfflinePersistanceDeletingImpl) then) =
+      __$$OfflinePersistanceDeletingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ClipboardItem item});
+
+  $ClipboardItemCopyWith<$Res> get item;
+}
+
+/// @nodoc
+class __$$OfflinePersistanceDeletingImplCopyWithImpl<$Res>
+    extends _$OfflinePersistanceStateCopyWithImpl<$Res,
+        _$OfflinePersistanceDeletingImpl>
+    implements _$$OfflinePersistanceDeletingImplCopyWith<$Res> {
+  __$$OfflinePersistanceDeletingImplCopyWithImpl(
+      _$OfflinePersistanceDeletingImpl _value,
+      $Res Function(_$OfflinePersistanceDeletingImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? item = null,
+  }) {
+    return _then(_$OfflinePersistanceDeletingImpl(
+      null == item
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as ClipboardItem,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ClipboardItemCopyWith<$Res> get item {
+    return $ClipboardItemCopyWith<$Res>(_value.item, (value) {
+      return _then(_value.copyWith(item: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$OfflinePersistanceDeletingImpl implements OfflinePersistanceDeleting {
+  const _$OfflinePersistanceDeletingImpl(this.item);
+
+  @override
+  final ClipboardItem item;
+
+  @override
+  String toString() {
+    return 'OfflinePersistanceState.deletingItem(item: $item)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OfflinePersistanceDeletingImpl &&
+            (identical(other.item, item) || other.item == item));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, item);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OfflinePersistanceDeletingImplCopyWith<_$OfflinePersistanceDeletingImpl>
+      get copyWith => __$$OfflinePersistanceDeletingImplCopyWithImpl<
+          _$OfflinePersistanceDeletingImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(ClipboardItem item) creatingItem,
+    required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
+    required TResult Function(ClipboardItem item, bool created, bool synced)
+        saved,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
+  }) {
+    return deletingItem(item);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function(ClipboardItem item)? creatingItem,
+    TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
+    TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
+  }) {
+    return deletingItem?.call(item);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(ClipboardItem item)? creatingItem,
+    TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
+    TResult Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
+    required TResult orElse(),
+  }) {
+    if (deletingItem != null) {
+      return deletingItem(item);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OfflinePersistanceInitial value) initial,
+    required TResult Function(OfflinePersistanceCreating value) creatingItem,
+    required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
+    required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
+    required TResult Function(OfflinePersistanceError value) error,
+  }) {
+    return deletingItem(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OfflinePersistanceInitial value)? initial,
+    TResult? Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult? Function(OfflinePersistanceError value)? error,
+  }) {
+    return deletingItem?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OfflinePersistanceInitial value)? initial,
+    TResult Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult Function(OfflinePersistanceError value)? error,
+    required TResult orElse(),
+  }) {
+    if (deletingItem != null) {
+      return deletingItem(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OfflinePersistanceDeleting implements OfflinePersistanceState {
+  const factory OfflinePersistanceDeleting(final ClipboardItem item) =
+      _$OfflinePersistanceDeletingImpl;
+
+  ClipboardItem get item;
+  @JsonKey(ignore: true)
+  _$$OfflinePersistanceDeletingImplCopyWith<_$OfflinePersistanceDeletingImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OfflinePersistanceDeletedImplCopyWith<$Res> {
+  factory _$$OfflinePersistanceDeletedImplCopyWith(
+          _$OfflinePersistanceDeletedImpl value,
+          $Res Function(_$OfflinePersistanceDeletedImpl) then) =
+      __$$OfflinePersistanceDeletedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ClipboardItem item});
+
+  $ClipboardItemCopyWith<$Res> get item;
+}
+
+/// @nodoc
+class __$$OfflinePersistanceDeletedImplCopyWithImpl<$Res>
+    extends _$OfflinePersistanceStateCopyWithImpl<$Res,
+        _$OfflinePersistanceDeletedImpl>
+    implements _$$OfflinePersistanceDeletedImplCopyWith<$Res> {
+  __$$OfflinePersistanceDeletedImplCopyWithImpl(
+      _$OfflinePersistanceDeletedImpl _value,
+      $Res Function(_$OfflinePersistanceDeletedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? item = null,
+  }) {
+    return _then(_$OfflinePersistanceDeletedImpl(
+      null == item
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as ClipboardItem,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ClipboardItemCopyWith<$Res> get item {
+    return $ClipboardItemCopyWith<$Res>(_value.item, (value) {
+      return _then(_value.copyWith(item: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$OfflinePersistanceDeletedImpl implements OfflinePersistanceDeleted {
+  const _$OfflinePersistanceDeletedImpl(this.item);
+
+  @override
+  final ClipboardItem item;
+
+  @override
+  String toString() {
+    return 'OfflinePersistanceState.deletedItem(item: $item)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OfflinePersistanceDeletedImpl &&
+            (identical(other.item, item) || other.item == item));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, item);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OfflinePersistanceDeletedImplCopyWith<_$OfflinePersistanceDeletedImpl>
+      get copyWith => __$$OfflinePersistanceDeletedImplCopyWithImpl<
+          _$OfflinePersistanceDeletedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(ClipboardItem item) creatingItem,
+    required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
+    required TResult Function(ClipboardItem item, bool created, bool synced)
+        saved,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
+  }) {
+    return deletedItem(item);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function(ClipboardItem item)? creatingItem,
+    TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
+    TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
+  }) {
+    return deletedItem?.call(item);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(ClipboardItem item)? creatingItem,
+    TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
+    TResult Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
+    required TResult orElse(),
+  }) {
+    if (deletedItem != null) {
+      return deletedItem(item);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OfflinePersistanceInitial value) initial,
+    required TResult Function(OfflinePersistanceCreating value) creatingItem,
+    required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
+    required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
+    required TResult Function(OfflinePersistanceError value) error,
+  }) {
+    return deletedItem(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OfflinePersistanceInitial value)? initial,
+    TResult? Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult? Function(OfflinePersistanceError value)? error,
+  }) {
+    return deletedItem?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OfflinePersistanceInitial value)? initial,
+    TResult Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult Function(OfflinePersistanceError value)? error,
+    required TResult orElse(),
+  }) {
+    if (deletedItem != null) {
+      return deletedItem(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OfflinePersistanceDeleted implements OfflinePersistanceState {
+  const factory OfflinePersistanceDeleted(final ClipboardItem item) =
+      _$OfflinePersistanceDeletedImpl;
+
+  ClipboardItem get item;
+  @JsonKey(ignore: true)
+  _$$OfflinePersistanceDeletedImplCopyWith<_$OfflinePersistanceDeletedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -653,9 +1137,13 @@ class _$OfflinePersistanceSavedImpl implements OfflinePersistanceSaved {
     required TResult Function() initial,
     required TResult Function(ClipboardItem item) creatingItem,
     required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
     required TResult Function(ClipboardItem item, bool created, bool synced)
         saved,
-    required TResult Function(Failure failure) error,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
   }) {
     return saved(item, created, synced);
   }
@@ -666,8 +1154,12 @@ class _$OfflinePersistanceSavedImpl implements OfflinePersistanceSaved {
     TResult? Function()? initial,
     TResult? Function(ClipboardItem item)? creatingItem,
     TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
     TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult? Function(Failure failure)? error,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
   }) {
     return saved?.call(item, created, synced);
   }
@@ -678,8 +1170,12 @@ class _$OfflinePersistanceSavedImpl implements OfflinePersistanceSaved {
     TResult Function()? initial,
     TResult Function(ClipboardItem item)? creatingItem,
     TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
     TResult Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult Function(Failure failure)? error,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
     required TResult orElse(),
   }) {
     if (saved != null) {
@@ -694,7 +1190,12 @@ class _$OfflinePersistanceSavedImpl implements OfflinePersistanceSaved {
     required TResult Function(OfflinePersistanceInitial value) initial,
     required TResult Function(OfflinePersistanceCreating value) creatingItem,
     required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
     required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
     required TResult Function(OfflinePersistanceError value) error,
   }) {
     return saved(this);
@@ -706,7 +1207,11 @@ class _$OfflinePersistanceSavedImpl implements OfflinePersistanceSaved {
     TResult? Function(OfflinePersistanceInitial value)? initial,
     TResult? Function(OfflinePersistanceCreating value)? creatingItem,
     TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult? Function(OfflinePersistanceError value)? error,
   }) {
     return saved?.call(this);
@@ -718,7 +1223,11 @@ class _$OfflinePersistanceSavedImpl implements OfflinePersistanceSaved {
     TResult Function(OfflinePersistanceInitial value)? initial,
     TResult Function(OfflinePersistanceCreating value)? creatingItem,
     TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult Function(OfflinePersistanceError value)? error,
     required TResult orElse(),
   }) {
@@ -742,13 +1251,321 @@ abstract class OfflinePersistanceSaved implements OfflinePersistanceState {
 }
 
 /// @nodoc
+abstract class _$$OfflinePersistanceDecryptingStateImplCopyWith<$Res> {
+  factory _$$OfflinePersistanceDecryptingStateImplCopyWith(
+          _$OfflinePersistanceDecryptingStateImpl value,
+          $Res Function(_$OfflinePersistanceDecryptingStateImpl) then) =
+      __$$OfflinePersistanceDecryptingStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$OfflinePersistanceDecryptingStateImplCopyWithImpl<$Res>
+    extends _$OfflinePersistanceStateCopyWithImpl<$Res,
+        _$OfflinePersistanceDecryptingStateImpl>
+    implements _$$OfflinePersistanceDecryptingStateImplCopyWith<$Res> {
+  __$$OfflinePersistanceDecryptingStateImplCopyWithImpl(
+      _$OfflinePersistanceDecryptingStateImpl _value,
+      $Res Function(_$OfflinePersistanceDecryptingStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$OfflinePersistanceDecryptingStateImpl
+    implements OfflinePersistanceDecryptingState {
+  const _$OfflinePersistanceDecryptingStateImpl();
+
+  @override
+  String toString() {
+    return 'OfflinePersistanceState.decrypting()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OfflinePersistanceDecryptingStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(ClipboardItem item) creatingItem,
+    required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
+    required TResult Function(ClipboardItem item, bool created, bool synced)
+        saved,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
+  }) {
+    return decrypting();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function(ClipboardItem item)? creatingItem,
+    TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
+    TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
+  }) {
+    return decrypting?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(ClipboardItem item)? creatingItem,
+    TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
+    TResult Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
+    required TResult orElse(),
+  }) {
+    if (decrypting != null) {
+      return decrypting();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OfflinePersistanceInitial value) initial,
+    required TResult Function(OfflinePersistanceCreating value) creatingItem,
+    required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
+    required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
+    required TResult Function(OfflinePersistanceError value) error,
+  }) {
+    return decrypting(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OfflinePersistanceInitial value)? initial,
+    TResult? Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult? Function(OfflinePersistanceError value)? error,
+  }) {
+    return decrypting?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OfflinePersistanceInitial value)? initial,
+    TResult Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult Function(OfflinePersistanceError value)? error,
+    required TResult orElse(),
+  }) {
+    if (decrypting != null) {
+      return decrypting(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OfflinePersistanceDecryptingState
+    implements OfflinePersistanceState {
+  const factory OfflinePersistanceDecryptingState() =
+      _$OfflinePersistanceDecryptingStateImpl;
+}
+
+/// @nodoc
+abstract class _$$OfflinePersistanceDecryptedStateImplCopyWith<$Res> {
+  factory _$$OfflinePersistanceDecryptedStateImplCopyWith(
+          _$OfflinePersistanceDecryptedStateImpl value,
+          $Res Function(_$OfflinePersistanceDecryptedStateImpl) then) =
+      __$$OfflinePersistanceDecryptedStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$OfflinePersistanceDecryptedStateImplCopyWithImpl<$Res>
+    extends _$OfflinePersistanceStateCopyWithImpl<$Res,
+        _$OfflinePersistanceDecryptedStateImpl>
+    implements _$$OfflinePersistanceDecryptedStateImplCopyWith<$Res> {
+  __$$OfflinePersistanceDecryptedStateImplCopyWithImpl(
+      _$OfflinePersistanceDecryptedStateImpl _value,
+      $Res Function(_$OfflinePersistanceDecryptedStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$OfflinePersistanceDecryptedStateImpl
+    implements OfflinePersistanceDecryptedState {
+  const _$OfflinePersistanceDecryptedStateImpl();
+
+  @override
+  String toString() {
+    return 'OfflinePersistanceState.decrypted()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OfflinePersistanceDecryptedStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(ClipboardItem item) creatingItem,
+    required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
+    required TResult Function(ClipboardItem item, bool created, bool synced)
+        saved,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
+  }) {
+    return decrypted();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function(ClipboardItem item)? creatingItem,
+    TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
+    TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
+  }) {
+    return decrypted?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(ClipboardItem item)? creatingItem,
+    TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
+    TResult Function(ClipboardItem item, bool created, bool synced)? saved,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
+    required TResult orElse(),
+  }) {
+    if (decrypted != null) {
+      return decrypted();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OfflinePersistanceInitial value) initial,
+    required TResult Function(OfflinePersistanceCreating value) creatingItem,
+    required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
+    required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
+    required TResult Function(OfflinePersistanceError value) error,
+  }) {
+    return decrypted(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OfflinePersistanceInitial value)? initial,
+    TResult? Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult? Function(OfflinePersistanceError value)? error,
+  }) {
+    return decrypted?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OfflinePersistanceInitial value)? initial,
+    TResult Function(OfflinePersistanceCreating value)? creatingItem,
+    TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
+    TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
+    TResult Function(OfflinePersistanceError value)? error,
+    required TResult orElse(),
+  }) {
+    if (decrypted != null) {
+      return decrypted(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OfflinePersistanceDecryptedState
+    implements OfflinePersistanceState {
+  const factory OfflinePersistanceDecryptedState() =
+      _$OfflinePersistanceDecryptedStateImpl;
+}
+
+/// @nodoc
 abstract class _$$OfflinePersistanceErrorImplCopyWith<$Res> {
   factory _$$OfflinePersistanceErrorImplCopyWith(
           _$OfflinePersistanceErrorImpl value,
           $Res Function(_$OfflinePersistanceErrorImpl) then) =
       __$$OfflinePersistanceErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Failure failure});
+  $Res call({Failure failure, ClipboardItem? item});
+
+  $ClipboardItemCopyWith<$Res>? get item;
 }
 
 /// @nodoc
@@ -765,27 +1582,46 @@ class __$$OfflinePersistanceErrorImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? failure = null,
+    Object? item = freezed,
   }) {
     return _then(_$OfflinePersistanceErrorImpl(
       null == failure
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
               as Failure,
+      freezed == item
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as ClipboardItem?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ClipboardItemCopyWith<$Res>? get item {
+    if (_value.item == null) {
+      return null;
+    }
+
+    return $ClipboardItemCopyWith<$Res>(_value.item!, (value) {
+      return _then(_value.copyWith(item: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
-  const _$OfflinePersistanceErrorImpl(this.failure);
+  const _$OfflinePersistanceErrorImpl(this.failure, [this.item]);
 
   @override
   final Failure failure;
+  @override
+  final ClipboardItem? item;
 
   @override
   String toString() {
-    return 'OfflinePersistanceState.error(failure: $failure)';
+    return 'OfflinePersistanceState.error(failure: $failure, item: $item)';
   }
 
   @override
@@ -793,11 +1629,12 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$OfflinePersistanceErrorImpl &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.failure, failure) || other.failure == failure) &&
+            (identical(other.item, item) || other.item == item));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failure);
+  int get hashCode => Object.hash(runtimeType, failure, item);
 
   @JsonKey(ignore: true)
   @override
@@ -812,11 +1649,15 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     required TResult Function() initial,
     required TResult Function(ClipboardItem item) creatingItem,
     required TResult Function(ClipboardItem item) updatingItem,
+    required TResult Function(ClipboardItem item) deletingItem,
+    required TResult Function(ClipboardItem item) deletedItem,
     required TResult Function(ClipboardItem item, bool created, bool synced)
         saved,
-    required TResult Function(Failure failure) error,
+    required TResult Function() decrypting,
+    required TResult Function() decrypted,
+    required TResult Function(Failure failure, ClipboardItem? item) error,
   }) {
-    return error(failure);
+    return error(failure, item);
   }
 
   @override
@@ -825,10 +1666,14 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     TResult? Function()? initial,
     TResult? Function(ClipboardItem item)? creatingItem,
     TResult? Function(ClipboardItem item)? updatingItem,
+    TResult? Function(ClipboardItem item)? deletingItem,
+    TResult? Function(ClipboardItem item)? deletedItem,
     TResult? Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult? Function(Failure failure)? error,
+    TResult? Function()? decrypting,
+    TResult? Function()? decrypted,
+    TResult? Function(Failure failure, ClipboardItem? item)? error,
   }) {
-    return error?.call(failure);
+    return error?.call(failure, item);
   }
 
   @override
@@ -837,12 +1682,16 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     TResult Function()? initial,
     TResult Function(ClipboardItem item)? creatingItem,
     TResult Function(ClipboardItem item)? updatingItem,
+    TResult Function(ClipboardItem item)? deletingItem,
+    TResult Function(ClipboardItem item)? deletedItem,
     TResult Function(ClipboardItem item, bool created, bool synced)? saved,
-    TResult Function(Failure failure)? error,
+    TResult Function()? decrypting,
+    TResult Function()? decrypted,
+    TResult Function(Failure failure, ClipboardItem? item)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure);
+      return error(failure, item);
     }
     return orElse();
   }
@@ -853,7 +1702,12 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     required TResult Function(OfflinePersistanceInitial value) initial,
     required TResult Function(OfflinePersistanceCreating value) creatingItem,
     required TResult Function(OfflinePersistanceUpdating value) updatingItem,
+    required TResult Function(OfflinePersistanceDeleting value) deletingItem,
+    required TResult Function(OfflinePersistanceDeleted value) deletedItem,
     required TResult Function(OfflinePersistanceSaved value) saved,
+    required TResult Function(OfflinePersistanceDecryptingState value)
+        decrypting,
+    required TResult Function(OfflinePersistanceDecryptedState value) decrypted,
     required TResult Function(OfflinePersistanceError value) error,
   }) {
     return error(this);
@@ -865,7 +1719,11 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     TResult? Function(OfflinePersistanceInitial value)? initial,
     TResult? Function(OfflinePersistanceCreating value)? creatingItem,
     TResult? Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult? Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult? Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult? Function(OfflinePersistanceSaved value)? saved,
+    TResult? Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult? Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult? Function(OfflinePersistanceError value)? error,
   }) {
     return error?.call(this);
@@ -877,7 +1735,11 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
     TResult Function(OfflinePersistanceInitial value)? initial,
     TResult Function(OfflinePersistanceCreating value)? creatingItem,
     TResult Function(OfflinePersistanceUpdating value)? updatingItem,
+    TResult Function(OfflinePersistanceDeleting value)? deletingItem,
+    TResult Function(OfflinePersistanceDeleted value)? deletedItem,
     TResult Function(OfflinePersistanceSaved value)? saved,
+    TResult Function(OfflinePersistanceDecryptingState value)? decrypting,
+    TResult Function(OfflinePersistanceDecryptedState value)? decrypted,
     TResult Function(OfflinePersistanceError value)? error,
     required TResult orElse(),
   }) {
@@ -889,10 +1751,11 @@ class _$OfflinePersistanceErrorImpl implements OfflinePersistanceError {
 }
 
 abstract class OfflinePersistanceError implements OfflinePersistanceState {
-  const factory OfflinePersistanceError(final Failure failure) =
-      _$OfflinePersistanceErrorImpl;
+  const factory OfflinePersistanceError(final Failure failure,
+      [final ClipboardItem? item]) = _$OfflinePersistanceErrorImpl;
 
   Failure get failure;
+  ClipboardItem? get item;
   @JsonKey(ignore: true)
   _$$OfflinePersistanceErrorImplCopyWith<_$OfflinePersistanceErrorImpl>
       get copyWith => throw _privateConstructorUsedError;

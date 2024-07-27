@@ -1,13 +1,25 @@
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/constants/widget_styles.dart';
+import 'dart:math' show min;
+
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-extension MaterialStateExtension<T> on T {
+extension WidgetStateExtension<T> on T {
   /// Convert into material state property
-  MaterialStateProperty<T> get msp => MaterialStateProperty.all(this);
+  WidgetStateProperty<T> get msp => WidgetStateProperty.all(this);
+}
+
+extension StringExtension on String {
+  String sub({int start = 0, int? end}) {
+    final end_ = min(end ?? length, length);
+    return substring(start, end_);
+  }
+
+  String get title {
+    if (isEmpty) return this;
+    if (length == 1) return toUpperCase();
+    return "${this[0].toUpperCase()}${substring(1)}";
+  }
 }
 
 extension BuildContextExtension on BuildContext {
@@ -15,55 +27,6 @@ extension BuildContextExtension on BuildContext {
   ColorScheme get colors => theme.colorScheme;
   TextTheme get textTheme => theme.textTheme;
   bool get isDarkMode => theme.brightness == Brightness.dark;
-  ResponsiveBreakpointsData get breakpoints => ResponsiveBreakpoints.of(this);
-}
-
-extension SnackbarExtension on BuildContext {
-  ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackbar(
-      SnackBar snackBar) {
-    scaffoldMessenger.hideCurrentSnackBar();
-    return scaffoldMessenger.showSnackBar(snackBar);
-  }
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showFailureSnackbar(
-      Failure failure) {
-    final isMobile = breakpoints.isMobile;
-    return showSnackbar(
-      SnackBar(
-        content: Text(failure.message),
-        behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
-        width: isMobile ? null : 400,
-        showCloseIcon: !isMobile,
-      ),
-    );
-  }
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showTextSnackbar(
-      String text,
-      {bool isLoading = false}) {
-    final isMobile = breakpoints.isMobile;
-    return showSnackbar(
-      SnackBar(
-        content: isLoading
-            ? Row(
-                children: [
-                  const SizedBox.square(
-                    dimension: 22,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  width16,
-                  Text(text)
-                ],
-              )
-            : Text(text),
-        showCloseIcon: !isMobile && !isLoading,
-        behavior: isMobile ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
-        width: isMobile ? null : 400,
-      ),
-    );
-  }
 }
 
 extension EnumParserExtension<T extends Enum> on List<T> {
@@ -78,13 +41,17 @@ extension EnumParserExtension<T extends Enum> on List<T> {
 
 extension ListExtension<T> on List<T> {
   List<T> replace(int index, T value) {
-    if (index == -1) return this;
+    if (index == -1) {
+      return this;
+    }
+
     return [...take(index), value, ...skip(index + 1)];
   }
 
   List<T> replaceWhere(bool Function(T value) predicate, T value) {
     final index = indexWhere(predicate);
-    return replace(index, value);
+    final result = replace(index, value);
+    return result;
   }
 
   T getRandom() {
@@ -126,6 +93,10 @@ extension DateTimeExtension on DateTime {
   bool isSameDate(DateTime? other, {bool trueIfNull = false}) {
     if (other == null) return trueIfNull;
     return other.year == year && other.month == month && other.day == day;
+  }
+
+  bool isToday() {
+    return isSameDate(DateTime.now());
   }
 
   String ago([String? locale]) => timeago.format(this, locale: locale);
