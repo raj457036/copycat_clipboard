@@ -17,6 +17,7 @@ import "package:path/path.dart" as p;
 import 'package:rxdart/rxdart.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 import "package:universal_io/io.dart";
+import 'package:window_manager/window_manager.dart';
 
 const _clipTypePriority = [
   Formats.png,
@@ -645,11 +646,16 @@ class CopyToClipboard {
       dialogTitle: 'Save to',
       fileName: p.basename(file.path),
       bytes: await file.readAsBytes(),
+      lockParentWindow: true,
     );
+
+    if (isDesktopPlatform) windowManager.show();
 
     if (outputFile == null) return false;
 
-    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    if (isDesktopPlatform) {
+      final ext = p.extension(file.path);
+      outputFile = p.setExtension(outputFile, ext);
       final result = await EasyWorker.compute<bool, (String, String)>(
         copyFile,
         (file.path, outputFile),

@@ -137,14 +137,7 @@
     "launchAtStartup": "Beim Start starten",
     "launchAtStartupDesc": "Aktivieren Sie die automatische Starten der App beim Start Ihres Geräts.",
     "autoSyncInterval": "Automatisches Synchronisierungsintervall",
-    "autoSyncIntervalDesc": "Der Zwischenspeicher wird alle {TIME} automatisch synchronisiert",
-    "@autoSyncIntervalDesc": {
-        "placeholders": {
-            "TIME": {
-                "type": "String"
-            }
-        }
-    },
+    "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente",
     "clipboardShortcut": "Zwischenspeicher-Kurzbefehle",
     "clipboardShortcutDesc": "Zwischenspeicher überall problemlos aufrufen",
     "clipboardShortcutPreview": "Aktuelle Kurzbefehlstaste: {KEY}",
@@ -246,7 +239,7 @@
     "instantSearch": "Sofortsuche",
     "instantSearchDesc": "Finden Sie, was Sie brauchen, sofort mit leistungsstarken Sofortsuchfunktionen, die die Wiederherstellung von Zwischenablage-Elementen schnell und effizient machen.",
     "syncingUpToLast24Hours": "Synchronisierung der letzten 24 Stunden",
-    "syncingUpToLast24HoursDesc": "Zugriff und Synchronisierung Ihrer Zwischenablage-Historie für bis zu 24 Stunden, um sicherzustellen, dass Sie nie wichtige Kopien verlieren.",
+    "syncingUpToLast24HoursDesc": "Greife auf den Verlauf deines Clipboards zu und synchronisiere ihn auf all deinen Geräten für die letzten 24 Stunden. Dies stellt sicher, dass du keine wichtigen kopierten Elemente verlierst und macht deinen Arbeitsablauf nahtlos und effizient.",
     "upTo3Collections": "Bis zu 3 Sammlungen",
     "upTo3CollectionsDesc": "Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 3 Sammlungen, um eine einfache Kategorisierung für ein besseres Workflow-Management zu ermöglichen.",
     "autoSyncEvery60Seconds": "Automatische Synchronisierung alle 60 Sekunden",
@@ -257,8 +250,8 @@
     "supportE2EEDesc": "E2EE wird alles verschlüsseln für überlegene Privatsphäre.",
     "upto50Collection": "Bis zu 50 Sammlungen",
     "upto50CollectionDesc": "Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 50 Sammlungen für eine optimale Verwaltung.",
-    "syncLast720Hr": "Synchronisierung der letzten 720 Stunden",
-    "syncLast720HrDesc": "Genießen Sie erweiterten Zugriff auf Ihre Zwischenablage-Historie mit der Synchronisierung der letzten 30 Tage.",
+    "syncLast720Hr": "Synchronisierung der letzten 30 Tage",
+    "syncLast720HrDesc": "Der Verlauf des Clipboards wird auf all deinen Geräten für Clips, die in den letzten 30 Tagen erstellt wurden, synchronisiert. Das bedeutet, dass du auf alle Clips zugreifen kannst, die du im letzten Monat kopiert hast, egal welches Gerät du verwendest.",
     "realtimeSync": "Echtzeit-Synchronisation",
     "realtimeSyncDesc": "Erleben Sie blitzschnelle Synchronisierung.",
     "prioritySupport": "Schneller und priorisierter Support",
@@ -304,8 +297,8 @@
     "e2eeExportNote": "Herzlichen Glückwunsch, Sie haben die Ende-zu-Ende-Verschlüsselung erfolgreich eingerichtet.",
     "e2eeExportDesc": "Klicken Sie unten auf die Schaltfläche, um Ihren E2EE-Tresorschlüssel zu exportieren.\nSpeichern Sie den Schlüssel an einem sicheren Ort, um sicherzustellen, dass Sie andere Geräte einrichten können, um auf Ihre verschlüsselten Informationen zuzugreifen.",
     "exportKey": "E2EE-Tresorschlüssel exportieren",
-    "exportSuccess": "✅ Erfolgreich den E2EE-Tresorschlüssel exportiert",
-
+    "exportSuccess": "✅ Erfolgreich exportiert",
+    "copySuccess": "✅ Erfolgreich in die Zwischenablage kopiert",
     "whatsNew": "Was gibt's Neues?",
     "feature1": "Intelligente plattformübergreifende Zwischenablage",
     "feature1Desc": "Synchronisieren Sie nahtlos den Inhalt Ihrer Zwischenablage auf all Ihren Geräten. Egal ob Text, Bilder oder Dateien, greifen Sie überall auf Ihren Zwischenablageverlauf zu.",

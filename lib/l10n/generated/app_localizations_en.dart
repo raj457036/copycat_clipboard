@@ -310,9 +310,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoSyncInterval => 'Auto Sync Interval';
 
   @override
-  String autoSyncIntervalDesc(String TIME) {
-    return 'Clipboard will be automatically synced every $TIME';
-  }
+  String get autoSyncIntervalDesc => 'Clipboard will be automatically synced';
 
   @override
   String get clipboardShortcut => 'Clipboard Shortcut';
@@ -531,11 +529,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Find what you need instantly with powerful instant search capabilities, making retrieval of clipboard items fast and efficient.';
 
   @override
-  String get syncingUpToLast24Hours => 'Syncing up to Last 24 Hours';
+  String get syncingUpToLast24Hours => 'Syncing Up to the Last 24 Hours';
 
   @override
   String get syncingUpToLast24HoursDesc =>
-      'Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies.';
+      'Access and sync your clipboard history across all your devices for the past 24 hours. This ensures you never lose important copied items, making your workflow seamless and efficient.';
 
   @override
   String get upTo3Collections => 'Up to 3 Collections';
@@ -572,11 +570,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Organize your clipboard items into up to 50 collections for ultimate management.';
 
   @override
-  String get syncLast720Hr => 'Syncing up to last 720 Hours';
+  String get syncLast720Hr => 'Syncing Up to the Last 30 Days';
 
   @override
   String get syncLast720HrDesc =>
-      'Enjoy extended access to your clipboard history with syncing for the last 30 days.';
+      'Clipboard history is synced across all your devices for clips created within the last 30 days (720 hours). This means you can access any clip you copied in the past month, no matter which device you are using.';
 
   @override
   String get realtimeSync => 'Real Time Synchronization';
@@ -723,7 +721,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportKey => 'Export E2EE Vault Key';
 
   @override
-  String get exportSuccess => '✅ Successfully exported E2EE Vault key';
+  String get exportSuccess => '✅ Successfully exported';
+
+  @override
+  String get copySuccess => '✅ Successfully copied to clipboard';
 
   @override
   String get whatsNew => 'What\'s New?';
@@ -823,7 +824,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get upgradeToPro =>
-      'Enjoy over 720 hours of synced history, more than 50 collections, end-to-end encryption, real-time sync, access to the newest features, and much more.';
+      'Enjoy over 30 days of synced history, over 50 collections, end-to-end encryption, real-time syncing, access to the newest features, and much more.';
 
   @override
   String get tryAgain => 'Please try again';

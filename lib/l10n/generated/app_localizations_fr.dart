@@ -314,9 +314,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get autoSyncInterval => 'Intervalle de Synchronisation Automatique';
 
   @override
-  String autoSyncIntervalDesc(String TIME) {
-    return 'Le presse-papiers sera automatiquement synchronisé toutes les $TIME';
-  }
+  String get autoSyncIntervalDesc =>
+      'El portapapeles se sincronizará automáticamente';
 
   @override
   String get clipboardShortcut => 'Raccourci du Presse-papiers';
@@ -538,11 +537,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncingUpToLast24Hours =>
-      'Synchronisation des Dernières 24 Heures';
+      'Synchronisation des dernières 24 heures';
 
   @override
   String get syncingUpToLast24HoursDesc =>
-      'Accédez et synchronisez votre historique du presse-papiers jusqu\'à 24 heures, garantissant que vous ne perdez jamais de copies importantes.';
+      'Accédez à l\'historique de votre presse-papiers et synchronisez-le sur tous vos appareils au cours des dernières 24 heures. Cela garantit que vous ne perdez jamais d\'éléments copiés importants, rendant votre flux de travail fluide et efficace.';
 
   @override
   String get upTo3Collections => 'Jusqu\'à 3 Collections';
@@ -580,11 +579,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Organisez les éléments de votre presse-papiers en jusqu\'à 50 collections pour une gestion optimale.';
 
   @override
-  String get syncLast720Hr => 'Synchronisation des Dernières 720 Heures';
+  String get syncLast720Hr => 'Synchronisation des 30 derniers jours';
 
   @override
   String get syncLast720HrDesc =>
-      'Profitez d\'un accès étendu à votre historique du presse-papiers avec une synchronisation des 30 derniers jours.';
+      'L\'historique du presse-papiers est synchronisé sur tous vos appareils pour les clips créés au cours des 30 derniers jours. Cela signifie que vous pouvez accéder à tout clip que vous avez copié au cours du mois dernier, quel que soit l\'appareil que vous utilisez.';
 
   @override
   String get realtimeSync => 'Synchronisation en Temps Réel';
@@ -733,7 +732,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get exportKey => 'Exporter une Clé de Coffre E2EE';
 
   @override
-  String get exportSuccess => '✅ Clé de coffre E2EE exportée avec succès';
+  String get exportSuccess => '✅ Exporté avec succès';
+
+  @override
+  String get copySuccess => '✅ Copié avec succès dans le presse-papiers';
 
   @override
   String get whatsNew => 'Quoi de neuf ?';

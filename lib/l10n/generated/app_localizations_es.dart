@@ -314,9 +314,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoSyncInterval => 'Intervalo de Sincronización Automática';
 
   @override
-  String autoSyncIntervalDesc(String TIME) {
-    return 'El portapapeles se sincronizará automáticamente cada $TIME';
-  }
+  String get autoSyncIntervalDesc =>
+      'El portapapeles se sincronizará automáticamente';
 
   @override
   String get clipboardShortcut => 'Atajo de Portapapeles';
@@ -538,11 +537,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get syncingUpToLast24Hours =>
-      'Sincronización de hasta las Últimas 24 Horas';
+      'Sincronizando hasta las últimas 24 horas';
 
   @override
   String get syncingUpToLast24HoursDesc =>
-      'Accede y sincroniza tu historial del portapapeles de hasta 24 horas, asegurando que nunca pierdas copias importantes.';
+      'Accede y sincroniza el historial de tu portapapeles en todos tus dispositivos durante las últimas 24 horas. Esto garantiza que nunca pierdas elementos importantes copiados, haciendo tu flujo de trabajo fluido y eficiente.';
 
   @override
   String get upTo3Collections => 'Hasta 3 Colecciones';
@@ -580,11 +579,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Organiza los elementos de tu portapapeles en hasta 50 colecciones para una gestión óptima.';
 
   @override
-  String get syncLast720Hr => 'Sincronización de hasta las Últimas 720 Horas';
+  String get syncLast720Hr => 'Sincronizando hasta los últimos 30 días';
 
   @override
   String get syncLast720HrDesc =>
-      'Disfruta de acceso extendido a tu historial del portapapeles con sincronización de los últimos 30 días.';
+      'El historial del portapapeles se sincroniza en todos tus dispositivos para los clips creados en los últimos 30 días. Esto significa que puedes acceder a cualquier clip que copiaste en el último mes, sin importar qué dispositivo estés usando.';
 
   @override
   String get realtimeSync => 'Sincronización en Tiempo Real';
@@ -731,7 +730,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportKey => 'Exportar Clave de la Bóveda E2EE';
 
   @override
-  String get exportSuccess => '✅ Clave del cofre E2EE exportada correctamente';
+  String get exportSuccess => '✅ Exportado con éxito';
+
+  @override
+  String get copySuccess => '✅ Copiado al portapapeles con éxito';
 
   @override
   String get whatsNew => '¿Qué hay de nuevo?';
