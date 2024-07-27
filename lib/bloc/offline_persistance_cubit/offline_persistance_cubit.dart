@@ -9,6 +9,7 @@ import 'package:clipboard/data/repositories/clipboard.dart';
 import 'package:clipboard/data/services/clipboard_service.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
+import 'package:clipboard/utils/analytics.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -146,6 +147,8 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
           sharePositionOrigin: origin,
         );
     }
+
+    logFeatureUsed(feature: "share");
   }
 
   Future<bool> copyToClipboard(

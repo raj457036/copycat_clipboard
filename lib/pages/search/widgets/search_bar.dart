@@ -3,6 +3,7 @@ import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
 import 'package:clipboard/common/events.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
+import 'package:clipboard/utils/analytics.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,11 @@ class _SearchBarStInputate extends State<SearchInputBar> {
     super.dispose();
   }
 
+  void search(String text) {
+    logFeatureUsed(feature: "search");
+    context.read<SearchCubit>().search(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SearchBar(
@@ -55,9 +61,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       //   ),
       // ],
       textInputAction: TextInputAction.search,
-      onSubmitted: (value) {
-        context.read<SearchCubit>().search(value);
-      },
+      onSubmitted: search,
     );
   }
 }
