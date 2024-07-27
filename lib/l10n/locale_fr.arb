@@ -137,14 +137,7 @@
     "launchAtStartup": "Lancer au Démarrage",
     "launchAtStartupDesc": "Permet de démarrer l'application automatiquement au démarrage de votre appareil.",
     "autoSyncInterval": "Intervalle de Synchronisation Automatique",
-    "autoSyncIntervalDesc": "Le presse-papiers sera automatiquement synchronisé toutes les {TIME}",
-    "@autoSyncIntervalDesc": {
-        "placeholders": {
-            "TIME": {
-                "type": "String"
-            }
-        }
-    },
+    "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente",
     "clipboardShortcut": "Raccourci du Presse-papiers",
     "clipboardShortcutDesc": "Accédez facilement au presse-papiers partout",
     "clipboardShortcutPreview": "Touche de raccourci actuelle : {KEY}",
@@ -245,8 +238,8 @@
     "googleDriveIntegrationDesc": "Stockez en toute sécurité des fichiers et des médias sur Google Drive, en s'intégrant parfaitement avec CopyCat Clipboard pour une gestion améliorée des données.",
     "instantSearch": "Recherche Instantanée",
     "instantSearchDesc": "Trouvez ce dont vous avez besoin instantanément avec de puissantes capacités de recherche instantanée, rendant la récupération des éléments du presse-papiers rapide et efficace.",
-    "syncingUpToLast24Hours": "Synchronisation des Dernières 24 Heures",
-    "syncingUpToLast24HoursDesc": "Accédez et synchronisez votre historique du presse-papiers jusqu'à 24 heures, garantissant que vous ne perdez jamais de copies importantes.",
+    "syncingUpToLast24Hours": "Synchronisation des dernières 24 heures",
+    "syncingUpToLast24HoursDesc": "Accédez à l'historique de votre presse-papiers et synchronisez-le sur tous vos appareils au cours des dernières 24 heures. Cela garantit que vous ne perdez jamais d'éléments copiés importants, rendant votre flux de travail fluide et efficace.",
     "upTo3Collections": "Jusqu'à 3 Collections",
     "upTo3CollectionsDesc": "Organisez les éléments de votre presse-papiers en jusqu'à 3 collections, offrant une catégorisation simple pour une meilleure gestion du flux de travail.",
     "autoSyncEvery60Seconds": "Synchronisation Automatique Toutes les 60 Secondes",
@@ -257,8 +250,8 @@
     "supportE2EEDesc": "E2EE chiffrera tout pour une confidentialité supérieure.",
     "upto50Collection": "Jusqu'à 50 Collections",
     "upto50CollectionDesc": "Organisez les éléments de votre presse-papiers en jusqu'à 50 collections pour une gestion optimale.",
-    "syncLast720Hr": "Synchronisation des Dernières 720 Heures",
-    "syncLast720HrDesc": "Profitez d'un accès étendu à votre historique du presse-papiers avec une synchronisation des 30 derniers jours.",
+    "syncLast720Hr": "Synchronisation des 30 derniers jours",
+    "syncLast720HrDesc": "L'historique du presse-papiers est synchronisé sur tous vos appareils pour les clips créés au cours des 30 derniers jours. Cela signifie que vous pouvez accéder à tout clip que vous avez copié au cours du mois dernier, quel que soit l'appareil que vous utilisez.",
     "realtimeSync": "Synchronisation en Temps Réel",
     "realtimeSyncDesc": "Expérimentez une synchronisation ultra-rapide.",
     "prioritySupport": "Support Rapide et Prioritaire",
@@ -304,8 +297,8 @@
     "e2eeExportNote": "Félicitations, vous avez configuré avec succès le chiffrement de bout en bout.",
     "e2eeExportDesc": "Cliquez sur le bouton ci-dessous pour exporter votre clé de coffre E2EE.\nEnregistrez la clé dans un endroit sûr pour garantir que vous pourrez configurer d'autres appareils afin d'accéder à vos informations cryptées.",
     "exportKey": "Exporter une Clé de Coffre E2EE",
-    "exportSuccess": "✅ Clé de coffre E2EE exportée avec succès",
-
+    "exportSuccess": "✅ Exporté avec succès",
+    "copySuccess": "✅ Copié avec succès dans le presse-papiers",
     "whatsNew": "Quoi de neuf ?",
     "feature1": "Presse-papiers Intelligent Multi-Plateforme",
     "feature1Desc": "Synchronisez sans effort le contenu de votre presse-papiers sur tous vos appareils. Qu'il s'agisse de texte, d'images ou de fichiers, accédez à l'historique de votre presse-papiers où que vous alliez.",

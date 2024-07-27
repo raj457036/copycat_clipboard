@@ -654,8 +654,8 @@ abstract class AppLocalizations {
   /// No description provided for @autoSyncIntervalDesc.
   ///
   /// In en, this message translates to:
-  /// **'Clipboard will be automatically synced every {TIME}'**
-  String autoSyncIntervalDesc(String TIME);
+  /// **'Clipboard will be automatically synced'**
+  String get autoSyncIntervalDesc;
 
   /// No description provided for @clipboardShortcut.
   ///
@@ -1050,13 +1050,13 @@ abstract class AppLocalizations {
   /// No description provided for @syncingUpToLast24Hours.
   ///
   /// In en, this message translates to:
-  /// **'Syncing up to Last 24 Hours'**
+  /// **'Syncing Up to the Last 24 Hours'**
   String get syncingUpToLast24Hours;
 
   /// No description provided for @syncingUpToLast24HoursDesc.
   ///
   /// In en, this message translates to:
-  /// **'Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies.'**
+  /// **'Access and sync your clipboard history across all your devices for the past 24 hours. This ensures you never lose important copied items, making your workflow seamless and efficient.'**
   String get syncingUpToLast24HoursDesc;
 
   /// No description provided for @upTo3Collections.
@@ -1122,13 +1122,13 @@ abstract class AppLocalizations {
   /// No description provided for @syncLast720Hr.
   ///
   /// In en, this message translates to:
-  /// **'Syncing up to last 720 Hours'**
+  /// **'Syncing Up to the Last 30 Days'**
   String get syncLast720Hr;
 
   /// No description provided for @syncLast720HrDesc.
   ///
   /// In en, this message translates to:
-  /// **'Enjoy extended access to your clipboard history with syncing for the last 30 days.'**
+  /// **'Clipboard history is synced across all your devices for clips created within the last 30 days (720 hours). This means you can access any clip you copied in the past month, no matter which device you are using.'**
   String get syncLast720HrDesc;
 
   /// No description provided for @realtimeSync.
@@ -1404,8 +1404,14 @@ abstract class AppLocalizations {
   /// No description provided for @exportSuccess.
   ///
   /// In en, this message translates to:
-  /// **'✅ Successfully exported E2EE Vault key'**
+  /// **'✅ Successfully exported'**
   String get exportSuccess;
+
+  /// No description provided for @copySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Successfully copied to clipboard'**
+  String get copySuccess;
 
   /// No description provided for @whatsNew.
   ///
@@ -1578,7 +1584,7 @@ abstract class AppLocalizations {
   /// No description provided for @upgradeToPro.
   ///
   /// In en, this message translates to:
-  /// **'Enjoy over 720 hours of synced history, more than 50 collections, end-to-end encryption, real-time sync, access to the newest features, and much more.'**
+  /// **'Enjoy over 30 days of synced history, over 50 collections, end-to-end encryption, real-time syncing, access to the newest features, and much more.'**
   String get upgradeToPro;
 
   /// No description provided for @tryAgain.

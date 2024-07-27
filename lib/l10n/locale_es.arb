@@ -137,14 +137,7 @@
     "launchAtStartup": "Lanzar al Iniciar",
     "launchAtStartupDesc": "Habilitar para iniciar la aplicación automáticamente cuando tu dispositivo se encienda.",
     "autoSyncInterval": "Intervalo de Sincronización Automática",
-    "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente cada {TIME}",
-    "@autoSyncIntervalDesc": {
-        "placeholders": {
-            "TIME": {
-                "type": "String"
-            }
-        }
-    },
+    "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente",
     "clipboardShortcut": "Atajo de Portapapeles",
     "clipboardShortcutDesc": "Accede fácilmente al portapapeles en cualquier lugar",
     "clipboardShortcutPreview": "Tecla de Atajo Actual : {KEY}",
@@ -245,8 +238,8 @@
     "googleDriveIntegrationDesc": "Almacena de forma segura archivos y medios en Google Drive, integrándose perfectamente con CopyCat Clipboard para una mejor gestión de datos.",
     "instantSearch": "Búsqueda Instantánea",
     "instantSearchDesc": "Encuentra lo que necesitas al instante con potentes capacidades de búsqueda instantánea, haciendo que la recuperación de elementos del portapapeles sea rápida y eficiente.",
-    "syncingUpToLast24Hours": "Sincronización de hasta las Últimas 24 Horas",
-    "syncingUpToLast24HoursDesc": "Accede y sincroniza tu historial del portapapeles de hasta 24 horas, asegurando que nunca pierdas copias importantes.",
+    "syncingUpToLast24Hours": "Sincronizando hasta las últimas 24 horas",
+    "syncingUpToLast24HoursDesc": "Accede y sincroniza el historial de tu portapapeles en todos tus dispositivos durante las últimas 24 horas. Esto garantiza que nunca pierdas elementos importantes copiados, haciendo tu flujo de trabajo fluido y eficiente.",
     "upTo3Collections": "Hasta 3 Colecciones",
     "upTo3CollectionsDesc": "Organiza los elementos de tu portapapeles en hasta 3 colecciones, proporcionando una categorización simple para una mejor gestión del flujo de trabajo.",
     "autoSyncEvery60Seconds": "Sincronización Automática Cada 60 Segundos",
@@ -257,8 +250,8 @@
     "supportE2EEDesc": "E2EE hará que todo esté cifrado para una privacidad superior.",
     "upto50Collection": "Hasta 50 Colecciones",
     "upto50CollectionDesc": "Organiza los elementos de tu portapapeles en hasta 50 colecciones para una gestión óptima.",
-    "syncLast720Hr": "Sincronización de hasta las Últimas 720 Horas",
-    "syncLast720HrDesc": "Disfruta de acceso extendido a tu historial del portapapeles con sincronización de los últimos 30 días.",
+    "syncLast720Hr": "Sincronizando hasta los últimos 30 días",
+    "syncLast720HrDesc": "El historial del portapapeles se sincroniza en todos tus dispositivos para los clips creados en los últimos 30 días. Esto significa que puedes acceder a cualquier clip que copiaste en el último mes, sin importar qué dispositivo estés usando.",
     "realtimeSync": "Sincronización en Tiempo Real",
     "realtimeSyncDesc": "Experimenta una sincronización ultrarrápida.",
     "prioritySupport": "Soporte Rápido y Prioritario",
@@ -304,8 +297,8 @@
     "e2eeExportNote": "Felicidades, ha configurado con éxito el cifrado de extremo a extremo.",
     "e2eeExportDesc": "Haga clic en el botón a continuación para exportar su clave de la Bóveda E2EE.\nGuarde la clave en un lugar seguro para asegurarse de que puede configurar otros dispositivos y acceder a su información cifrada.",
     "exportKey": "Exportar Clave de la Bóveda E2EE",
-    "exportSuccess": "✅ Clave del cofre E2EE exportada correctamente",
-    
+    "exportSuccess": "✅ Exportado con éxito",
+    "copySuccess": "✅ Copiado al portapapeles con éxito",
     "whatsNew": "¿Qué hay de nuevo?",
     "feature1": "Portapapeles Inteligente Multiplataforma",
     "feature1Desc": "Sincroniza sin problemas el contenido de tu portapapeles en todos tus dispositivos. Ya sea texto, imágenes o archivos, accede a tu historial de portapapeles dondequiera que vayas.",

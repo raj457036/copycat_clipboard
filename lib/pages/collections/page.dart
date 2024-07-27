@@ -7,6 +7,7 @@ import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/no_collection.dart';
+import 'package:clipboard/widgets/pro_tip_banner.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +55,12 @@ class CollectionsPage extends StatelessWidget {
                 onRefresh: () => onRefresh(context),
                 child: CustomScrollView(
                   slivers: <Widget>[
+                    const SliverToBoxAdapter(
+                      child: ProTipTile(
+                        tip:
+                            "To ensure your important clips are always available across all your devices, save them in a collection! Clips in collections are synced regardless of their age, so you can access them anytime, anywhere.",
+                      ),
+                    ),
                     BlocBuilder<ClipCollectionCubit, ClipCollectionState>(
                       builder: (context, state) {
                         switch (state) {

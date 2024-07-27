@@ -18,17 +18,13 @@ Future<void> copyToClipboard(
   bool noAck = false,
 }) async {
   try {
-    final result =
-        await context.read<OfflinePersistanceCubit>().copyToClipboard(
-              item,
-              saveFile: saveFile,
-            );
-
-    if (noAck) return;
+    final cubit = context.read<OfflinePersistanceCubit>();
+    final result = await cubit.copyToClipboard(item, saveFile: saveFile);
+    if (noAck || !context.mounted) return;
     if (result) {
-      showTextSnackbar("Copied");
-    } else {
-      showTextSnackbar("⚠️ Copy failed or cancelled");
+      showTextSnackbar(
+        saveFile ? context.locale.exportSuccess : context.locale.copySuccess,
+      );
     }
   } catch (e) {
     showTextSnackbar("⭕️ Failed to copy. Something went wrong!");

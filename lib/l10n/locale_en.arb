@@ -137,14 +137,7 @@
     "launchAtStartup": "Launch At Startup",
     "launchAtStartupDesc": "Enable to start the app automatically when your device starts.",
     "autoSyncInterval": "Auto Sync Interval",
-    "autoSyncIntervalDesc": "Clipboard will be automatically synced every {TIME}",
-    "@autoSyncIntervalDesc": {
-        "placeholders": {
-            "TIME": {
-                "type": "String"
-            }
-        }
-    },
+    "autoSyncIntervalDesc": "Clipboard will be automatically synced",
     "clipboardShortcut": "Clipboard Shortcut",
     "clipboardShortcutDesc": "Effortlessly Access Clipboard Anywhere",
     "clipboardShortcutPreview": "Current Shortcut Key : {KEY}",
@@ -246,8 +239,8 @@
     "googleDriveIntegrationDesc": "Securely store files and media on Google Drive, integrating seamlessly with CopyCat Clipboard for enhanced data management.",
     "instantSearch": "Instant Search",
     "instantSearchDesc": "Find what you need instantly with powerful instant search capabilities, making retrieval of clipboard items fast and efficient.",
-    "syncingUpToLast24Hours": "Syncing up to Last 24 Hours",
-    "syncingUpToLast24HoursDesc": "Access and sync your clipboard history for up to 24 hours, ensuring you never lose important copies.",
+    "syncingUpToLast24Hours": "Syncing Up to the Last 24 Hours",
+    "syncingUpToLast24HoursDesc": "Access and sync your clipboard history across all your devices for the past 24 hours. This ensures you never lose important copied items, making your workflow seamless and efficient.",
     "upTo3Collections": "Up to 3 Collections",
     "upTo3CollectionsDesc": "Organize your clipboard items into up to 3 collections, providing simple categorization for better workflow management.",
     "autoSyncEvery60Seconds": "Auto-Sync Every 60 Seconds",
@@ -258,8 +251,8 @@
     "supportE2EEDesc": "E2EE will make everything encrypted for superior privacy.",
     "upto50Collection": "Up to 50 Collections",
     "upto50CollectionDesc": "Organize your clipboard items into up to 50 collections for ultimate management.",
-    "syncLast720Hr": "Syncing up to last 720 Hours",
-    "syncLast720HrDesc": "Enjoy extended access to your clipboard history with syncing for the last 30 days.",
+    "syncLast720Hr": "Syncing Up to the Last 30 Days",
+    "syncLast720HrDesc": "Clipboard history is synced across all your devices for clips created within the last 30 days. This means you can access any clip you copied in the past month, no matter which device you are using.",
     "realtimeSync": "Real Time Synchronization",
     "realtimeSyncDesc": "Experience lightning-fast syncing.",
     "prioritySupport": "Faster and Priority Support",
@@ -307,7 +300,8 @@
     "e2eeExportNote": "Congratulations, you have successfully configured the end-to-end encryption.",
     "e2eeExportDesc": "Click the button below to export your E2EE Vault key.\nSave the key in a secure location to ensure you can set up other devices to access your encrypted information.",
     "exportKey": "Export E2EE Vault Key",
-    "exportSuccess": "✅ Successfully exported E2EE Vault key",
+    "exportSuccess": "✅ Successfully exported",
+    "copySuccess": "✅ Successfully copied to clipboard",
     "whatsNew": "What's New?",
     "feature1": "Smart Cross-Platform Clipboard",
     "feature1Desc": "Seamlessly sync your clipboard content across all your devices. Whether it's text, images, or files, access your clipboard history wherever you go.",
@@ -351,7 +345,7 @@
     "accountDeleteDialogTitle": "Account Delete Request",
     "accountDeleteDialogDesc": "You will be redirected to the account delete request form, are you sure?",
     "unlockPremiumFeatures": "Unlock CopyCat PRO",
-    "upgradeToPro": "Enjoy over 720 hours of synced history, more than 50 collections, end-to-end encryption, real-time sync, access to the newest features, and much more.",
+    "upgradeToPro": "Enjoy over 30 days of synced history, over 50 collections, end-to-end encryption, real-time syncing, access to the newest features, and much more.",
     "tryAgain": "Please try again",
     "continue_": "Continue",
     "year": "year",

@@ -312,9 +312,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get autoSyncInterval => 'Automatisches Synchronisierungsintervall';
 
   @override
-  String autoSyncIntervalDesc(String TIME) {
-    return 'Der Zwischenspeicher wird alle $TIME automatisch synchronisiert';
-  }
+  String get autoSyncIntervalDesc =>
+      'El portapapeles se sincronizará automáticamente';
 
   @override
   String get clipboardShortcut => 'Zwischenspeicher-Kurzbefehle';
@@ -540,7 +539,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get syncingUpToLast24HoursDesc =>
-      'Zugriff und Synchronisierung Ihrer Zwischenablage-Historie für bis zu 24 Stunden, um sicherzustellen, dass Sie nie wichtige Kopien verlieren.';
+      'Greife auf den Verlauf deines Clipboards zu und synchronisiere ihn auf all deinen Geräten für die letzten 24 Stunden. Dies stellt sicher, dass du keine wichtigen kopierten Elemente verlierst und macht deinen Arbeitsablauf nahtlos und effizient.';
 
   @override
   String get upTo3Collections => 'Bis zu 3 Sammlungen';
@@ -578,11 +577,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Organisieren Sie Ihre Zwischenablage-Elemente in bis zu 50 Sammlungen für eine optimale Verwaltung.';
 
   @override
-  String get syncLast720Hr => 'Synchronisierung der letzten 720 Stunden';
+  String get syncLast720Hr => 'Synchronisierung der letzten 30 Tage';
 
   @override
   String get syncLast720HrDesc =>
-      'Genießen Sie erweiterten Zugriff auf Ihre Zwischenablage-Historie mit der Synchronisierung der letzten 30 Tage.';
+      'Der Verlauf des Clipboards wird auf all deinen Geräten für Clips, die in den letzten 30 Tagen erstellt wurden, synchronisiert. Das bedeutet, dass du auf alle Clips zugreifen kannst, die du im letzten Monat kopiert hast, egal welches Gerät du verwendest.';
 
   @override
   String get realtimeSync => 'Echtzeit-Synchronisation';
@@ -731,8 +730,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exportKey => 'E2EE-Tresorschlüssel exportieren';
 
   @override
-  String get exportSuccess =>
-      '✅ Erfolgreich den E2EE-Tresorschlüssel exportiert';
+  String get exportSuccess => '✅ Erfolgreich exportiert';
+
+  @override
+  String get copySuccess => '✅ Erfolgreich in die Zwischenablage kopiert';
 
   @override
   String get whatsNew => 'Was gibt\'s Neues?';

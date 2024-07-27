@@ -5,7 +5,6 @@ import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/badges.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
-import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,13 +38,7 @@ class AutoSyncInterval extends StatelessWidget {
               enabled: enabled,
               title: Text(context.locale.autoSyncInterval),
               subtitle: Text(
-                context.locale.autoSyncIntervalDesc(
-                  prettyDuration(
-                    Duration(seconds: duration),
-                    abbreviated: true,
-                    delimiter: " ",
-                  ),
-                ),
+                context.locale.autoSyncIntervalDesc,
                 style: textTheme.bodySmall?.copyWith(
                   color: colors.outline,
                 ),
