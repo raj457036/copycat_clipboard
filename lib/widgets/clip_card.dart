@@ -1,401 +1,185 @@
-import 'dart:io';
-
-import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/enums/clip_type.dart';
 import 'package:clipboard/l10n/l10n.dart';
+import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
+import 'package:clipboard/utils/snackbar.dart';
+import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
+import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
+import 'package:clipboard/widgets/clip_cards/encrypted_card.dart';
+import 'package:clipboard/widgets/clip_cards/file_clip_card.dart';
+import 'package:clipboard/widgets/clip_cards/media_clip_card.dart';
+import 'package:clipboard/widgets/clip_cards/text_clip_card.dart';
+import 'package:clipboard/widgets/clip_cards/url_clip_card.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-
-const _borderRadius = BorderRadius.vertical(
-  bottom: Radius.circular(12),
-);
-
-class TextPreview extends StatelessWidget {
-  final ClipboardItem item;
-
-  const TextPreview({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Material(
-      color: colors.surfaceVariant,
-      borderRadius: item.isSynced ? _borderRadius : null,
-      child: InkWell(
-        borderRadius: item.isSynced ? _borderRadius : null,
-        onTap: () {},
-        child: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.all(padding8),
-            child: Text(
-              item.text!,
-              overflow: TextOverflow.fade,
-              maxLines: 10,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MediaPreview extends StatelessWidget {
-  final ClipboardItem item;
-
-  const MediaPreview({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    // context.read<GdriveSyncCubit>().uploadFile(item);
-    return Material(
-      color: colors.surfaceVariant,
-      borderRadius: item.isSynced ? _borderRadius : null,
-      child: InkWell(
-        borderRadius: item.isSynced ? _borderRadius : null,
-        onTap: () {},
-        child: ClipRRect(
-          borderRadius: item.isSynced ? _borderRadius : BorderRadius.zero,
-          child: SizedBox.expand(
-            child: Image(
-              image: FileImage(File(item.localPath!)),
-              gaplessPlayback: true,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class UrlPreview extends StatelessWidget {
-  final ClipboardItem item;
-
-  const UrlPreview({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Material(
-      color: colors.surfaceVariant,
-      borderRadius: item.isSynced ? _borderRadius : null,
-      child: InkWell(
-        borderRadius: item.isSynced ? _borderRadius : null,
-        onTap: () {},
-        child: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.all(padding8),
-            child: Text(
-              item.url!,
-              overflow: TextOverflow.fade,
-              maxLines: 10,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class FilePreview extends StatelessWidget {
-  final ClipboardItem item;
-
-  const FilePreview({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return Material(
-      color: colors.surfaceVariant,
-      borderRadius: item.isSynced ? _borderRadius : null,
-      child: InkWell(
-        borderRadius: item.isSynced ? _borderRadius : null,
-        onTap: () {},
-        child: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.all(padding8),
-            child: item.fileName != null
-                ? Text(
-                    item.fileName!,
-                    overflow: TextOverflow.fade,
-                    maxLines: 10,
-                  )
-                : const Icon(Icons.folder_open),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-Future<void> _copyToClipboard(
-  BuildContext context,
-  ClipboardItem item, {
-  bool copyFileContent = false,
-}) async {
-  final result = await context.read<OfflinePersistanceCubit>().copyToClipboard(
-        item,
-        fileContent: copyFileContent,
-      );
-
-  if (result) {
-    // ignore: use_build_context_synchronously
-    context.showTextSnackbar("📝 Copied to clipboard");
-  } else {
-    // ignore: use_build_context_synchronously
-    context.showTextSnackbar("❌ Failed to copy to clipboard");
-  }
-}
-
-class ClipOptions extends StatelessWidget {
-  final ClipboardItem item;
-
-  const ClipOptions({
-    super.key,
-    required this.item,
-  });
-
-  String getType() {
-    switch (item.type) {
-      case ClipItemType.text:
-        return 'Text';
-      case ClipItemType.media:
-        return 'Media ( ${item.fileMimeType} )';
-      case ClipItemType.url:
-        return 'URL';
-      case ClipItemType.file:
-        return 'File ( ${item.fileExtension} )';
-      default:
-        return '';
-    }
-  }
-
-  Future<void> launchUrl() async {
-    if (item.url != null && Uri.tryParse(item.url!) != null) {
-      await launchUrlString(item.url!);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isMobile = context.breakpoints.isMobile;
-    return DecoratedBox(
-      decoration: const BoxDecoration(),
-      child: Padding(
-        padding: const EdgeInsets.all(padding8),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  getType(),
-                  style: context.textTheme.titleSmall,
-                ),
-                Text(
-                  item.modified.ago(context.locale.localeName),
-                  style: context.textTheme.labelMedium,
-                ),
-              ],
-            ),
-            const Spacer(),
-            if (!isMobile && item.type == ClipItemType.url)
-              IconButton(
-                onPressed: launchUrl,
-                icon: const Icon(
-                  Icons.open_in_new,
-                ),
-                tooltip: "Open in browser",
-              ),
-            if (item.fileExtension == ".txt" || item.type == ClipItemType.media)
-              MenuAnchor(
-                menuChildren: [
-                  if (Platform.isIOS || Platform.isAndroid)
-                    MenuItemButton(
-                      leadingIcon: const Icon(Icons.file_download_outlined),
-                      child: const Text("Save file"),
-                      onPressed: () => _copyToClipboard(context, item),
-                    )
-                  else
-                    MenuItemButton(
-                      leadingIcon: const Icon(Icons.file_copy_outlined),
-                      child: const Text("Copy file"),
-                      onPressed: () => _copyToClipboard(context, item),
-                    ),
-                  MenuItemButton(
-                    leadingIcon: const Icon(Icons.copy_all_rounded),
-                    child: const Text("Copy content"),
-                    onPressed: () =>
-                        _copyToClipboard(context, item, copyFileContent: true),
-                  ),
-                ],
-                child: const Icon(Icons.copy),
-                builder: (BuildContext context, MenuController controller,
-                    Widget? child) {
-                  return IconButton(
-                    onPressed: () {
-                      if (controller.isOpen) {
-                        controller.close();
-                      } else {
-                        controller.open();
-                      }
-                    },
-                    icon: const Icon(Icons.copy),
-                  );
-                },
-              )
-            else
-              IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: () => _copyToClipboard(context, item),
-                tooltip: "Copy to clipboard",
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ClipSyncStatus extends StatelessWidget {
-  final ClipboardItem item;
-
-  const ClipSyncStatus({
-    super.key,
-    required this.item,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (item.lastSynced != null) {
-      return const SizedBox.shrink();
-    }
-    final colors = context.colors;
-    return SizedBox.fromSize(
-      size: const Size.fromHeight(35),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: colors.errorContainer,
-          borderRadius: _borderRadius,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(padding8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.sync_problem_rounded,
-                size: 18,
-              ),
-              width6,
-              Text(
-                "Local",
-                style: context.textTheme.labelMedium,
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Sync Now",
-                  style: context.textTheme.labelMedium
-                      ?.copyWith(color: colors.error),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+import 'package:go_router/go_router.dart';
 
 class ClipCard extends StatelessWidget {
   final ClipboardItem item;
+  final bool deleteAllowed;
+  final List<MenuItem> customMenuItems;
   const ClipCard({
     super.key,
     required this.item,
+    this.deleteAllowed = true,
+    this.customMenuItems = const [],
   });
 
   Widget getPreview() {
     return switch (item.type) {
-      ClipItemType.text => TextPreview(item: item),
-      ClipItemType.media => MediaPreview(item: item),
-      ClipItemType.url => UrlPreview(item: item),
-      ClipItemType.file => FilePreview(item: item),
+      ClipItemType.text => TextClipCard(item: item),
+      ClipItemType.media => MediaClipCard(item: item),
+      ClipItemType.url => UrlClipCard(item: item),
+      ClipItemType.file => FileClipCard(item: item),
     };
   }
 
-  Future<void> deleteItem(BuildContext context) async {
-    final confirmation = await const ConfirmDialog(
-            title: "Delete Item", message: "Are you sure to delete this item?")
-        .open(context);
-
-    if (!confirmation) return;
-
-    // ignore: use_build_context_synchronously
-    await context.read<ClipboardCubit>().deleteItem(item);
+  Future<void> preview(BuildContext context) async {
+    context.pushNamed(
+      RouteConstants.preview,
+      pathParameters: {
+        "id": item.id.toString(),
+      },
+    );
   }
 
-  Future<void> launchUrl() async {
-    if (item.url != null && Uri.tryParse(item.url!) != null) {
-      await launchUrlString(item.url!);
+  Future<void> downloadFile(
+    BuildContext context,
+  ) async {
+    context.read<CloudPersistanceCubit>().download(item);
+  }
+
+  Future<void> decryptItem(BuildContext context) async {
+    final persitCubit = context.read<OfflinePersistanceCubit>();
+    final appConfig = context.read<AppConfigCubit>();
+    if (!appConfig.isE2EESetupDone) {
+      showFailureSnackbar(
+        Failure(
+          message: context.locale.e2eeNotSetup,
+          code: "e2ee-no-setup",
+        ),
+      );
+      return;
     }
+
+    final item_ = await item.decrypt();
+    persitCubit.persist(item_);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          SizedBox.fromSize(
-            size: const Size.fromHeight(56),
-            child: ClipOptions(item: item),
+    final textTheme = context.textTheme;
+    return Menu(
+      items: [
+        if (!item.inCache)
+          MenuItem(
+            icon: Icons.download_for_offline_outlined,
+            text: context.locale.downloadForOffline,
+            onPressed: () => downloadFile(context),
           ),
-          const Divider(height: 0),
-          Expanded(
-            child: Menu(
-              items: [
-                MenuItem(
-                  icon: Icons.copy,
-                  text: 'Copy to clipboard',
-                  onPressed: () => _copyToClipboard(context, item),
-                ),
-                if (item.type == ClipItemType.url)
-                  MenuItem(
-                    icon: Icons.open_in_new,
-                    text: 'Open in browser',
-                    onPressed: launchUrl,
-                  ),
-                if (item.type == ClipItemType.file ||
-                    item.type == ClipItemType.media)
-                  MenuItem(
-                    icon: Icons.save_as_outlined,
-                    text: 'Save to files',
-                    onPressed: () {},
-                  ),
-                const MenuItem(type: MenuItemType.divider),
-                MenuItem(
-                  icon: Icons.delete_outline,
-                  text: 'Delete',
-                  onPressed: () => deleteItem(context),
-                ),
-              ],
-              child: getPreview(),
-            ),
+        if (item.inCache)
+          MenuItem(
+            icon: Icons.copy,
+            text: context.locale.copyToClipboard,
+            onPressed: () => copyToClipboard(context, item),
           ),
-          if (item.lastSynced == null) const Divider(height: 0),
-          ClipSyncStatus(item: item),
-        ],
+        if (item.inCache)
+          MenuItem(
+            icon: Icons.ios_share,
+            text: context.locale.share,
+            onPressed: () => shareClipboardItem(context, item),
+          ),
+        MenuItem(
+          icon: Icons.edit_note_rounded,
+          text: context.locale.previewEdit,
+          onPressed: () => preview(context),
+        ),
+        if (item.type == ClipItemType.url)
+          MenuItem(
+            icon: Icons.open_in_new,
+            text: context.locale.openInBrowser,
+            onPressed: () => launchUrl(item),
+          ),
+        if ((item.type == ClipItemType.file ||
+                item.type == ClipItemType.media) &&
+            item.inCache)
+          MenuItem(
+            icon: Icons.save_alt_rounded,
+            text: context.locale.export,
+            onPressed: () => copyToClipboard(context, item, saveFile: true),
+          ),
+        if ((item.type == ClipItemType.file ||
+                item.type == ClipItemType.media) &&
+            item.inCache)
+          MenuItem(
+            icon: Icons.open_in_new,
+            text: context.locale.open,
+            onPressed: () => openFile(item),
+          ),
+        if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
+        if (deleteAllowed)
+          MenuItem(
+            icon: Icons.delete_outline,
+            text: context.locale.delete,
+            onPressed: () => deleteItem(context, item),
+          ),
+        ...customMenuItems,
+      ],
+      child: Card.outlined(
+        elevation: .5,
+        margin: EdgeInsets.zero,
+        child: InkWell(
+          borderRadius: radius12,
+          onTap: item.encrypted
+              ? () => decryptItem(context)
+              : () => preview(context),
+          child: Column(
+            children: [
+              ClipCardOptionsHeader(item: item),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (item.title != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: padding8,
+                          vertical: padding2,
+                        ),
+                        child: Text(
+                          item.title!,
+                          style: textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                    Expanded(
+                      child: Card(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: radius8,
+                        ),
+                        child: item.encrypted
+                            ? const EncryptedClipItem()
+                            : getPreview(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ClipCardSyncStatusFooter(item: item),
+            ],
+          ),
+        ),
       ),
     );
   }

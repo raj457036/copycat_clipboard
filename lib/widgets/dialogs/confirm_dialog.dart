@@ -1,7 +1,6 @@
-import 'dart:io';
-
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import "package:universal_io/io.dart";
 
 class ConfirmDialog extends StatelessWidget {
   final String title;
@@ -19,13 +18,13 @@ class ConfirmDialog extends StatelessWidget {
 
     final options = [
       TextButton(
-        onPressed: () => context.pop(false),
-        child: const Text("Cancel"),
+        onPressed: () => Navigator.pop(context, false),
+        child: Text(context.locale.cancel),
       ),
       TextButton(
-        onPressed: () => context.pop(true),
+        onPressed: () => Navigator.pop(context, true),
         autofocus: true,
-        child: const Text("Confirm"),
+        child: Text(context.locale.confirm),
       ),
     ];
     return AlertDialog(

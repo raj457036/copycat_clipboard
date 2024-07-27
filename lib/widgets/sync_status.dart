@@ -1,68 +1,66 @@
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/utils/datetime_extension.dart';
+import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/syncing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SyncStatusButton extends StatelessWidget {
   const SyncStatusButton({super.key});
 
-  Future<void> syncNow(BuildContext context, DateTime? lastSync) async {
-    final now = DateTime.now();
-    if (lastSync != null && now.difference(lastSync).inSeconds < 60) {
-      context.showTextSnackbar(
-        '✋ Last sync was less than 1 minutes ago.',
-      );
-      return;
-    }
-
-    final syncManagerCubit = BlocProvider.of<SyncManagerCubit>(context);
-    await syncManagerCubit.syncChanges();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return BlocBuilder<SyncManagerCubit, SyncManagerState>(
       builder: (context, state) {
         bool disabled = false;
         IconData icon = Icons.sync_rounded;
-        String message = "Sync now";
-        DateTime? lastSync;
+        bool isSyncing = false;
+        String message = context.locale.syncNow;
 
         switch (state) {
           case UnknownSyncState():
-            disabled = true;
+            disabled = false;
+            isSyncing = false;
             icon = Icons.sync_lock_rounded;
-            message = "Sync is not available";
+            message = context.locale.syncNotAvailable;
+            Future.delayed(
+              const Duration(seconds: 2),
+              () => syncChanges(context),
+            );
             break;
           case CheckingSyncState():
             disabled = true;
-            icon = Icons.cloud_sync_rounded;
-            message = "Checking for records.";
+            isSyncing = true;
+            message = context.locale.checkingForRecord;
             break;
           case SyncingState(:final progress, :final total):
             disabled = true;
-            icon = Icons.cloud_sync_rounded;
-            message = "Syncing $progress/$total";
+            isSyncing = true;
+            message = context.locale.syncing("$progress/$total");
             break;
           case SyncCheckFailedState(:final failure):
             disabled = false;
+            isSyncing = false;
             icon = Icons.sync_problem_rounded;
-            message = "Sync check failed: ${failure.message}";
+            message = context.locale.syncingCheckFailed(failure.message);
             break;
-          case SyncedState(:final lastSynced):
+          case SyncedState():
             disabled = false;
-            lastSync = lastSynced;
+            isSyncing = false;
             icon = Icons.sync_rounded;
-            message =
-                "Last synced at ${dateFormatter.add_jm().format(lastSynced)}";
+            message = context.locale.synced;
             break;
         }
 
-        return IconButton(
-          onPressed: disabled ? null : () => syncNow(context, lastSync),
-          icon: Icon(icon),
-          tooltip: message,
+        return FloatingActionButton.small(
+          onPressed: disabled ? null : () => syncChanges(context),
+          tooltip: "$message • $metaKey + R",
+          heroTag: "sync-fab",
+          backgroundColor: colors.secondary,
+          foregroundColor: colors.onSecondary,
+          child: isSyncing ? const AnimatedSyncingIcon() : Icon(icon),
         );
       },
     );

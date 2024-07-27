@@ -3,4 +3,8 @@ class PaginatedResult<T> {
   final bool hasMore;
 
   PaginatedResult({required this.results, required this.hasMore});
+
+  PaginatedResult.empty()
+      : hasMore = false,
+        results = [];
 }

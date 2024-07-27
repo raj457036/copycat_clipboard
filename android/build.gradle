@@ -1,5 +1,14 @@
 buildscript {
     ext.kotlin_version='1.9.23';
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.4.1'
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
 
 allprojects {
@@ -8,6 +17,8 @@ allprojects {
         mavenCentral()
     }
 }
+
+
 
 rootProject.buildDir = '../build'
 subprojects {

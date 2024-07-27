@@ -9,11 +9,19 @@ class Failure {
     required this.code,
   });
 
-  factory Failure.fromException(Object e) {
-    return Failure(
-      message: e.toString(),
-      code: e.runtimeType.toString(),
-    );
+  factory Failure.fromException(dynamic e) {
+    if (e is Failure) return e;
+    try {
+      return Failure(
+        message: e.message,
+        code: e.runtimeType.toString(),
+      );
+    } catch (e) {
+      return Failure(
+        message: e.toString(),
+        code: e.runtimeType.toString(),
+      );
+    }
   }
 
   @override
@@ -25,6 +33,21 @@ class Failure {
 const noInternetConnectionFailure = Failure(
   message: 'No internet connection',
   code: 'no_internet',
+);
+
+const authFailure = Failure(
+  message: 'Not logged in',
+  code: 'not_logged_in',
+);
+
+const driveFailure = Failure(
+  message: 'Google Drive is not available.',
+  code: 'gdrive_not_available',
+);
+
+const frequentSyncing = Failure(
+  message: 'Too frequent request.',
+  code: 'frequent-sync-request',
 );
 
 typedef FailureOr<T> = Future<Either<Failure, T>>;

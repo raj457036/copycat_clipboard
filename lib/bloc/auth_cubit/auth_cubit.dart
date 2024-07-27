@@ -1,73 +1,105 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
+import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/strings/route_constants.dart';
+import 'package:clipboard/routes/routes.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:googleapis/drive/v3.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 @singleton
 class AuthCubit extends Cubit<AuthState> {
-  final Account account;
-
-  DateTime? _lastSessionFetched;
-  Session? _session;
+  SupabaseClient sbClient;
 
   AuthCubit(
-    this.account,
+    this.sbClient,
   ) : super(const AuthState.unknown());
 
-  String? get userId =>
-      state.whenOrNull(authenticated: (session) => session.userId);
+  /// validate the code and return a suitable page path
+  Future<String?> validateAuthCode(String code) async {
+    final exchange = await sbClient.auth.exchangeCodeForSession(code);
 
-  Future<Session> getSession() async {
-    final now = DateTime.now();
-    if (_session != null &&
-        _lastSessionFetched != null &&
-        now.difference(_lastSessionFetched!).inMinutes < 55) {
-      return _session!;
+    switch (exchange.redirectType) {
+      case "passwordRecovery":
+        authenticated(exchange.session, exchange.session.user);
+        return RouteConstants.resetPassword;
+      case _:
+        logger.w("Exchange not supported. ${exchange.redirectType}");
     }
-    _session = await account.getSession(sessionId: "current");
-    _lastSessionFetched = DateTime.now();
-    return _session!;
+    return null;
   }
 
-  Future<void> fetchSession() async {
-    emit(const AuthState.authenticating());
-    try {
-      final session = await getSession();
-      emit(AuthState.authenticated(session: session));
-    } catch (e) {
-      emit(const AuthState.unauthenticated());
-      return;
-    }
+  String? get userId => sbClient.auth.currentUser?.id;
+
+  String? get enc1Key {
+    return sbClient.auth.currentUser?.userMetadata?["enc1"];
   }
 
-  Future<void> createNewSession() async {
-    emit(const AuthState.authenticating());
+  Session? get session => sbClient.auth.currentSession;
 
-    try {
-      await account.createOAuth2Session(
-        provider: 'google',
-        scopes: [
-          DriveApi.driveFileScope,
-          DriveApi.driveAppdataScope,
-        ],
+  checkForAuthentication() {
+    if (session != null) {
+      authenticated(
+        session!,
+        session!.user,
       );
-      await fetchSession();
-    } catch (e) {
-      emit(AuthState.unauthenticated(Failure.fromException(e)));
-      return;
+    } else {
+      unauthenticated(authFailure);
     }
   }
 
-  Future<void> logout() async {
+  /// enc1 is always encrypted with enc2 key.
+  Future<void> setupEncryption(String enc2KeyId, String enc1) async {
+    await state.mapOrNull(authenticated: (authState) async {
+      final result = await sbClient.auth.updateUser(UserAttributes(data: {
+        "enc1": enc1,
+        "enc2KeyId": enc2KeyId,
+      }));
+      if (result.user != null) {
+        emit(authState.copyWith(user: result.user!));
+      }
+    });
+  }
+
+  Future<void> setupAnalytics() async {
+    if (!isAnalyticsSupported) return;
+    final user = session!.user;
+
+    await analytics.setUserId(id: user.id);
+    await analytics.setUserProperty(
+      name: "name",
+      value: user.userMetadata?["display_name"],
+    );
+    await analytics.setUserProperty(
+      name: "email",
+      value: user.email,
+    );
+    await analytics.logAppOpen();
+  }
+
+  Future<void> authenticated(Session session, User user) async {
+    setupAnalytics();
+
+    emit(AuthState.authenticated(
+      session: session,
+      user: user,
+    ));
+  }
+
+  void unauthenticated(Failure failure) {
+    emit(AuthState.unauthenticated(failure));
+  }
+
+  Future<void> logout([SignOutScope? scope]) async {
     emit(const AuthState.authenticating());
 
-    await account.deleteSession(sessionId: "current");
+    await sbClient.auth.signOut(scope: scope ?? SignOutScope.local);
 
     emit(const AuthState.unauthenticated());
   }

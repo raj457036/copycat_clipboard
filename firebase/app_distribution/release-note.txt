@@ -1,0 +1,36 @@
+🎉 Version: 0.1.13+33
+
+- Performance improvements and stability enhancements
+
+🎉 Version: 0.1.12+30
+
+- Performance improvements and optimizations.
+- 🔐 Added end to end encryption
+
+🎉 Version: 0.1.11+28
+
+- Performance improvements and optimizations.
+- Improved share content handing
+- User now has option to go back to previous app when content is shared with the app.
+
+🎉 Version: 0.1.6+23
+
+Patch:
+- Login page ui glitch fixed
+
+
+
+🎉 Version: 0.1.6+22
+
+🏆 FIRST BETA RELEASE 🏆
+
+🎉 🎉 Clipboard is now 🐱 CopyCat Clipboard 🎉 🎉
+
+Updates:
+
+- Much more stable release
+- Improved performance
+- Clipboard now stay in your system tray
+- New Theme
+- More responsive shortcut activation
+- Paste to the last focused input field when activated via shortcut. ( Smart Paste )
