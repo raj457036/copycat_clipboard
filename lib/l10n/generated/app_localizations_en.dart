@@ -574,7 +574,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncLast720HrDesc =>
-      'Clipboard history is synced across all your devices for clips created within the last 30 days (720 hours). This means you can access any clip you copied in the past month, no matter which device you are using.';
+      'Clipboard history is synced across all your devices for clips created within the last 30 days. This means you can access any clip you copied in the past month, no matter which device you are using.';
 
   @override
   String get realtimeSync => 'Real Time Synchronization';

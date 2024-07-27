@@ -1128,7 +1128,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncLast720HrDesc.
   ///
   /// In en, this message translates to:
-  /// **'Clipboard history is synced across all your devices for clips created within the last 30 days (720 hours). This means you can access any clip you copied in the past month, no matter which device you are using.'**
+  /// **'Clipboard history is synced across all your devices for clips created within the last 30 days. This means you can access any clip you copied in the past month, no matter which device you are using.'**
   String get syncLast720HrDesc;
 
   /// No description provided for @realtimeSync.

@@ -70,6 +70,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> setupAnalytics() async {
     if (!isAnalyticsSupported) return;
     final user = session!.user;
+
     await analytics.setUserId(id: user.id);
     await analytics.setUserProperty(
       name: "name",
@@ -79,6 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
       name: "email",
       value: user.email,
     );
+    await analytics.logAppOpen();
   }
 
   Future<void> authenticated(Session session, User user) async {
