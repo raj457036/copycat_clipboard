@@ -923,4 +923,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get rebuildingDB =>
       '⏱️ Reconstruction de la Base de Données\nVeuillez patienter...';
+
+  @override
+  String get proTip => 'Astuce Pro';
+
+  @override
+  String get useCollectionProTip =>
+      'Pour vous assurer que vos clips importants sont toujours disponibles, quel que soit le moment, sur tous vos appareils, enregistrez-les dans une collection !';
 }

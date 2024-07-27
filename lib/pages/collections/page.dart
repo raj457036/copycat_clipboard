@@ -55,10 +55,9 @@ class CollectionsPage extends StatelessWidget {
                 onRefresh: () => onRefresh(context),
                 child: CustomScrollView(
                   slivers: <Widget>[
-                    const SliverToBoxAdapter(
+                    SliverToBoxAdapter(
                       child: ProTipTile(
-                        tip:
-                            "To ensure your important clips are always available across all your devices, save them in a collection! Clips in collections are synced regardless of their age, so you can access them anytime, anywhere.",
+                        tip: context.locale.useCollectionProTip,
                       ),
                     ),
                     BlocBuilder<ClipCollectionCubit, ClipCollectionState>(

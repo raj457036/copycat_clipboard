@@ -1,6 +1,7 @@
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:universal_io/io.dart';
 
@@ -48,6 +49,11 @@ class _RecordKeyboardShortcutDialogState
             child: Center(
               child: HotKeyRecorder(
                 onHotKeyRecorded: (hotKey) {
+                  final isEnter =
+                      hotKey.logicalKey == LogicalKeyboardKey.enter ||
+                          hotKey.logicalKey == LogicalKeyboardKey.numpadEnter;
+
+                  if (isEnter) return;
                   setState(() {
                     this.hotKey = hotKey;
                   });

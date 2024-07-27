@@ -920,4 +920,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get rebuildingDB =>
       '⏱️ Reconstruyendo Base de Datos\nPor Favor Espera...';
+
+  @override
+  String get proTip => 'Consejo Pro';
+
+  @override
+  String get useCollectionProTip =>
+      '¡Para asegurarte de que tus clips importantes siempre estén disponibles sin importar el tiempo, en todos tus dispositivos, guárdalos en una colección!';
 }
