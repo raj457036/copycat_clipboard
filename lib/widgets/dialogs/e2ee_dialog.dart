@@ -56,6 +56,10 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
         withData: true,
       );
 
+      if (isDesktopPlatform) {
+        await windowManager.show();
+      }
+
       if (pickedFile == null) return;
       if (pickedFile.files.first.bytes == null) return;
       final content = utf8.decode(pickedFile.files.first.bytes!);
@@ -73,11 +77,10 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
         return;
       }
 
-      if (isDesktopPlatform) {
-        await windowManager.show();
-      }
       if (importedKeyId == keyId && key != null) {
         appConfigCubit.setE2EEKey(key);
+      } else {
+        setState(() => invalidImportedKey = true);
       }
     } catch (e) {
       setState(() => invalidImportedKey = true);
@@ -97,7 +100,9 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
         type: FileType.custom,
         allowedExtensions: ['enc2'],
         bytes: utf8.encode(content));
-
+    if (isDesktopPlatform) {
+      windowManager.show();
+    }
     if (path != null) {
       if (isDesktopPlatform) {
         await File(path).writeAsString(content);
@@ -106,9 +111,6 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
         context.pop();
         showTextSnackbar(context.locale.exportSuccess);
       }
-    }
-    if (isDesktopPlatform) {
-      windowManager.show();
     }
   }
 

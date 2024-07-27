@@ -1736,6 +1736,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'⏱️ Rebuilding Database\nPlease Wait...'**
   String get rebuildingDB;
+
+  /// No description provided for @proTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro Tip'**
+  String get proTip;
+
+  /// No description provided for @useCollectionProTip.
+  ///
+  /// In en, this message translates to:
+  /// **'To ensure your important clips are always available regardless of time, across all your devices, save them in a collection!'**
+  String get useCollectionProTip;
 }
 
 class _AppLocalizationsDelegate

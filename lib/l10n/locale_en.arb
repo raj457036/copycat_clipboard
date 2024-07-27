@@ -377,5 +377,7 @@
     "joinDiscordDesc": "Connect with other users, share ideas, get updates, and chat directly with us.",
     "joinGoogleGroup": "Join Our Google Group",
     "joinGoogleGroupDesc": "Stay informed and collaborate with fellow users in our Google Group",
-    "rebuildingDB": "⏱️ Rebuilding Database\nPlease Wait..."
+    "rebuildingDB": "⏱️ Rebuilding Database\nPlease Wait...",
+    "proTip": "Pro Tip",
+    "useCollectionProTip": "To ensure your important clips are always available regardless of time, across all your devices, save them in a collection!"
 }
