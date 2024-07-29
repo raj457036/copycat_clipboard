@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/model/drive_access_token.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/model/drive_access_token.dart';
 import 'package:dartz/dartz.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:injectable/injectable.dart';

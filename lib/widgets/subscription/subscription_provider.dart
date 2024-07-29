@@ -1,5 +1,5 @@
 import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

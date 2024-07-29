@@ -1,4 +1,4 @@
-import 'package:clipboard/utils/common_extension.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 

@@ -1,12 +1,12 @@
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/collection_clips_cubit/collection_clips_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/constants/numbers/breakpoints.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,13 +1,9 @@
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/db/app_config/appconfig.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/data/repositories/app_config.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
-
-abstract class AppConfigRepository {
-  FailureOr<AppConfig> get();
-  FailureOr<AppConfig> update(AppConfig config);
-}
 
 @LazySingleton(as: AppConfigRepository)
 class AppConfigRepositoryImpl implements AppConfigRepository {

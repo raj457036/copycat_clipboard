@@ -1,8 +1,9 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/datetime_extension.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

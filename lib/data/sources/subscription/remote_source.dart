@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/data/sources/subscription/subscription.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/data/sources/subscription.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:retry/retry.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_io/io.dart';
 
 @Named("remote")

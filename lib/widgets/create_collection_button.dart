@@ -1,13 +1,13 @@
 import 'dart:math' show max;
 
 import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/constants/numbers/values.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/dialogs/create_collection.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/badges.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
+import 'package:copycat_base/constants/numbers/values.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

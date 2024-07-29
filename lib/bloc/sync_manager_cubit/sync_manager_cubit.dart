@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
-import 'package:clipboard/data/repositories/clip_collection.dart';
 import 'package:clipboard/data/repositories/sync_clipboard.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/db/sync_status/syncstatus.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/data/repositories/clip_collection.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/db/sync_status/syncstatus.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

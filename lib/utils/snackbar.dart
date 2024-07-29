@@ -1,9 +1,9 @@
-import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/constants/key.dart';
-import 'package:clipboard/constants/numbers/breakpoints.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/timer_progress_bar.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 

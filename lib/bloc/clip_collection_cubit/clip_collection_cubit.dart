@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
-import 'package:clipboard/constants/strings/strings.dart';
-import 'package:clipboard/data/repositories/clip_collection.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/utils/common_extension.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/constants/strings/strings.dart';
+import 'package:copycat_base/data/repositories/clip_collection.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 

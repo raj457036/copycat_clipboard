@@ -1,5 +1,5 @@
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/data/sources/subscription/subscription.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/data/sources/subscription.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

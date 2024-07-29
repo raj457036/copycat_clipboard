@@ -1,9 +1,9 @@
 import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

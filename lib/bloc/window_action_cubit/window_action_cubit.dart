@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:clipboard/constants/widget_styles.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';

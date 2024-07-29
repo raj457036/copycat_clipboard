@@ -1,5 +1,5 @@
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/utils/common_extension.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
 class TimerProgressBar extends StatefulWidget {
@@ -49,13 +49,13 @@ class _TimerProgressBarState extends State<TimerProgressBar>
             padding: const EdgeInsets.all(padding10),
             child: CircularProgressIndicator(
               value: animation.value,
-              backgroundColor: colors.background,
+              backgroundColor: colors.surface,
             ),
           );
         }
         return LinearProgressIndicator(
           value: animation.value,
-          backgroundColor: colors.background,
+          backgroundColor: colors.surface,
           borderRadius: radius12,
         );
       },
