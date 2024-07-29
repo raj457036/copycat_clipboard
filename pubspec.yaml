@@ -84,6 +84,10 @@ dependencies:
   retry: ^3.1.2
   ntp: ^2.0.0
   tiny_storage: ^1.1.0
+  copycat_pro:
+    path: packages/copycat_pro
+  copycat_base:
+    path: packages/copycat_base
   
 dev_dependencies:
   flutter_test:
