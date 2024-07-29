@@ -37,6 +37,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
   ) : super(const CloudPersistanceState.initial());
 
   Future<void> persist(ClipboardItem item, {int retryCount = 0}) async {
+    if (auth.isLocalAuth) return;
     // emit(const CloudPersistanceState.initial());
 
     if (!appConfig.isSyncEnabled) {

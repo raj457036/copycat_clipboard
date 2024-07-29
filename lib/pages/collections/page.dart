@@ -5,6 +5,7 @@ import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:clipboard/widgets/pro_tip_banner.dart';
@@ -56,8 +57,10 @@ class CollectionsPage extends StatelessWidget {
                 child: CustomScrollView(
                   slivers: <Widget>[
                     SliverToBoxAdapter(
-                      child: ProTipTile(
-                        tip: context.locale.useCollectionProTip,
+                      child: DisableForLocalUser(
+                        child: ProTipTile(
+                          tip: context.locale.useCollectionProTip,
+                        ),
                       ),
                     ),
                     BlocBuilder<ClipCollectionCubit, ClipCollectionState>(

@@ -228,7 +228,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enableSync => 'Enable Sync';
 
   @override
-  String get enableSyncDesc => 'Keep your files updated across devices';
+  String get enableSyncDesc => 'Keep your clips synced across devices';
 
   @override
   String get syncFiles => 'Sync Files and Medias';
@@ -363,7 +363,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get compactMode => 'Compact Mode';
 
   @override
-  String createACollection(int LEFT) {
+  String createACollection(String LEFT) {
     return 'Create a new collection ( $LEFT left )';
   }
 

@@ -14,9 +14,11 @@ class RemoteClipCollectionSource implements ClipCollectionSource {
   RemoteClipCollectionSource(this.client);
 
   PostgrestClient get db => client.rest;
+  GoTrueClient get auth => client.auth;
 
   @override
   Future<ClipCollection> create(ClipCollection collection) async {
+    if (auth.currentUser == null) return collection;
     final result = await db.from(table).insert(collection.toJson()).select();
 
     return collection.copyWith(

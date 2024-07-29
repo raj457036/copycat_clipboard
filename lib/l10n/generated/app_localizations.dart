@@ -522,7 +522,7 @@ abstract class AppLocalizations {
   /// No description provided for @enableSyncDesc.
   ///
   /// In en, this message translates to:
-  /// **'Keep your files updated across devices'**
+  /// **'Keep your clips synced across devices'**
   String get enableSyncDesc;
 
   /// No description provided for @syncFiles.
@@ -757,7 +757,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Create a new collection ( {LEFT} left )'**
-  String createACollection(int LEFT);
+  String createACollection(String LEFT);
 
   /// No description provided for @logout.
   ///

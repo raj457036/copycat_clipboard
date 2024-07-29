@@ -38,6 +38,16 @@ class AuthListener extends StatelessWidget {
               windowManager.show();
             }
             break;
+          case LocalAuthenticatedAuthState():
+            {
+              rootNavKey.currentContext?.goNamed(RouteConstants.home);
+              await Future.wait([
+                context.read<AppConfigCubit>().load(),
+                context.read<ClipCollectionCubit>().fetch(),
+                context.read<OfflinePersistanceCubit>().startListners(),
+              ]);
+            }
+
           case AuthenticatedAuthState(:final user):
             {
               rootNavKey.currentContext?.goNamed(RouteConstants.home);

@@ -14,9 +14,11 @@ import 'package:go_router/go_router.dart';
 
 class CreateCollectionButton extends StatelessWidget {
   final bool isFab;
+  final bool localMode;
   const CreateCollectionButton({
     super.key,
     this.isFab = true,
+    this.localMode = false,
   });
 
   @override
@@ -37,8 +39,9 @@ class CreateCollectionButton extends StatelessWidget {
           },
           builder: (context, state) {
             final (collection, count) = state;
-            final canCreate = collection > count;
-            final remaining = max(collection - count, 0);
+            final canCreate = localMode || collection > count;
+            final remaining =
+                localMode ? "∞" : max(collection - count, 0).toString();
             if (!isFab) {
               if (!canCreate) return const SizedBox.shrink();
               return IconButton.filledTonal(

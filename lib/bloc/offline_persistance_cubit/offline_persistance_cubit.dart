@@ -292,7 +292,6 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
       if (isDuplicate) return;
 
       await persist(item);
-      await clip.cleanup();
     }
   }
 

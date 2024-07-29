@@ -155,6 +155,13 @@ class LoginForm extends StatelessWidget {
                       ),
                     ),
                   ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      final cubit = context.read<AuthCubit>();
+                      cubit.localAuthenticated();
+                    },
+                    label: const Text("Use Locally"),
+                  ),
                   // const Spacer(),
                   const LocaleDropdown(),
                   height10,

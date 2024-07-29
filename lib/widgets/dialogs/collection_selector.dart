@@ -3,6 +3,7 @@ import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/create_collection_button.dart';
+import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,13 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(context.locale.selectCollection),
-            const CreateCollectionButton(isFab: false),
+            const DisableForLocalUser(
+              ifLocal: CreateCollectionButton(
+                localMode: true,
+                isFab: false,
+              ),
+              child: CreateCollectionButton(isFab: false),
+            ),
           ],
         ),
         children: [this],
