@@ -925,4 +925,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get useCollectionProTip =>
       'Um sicherzustellen, dass deine wichtigen Clips unabhängig von der Zeit auf all deinen Geräten immer verfügbar sind, speichere sie in einer Sammlung!';
+
+  @override
+  String get syncConfigNotAvailable =>
+      'Synchronisierungsbezogene Konfigurationen nicht verfügbar.';
 }

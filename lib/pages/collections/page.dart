@@ -94,6 +94,8 @@ class CollectionsPage extends StatelessWidget {
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: crossAxisCount,
                                   childAspectRatio: aspectRatio,
+                                  mainAxisSpacing: padding4,
+                                  crossAxisSpacing: padding8,
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   final collection = collections[index];
@@ -102,6 +104,9 @@ class CollectionsPage extends StatelessWidget {
                                     shape: !isMobile
                                         ? const RoundedRectangleBorder(
                                             borderRadius: radius8,
+                                            side: BorderSide(
+                                              color: Color(0x5F9E9E9E),
+                                            ),
                                           )
                                         : null,
                                   );

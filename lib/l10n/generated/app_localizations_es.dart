@@ -927,4 +927,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get useCollectionProTip =>
       '¡Para asegurarte de que tus clips importantes siempre estén disponibles sin importar el tiempo, en todos tus dispositivos, guárdalos en una colección!';
+
+  @override
+  String get syncConfigNotAvailable =>
+      'Configuraciones relacionadas con la sincronización no disponibles.';
 }

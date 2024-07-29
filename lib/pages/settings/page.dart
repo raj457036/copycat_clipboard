@@ -107,15 +107,13 @@ class SettingsPage extends StatelessWidget {
                           tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,
-                        const DisableForLocalUser(
+                        DisableForLocalUser(
                           ifLocal: ListTile(
-                            leading: Icon(Icons.sync_disabled),
+                            leading: const Icon(Icons.sync_disabled),
                             enabled: false,
-                            title: Text(
-                              "Sync related configurations not available.",
-                            ),
+                            title: Text(context.locale.syncConfigNotAvailable),
                           ),
-                          child: Column(
+                          child: const Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               EnableSyncSwitch(),
