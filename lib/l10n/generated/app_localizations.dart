@@ -1748,6 +1748,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To ensure your important clips are always available regardless of time, across all your devices, save them in a collection!'**
   String get useCollectionProTip;
+
+  /// No description provided for @syncConfigNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync related configurations not available.'**
+  String get syncConfigNotAvailable;
 }
 
 class _AppLocalizationsDelegate

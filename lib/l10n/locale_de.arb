@@ -376,6 +376,7 @@
     "joinGoogleGroupDesc": "Bleiben Sie informiert und arbeiten Sie mit anderen Nutzern in unserer Google-Gruppe zusammen.",
     "rebuildingDB": "⏱️ Datenbank wird neu aufgebaut\nBitte warten...",
     "proTip": "Profi-Tipp",
-    "useCollectionProTip": "Um sicherzustellen, dass deine wichtigen Clips unabhängig von der Zeit auf all deinen Geräten immer verfügbar sind, speichere sie in einer Sammlung!"
+    "useCollectionProTip": "Um sicherzustellen, dass deine wichtigen Clips unabhängig von der Zeit auf all deinen Geräten immer verfügbar sind, speichere sie in einer Sammlung!",
+    "syncConfigNotAvailable": "Synchronisierungsbezogene Konfigurationen nicht verfügbar."
 
 }
