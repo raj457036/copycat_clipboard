@@ -17,6 +17,7 @@ import 'package:clipboard/widgets/clip_cards/file_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/media_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/text_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/url_clip_card.dart';
+import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -164,7 +165,7 @@ class ClipCard extends StatelessWidget {
                         ),
                       ),
                     Expanded(
-                      child: Card(
+                      child: Card.outlined(
                         shape: const RoundedRectangleBorder(
                           borderRadius: radius8,
                         ),
@@ -176,7 +177,9 @@ class ClipCard extends StatelessWidget {
                   ],
                 ),
               ),
-              ClipCardSyncStatusFooter(item: item),
+              DisableForLocalUser(
+                child: ClipCardSyncStatusFooter(item: item),
+              ),
             ],
           ),
         ),

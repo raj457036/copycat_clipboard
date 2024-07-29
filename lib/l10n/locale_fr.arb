@@ -98,7 +98,7 @@
         }
     },
     "enableSync": "Activer la Synchronisation",
-    "enableSyncDesc": "Gardez vos fichiers à jour sur tous vos appareils",
+    "enableSyncDesc": "Gardez vos clips synchronisés sur tous vos appareils",
     "syncFiles": "Synchroniser les Fichiers et Médias",
     "syncFilesDesc": "Gardez vos fichiers et éléments multimédias à jour sur tous vos appareils.",
     "connected": "Connecté",
@@ -165,7 +165,7 @@
     "@createACollection": {
         "placeholders": {
             "LEFT": {
-                "type": "int"
+                "type": "String"
             }
         }
     },

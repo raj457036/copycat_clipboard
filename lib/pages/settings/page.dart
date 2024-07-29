@@ -16,6 +16,7 @@ import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/account_detail_button.dart';
+import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
@@ -41,7 +42,7 @@ class SettingsPage extends StatelessWidget {
         actions: [
           ActivePlanAction(compact: isMobile),
           width12,
-          const AccountDetailButton(),
+          const DisableForLocalUser(child: AccountDetailButton()),
           width12,
           const LogoutButton(),
           width12,
@@ -106,16 +107,37 @@ class SettingsPage extends StatelessWidget {
                           tooltip: context.locale.localSettingsDesc,
                         ),
                         height10,
-                        const EnableSyncSwitch(),
-                        const EnableFileSyncSwitch(),
-                        const AutoSyncInterval(),
-                        height20,
-                        SettingHeader(
-                          name: context.locale.advanceSecurity,
-                          tooltip: context.locale.localSettingsDesc,
+                        const DisableForLocalUser(
+                          ifLocal: ListTile(
+                            leading: Icon(Icons.sync_disabled),
+                            enabled: false,
+                            title: Text(
+                              "Sync related configurations not available.",
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              EnableSyncSwitch(),
+                              EnableFileSyncSwitch(),
+                              AutoSyncInterval(),
+                            ],
+                          ),
                         ),
-                        height10,
-                        const E2EESettings(),
+                        DisableForLocalUser(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              height20,
+                              SettingHeader(
+                                name: context.locale.advanceSecurity,
+                                tooltip: context.locale.localSettingsDesc,
+                              ),
+                              height10,
+                              const E2EESettings(),
+                            ],
+                          ),
+                        ),
                         const Divider(),
                         AboutListTile(
                           dense: true,

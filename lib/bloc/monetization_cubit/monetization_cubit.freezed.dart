@@ -187,6 +187,7 @@ abstract class _$$MonetizationActiveImplCopyWith<$Res> {
   @useResult
   $Res call({CustomerInfo customer, Subscription subscription});
 
+  $CustomerInfoCopyWith<$Res> get customer;
   $SubscriptionCopyWith<$Res> get subscription;
 }
 
@@ -201,11 +202,11 @@ class __$$MonetizationActiveImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? customer = freezed,
+    Object? customer = null,
     Object? subscription = null,
   }) {
     return _then(_$MonetizationActiveImpl(
-      customer: freezed == customer
+      customer: null == customer
           ? _value.customer
           : customer // ignore: cast_nullable_to_non_nullable
               as CustomerInfo,
@@ -214,6 +215,14 @@ class __$$MonetizationActiveImplCopyWithImpl<$Res>
           : subscription // ignore: cast_nullable_to_non_nullable
               as Subscription,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomerInfoCopyWith<$Res> get customer {
+    return $CustomerInfoCopyWith<$Res>(_value.customer, (value) {
+      return _then(_value.copyWith(customer: value));
+    });
   }
 
   @override
@@ -246,14 +255,14 @@ class _$MonetizationActiveImpl implements MonetizationActive {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MonetizationActiveImpl &&
-            const DeepCollectionEquality().equals(other.customer, customer) &&
+            (identical(other.customer, customer) ||
+                other.customer == customer) &&
             (identical(other.subscription, subscription) ||
                 other.subscription == subscription));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(customer), subscription);
+  int get hashCode => Object.hash(runtimeType, customer, subscription);
 
   @JsonKey(ignore: true)
   @override

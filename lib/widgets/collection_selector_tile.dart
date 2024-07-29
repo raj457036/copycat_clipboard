@@ -70,7 +70,7 @@ class ClipCollectionSelectorStateTile
     final tile = ListTile(
       title: collection == null
           ? Text(context.locale.noCollection)
-          : Text(collection!.title),
+          : Text("${collection!.emoji} ${collection!.title}"),
       subtitle: collection == null
           ? Text(context.locale.chooseCollection)
           : Text(context.locale.changeCollection),

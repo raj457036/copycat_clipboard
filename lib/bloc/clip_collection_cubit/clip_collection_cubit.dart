@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/data/repositories/clip_collection.dart';
 import 'package:clipboard/db/clip_collection/clipcollection.dart';
 import 'package:clipboard/utils/common_extension.dart';
@@ -62,11 +63,7 @@ class ClipCollectionCubit extends Cubit<ClipCollectionState> {
 
   Future<Failure?> upsert(ClipCollection collection) async {
     collection = collection.copyWith(deviceId: deviceId)..applyId(collection);
-    final userId = auth.userId;
-
-    if (userId == null) {
-      return authFailure;
-    }
+    final userId = auth.userId ?? kLocalUserId;
 
     collection = collection.copyWith(userId: userId)..applyId(collection);
 

@@ -7,6 +7,7 @@ class AuthState with _$AuthState {
     required Session session,
     required User user,
   }) = AuthenticatedAuthState;
+  const factory AuthState.localAuthenticated() = LocalAuthenticatedAuthState;
   const factory AuthState.authenticating() = AuthenticatingAuthState;
   const factory AuthState.unauthenticated([Failure? failure]) =
       UnauthenticatedAuthState;

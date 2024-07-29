@@ -232,7 +232,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get enableSyncDesc =>
-      'Mantén tus archivos actualizados en todos los dispositivos';
+      'Mantén tus clips sincronizados entre dispositivos';
 
   @override
   String get syncFiles => 'Sincronizar Archivos y Medios';
@@ -369,7 +369,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get compactMode => 'Modo Compacto';
 
   @override
-  String createACollection(int LEFT) {
+  String createACollection(String LEFT) {
     return 'Crear una nueva colección ( $LEFT restantes )';
   }
 

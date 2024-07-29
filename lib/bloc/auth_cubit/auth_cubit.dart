@@ -35,6 +35,7 @@ class AuthCubit extends Cubit<AuthState> {
     return null;
   }
 
+  bool get isLocalAuth => state is LocalAuthenticatedAuthState;
   String? get userId => sbClient.auth.currentUser?.id;
 
   String? get enc1Key {
@@ -57,10 +58,14 @@ class AuthCubit extends Cubit<AuthState> {
   /// enc1 is always encrypted with enc2 key.
   Future<void> setupEncryption(String enc2KeyId, String enc1) async {
     await state.mapOrNull(authenticated: (authState) async {
-      final result = await sbClient.auth.updateUser(UserAttributes(data: {
-        "enc1": enc1,
-        "enc2KeyId": enc2KeyId,
-      }));
+      final result = await sbClient.auth.updateUser(
+        UserAttributes(
+          data: {
+            "enc1": enc1,
+            "enc2KeyId": enc2KeyId,
+          },
+        ),
+      );
       if (result.user != null) {
         emit(authState.copyWith(user: result.user!));
       }
@@ -81,6 +86,12 @@ class AuthCubit extends Cubit<AuthState> {
       value: user.email,
     );
     await analytics.logAppOpen();
+  }
+
+  Future<void> localAuthenticated() async {
+    setupAnalytics();
+
+    emit(const AuthState.localAuthenticated());
   }
 
   Future<void> authenticated(Session session, User user) async {

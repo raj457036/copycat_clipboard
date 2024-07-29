@@ -20,6 +20,7 @@ mixin _$AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function(Session session, User user) authenticated,
+    required TResult Function() localAuthenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
   }) =>
@@ -28,6 +29,7 @@ mixin _$AuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function(Session session, User user)? authenticated,
+    TResult? Function()? localAuthenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
   }) =>
@@ -36,6 +38,7 @@ mixin _$AuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function(Session session, User user)? authenticated,
+    TResult Function()? localAuthenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     required TResult orElse(),
@@ -45,6 +48,8 @@ mixin _$AuthState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownAuthState value) unknown,
     required TResult Function(AuthenticatedAuthState value) authenticated,
+    required TResult Function(LocalAuthenticatedAuthState value)
+        localAuthenticated,
     required TResult Function(AuthenticatingAuthState value) authenticating,
     required TResult Function(UnauthenticatedAuthState value) unauthenticated,
   }) =>
@@ -53,6 +58,7 @@ mixin _$AuthState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownAuthState value)? unknown,
     TResult? Function(AuthenticatedAuthState value)? authenticated,
+    TResult? Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult? Function(AuthenticatingAuthState value)? authenticating,
     TResult? Function(UnauthenticatedAuthState value)? unauthenticated,
   }) =>
@@ -61,6 +67,7 @@ mixin _$AuthState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownAuthState value)? unknown,
     TResult Function(AuthenticatedAuthState value)? authenticated,
+    TResult Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult Function(AuthenticatingAuthState value)? authenticating,
     TResult Function(UnauthenticatedAuthState value)? unauthenticated,
     required TResult orElse(),
@@ -125,6 +132,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function(Session session, User user) authenticated,
+    required TResult Function() localAuthenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
   }) {
@@ -136,6 +144,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function(Session session, User user)? authenticated,
+    TResult? Function()? localAuthenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
   }) {
@@ -147,6 +156,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function(Session session, User user)? authenticated,
+    TResult Function()? localAuthenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     required TResult orElse(),
@@ -162,6 +172,8 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownAuthState value) unknown,
     required TResult Function(AuthenticatedAuthState value) authenticated,
+    required TResult Function(LocalAuthenticatedAuthState value)
+        localAuthenticated,
     required TResult Function(AuthenticatingAuthState value) authenticating,
     required TResult Function(UnauthenticatedAuthState value) unauthenticated,
   }) {
@@ -173,6 +185,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownAuthState value)? unknown,
     TResult? Function(AuthenticatedAuthState value)? authenticated,
+    TResult? Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult? Function(AuthenticatingAuthState value)? authenticating,
     TResult? Function(UnauthenticatedAuthState value)? unauthenticated,
   }) {
@@ -184,6 +197,7 @@ class _$UnknownAuthStateImpl implements UnknownAuthState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownAuthState value)? unknown,
     TResult Function(AuthenticatedAuthState value)? authenticated,
+    TResult Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult Function(AuthenticatingAuthState value)? authenticating,
     TResult Function(UnauthenticatedAuthState value)? unauthenticated,
     required TResult orElse(),
@@ -277,6 +291,7 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function(Session session, User user) authenticated,
+    required TResult Function() localAuthenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
   }) {
@@ -288,6 +303,7 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function(Session session, User user)? authenticated,
+    TResult? Function()? localAuthenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
   }) {
@@ -299,6 +315,7 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function(Session session, User user)? authenticated,
+    TResult Function()? localAuthenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     required TResult orElse(),
@@ -314,6 +331,8 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownAuthState value) unknown,
     required TResult Function(AuthenticatedAuthState value) authenticated,
+    required TResult Function(LocalAuthenticatedAuthState value)
+        localAuthenticated,
     required TResult Function(AuthenticatingAuthState value) authenticating,
     required TResult Function(UnauthenticatedAuthState value) unauthenticated,
   }) {
@@ -325,6 +344,7 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownAuthState value)? unknown,
     TResult? Function(AuthenticatedAuthState value)? authenticated,
+    TResult? Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult? Function(AuthenticatingAuthState value)? authenticating,
     TResult? Function(UnauthenticatedAuthState value)? unauthenticated,
   }) {
@@ -336,6 +356,7 @@ class _$AuthenticatedAuthStateImpl implements AuthenticatedAuthState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownAuthState value)? unknown,
     TResult Function(AuthenticatedAuthState value)? authenticated,
+    TResult Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult Function(AuthenticatingAuthState value)? authenticating,
     TResult Function(UnauthenticatedAuthState value)? unauthenticated,
     required TResult orElse(),
@@ -357,6 +378,131 @@ abstract class AuthenticatedAuthState implements AuthState {
   @JsonKey(ignore: true)
   _$$AuthenticatedAuthStateImplCopyWith<_$AuthenticatedAuthStateImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LocalAuthenticatedAuthStateImplCopyWith<$Res> {
+  factory _$$LocalAuthenticatedAuthStateImplCopyWith(
+          _$LocalAuthenticatedAuthStateImpl value,
+          $Res Function(_$LocalAuthenticatedAuthStateImpl) then) =
+      __$$LocalAuthenticatedAuthStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LocalAuthenticatedAuthStateImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$LocalAuthenticatedAuthStateImpl>
+    implements _$$LocalAuthenticatedAuthStateImplCopyWith<$Res> {
+  __$$LocalAuthenticatedAuthStateImplCopyWithImpl(
+      _$LocalAuthenticatedAuthStateImpl _value,
+      $Res Function(_$LocalAuthenticatedAuthStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LocalAuthenticatedAuthStateImpl implements LocalAuthenticatedAuthState {
+  const _$LocalAuthenticatedAuthStateImpl();
+
+  @override
+  String toString() {
+    return 'AuthState.localAuthenticated()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LocalAuthenticatedAuthStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() unknown,
+    required TResult Function(Session session, User user) authenticated,
+    required TResult Function() localAuthenticated,
+    required TResult Function() authenticating,
+    required TResult Function(Failure? failure) unauthenticated,
+  }) {
+    return localAuthenticated();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unknown,
+    TResult? Function(Session session, User user)? authenticated,
+    TResult? Function()? localAuthenticated,
+    TResult? Function()? authenticating,
+    TResult? Function(Failure? failure)? unauthenticated,
+  }) {
+    return localAuthenticated?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unknown,
+    TResult Function(Session session, User user)? authenticated,
+    TResult Function()? localAuthenticated,
+    TResult Function()? authenticating,
+    TResult Function(Failure? failure)? unauthenticated,
+    required TResult orElse(),
+  }) {
+    if (localAuthenticated != null) {
+      return localAuthenticated();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UnknownAuthState value) unknown,
+    required TResult Function(AuthenticatedAuthState value) authenticated,
+    required TResult Function(LocalAuthenticatedAuthState value)
+        localAuthenticated,
+    required TResult Function(AuthenticatingAuthState value) authenticating,
+    required TResult Function(UnauthenticatedAuthState value) unauthenticated,
+  }) {
+    return localAuthenticated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UnknownAuthState value)? unknown,
+    TResult? Function(AuthenticatedAuthState value)? authenticated,
+    TResult? Function(LocalAuthenticatedAuthState value)? localAuthenticated,
+    TResult? Function(AuthenticatingAuthState value)? authenticating,
+    TResult? Function(UnauthenticatedAuthState value)? unauthenticated,
+  }) {
+    return localAuthenticated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UnknownAuthState value)? unknown,
+    TResult Function(AuthenticatedAuthState value)? authenticated,
+    TResult Function(LocalAuthenticatedAuthState value)? localAuthenticated,
+    TResult Function(AuthenticatingAuthState value)? authenticating,
+    TResult Function(UnauthenticatedAuthState value)? unauthenticated,
+    required TResult orElse(),
+  }) {
+    if (localAuthenticated != null) {
+      return localAuthenticated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LocalAuthenticatedAuthState implements AuthState {
+  const factory LocalAuthenticatedAuthState() =
+      _$LocalAuthenticatedAuthStateImpl;
 }
 
 /// @nodoc
@@ -402,6 +548,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function(Session session, User user) authenticated,
+    required TResult Function() localAuthenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
   }) {
@@ -413,6 +560,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function(Session session, User user)? authenticated,
+    TResult? Function()? localAuthenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
   }) {
@@ -424,6 +572,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function(Session session, User user)? authenticated,
+    TResult Function()? localAuthenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     required TResult orElse(),
@@ -439,6 +588,8 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownAuthState value) unknown,
     required TResult Function(AuthenticatedAuthState value) authenticated,
+    required TResult Function(LocalAuthenticatedAuthState value)
+        localAuthenticated,
     required TResult Function(AuthenticatingAuthState value) authenticating,
     required TResult Function(UnauthenticatedAuthState value) unauthenticated,
   }) {
@@ -450,6 +601,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownAuthState value)? unknown,
     TResult? Function(AuthenticatedAuthState value)? authenticated,
+    TResult? Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult? Function(AuthenticatingAuthState value)? authenticating,
     TResult? Function(UnauthenticatedAuthState value)? unauthenticated,
   }) {
@@ -461,6 +613,7 @@ class _$AuthenticatingAuthStateImpl implements AuthenticatingAuthState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownAuthState value)? unknown,
     TResult Function(AuthenticatedAuthState value)? authenticated,
+    TResult Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult Function(AuthenticatingAuthState value)? authenticating,
     TResult Function(UnauthenticatedAuthState value)? unauthenticated,
     required TResult orElse(),
@@ -545,6 +698,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
     required TResult Function(Session session, User user) authenticated,
+    required TResult Function() localAuthenticated,
     required TResult Function() authenticating,
     required TResult Function(Failure? failure) unauthenticated,
   }) {
@@ -556,6 +710,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unknown,
     TResult? Function(Session session, User user)? authenticated,
+    TResult? Function()? localAuthenticated,
     TResult? Function()? authenticating,
     TResult? Function(Failure? failure)? unauthenticated,
   }) {
@@ -567,6 +722,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
     TResult Function(Session session, User user)? authenticated,
+    TResult Function()? localAuthenticated,
     TResult Function()? authenticating,
     TResult Function(Failure? failure)? unauthenticated,
     required TResult orElse(),
@@ -582,6 +738,8 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownAuthState value) unknown,
     required TResult Function(AuthenticatedAuthState value) authenticated,
+    required TResult Function(LocalAuthenticatedAuthState value)
+        localAuthenticated,
     required TResult Function(AuthenticatingAuthState value) authenticating,
     required TResult Function(UnauthenticatedAuthState value) unauthenticated,
   }) {
@@ -593,6 +751,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownAuthState value)? unknown,
     TResult? Function(AuthenticatedAuthState value)? authenticated,
+    TResult? Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult? Function(AuthenticatingAuthState value)? authenticating,
     TResult? Function(UnauthenticatedAuthState value)? unauthenticated,
   }) {
@@ -604,6 +763,7 @@ class _$UnauthenticatedAuthStateImpl implements UnauthenticatedAuthState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownAuthState value)? unknown,
     TResult Function(AuthenticatedAuthState value)? authenticated,
+    TResult Function(LocalAuthenticatedAuthState value)? localAuthenticated,
     TResult Function(AuthenticatingAuthState value)? authenticating,
     TResult Function(UnauthenticatedAuthState value)? unauthenticated,
     required TResult orElse(),
