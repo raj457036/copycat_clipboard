@@ -24,6 +24,7 @@ import 'package:clipboard/widgets/rebuilding_db.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
+import 'package:copycat_pro/copycat_pro.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -64,6 +65,8 @@ Future<void> initializeServices() async {
       DeviceOrientation.portraitDown,
     ]);
   }
+
+  Calculator();
 
   await initializeFirebase();
   await configureDependencies();
