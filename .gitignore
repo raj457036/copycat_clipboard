@@ -45,3 +45,5 @@ app.*.map.json
 window_dist/installer.exe
 
 **/local/**
+
+**/private/**
