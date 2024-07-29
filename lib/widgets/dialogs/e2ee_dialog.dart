@@ -159,12 +159,12 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
             },
             builder: (context, user) {
               if (rebuilding) {
-                return const Dialog(
+                return Dialog(
                   child: SizedBox.square(
                     dimension: 250,
                     child: Center(
                       child: Text(
-                        "⏱️ Rebuilding Database\nPlease Wait...",
+                        context.locale.rebuildingDB,
                         textAlign: TextAlign.center,
                       ),
                     ),
