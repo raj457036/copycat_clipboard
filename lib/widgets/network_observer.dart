@@ -65,6 +65,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
   }
 
   void onConnectionChanged(bool isConnected) {
+    if (authCubit.isLocalAuth) return;
     if (isConnected) {
       if (wasDisconnected) {
         wasDisconnected = false;
