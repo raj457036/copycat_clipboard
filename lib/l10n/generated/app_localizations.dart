@@ -1754,6 +1754,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sync related configurations not available.'**
   String get syncConfigNotAvailable;
+
+  /// No description provided for @useLocally.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Locally'**
+  String get useLocally;
+
+  /// No description provided for @useLocallyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No syncing. All data stays on your device.'**
+  String get useLocallyDesc;
 }
 
 class _AppLocalizationsDelegate

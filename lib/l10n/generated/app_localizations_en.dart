@@ -920,4 +920,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get syncConfigNotAvailable =>
       'Sync related configurations not available.';
+
+  @override
+  String get useLocally => 'Use Locally';
+
+  @override
+  String get useLocallyDesc => 'No syncing. All data stays on your device.';
 }

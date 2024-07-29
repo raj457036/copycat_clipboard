@@ -114,6 +114,7 @@ class SettingsPage extends StatelessWidget {
                             title: Text(context.locale.syncConfigNotAvailable),
                           ),
                           child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               EnableSyncSwitch(),
@@ -124,6 +125,7 @@ class SettingsPage extends StatelessWidget {
                         ),
                         DisableForLocalUser(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               height20,
