@@ -81,6 +81,14 @@ class LoginForm extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   height24,
+                  const LocalSigninButton(),
+                  height10,
+                  Text(
+                    "· · ─────── ·𖥸· ─────── · ·",
+                    style: textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  height10,
                   SizedBox(
                     width: 350,
                     // height: 390,
@@ -156,7 +164,7 @@ class LoginForm extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const LocalSigninButton(),
+
                   // const Spacer(),
                   const LocaleDropdown(),
                   height10,
