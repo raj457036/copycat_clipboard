@@ -1,96 +1,17 @@
 import 'dart:async';
 import 'dart:io' as io;
 
-import 'package:clipboard/common/logging.dart';
-import 'package:clipboard/constants/numbers/file_sizes.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/constants/numbers/file_sizes.dart';
+import 'package:copycat_base/data/services/google_services.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis/oauth2/v2.dart' as oauth2;
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as p;
-import 'package:rxdart/rxdart.dart';
-
-abstract class DriveService {
-  String? accessToken;
-
-  Future<ClipboardItem> upload(
-    ClipboardItem item, {
-    void Function(int, int)? onProgress,
-  });
-  Future<ClipboardItem> download(
-    ClipboardItem item, {
-    void Function(int, int)? onProgress,
-  });
-  Future<void> delete(ClipboardItem item);
-
-  bool isDownloading(ClipboardItem item);
-
-  void cancelOperation(ClipboardItem item);
-}
-
-class GoogleAuthClient with http.BaseClient {
-  final String accessToken;
-
-  BehaviorSubject<(int, int)>? progress;
-  int? contentLength;
-  int currentBytes = 0;
-  bool stopped = false;
-
-  GoogleAuthClient(this.accessToken);
-
-  BehaviorSubject<(int, int)> setProgressListener({int? contentLength}) {
-    progress ??= BehaviorSubject<(int, int)>();
-    this.contentLength ??= contentLength;
-    return progress!;
-  }
-
-  void unsetProgressListener() {
-    progress?.close();
-    contentLength = null;
-    progress = null;
-  }
-
-  @override
-  void close() {
-    unsetProgressListener();
-    stopped = true;
-    super.close();
-  }
-
-  @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) async {
-    if (stopped) {
-      throw StateError('Already stopped');
-    }
-    request.headers["Authorization"] = "Bearer $accessToken";
-    final response = await request.send();
-    final totalBytes = contentLength ?? 1;
-    int currentLength = 0;
-
-    // "range" -> "bytes=0-5505023"
-    final range = response.headers["range"];
-    if (range != null) {
-      final start = int.parse(range.split("=")[1].split("-")[0]);
-      final end = int.parse(range.split("=")[1].split("-")[1]);
-      if (start == 0) {
-        currentLength = end;
-      } else {
-        currentLength = (end - start + 1) + currentBytes;
-      }
-    }
-
-    if (currentLength > currentBytes) {
-      currentBytes = currentLength;
-    }
-    progress?.add((currentBytes, totalBytes));
-    logger.i('Transfered: $currentBytes / $totalBytes bytes');
-
-    return response;
-  }
-}
 
 @lazySingleton
 class GoogleOAuth2Service {

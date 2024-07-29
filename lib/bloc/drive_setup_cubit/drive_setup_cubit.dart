@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/data/repositories/drive_credential.dart';
-import 'package:clipboard/model/drive_access_token.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/model/drive_access_token.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:injectable/injectable.dart';

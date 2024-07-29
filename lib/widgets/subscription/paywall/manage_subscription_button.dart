@@ -1,8 +1,8 @@
 import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
+import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -31,7 +31,7 @@ class ManageSubscriptionButton extends StatelessWidget {
     return BlocBuilder<MonetizationCubit, MonetizationState>(
       builder: (context, state) {
         return state.when(
-            unknown: () => SizedBox.shrink(),
+            unknown: () => const SizedBox.shrink(),
             active: (info, sub) {
               return ElevatedButton(
                 onPressed: () => manageSubscription(context, info, sub),

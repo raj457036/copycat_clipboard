@@ -1,10 +1,10 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/common/events.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/keyboard_shortcuts.dart';
+import 'package:copycat_base/common/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

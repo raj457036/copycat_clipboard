@@ -1,28 +1,11 @@
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/paginated_results.dart';
-import 'package:clipboard/data/sources/clip_collection/clip_collection.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/common/paginated_results.dart';
+import 'package:copycat_base/data/repositories/clip_collection.dart';
+import 'package:copycat_base/data/sources/clip_collection.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-
-abstract class ClipCollectionRepository {
-  FailureOr<ClipCollection?> get({int? id, int? serverId});
-  FailureOr<ClipCollection> create(ClipCollection collection);
-
-  FailureOr<PaginatedResult<ClipCollection>> getList({
-    int limit = 50,
-    int offset = 0,
-    String? search,
-    bool fromServer = false,
-  });
-
-  FailureOr<ClipCollection> update(ClipCollection collection);
-
-  FailureOr<bool> delete(ClipCollection collection);
-
-  FailureOr<void> deleteAll();
-}
 
 @LazySingleton(as: ClipCollectionRepository)
 class ClipCollectionRepositoryImpl implements ClipCollectionRepository {

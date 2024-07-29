@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/data/repositories/subscription.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

@@ -1,9 +1,9 @@
-import 'package:clipboard/common/paginated_results.dart';
-import 'package:clipboard/data/sources/clipboard/clipboard.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/enums/clip_type.dart';
-import 'package:clipboard/enums/sort.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/paginated_results.dart';
+import 'package:copycat_base/data/sources/clipboard.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/enums/clip_type.dart';
+import 'package:copycat_base/enums/sort.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

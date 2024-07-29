@@ -6,10 +6,10 @@ import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart'
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
+import 'package:copycat_base/data/services/encryption.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

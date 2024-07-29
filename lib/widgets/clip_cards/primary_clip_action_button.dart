@@ -1,8 +1,8 @@
 import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

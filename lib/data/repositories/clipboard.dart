@@ -1,38 +1,13 @@
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/paginated_results.dart';
-import 'package:clipboard/data/sources/clipboard/clipboard.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/enums/clip_type.dart';
-import 'package:clipboard/enums/sort.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/common/paginated_results.dart';
+import 'package:copycat_base/data/repositories/clipboard.dart';
+import 'package:copycat_base/data/sources/clipboard.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/enums/clip_type.dart';
+import 'package:copycat_base/enums/sort.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-
-abstract class ClipboardRepository {
-  FailureOr<ClipboardItem?> get({int? id, String? serverId});
-  FailureOr<ClipboardItem> create(ClipboardItem item);
-
-  FailureOr<PaginatedResult<ClipboardItem>> getList({
-    int limit = 50,
-    int offset = 0,
-    String? search,
-    List<String>? category,
-    List<ClipItemType>? types,
-    int? collectionId,
-    ClipboardSortKey? sortBy,
-    SortOrder order = SortOrder.desc,
-  });
-
-  FailureOr<ClipboardItem> update(ClipboardItem item);
-
-  FailureOr<bool> delete(ClipboardItem item);
-
-  FailureOr<void> deleteAll();
-
-  FailureOr<ClipboardItem?> getLatest();
-
-  FailureOr<void> decryptPending();
-}
 
 @Named("cloud")
 @LazySingleton(as: ClipboardRepository)

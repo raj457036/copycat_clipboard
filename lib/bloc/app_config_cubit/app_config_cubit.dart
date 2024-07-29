@@ -1,13 +1,13 @@
 import 'dart:convert' show jsonEncode;
 
 import 'package:bloc/bloc.dart';
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/common/logging.dart';
-import 'package:clipboard/constants/numbers/duration.dart';
-import 'package:clipboard/data/repositories/app_config.dart';
-import 'package:clipboard/db/app_config/appconfig.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/constants/numbers/duration.dart';
+import 'package:copycat_base/data/repositories/app_config.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';

@@ -9,14 +9,11 @@ import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
-import 'package:clipboard/common/color_schemes.dart';
 import 'package:clipboard/constants/key.dart';
-import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/generated/app_localizations.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/utility.dart';
-import 'package:clipboard/utils/windows/update_registry.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
@@ -24,6 +21,10 @@ import 'package:clipboard/widgets/rebuilding_db.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
+import 'package:copycat_base/common/bloc_config.dart';
+import 'package:copycat_base/common/color_schemes.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/utils/windows/update_registry.dart';
 import 'package:copycat_pro/copycat_pro.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -42,7 +43,6 @@ import 'package:universal_io/io.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'common/bloc_config.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {

@@ -1,8 +1,8 @@
-import "package:clipboard/db/app_config/appconfig.dart";
-import "package:clipboard/db/clip_collection/clipcollection.dart";
-import "package:clipboard/db/clipboard_item/clipboard_item.dart";
-import "package:clipboard/db/subscription/subscription.dart";
-import "package:clipboard/db/sync_status/syncstatus.dart";
+import "package:copycat_base/db/app_config/appconfig.dart";
+import "package:copycat_base/db/clip_collection/clipcollection.dart";
+import "package:copycat_base/db/clipboard_item/clipboard_item.dart";
+import "package:copycat_base/db/subscription/subscription.dart";
+import "package:copycat_base/db/sync_status/syncstatus.dart";
 import "package:flutter/foundation.dart";
 import "package:focus_window/focus_window.dart";
 import "package:injectable/injectable.dart";

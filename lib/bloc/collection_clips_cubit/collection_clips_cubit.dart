@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:clipboard/common/failure.dart';
-import 'package:clipboard/data/repositories/clipboard.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/utils/common_extension.dart';
+import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/data/repositories/clipboard.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 

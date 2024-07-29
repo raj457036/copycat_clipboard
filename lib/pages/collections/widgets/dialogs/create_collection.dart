@@ -1,5 +1,5 @@
-import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/pages/collections/pages/create_edit/page.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showCreateCollectionDialog(BuildContext context) async {

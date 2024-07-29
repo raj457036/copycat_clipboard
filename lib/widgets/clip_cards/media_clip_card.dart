@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import "package:universal_io/io.dart";

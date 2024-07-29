@@ -1,11 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_filex/open_filex.dart';

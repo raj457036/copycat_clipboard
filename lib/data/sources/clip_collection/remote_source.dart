@@ -1,7 +1,7 @@
-import 'package:clipboard/common/paginated_results.dart';
-import 'package:clipboard/data/sources/clip_collection/clip_collection.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/common/paginated_results.dart';
+import 'package:copycat_base/data/sources/clip_collection.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
