@@ -37,6 +37,7 @@ class LogoutButton extends StatelessWidget {
         isLoading: true,
         closePrevious: true,
       );
+
       EncrypterWorker.instance.dispose();
       context.read<OfflinePersistanceCubit>().stopListners();
       context.read<DriveSetupCubit>().reset();

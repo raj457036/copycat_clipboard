@@ -964,6 +964,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0+1"
+  isoworker:
+    dependency: transitive
+    description:
+      name: isoworker
+      sha256: "790de39339a64abe7b2933546ad7736065a0c0b9e5b896d4c7ccb421aecc91d6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   js:
     dependency: transitive
     description:
@@ -1715,6 +1723,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  tiny_storage:
+    dependency: "direct main"
+    description:
+      name: tiny_storage
+      sha256: "5b099bf6fd75d5f995e03a2966ecec8f0ab9a2ad2e4c1b26d54b72d8600f1a8d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   toastification:
     dependency: "direct main"
     description:

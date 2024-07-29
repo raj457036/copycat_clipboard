@@ -4,6 +4,7 @@ import 'package:clipboard/constants/numbers/breakpoints.dart';
 import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/l10n/l10n.dart';
+import 'package:clipboard/pages/login/widgets/local_signin_button.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/snackbar.dart';
@@ -155,13 +156,7 @@ class LoginForm extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      final cubit = context.read<AuthCubit>();
-                      cubit.localAuthenticated();
-                    },
-                    label: const Text("Use Locally"),
-                  ),
+                  const LocalSigninButton(),
                   // const Spacer(),
                   const LocaleDropdown(),
                   height10,

@@ -4,11 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
+import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tiny_storage/tiny_storage.dart';
 
 part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
@@ -16,9 +18,11 @@ part 'auth_state.dart';
 @singleton
 class AuthCubit extends Cubit<AuthState> {
   SupabaseClient sbClient;
+  TinyStorage localCache;
 
   AuthCubit(
     this.sbClient,
+    this.localCache,
   ) : super(const AuthState.unknown());
 
   /// validate the code and return a suitable page path
@@ -45,6 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
   Session? get session => sbClient.auth.currentSession;
 
   checkForAuthentication() {
+    if (checkLocalSignin()) return;
     if (session != null) {
       authenticated(
         session!,
@@ -88,8 +93,19 @@ class AuthCubit extends Cubit<AuthState> {
     await analytics.logAppOpen();
   }
 
+  bool checkLocalSignin() {
+    final result = localCache.get(klocalAuthKey);
+    if (result == true) {
+      emit(const AuthState.localAuthenticated());
+      return true;
+    }
+    return false;
+  }
+
   Future<void> localAuthenticated() async {
     setupAnalytics();
+
+    localCache.set(klocalAuthKey, true);
 
     emit(const AuthState.localAuthenticated());
   }
@@ -109,7 +125,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout([SignOutScope? scope]) async {
     emit(const AuthState.authenticating());
-
+    localCache.set(klocalAuthKey, false);
     await sbClient.auth.signOut(scope: scope ?? SignOutScope.local);
 
     emit(const AuthState.unauthenticated());
