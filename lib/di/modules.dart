@@ -3,6 +3,7 @@ import "package:copycat_base/db/clip_collection/clipcollection.dart";
 import "package:copycat_base/db/clipboard_item/clipboard_item.dart";
 import "package:copycat_base/db/subscription/subscription.dart";
 import "package:copycat_base/db/sync_status/syncstatus.dart";
+import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/foundation.dart";
 import "package:focus_window/focus_window.dart";
 import "package:injectable/injectable.dart";
@@ -55,6 +56,9 @@ abstract class RegisterModule {
     final storage = await TinyStorage.init("local_cache.json", path: cacheDir);
     return storage;
   }
+
+  @singleton
+  FirebaseAnalytics get analytics => FirebaseAnalytics.instance;
 }
 
 Future<void> closeIsarDb(Isar db) async {
