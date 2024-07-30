@@ -41,10 +41,6 @@ dependencies:
   mime: ^1.0.5
   image: ^4.2.0
   intl: ^0.19.0
-  supabase_auth_ui:
-    git:
-      url: https://github.com/raj457036/flutter-auth-ui.git
-  supabase_flutter: ^2.5.8
   app_links: ^6.1.4
   device_preview: ^1.2.0
   toastification: ^2.0.0

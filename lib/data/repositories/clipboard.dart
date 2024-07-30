@@ -1,8 +1,8 @@
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/common/paginated_results.dart';
-import 'package:copycat_base/data/repositories/clipboard.dart';
-import 'package:copycat_base/data/sources/clipboard.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/domain/repositories/clipboard.dart';
+import 'package:copycat_base/domain/sources/clipboard.dart';
 import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/enums/sort.dart';
 import 'package:copycat_base/utils/utility.dart';

@@ -4,8 +4,8 @@ part of 'auth_cubit.dart';
 class AuthState with _$AuthState {
   const factory AuthState.unknown() = UnknownAuthState;
   const factory AuthState.authenticated({
-    required Session session,
-    required User user,
+    required AuthUser user,
+    required String accessToken,
   }) = AuthenticatedAuthState;
   const factory AuthState.localAuthenticated() = LocalAuthenticatedAuthState;
   const factory AuthState.authenticating() = AuthenticatingAuthState;

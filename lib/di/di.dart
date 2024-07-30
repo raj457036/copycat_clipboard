@@ -6,8 +6,10 @@ import 'di.config.dart';
 final sl = GetIt.instance;
 
 @InjectableInit(
-  initializerName: 'init', // default
-  preferRelativeImports: true, // default
-  asExtension: true, // default
+  preferRelativeImports: false,
+  generateForDir: [
+    "lib",
+    "packages/copycat_pro/lib",
+  ],
 )
 Future<void> configureDependencies() async => await sl.init();

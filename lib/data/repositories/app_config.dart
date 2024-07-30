@@ -1,6 +1,6 @@
 import 'package:copycat_base/common/failure.dart';
-import 'package:copycat_base/data/repositories/app_config.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
+import 'package:copycat_base/domain/repositories/app_config.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';

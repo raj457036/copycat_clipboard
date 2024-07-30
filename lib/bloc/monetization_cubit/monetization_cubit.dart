@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:clipboard/data/repositories/subscription.dart';
+import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/db/subscription/subscription.dart';
+import 'package:copycat_base/domain/repositories/subscription.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -14,11 +15,15 @@ part 'monetization_state.dart';
 
 @singleton
 class MonetizationCubit extends Cubit<MonetizationState> {
+  final AuthCubit cubit;
   final SubscriptionRepository repo;
   bool _setupDone = false;
 
-  MonetizationCubit(this.repo) : super(const MonetizationState.unknown()) {
-    if (revenuCatSupportedPlatform) {
+  MonetizationCubit({
+    required this.cubit,
+    required this.repo,
+  }) : super(const MonetizationState.unknown()) {
+    if (iapCatSupportedPlatform) {
       Purchases.addCustomerInfoUpdateListener(onCustomerInfoUpdate);
     }
   }
@@ -26,7 +31,7 @@ class MonetizationCubit extends Cubit<MonetizationState> {
   @override
   Future<void> close() async {
     await super.close();
-    if (revenuCatSupportedPlatform) {
+    if (iapCatSupportedPlatform) {
       Purchases.removeCustomerInfoUpdateListener(onCustomerInfoUpdate);
     }
   }
@@ -58,7 +63,7 @@ class MonetizationCubit extends Cubit<MonetizationState> {
   }
 
   Future<void> login(String userId) async {
-    if (revenuCatSupportedPlatform) {
+    if (iapCatSupportedPlatform) {
       if (!_setupDone) {
         await setupRevenuCat(userId);
       }
@@ -71,7 +76,7 @@ class MonetizationCubit extends Cubit<MonetizationState> {
         logger.e("Couldn't get customer info", error: e);
       }
     } else {
-      final result = await repo.get();
+      final result = await repo.get(userId: userId);
       result.fold((l) => logger.e(l), (r) {
         if (r == null) return;
         onCustomerInfoUpdate(r);
