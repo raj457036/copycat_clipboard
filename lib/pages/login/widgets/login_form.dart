@@ -1,13 +1,11 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/login/widgets/local_signin_button.dart';
-import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/snackbar.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/domain/model/localization.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -96,28 +94,25 @@ class LoginForm extends StatelessWidget {
                       onSignUpComplete: (user, accessToken) {
                         final cubit = context.read<AuthCubit>();
                         cubit.authenticated(user, accessToken);
-                        if (isAnalyticsSupported) {
-                          analytics.logSignUp(
-                            signUpMethod: "Email",
-                            parameters: {
-                              "userId": user.userId,
-                              "email": user.email,
-                            },
-                          );
-                        }
+
+                        cubit.analyticsRepo.logSignup(
+                          signUpMethod: "Email",
+                          parameters: {
+                            "userId": user.userId,
+                            "email": user.email,
+                          },
+                        );
                       },
                       onSignInComplete: (user, accessToken) {
                         final cubit = context.read<AuthCubit>();
                         cubit.authenticated(user, accessToken);
-                        if (isAnalyticsSupported) {
-                          analytics.logLogin(
-                            loginMethod: "Email",
-                            parameters: {
-                              "userId": user.userId,
-                              "email": user.email,
-                            },
-                          );
-                        }
+                        cubit.analyticsRepo.logSignin(
+                          loginMethod: "Email",
+                          parameters: {
+                            "userId": user.userId,
+                            "email": user.email,
+                          },
+                        );
                       },
                       onError: (error) {
                         final cubit = context.read<AuthCubit>();

@@ -306,8 +306,8 @@ abstract class AppLocalizations {
   /// No description provided for @newUpdates.
   ///
   /// In en, this message translates to:
-  /// **'Changes Available:\n {ADDED} Added, {UPDATED} Updated and {DELETED} Deleted'**
-  String newUpdates(int ADDED, int UPDATED, int DELETED);
+  /// **'Changes Available:\n {added} Added, {updated} Updated and {deleted} Deleted'**
+  String newUpdates(int added, int updated, int deleted);
 
   /// No description provided for @itemDeleted.
   ///
@@ -498,8 +498,8 @@ abstract class AppLocalizations {
   /// No description provided for @dontAutoCopyOverDesc.
   ///
   /// In en, this message translates to:
-  /// **'Files and Media over a certain size ({SIZE}) will not be copied automatically.'**
-  String dontAutoCopyOverDesc(String SIZE);
+  /// **'Files and Media over a certain size ({size}) will not be copied automatically.'**
+  String dontAutoCopyOverDesc(String size);
 
   /// No description provided for @dontAutoUploadOver.
   ///
@@ -510,8 +510,8 @@ abstract class AppLocalizations {
   /// No description provided for @dontAutoUploadOverDesc.
   ///
   /// In en, this message translates to:
-  /// **'Files and Media over a certain size ({SIZE}) will not be uploaded automatically.'**
-  String dontAutoUploadOverDesc(String SIZE);
+  /// **'Files and Media over a certain size ({size}) will not be uploaded automatically.'**
+  String dontAutoUploadOverDesc(String size);
 
   /// No description provided for @enableSync.
   ///
@@ -576,8 +576,8 @@ abstract class AppLocalizations {
   /// No description provided for @cloudStorageInfo.
   ///
   /// In en, this message translates to:
-  /// **'{INFO}Your files and media are synced securely across devices using Google Drive to protect your privacy.'**
-  String cloudStorageInfo(String INFO);
+  /// **'{info}Your files and media are synced securely across devices using Google Drive to protect your privacy.'**
+  String cloudStorageInfo(String info);
 
   /// No description provided for @attentionNeeded.
   ///
@@ -594,8 +594,8 @@ abstract class AppLocalizations {
   /// No description provided for @isPausedDesc.
   ///
   /// In en, this message translates to:
-  /// **'{isPaused, select, true{Auto copy is not paused} other{Auto Copy is paused until {TILL}}}'**
-  String isPausedDesc(String isPaused, String TILL);
+  /// **'{isPaused, select, true{Auto copy is not paused} other{Auto Copy is paused until {till}}}'**
+  String isPausedDesc(String isPaused, String till);
 
   /// No description provided for @paste.
   ///
@@ -672,8 +672,8 @@ abstract class AppLocalizations {
   /// No description provided for @clipboardShortcutPreview.
   ///
   /// In en, this message translates to:
-  /// **'Current Shortcut Key : {KEY}'**
-  String clipboardShortcutPreview(String KEY);
+  /// **'Current Shortcut Key : {key}'**
+  String clipboardShortcutPreview(String key);
 
   /// No description provided for @unassigned.
   ///
@@ -756,8 +756,8 @@ abstract class AppLocalizations {
   /// No description provided for @createACollection.
   ///
   /// In en, this message translates to:
-  /// **'Create a new collection ( {LEFT} left )'**
-  String createACollection(String LEFT);
+  /// **'Create a new collection ( {left} left )'**
+  String createACollection(String left);
 
   /// No description provided for @logout.
   ///
@@ -846,14 +846,14 @@ abstract class AppLocalizations {
   /// No description provided for @syncing.
   ///
   /// In en, this message translates to:
-  /// **'Syncing {PROGRESS}'**
-  String syncing(String PROGRESS);
+  /// **'Syncing {progress}'**
+  String syncing(String progress);
 
   /// No description provided for @syncingCheckFailed.
   ///
   /// In en, this message translates to:
-  /// **'Syncing Check Failed: {MESSAGE}'**
-  String syncingCheckFailed(String MESSAGE);
+  /// **'Syncing Check Failed: {message}'**
+  String syncingCheckFailed(String message);
 
   /// No description provided for @synced.
   ///
@@ -966,8 +966,8 @@ abstract class AppLocalizations {
   /// No description provided for @currentPlanLabel.
   ///
   /// In en, this message translates to:
-  /// **'Current Plan • {LABEL}'**
-  String currentPlanLabel(String LABEL);
+  /// **'Current Plan • {label}'**
+  String currentPlanLabel(String label);
 
   /// No description provided for @included.
   ///
@@ -1620,8 +1620,8 @@ abstract class AppLocalizations {
   /// No description provided for @promoSub.
   ///
   /// In en, this message translates to:
-  /// **'You are using a promo subscription till {TILL}'**
-  String promoSub(String TILL);
+  /// **'You are using a promo subscription till {till}'**
+  String promoSub(String till);
 
   /// No description provided for @subscriptionUpdated.
   ///

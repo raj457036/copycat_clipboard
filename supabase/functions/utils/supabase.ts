@@ -20,7 +20,7 @@ export function getSupabaseClient(authToken: string | null = null) {
     // Supabase API URL - env var exported by default.
     // Deno.env.get("SUPABASE_URL") ?? "",
     supabaseUrl,
-    // Supabase API ANON KEY - env var exported by default.
+    // Supabase API ANON key - env var exported by default.
     // Deno.env.get("SUPABASE_ANON_KEY") ?? "",
     supabaseKey,
     // Create client with Auth context of the user that called the function.
@@ -55,7 +55,7 @@ export function getSupabaseServiceClient() {
     // Supabase API URL - env var exported by default.
     // Deno.env.get("SUPABASE_URL") ?? "",
     supabaseUrl,
-    // Supabase API ANON KEY - env var exported by default.
+    // Supabase API ANON key - env var exported by default.
     // Deno.env.get("SUPABASE_ANON_KEY") ?? "",
     supabaseAnonKey,
     // Create client with Auth context of the user that called the function.

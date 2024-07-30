@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/domain/repositories/analytics.dart';
 import 'package:copycat_base/domain/repositories/clipboard.dart';
 import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -12,14 +13,19 @@ part 'search_state.dart';
 
 @injectable
 class SearchCubit extends Cubit<SearchState> {
+  final AnalyticsRepository analyticsRepo;
   final ClipboardRepository repo;
-  SearchCubit(@Named("offline") this.repo) : super(const SearchState.initial());
+  SearchCubit(
+    @Named("offline") this.repo,
+    this.analyticsRepo,
+  ) : super(const SearchState.initial());
 
   Future<void> search(
     String? searchQuery, {
     List<String>? textClipCategories,
     List<ClipItemType>? clipTypes,
   }) async {
+    analyticsRepo.logFeatureUsed(feature: "search");
     switch (state) {
       case InitialSearchState() || SearchErrorState():
         {

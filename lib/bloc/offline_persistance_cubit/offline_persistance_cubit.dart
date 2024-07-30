@@ -8,9 +8,9 @@ import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/data/services/clipboard_service.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/domain/repositories/analytics.dart';
 import 'package:copycat_base/domain/repositories/clipboard.dart';
 import 'package:copycat_base/enums/clip_type.dart';
-import 'package:copycat_base/utils/analytics.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -31,6 +31,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
   final CopyToClipboard copy;
   final AppConfigCubit appConfig;
   final String deviceId;
+  final AnalyticsRepository analyticsRepo;
 
   bool _listening = false;
 
@@ -41,6 +42,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
     @Named("offline") this.repo,
     this.clipboard,
     this.appConfig,
+    this.analyticsRepo,
     @Named("device_id") this.deviceId,
   )   : copy = CopyToClipboard(clipboard),
         super(const OfflinePersistanceState.initial());
@@ -149,7 +151,7 @@ class OfflinePersistanceCubit extends Cubit<OfflinePersistanceState> {
         );
     }
 
-    logFeatureUsed(feature: "share");
+    analyticsRepo.logFeatureUsed(feature: "share");
   }
 
   Future<bool> copyToClipboard(

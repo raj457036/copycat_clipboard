@@ -1,15 +1,17 @@
+import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
 import 'package:clipboard/widgets/subscription/paywall/manage_subscription_button.dart';
-import 'package:clipboard/widgets/subscription/paywall/paywall.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/datetime_extension.dart';
+import 'package:copycat_pro/utils/monetization.dart';
+import 'package:copycat_pro/widgets/subscription/paywall/paywall.dart';
 import 'package:flutter/material.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_io/io.dart';
 
 class FeatureTabs extends StatelessWidget {
@@ -118,30 +120,32 @@ class FeatureTabs extends StatelessWidget {
             Tab(text: "PRO ✨"),
           ]),
           Expanded(
-            child: TabBarView(children: [
-              ListView.builder(
-                itemCount: freePlanIncludes.length,
-                itemBuilder: (context, index) {
-                  final (icon, title, subtitle) = freePlanIncludes[index];
-                  return ListTile(
-                    leading: icon,
-                    title: Text(title),
-                    subtitle: subtitle != null ? Text(subtitle) : null,
-                  );
-                },
-              ),
-              ListView.builder(
-                itemCount: proPlanIncludes.length,
-                itemBuilder: (context, index) {
-                  final (icon, title, subtitle) = proPlanIncludes[index];
-                  return ListTile(
-                    leading: icon,
-                    title: Text(title),
-                    subtitle: Text(subtitle),
-                  );
-                },
-              ),
-            ]),
+            child: TabBarView(
+              children: [
+                ListView.builder(
+                  itemCount: freePlanIncludes.length,
+                  itemBuilder: (context, index) {
+                    final (icon, title, subtitle) = freePlanIncludes[index];
+                    return ListTile(
+                      leading: icon,
+                      title: Text(title),
+                      subtitle: subtitle != null ? Text(subtitle) : null,
+                    );
+                  },
+                ),
+                ListView.builder(
+                  itemCount: proPlanIncludes.length,
+                  itemBuilder: (context, index) {
+                    final (icon, title, subtitle) = proPlanIncludes[index];
+                    return ListTile(
+                      leading: icon,
+                      title: Text(title),
+                      subtitle: Text(subtitle),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -170,13 +174,26 @@ class SubscriptionInfoDialog extends StatelessWidget {
   }
 
   Future<void> upgrade(BuildContext context) async {
+    final monetizationCubit = context.read<MonetizationCubit>();
     if (isMobilePlatform) {
-      await RevenueCatUI.presentPaywall(
-        displayCloseButton: true,
-      );
+      presentPaywall();
       return;
     }
-    const CustomPaywallDialog().open(context);
+    CustomPaywallDialog(
+      localization: CustomPaywallDialogLocalization(
+        month: context.locale.month,
+        year: context.locale.year,
+        subscription: context.locale.subscription,
+        subscribeInSupportedPlatform:
+            context.locale.subscribeInSupportedPlatform,
+        unlockPremiumFeatures: context.locale.unlockPremiumFeatures,
+        upgradeToPro: context.locale.upgradeToPro,
+        tryAgain: context.locale.tryAgain,
+        continue_: context.locale.continue_,
+        cancel: context.locale.cancel,
+      ),
+      onSubscription: monetizationCubit.onSubscriptionChange,
+    ).open(context);
   }
 
   @override

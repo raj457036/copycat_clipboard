@@ -35,16 +35,16 @@
     "pleaseWaitWhileWeSetupSyncing": "Veuillez patienter pendant que nous configurons\nla synchronisation",
     "driveSetupMayTakeFewMin": "Cela peut prendre environ une minute pour terminer.\n( Veuillez ne pas fermer l'application )",
     "refreshNow": "Actualiser Maintenant",
-    "newUpdates": "Modifications Disponibles:\n {ADDED} Ajouté, {UPDATED} Mis à jour et {DELETED} Supprimé",
+    "newUpdates": "Modifications Disponibles:\n {added} Ajouté, {updated} Mis à jour et {deleted} Supprimé",
     "@newUpdates": {
         "placeholders": {
-            "ADDED": {
+            "added": {
                 "type": "int"
             },
-            "UPDATED": {
+            "updated": {
                 "type": "int"
             },
-            "DELETED": {
+            "deleted": {
                 "type": "int"
             }
         }
@@ -80,19 +80,19 @@
     "theme": "Thème",
     "syncLocal": "Synchroniser • Local",
     "dontAutoCopyOver": "Ne pas Copier Automatiquement",
-    "dontAutoCopyOverDesc": "Les fichiers et médias de plus d'une certaine taille ({SIZE}) ne seront pas copiés automatiquement.",
+    "dontAutoCopyOverDesc": "Les fichiers et médias de plus d'une certaine taille ({size}) ne seront pas copiés automatiquement.",
     "@dontAutoCopyOverDesc": {
         "placeholders": {
-            "SIZE": {
+            "size": {
                 "type": "String"
             }
         }
     },
     "dontAutoUploadOver": "Ne pas Télécharger Automatiquement",
-    "dontAutoUploadOverDesc": "Les fichiers et médias de plus d'une certaine taille ({SIZE}) ne seront pas téléchargés automatiquement.",
+    "dontAutoUploadOverDesc": "Les fichiers et médias de plus d'une certaine taille ({size}) ne seront pas téléchargés automatiquement.",
     "@dontAutoUploadOverDesc": {
         "placeholders": {
-            "SIZE": {
+            "size": {
                 "type": "String"
             }
         }
@@ -107,23 +107,23 @@
     "connectNow": "Connecter Maintenant",
     "tips": "ⓘ Conseils",
     "cloudStorageInfoDefault": "\n\nGoogle Drive non connecté, la synchronisation des fichiers et des médias est désactivée.",
-    "cloudStorageInfo": "{INFO}Vos fichiers et médias sont synchronisés en toute sécurité sur tous vos appareils en utilisant Google Drive pour protéger votre confidentialité.",
+    "cloudStorageInfo": "{info}Vos fichiers et médias sont synchronisés en toute sécurité sur tous vos appareils en utilisant Google Drive pour protéger votre confidentialité.",
     "@cloudStorageInfo": {
         "placeholders": {
-            "INFO": {
+            "info": {
                 "type": "String"
             }
         }
     },
     "attentionNeeded": "⚠ Attention Requise!",
     "isPaused": "Est en Pause?",
-    "isPausedDesc": "{isPaused, select, true{La copie automatique n'est pas en pause} other{La copie automatique est en pause jusqu'à {TILL}}}",
+    "isPausedDesc": "{isPaused, select, true{La copie automatique n'est pas en pause} other{La copie automatique est en pause jusqu'à {till}}}",
     "@isPausedDesc": {
         "placeholders": {
             "isPaused": {
                 "type": "String"
             },
-            "TILL": {
+            "till": {
                 "type": "String"
             }
         }
@@ -140,10 +140,10 @@
     "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente",
     "clipboardShortcut": "Raccourci du Presse-papiers",
     "clipboardShortcutDesc": "Accédez facilement au presse-papiers partout",
-    "clipboardShortcutPreview": "Touche de raccourci actuelle : {KEY}",
+    "clipboardShortcutPreview": "Touche de raccourci actuelle : {key}",
     "@clipboardShortcutPreview": {
         "placeholders": {
-            "KEY": {
+            "key": {
                 "type": "String"
             }
         }
@@ -161,10 +161,10 @@
     "changeCollection": "Changer de Collection",
     "removeFromCollection": "Retirer de la collection",
     "compactMode": "Mode Compact",
-    "createACollection": "Créer une nouvelle collection ( {LEFT} restant )",
+    "createACollection": "Créer une nouvelle collection ( {left} restant )",
     "@createACollection": {
         "placeholders": {
-            "LEFT": {
+            "left": {
                 "type": "String"
             }
         }
@@ -183,18 +183,18 @@
     "syncNotAvailable": "Synchronisation Non Disponible",
     "checkingForRecord": "Vérification des Enregistrements",
     "sync": "Synchroniser",
-    "syncing": "Synchronisation en cours {PROGRESS}",
+    "syncing": "Synchronisation en cours {progress}",
     "@syncing": {
         "placeholders": {
-            "PROGRESS": {
+            "progress": {
                 "type": "String"
             }
         }
     },
-    "syncingCheckFailed": "Échec de la vérification de synchronisation : {MESSAGE}",
+    "syncingCheckFailed": "Échec de la vérification de synchronisation : {message}",
     "@syncingCheckFailed": {
         "placeholders": {
-            "MESSAGE": {
+            "message": {
                 "type": "String"
             }
         }
@@ -217,10 +217,10 @@
     "beta": "PUBLIC BETA",
     "featureListDetail": "CopyCat Clipboard est actuellement en phase Beta. Bien que nous nous efforcions d'offrir une expérience sans faille, vous pourriez rencontrer des bugs occasionnels. Restez à l'écoute pour les futures fonctionnalités et améliorations.",
     "currentPlan": "Plan Actuel",
-    "currentPlanLabel": "Plan Actuel • {LABEL}",
+    "currentPlanLabel": "Plan Actuel • {label}",
     "@currentPlanLabel": {
         "placeholders": {
-            "LABEL": {
+            "label": {
                 "type": "String"
             }
         }
@@ -348,10 +348,10 @@
     "year": "année",
     "month": "mois",
     "manageSubscriptions": "Gérer les Abonnements",
-    "promoSub": "Vous utilisez un abonnement promotionnel jusqu'à {TILL}",
+    "promoSub": "Vous utilisez un abonnement promotionnel jusqu'à {till}",
     "@promoSub": {
         "placeholders": {
-            "TILL": {
+            "till": {
                 "type": "String"
             }
         }

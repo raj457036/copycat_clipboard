@@ -4,7 +4,7 @@ import 'app_localizations.dart';
 
 /// The translations for French (`fr`).
 class AppLocalizationsFr extends AppLocalizations {
-  AppLocalizationsFr([String locale = 'fr']) : super(locale);
+  AppLocalizationsFr([super.locale = 'fr']);
 
   @override
   String get appName => 'CopyCat';
@@ -114,8 +114,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get refreshNow => 'Actualiser Maintenant';
 
   @override
-  String newUpdates(int ADDED, int UPDATED, int DELETED) {
-    return 'Modifications Disponibles:\n $ADDED Ajouté, $UPDATED Mis à jour et $DELETED Supprimé';
+  String newUpdates(int added, int updated, int deleted) {
+    return 'Modifications Disponibles:\n $added Ajouté, $updated Mis à jour et $deleted Supprimé';
   }
 
   @override
@@ -215,16 +215,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dontAutoCopyOver => 'Ne pas Copier Automatiquement';
 
   @override
-  String dontAutoCopyOverDesc(String SIZE) {
-    return 'Les fichiers et médias de plus d\'une certaine taille ($SIZE) ne seront pas copiés automatiquement.';
+  String dontAutoCopyOverDesc(String size) {
+    return 'Les fichiers et médias de plus d\'une certaine taille ($size) ne seront pas copiés automatiquement.';
   }
 
   @override
   String get dontAutoUploadOver => 'Ne pas Télécharger Automatiquement';
 
   @override
-  String dontAutoUploadOverDesc(String SIZE) {
-    return 'Les fichiers et médias de plus d\'une certaine taille ($SIZE) ne seront pas téléchargés automatiquement.';
+  String dontAutoUploadOverDesc(String size) {
+    return 'Les fichiers et médias de plus d\'une certaine taille ($size) ne seront pas téléchargés automatiquement.';
   }
 
   @override
@@ -261,8 +261,8 @@ class AppLocalizationsFr extends AppLocalizations {
       '\n\nGoogle Drive non connecté, la synchronisation des fichiers et des médias est désactivée.';
 
   @override
-  String cloudStorageInfo(String INFO) {
-    return '${INFO}Vos fichiers et médias sont synchronisés en toute sécurité sur tous vos appareils en utilisant Google Drive pour protéger votre confidentialité.';
+  String cloudStorageInfo(String info) {
+    return '${info}Vos fichiers et médias sont synchronisés en toute sécurité sur tous vos appareils en utilisant Google Drive pour protéger votre confidentialité.';
   }
 
   @override
@@ -272,15 +272,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get isPaused => 'Est en Pause?';
 
   @override
-  String isPausedDesc(String isPaused, String TILL) {
-    String _temp0 = intl.Intl.selectLogic(
+  String isPausedDesc(String isPaused, String till) {
+    String temp0 = intl.Intl.selectLogic(
       isPaused,
       {
         'true': 'La copie automatique n\'est pas en pause',
-        'other': 'La copie automatique est en pause jusqu\'à $TILL',
+        'other': 'La copie automatique est en pause jusqu\'à $till',
       },
     );
-    return '$_temp0';
+    return temp0;
   }
 
   @override
@@ -325,8 +325,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'Accédez facilement au presse-papiers partout';
 
   @override
-  String clipboardShortcutPreview(String KEY) {
-    return 'Touche de raccourci actuelle : $KEY';
+  String clipboardShortcutPreview(String key) {
+    return 'Touche de raccourci actuelle : $key';
   }
 
   @override
@@ -369,8 +369,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get compactMode => 'Mode Compact';
 
   @override
-  String createACollection(String LEFT) {
-    return 'Créer une nouvelle collection ( $LEFT restant )';
+  String createACollection(String left) {
+    return 'Créer une nouvelle collection ( $left restant )';
   }
 
   @override
@@ -417,13 +417,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sync => 'Synchroniser';
 
   @override
-  String syncing(String PROGRESS) {
-    return 'Synchronisation en cours $PROGRESS';
+  String syncing(String progress) {
+    return 'Synchronisation en cours $progress';
   }
 
   @override
-  String syncingCheckFailed(String MESSAGE) {
-    return 'Échec de la vérification de synchronisation : $MESSAGE';
+  String syncingCheckFailed(String message) {
+    return 'Échec de la vérification de synchronisation : $message';
   }
 
   @override
@@ -484,8 +484,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get currentPlan => 'Plan Actuel';
 
   @override
-  String currentPlanLabel(String LABEL) {
-    return 'Plan Actuel • $LABEL';
+  String currentPlanLabel(String label) {
+    return 'Plan Actuel • $label';
   }
 
   @override
@@ -853,8 +853,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get manageSubscriptions => 'Gérer les Abonnements';
 
   @override
-  String promoSub(String TILL) {
-    return 'Vous utilisez un abonnement promotionnel jusqu\'à $TILL';
+  String promoSub(String till) {
+    return 'Vous utilisez un abonnement promotionnel jusqu\'à $till';
   }
 
   @override

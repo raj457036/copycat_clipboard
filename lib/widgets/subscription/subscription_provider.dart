@@ -23,7 +23,7 @@ class SubscriptionBuilder extends StatelessWidget {
     return BlocSelector<MonetizationCubit, MonetizationState, Subscription?>(
       selector: (state) {
         return state.whenOrNull(
-          active: (info, subscription) {
+          active: (subscription) {
             return subscription;
           },
         );

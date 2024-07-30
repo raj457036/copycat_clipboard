@@ -25,12 +25,9 @@ import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
-import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
-
-final analytics = FirebaseAnalytics.instance;
 
 const rootLocation = "/";
 GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(

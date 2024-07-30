@@ -3,7 +3,6 @@ import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.d
 import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:clipboard/constants/key.dart';
-import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/constants/strings/strings.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
@@ -17,6 +16,7 @@ import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';

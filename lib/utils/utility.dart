@@ -47,14 +47,10 @@ String formatBytes(int sizeInBytes, {bool precise = true}) {
 
 bool get isDesktopPlatform =>
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-bool get iapCatSupportedPlatform =>
-    Platform.isIOS || Platform.isMacOS || Platform.isAndroid;
+
 bool get isApplePlatform => Platform.isIOS || Platform.isMacOS;
 
 bool get isMobilePlatform => Platform.isIOS || Platform.isAndroid;
-
-bool get isAnalyticsSupported =>
-    Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
 
 Color? hexToColor(ClipboardItem item) {
   if (item.textCategory != TextCategory.color) return null;

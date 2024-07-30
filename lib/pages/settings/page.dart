@@ -1,4 +1,3 @@
-import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
@@ -20,6 +19,7 @@ import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';

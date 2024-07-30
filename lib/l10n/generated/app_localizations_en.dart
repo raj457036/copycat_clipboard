@@ -4,7 +4,7 @@ import 'app_localizations.dart';
 
 /// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+  AppLocalizationsEn([super.locale = 'en']);
 
   @override
   String get appName => 'CopyCat';
@@ -112,8 +112,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refreshNow => 'Refresh Now';
 
   @override
-  String newUpdates(int ADDED, int UPDATED, int DELETED) {
-    return 'Changes Available:\n $ADDED Added, $UPDATED Updated and $DELETED Deleted';
+  String newUpdates(int added, int updated, int deleted) {
+    return 'Changes Available:\n $added Added, $updated Updated and $deleted Deleted';
   }
 
   @override
@@ -212,16 +212,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dontAutoCopyOver => 'Don\'t Auto Copy Over';
 
   @override
-  String dontAutoCopyOverDesc(String SIZE) {
-    return 'Files and Media over a certain size ($SIZE) will not be copied automatically.';
+  String dontAutoCopyOverDesc(String size) {
+    return 'Files and Media over a certain size ($size) will not be copied automatically.';
   }
 
   @override
   String get dontAutoUploadOver => 'Don\'t Auto Upload Over';
 
   @override
-  String dontAutoUploadOverDesc(String SIZE) {
-    return 'Files and Media over a certain size ($SIZE) will not be uploaded automatically.';
+  String dontAutoUploadOverDesc(String size) {
+    return 'Files and Media over a certain size ($size) will not be uploaded automatically.';
   }
 
   @override
@@ -257,8 +257,8 @@ class AppLocalizationsEn extends AppLocalizations {
       '\n\nGoogle Drive not connected, File and media syncing is disabled.';
 
   @override
-  String cloudStorageInfo(String INFO) {
-    return '${INFO}Your files and media are synced securely across devices using Google Drive to protect your privacy.';
+  String cloudStorageInfo(String info) {
+    return '${info}Your files and media are synced securely across devices using Google Drive to protect your privacy.';
   }
 
   @override
@@ -268,15 +268,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get isPaused => 'Is Paused?';
 
   @override
-  String isPausedDesc(String isPaused, String TILL) {
-    String _temp0 = intl.Intl.selectLogic(
+  String isPausedDesc(String isPaused, String till) {
+    String temp0 = intl.Intl.selectLogic(
       isPaused,
       {
         'true': 'Auto copy is not paused',
-        'other': 'Auto Copy is paused until $TILL',
+        'other': 'Auto Copy is paused until $till',
       },
     );
-    return '$_temp0';
+    return temp0;
   }
 
   @override
@@ -319,8 +319,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clipboardShortcutDesc => 'Effortlessly Access Clipboard Anywhere';
 
   @override
-  String clipboardShortcutPreview(String KEY) {
-    return 'Current Shortcut Key : $KEY';
+  String clipboardShortcutPreview(String key) {
+    return 'Current Shortcut Key : $key';
   }
 
   @override
@@ -363,8 +363,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get compactMode => 'Compact Mode';
 
   @override
-  String createACollection(String LEFT) {
-    return 'Create a new collection ( $LEFT left )';
+  String createACollection(String left) {
+    return 'Create a new collection ( $left left )';
   }
 
   @override
@@ -411,13 +411,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sync => 'Sync';
 
   @override
-  String syncing(String PROGRESS) {
-    return 'Syncing $PROGRESS';
+  String syncing(String progress) {
+    return 'Syncing $progress';
   }
 
   @override
-  String syncingCheckFailed(String MESSAGE) {
-    return 'Syncing Check Failed: $MESSAGE';
+  String syncingCheckFailed(String message) {
+    return 'Syncing Check Failed: $message';
   }
 
   @override
@@ -478,8 +478,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currentPlan => 'Current Plan';
 
   @override
-  String currentPlanLabel(String LABEL) {
-    return 'Current Plan • $LABEL';
+  String currentPlanLabel(String label) {
+    return 'Current Plan • $label';
   }
 
   @override
@@ -842,8 +842,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageSubscriptions => 'Manage Subscriptions';
 
   @override
-  String promoSub(String TILL) {
-    return 'You are using a promo subscription till $TILL';
+  String promoSub(String till) {
+    return 'You are using a promo subscription till $till';
   }
 
   @override
