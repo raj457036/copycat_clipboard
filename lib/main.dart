@@ -25,7 +25,6 @@ import 'package:copycat_base/common/bloc_config.dart';
 import 'package:copycat_base/common/color_schemes.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/utils/windows/update_registry.dart';
-import 'package:copycat_pro/copycat_pro.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -65,8 +64,6 @@ Future<void> initializeServices() async {
       DeviceOrientation.portraitDown,
     ]);
   }
-
-  Calculator();
 
   await initializeFirebase();
   await configureDependencies();

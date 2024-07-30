@@ -4,10 +4,10 @@ import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/reset_password_button.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/domain/model/auth_user/auth_user.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as su;
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AccountPage extends StatelessWidget {
@@ -29,7 +29,7 @@ class AccountPage extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final isPhone = Breakpoints.isMobile(width);
     final colors = context.colors;
-    final content = BlocSelector<AuthCubit, AuthState, su.User?>(
+    final content = BlocSelector<AuthCubit, AuthState, AuthUser?>(
       selector: (state) {
         return state.mapOrNull(authenticated: (_) => _.user);
       },
@@ -43,11 +43,11 @@ class AccountPage extends StatelessWidget {
           children: [
             ListTile(
               title: Text(context.locale.displayName),
-              subtitle: Text(state.userMetadata?["display_name"] ?? ""),
+              subtitle: Text(state.displayName ?? ""),
             ),
             ListTile(
               title: Text(context.locale.email),
-              subtitle: Text(state.email!),
+              subtitle: Text(state.email),
             ),
             const Divider(),
             ListTile(

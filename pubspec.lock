@@ -1665,7 +1665,7 @@ packages:
     source: hosted
     version: "2.2.4"
   supabase_auth_ui:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "."
       ref: HEAD
@@ -1674,7 +1674,7 @@ packages:
     source: git
     version: "0.4.4"
   supabase_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: supabase_flutter
       sha256: "048d9377a76e43b95039d67e26b4bb2326fc8818df8d2f4bd63b4fdfc79f8f50"

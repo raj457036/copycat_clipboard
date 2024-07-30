@@ -11,7 +11,6 @@ import "package:package_info_plus/package_info_plus.dart";
 import 'package:path/path.dart' as p;
 import "package:path_provider/path_provider.dart";
 import "package:platform_device_id/platform_device_id.dart";
-import "package:supabase_flutter/supabase_flutter.dart";
 import "package:tiny_storage/tiny_storage.dart";
 
 @module
@@ -47,24 +46,6 @@ abstract class RegisterModule {
 
   @singleton
   FocusWindow get focusWindow => FocusWindow();
-
-  @Named("supabase_url")
-  String get supabaseUrl => const String.fromEnvironment("SUPABASE_URL");
-
-  @Named("supabase_key")
-  String get supabaseKey => const String.fromEnvironment("SUPABASE_KEY");
-
-  @preResolve
-  @singleton
-  Future<SupabaseClient> client(@Named("supabase_url") String url,
-      @Named("supabase_key") String key) async {
-    await Supabase.initialize(
-      url: url,
-      anonKey: key,
-      debug: kDebugMode,
-    );
-    return Supabase.instance.client;
-  }
 
   @preResolve
   @singleton

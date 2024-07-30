@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:copycat_base/common/failure.dart';
-import 'package:copycat_base/data/repositories/clipboard.dart';
+import 'package:copycat_base/domain/repositories/clipboard.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

@@ -9,12 +9,12 @@ import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/domain/model/localization.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_pro/widgets/forms/login_form.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as su_auth;
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginForm extends StatelessWidget {
@@ -92,62 +92,41 @@ class LoginForm extends StatelessWidget {
                   SizedBox(
                     width: 350,
                     // height: 390,
-                    child: su_auth.SupaEmailAuth(
-                      onSignUpComplete: (su_auth.AuthResponse response) {
-                        if (response.session != null && response.user != null) {
-                          final cubit = context.read<AuthCubit>();
-                          cubit.authenticated(
-                            response.session!,
-                            response.user!,
+                    child: CopyCatClipboardLoginForm(
+                      onSignUpComplete: (user, accessToken) {
+                        final cubit = context.read<AuthCubit>();
+                        cubit.authenticated(user, accessToken);
+                        if (isAnalyticsSupported) {
+                          analytics.logSignUp(
+                            signUpMethod: "Email",
+                            parameters: {
+                              "userId": user.userId,
+                              "email": user.email,
+                            },
                           );
-                          if (isAnalyticsSupported) {
-                            analytics.logSignUp(
-                              signUpMethod: "Email",
-                              parameters: {
-                                "userId": response.user!.id,
-                                "email": response.user!.email!,
-                              },
-                            );
-                          }
                         }
                       },
-                      onSignInComplete: (su_auth.AuthResponse response) {
-                        if (response.session != null && response.user != null) {
-                          final cubit = context.read<AuthCubit>();
-                          cubit.authenticated(
-                            response.session!,
-                            response.user!,
+                      onSignInComplete: (user, accessToken) {
+                        final cubit = context.read<AuthCubit>();
+                        cubit.authenticated(user, accessToken);
+                        if (isAnalyticsSupported) {
+                          analytics.logLogin(
+                            loginMethod: "Email",
+                            parameters: {
+                              "userId": user.userId,
+                              "email": user.email,
+                            },
                           );
-                          if (isAnalyticsSupported) {
-                            analytics.logLogin(
-                              loginMethod: "Email",
-                              parameters: {
-                                "userId": response.user!.id,
-                                "email": response.user!.email!,
-                              },
-                            );
-                          }
                         }
                       },
                       onError: (error) {
                         final cubit = context.read<AuthCubit>();
-                        cubit.unauthenticated(
-                          Failure.fromException(error),
-                        );
-
-                        if (error is su_auth.AuthException) {
-                          showTextSnackbar(error.message);
-                        }
+                        final failure = Failure.fromException(error);
+                        cubit.unauthenticated(failure);
+                        showFailureSnackbar(failure);
                       },
-                      metadataFields: [
-                        su_auth.MetaDataField(
-                          label: context.locale.fullName,
-                          key: "display_name",
-                          prefixIcon: const Icon(Icons.person_outline_rounded),
-                          validator: ValidationBuilder().minLength(1).build(),
-                        ),
-                      ],
-                      localization: su_auth.SupaEmailAuthLocalization(
+                      localization: AuthUserFormLocalization(
+                        displayNameLabel: context.locale.fullName,
                         enterEmail: context.locale.enterEmail,
                         validEmailError: context.locale.validEmailError,
                         enterPassword: context.locale.enterPassword,

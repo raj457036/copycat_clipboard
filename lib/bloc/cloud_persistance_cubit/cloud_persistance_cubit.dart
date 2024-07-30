@@ -6,9 +6,9 @@ import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/common/logging.dart';
-import 'package:copycat_base/data/repositories/clipboard.dart';
 import 'package:copycat_base/data/services/google_services.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/domain/repositories/clipboard.dart';
 import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/utils/blur_hash.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -159,9 +159,9 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
         item.copyWith(uploading: true)..applyId(item),
       ),
     );
-    final session = auth.session;
+    final userId = auth.userId;
 
-    if (session == null) {
+    if (userId == null) {
       emit(
         CloudPersistanceState.error(
           authFailure,
@@ -189,7 +189,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
     final results = await Future.wait([
       drive.upload(
-        item.assignUserId(session.user.id),
+        item.assignUserId(userId),
         onProgress: (uploaded, total) {
           emit(
             CloudPersistanceState.uploadingFile(
@@ -286,9 +286,9 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
         item.copyWith(downloading: true)..applyId(item),
       ),
     );
-    final session = auth.session;
+    final userId = auth.userId;
 
-    if (session == null) {
+    if (userId == null) {
       emit(CloudPersistanceState.error(
         authFailure,
         item.syncDone(authFailure),
@@ -312,7 +312,7 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
     drive.accessToken = accessToken;
     final updatedItem = await drive.download(
-      item.assignUserId(session.user.id),
+      item.assignUserId(userId),
     );
     await persist(updatedItem);
   }

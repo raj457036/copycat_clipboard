@@ -53,7 +53,7 @@ class AuthListener extends StatelessWidget {
               rootNavKey.currentContext?.goNamed(RouteConstants.home);
               await Future.wait([
                 context.read<AppConfigCubit>().load(),
-                context.read<MonetizationCubit>().login(user.id),
+                context.read<MonetizationCubit>().login(user.userId),
                 context.read<ClipCollectionCubit>().fetch(),
                 context.read<SyncManagerCubit>().syncChanges(),
                 context.read<OfflinePersistanceCubit>().startListners(),

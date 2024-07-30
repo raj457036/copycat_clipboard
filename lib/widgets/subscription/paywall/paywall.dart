@@ -36,7 +36,7 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
   late final MonetizationCubit monetizationCubit;
 
   Future<void> loadOffering() async {
-    if (!revenuCatSupportedPlatform) return;
+    if (!iapCatSupportedPlatform) return;
     final offerings = await Purchases.getOfferings();
     setState(() {
       currentOffering = offerings.current;
@@ -106,7 +106,7 @@ class CustomPaywallStateDialog extends State<CustomPaywallDialog> {
     final textTheme = context.textTheme;
     final colors = context.colors;
 
-    if (!revenuCatSupportedPlatform) {
+    if (!iapCatSupportedPlatform) {
       return AlertDialog(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

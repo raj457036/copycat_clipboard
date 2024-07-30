@@ -47,7 +47,7 @@ String formatBytes(int sizeInBytes, {bool precise = true}) {
 
 bool get isDesktopPlatform =>
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-bool get revenuCatSupportedPlatform =>
+bool get iapCatSupportedPlatform =>
     Platform.isIOS || Platform.isMacOS || Platform.isAndroid;
 bool get isApplePlatform => Platform.isIOS || Platform.isMacOS;
 

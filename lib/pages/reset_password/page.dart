@@ -1,10 +1,11 @@
 import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/snackbar.dart';
+import 'package:copycat_base/domain/model/localization.dart';
+import 'package:copycat_pro/widgets/forms/reset_password_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as su_auth;
 
 class ResetPasswordPage extends StatelessWidget {
   const ResetPasswordPage({super.key});
@@ -19,12 +20,12 @@ class ResetPasswordPage extends StatelessWidget {
         child: BlocSelector<AuthCubit, AuthState, String?>(
           selector: (state) {
             if (state is AuthenticatedAuthState) {
-              return state.session.accessToken;
+              return state.accessToken;
             }
             return null;
           },
-          builder: (context, state) {
-            if (state == null) {
+          builder: (context, accessToken) {
+            if (accessToken == null) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -32,16 +33,16 @@ class ResetPasswordPage extends StatelessWidget {
             return SizedBox(
               width: 300,
               height: 300,
-              child: su_auth.SupaResetPassword(
-                accessToken: state,
-                localization: su_auth.SupaResetPasswordLocalization(
+              child: ResetPasswordForm(
+                localization: AuthUserResetPasswordFormLocalization(
                   passwordResetSent: context.locale.passwordResetSuccess,
                   enterPassword: context.locale.enterPassword,
                   passwordLengthError: context.locale.passwordLengthError,
                   updatePassword: context.locale.updatePassword,
                   unexpectedError: context.locale.unexpectedError,
                 ),
-                onSuccess: (su_auth.UserResponse response) {
+                accessToken: accessToken,
+                onSuccess: (user) {
                   context.pop();
                 },
                 onError: (error) {
