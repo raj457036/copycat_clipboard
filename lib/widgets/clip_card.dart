@@ -55,7 +55,7 @@ class ClipCard extends StatelessWidget {
   Future<void> downloadFile(
     BuildContext context,
   ) async {
-    context.read<CloudPersistanceCubit>().download(item);
+    await context.read<CloudPersistanceCubit>().download(item);
   }
 
   Future<void> decryptItem(BuildContext context) async {
@@ -135,52 +135,57 @@ class ClipCard extends StatelessWidget {
         ...customMenuItems,
       ],
       child: Card.outlined(
-        elevation: .5,
         margin: EdgeInsets.zero,
-        child: InkWell(
-          borderRadius: radius12,
-          onTap: item.encrypted
-              ? () => decryptItem(context)
-              : () => preview(context),
-          child: Column(
-            children: [
-              ClipCardOptionsHeader(item: item),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (item.title != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: padding8,
-                          vertical: padding2,
-                        ),
-                        child: Text(
-                          item.title!,
-                          style: textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+        child: Material(
+          child: InkWell(
+            borderRadius: radius12,
+            onTap: item.encrypted
+                ? () => decryptItem(context)
+                : () => preview(context),
+            child: Column(
+              children: [
+                ClipCardOptionsHeader(item: item),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (item.title != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: padding8,
+                            vertical: padding2,
                           ),
-                          maxLines: 2,
+                          child: Text(
+                            item.title!,
+                            style: textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                          ),
+                        ),
+                      Expanded(
+                        child: Card.outlined(
+                          margin: EdgeInsets.zero,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                          ),
+                          child: item.encrypted
+                              ? const EncryptedClipItem()
+                              : getPreview(),
                         ),
                       ),
-                    Expanded(
-                      child: Card.outlined(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: radius8,
-                        ),
-                        child: item.encrypted
-                            ? const EncryptedClipItem()
-                            : getPreview(),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              DisableForLocalUser(
-                child: ClipCardSyncStatusFooter(item: item),
-              ),
-            ],
+                DisableForLocalUser(
+                  child: ClipCardSyncStatusFooter(item: item),
+                ),
+              ],
+            ),
           ),
         ),
       ),
