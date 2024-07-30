@@ -28,7 +28,7 @@ class TextPreviewBody extends StatelessWidget {
     if (bg != null) {
       return Material(
         color: bg,
-        borderRadius: radius8,
+        borderRadius: radiusBottom12,
         child: body,
       );
     }

@@ -40,8 +40,10 @@ class FileClipCard extends StatelessWidget {
               overflow: TextOverflow.fade,
               maxLines: 5,
               textAlign: TextAlign.center,
-              style: textTheme.titleMedium
-                  ?.copyWith(color: colors.onTertiaryContainer, height: 1.8),
+              style: textTheme.titleMedium?.copyWith(
+                color: colors.onTertiaryContainer,
+                height: 1.8,
+              ),
             ),
           ),
         ),

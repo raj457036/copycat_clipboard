@@ -96,7 +96,7 @@ class MediaClipCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: radius8,
+      borderRadius: radiusBottom12,
       child: SizedBox.expand(
           child: Stack(
         children: [
