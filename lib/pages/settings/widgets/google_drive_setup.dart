@@ -1,7 +1,7 @@
 import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
-import 'package:clipboard/constants/strings/asset_constants.dart';
 import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/info_card.dart';
+import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';

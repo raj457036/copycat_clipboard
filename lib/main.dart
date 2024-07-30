@@ -13,6 +13,7 @@ import 'package:clipboard/constants/key.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/l10n/generated/app_localizations.dart';
 import 'package:clipboard/routes/routes.dart';
+import 'package:clipboard/utils/analytics.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
@@ -24,9 +25,9 @@ import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/common/bloc_config.dart';
 import 'package:copycat_base/common/color_schemes.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:copycat_base/utils/windows/update_registry.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -118,9 +119,7 @@ Future<void> initializeFirebase() async {
   }
 }
 
-final router_ = router([
-  if (isAnalyticsSupported) FirebaseAnalyticsObserver(analytics: analytics)
-]);
+final router_ = router(analyticNavigationObservers);
 
 class AppContent extends StatelessWidget {
   const AppContent({super.key});

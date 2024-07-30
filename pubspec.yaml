@@ -69,16 +69,14 @@ dependencies:
   flutter_platform_alert: ^0.5.1
   device_preview_screenshot: ^1.0.0
   encrypt: ^5.0.3
+  upgrader: ^10.3.0
+  retry: ^3.1.2
+  ntp: ^2.0.0
+  tiny_storage: ^1.1.0
   firebase_analytics: ^11.1.0
   firebase_core: ^3.1.1
   firebase_core_desktop: ^1.0.2
   firebase_crashlytics: ^4.0.2
-  upgrader: ^10.3.0
-  purchases_flutter: ^6.30.2
-  purchases_ui_flutter: ^6.30.2
-  retry: ^3.1.2
-  ntp: ^2.0.0
-  tiny_storage: ^1.1.0
   copycat_pro:
     path: packages/copycat_pro
   copycat_base:
@@ -99,7 +97,7 @@ dependency_overrides:
   device_info_plus: ^9.0.2
   intl: ^0.19.0
   analyzer: ^6.4.1
-  firebase_core_platform_interface: ^4.5.0
+  firebase_core_platform_interface: ^5.1.0
 
 flutter:
   uses-material-design: true

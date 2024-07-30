@@ -5,16 +5,17 @@ import 'package:copycat_base/db/subscription/subscription.dart';
 import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ManageSubscriptionButton extends StatelessWidget {
   const ManageSubscriptionButton({super.key});
 
-  Future<void> manageSubscription(BuildContext context, CustomerInfo customer,
-      Subscription subscription) async {
-    if (customer.managementURL != null) {
-      launchUrlString(customer.managementURL!);
+  Future<void> manageSubscription(
+    BuildContext context,
+    Subscription subscription,
+  ) async {
+    if (subscription.managementUrl != null) {
+      launchUrlString(subscription.managementUrl!);
       return;
     }
     if (subscription.source == "PROMO") {
@@ -32,9 +33,9 @@ class ManageSubscriptionButton extends StatelessWidget {
       builder: (context, state) {
         return state.when(
             unknown: () => const SizedBox.shrink(),
-            active: (info, sub) {
+            active: (sub) {
               return ElevatedButton(
-                onPressed: () => manageSubscription(context, info, sub),
+                onPressed: () => manageSubscription(context, sub),
                 child: Text(context.locale.manageSubscriptions),
               );
             });

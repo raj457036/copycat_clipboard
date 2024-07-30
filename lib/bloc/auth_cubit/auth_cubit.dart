@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/routes/routes.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:copycat_base/domain/model/auth_user/auth_user.dart';
+import 'package:copycat_base/domain/repositories/analytics.dart';
 import 'package:copycat_base/domain/repositories/auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -20,10 +19,12 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository repo;
   final TinyStorage localCache;
+  final AnalyticsRepository analyticsRepo;
 
   AuthCubit(
     this.repo,
     this.localCache,
+    this.analyticsRepo,
   ) : super(const AuthState.unknown());
 
   /// validate the code and return a suitable page path
@@ -73,21 +74,6 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> setupAnalytics(AuthUser user) async {
-    if (!isAnalyticsSupported) return;
-
-    await analytics.setUserId(id: user.userId);
-    await analytics.setUserProperty(
-      name: "name",
-      value: user.displayName,
-    );
-    await analytics.setUserProperty(
-      name: "email",
-      value: user.email,
-    );
-    await analytics.logAppOpen();
-  }
-
   bool checkLocalSignin() {
     final result = localCache.get(klocalAuthKey);
     if (result == true) {
@@ -104,7 +90,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> authenticated(AuthUser user, String accessToken) async {
-    setupAnalytics(user);
+    analyticsRepo.setAnalyticUser(user);
 
     emit(AuthState.authenticated(
       user: user,

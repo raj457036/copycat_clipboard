@@ -35,16 +35,16 @@
     "pleaseWaitWhileWeSetupSyncing": "Please wait while we setup\nsyncing",
     "driveSetupMayTakeFewMin": "This might take about a minute to complete.\n( Please do not close the app )",
     "refreshNow": "Refresh Now",
-    "newUpdates": "Changes Available:\n {ADDED} Added, {UPDATED} Updated and {DELETED} Deleted",
+    "newUpdates": "Changes Available:\n {added} Added, {updated} Updated and {deleted} Deleted",
     "@newUpdates": {
         "placeholders": {
-            "ADDED": {
+            "added": {
                 "type": "int"
             },
-            "UPDATED": {
+            "updated": {
                 "type": "int"
             },
-            "DELETED": {
+            "deleted": {
                 "type": "int"
             }
         }
@@ -80,19 +80,19 @@
     "theme": "Theme",
     "syncLocal": "Sync • Local",
     "dontAutoCopyOver": "Don't Auto Copy Over",
-    "dontAutoCopyOverDesc": "Files and Media over a certain size ({SIZE}) will not be copied automatically.",
+    "dontAutoCopyOverDesc": "Files and Media over a certain size ({size}) will not be copied automatically.",
     "@dontAutoCopyOverDesc": {
         "placeholders": {
-            "SIZE": {
+            "size": {
                 "type": "String"
             }
         }
     },
     "dontAutoUploadOver": "Don't Auto Upload Over",
-    "dontAutoUploadOverDesc": "Files and Media over a certain size ({SIZE}) will not be uploaded automatically.",
+    "dontAutoUploadOverDesc": "Files and Media over a certain size ({size}) will not be uploaded automatically.",
     "@dontAutoUploadOverDesc": {
         "placeholders": {
-            "SIZE": {
+            "size": {
                 "type": "String"
             }
         }
@@ -107,23 +107,23 @@
     "connectNow": "Connect Now",
     "tips": "ⓘ Tips",
     "cloudStorageInfoDefault": "\n\nGoogle Drive not connected, File and media syncing is disabled.",
-    "cloudStorageInfo": "{INFO}Your files and media are synced securely across devices using Google Drive to protect your privacy.",
+    "cloudStorageInfo": "{info}Your files and media are synced securely across devices using Google Drive to protect your privacy.",
     "@cloudStorageInfo": {
         "placeholders": {
-            "INFO": {
+            "info": {
                 "type": "String"
             }
         }
     },
     "attentionNeeded": "⚠ Attention Needed!",
     "isPaused": "Is Paused?",
-    "isPausedDesc": "{isPaused, select, true{Auto copy is not paused} other{Auto Copy is paused until {TILL}}}",
+    "isPausedDesc": "{isPaused, select, true{Auto copy is not paused} other{Auto Copy is paused until {till}}}",
     "@isPausedDesc": {
         "placeholders": {
             "isPaused": {
                 "type": "String"
             },
-            "TILL": {
+            "till": {
                 "type": "String"
             }
         }
@@ -140,10 +140,10 @@
     "autoSyncIntervalDesc": "Clipboard will be automatically synced",
     "clipboardShortcut": "Clipboard Shortcut",
     "clipboardShortcutDesc": "Effortlessly Access Clipboard Anywhere",
-    "clipboardShortcutPreview": "Current Shortcut Key : {KEY}",
+    "clipboardShortcutPreview": "Current Shortcut Key : {key}",
     "@clipboardShortcutPreview": {
         "placeholders": {
-            "KEY": {
+            "key": {
                 "type": "String"
             }
         }
@@ -161,10 +161,10 @@
     "changeCollection": "Change Collection",
     "removeFromCollection": "Remove from collection",
     "compactMode": "Compact Mode",
-    "createACollection": "Create a new collection ( {LEFT} left )",
+    "createACollection": "Create a new collection ( {left} left )",
     "@createACollection": {
         "placeholders": {
-            "LEFT": {
+            "left": {
                 "type": "String"
             }
         }
@@ -183,18 +183,18 @@
     "syncNotAvailable": "Sync Not Available",
     "checkingForRecord": "Checking for Records",
     "sync": "Sync",
-    "syncing": "Syncing {PROGRESS}",
+    "syncing": "Syncing {progress}",
     "@syncing": {
         "placeholders": {
-            "PROGRESS": {
+            "progress": {
                 "type": "String"
             }
         }
     },
-    "syncingCheckFailed": "Syncing Check Failed: {MESSAGE}",
+    "syncingCheckFailed": "Syncing Check Failed: {message}",
     "@syncingCheckFailed": {
         "placeholders": {
-            "MESSAGE": {
+            "message": {
                 "type": "String"
             }
         }
@@ -217,10 +217,10 @@
     "beta": "PUBLIC BETA",
     "featureListDetail": "CopyCat Clipboard is currently in the Beta phase. While we strive for a seamless experience, you may encounter occasional bugs. Stay tuned for upcoming features and enhancements.",
     "currentPlan": "Current Plan",
-    "currentPlanLabel": "Current Plan • {LABEL}",
+    "currentPlanLabel": "Current Plan • {label}",
     "@currentPlanLabel": {
         "placeholders": {
-            "LABEL": {
+            "label": {
                 "type": "String"
             }
         }
@@ -351,10 +351,10 @@
     "year": "year",
     "month": "month",
     "manageSubscriptions": "Manage Subscriptions",
-    "promoSub": "You are using a promo subscription till {TILL}",
+    "promoSub": "You are using a promo subscription till {till}",
     "@promoSub": {
         "placeholders": {
-            "TILL": {
+            "till": {
                 "type": "String"
             }
         }

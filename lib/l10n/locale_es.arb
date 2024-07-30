@@ -35,16 +35,16 @@
     "pleaseWaitWhileWeSetupSyncing": "Por favor espera mientras configuramos\nla sincronización",
     "driveSetupMayTakeFewMin": "Esto puede tardar aproximadamente un minuto en completarse.\n(Por favor, no cierres la aplicación)",
     "refreshNow": "Actualizar ahora",
-    "newUpdates": "Cambios Disponibles:\n {ADDED} Agregado, {UPDATED} Actualizado y {DELETED} Eliminado",
+    "newUpdates": "Cambios Disponibles:\n {added} Agregado, {updated} Actualizado y {deleted} Eliminado",
     "@newUpdates": {
         "placeholders": {
-            "ADDED": {
+            "added": {
                 "type": "int"
             },
-            "UPDATED": {
+            "updated": {
                 "type": "int"
             },
-            "DELETED": {
+            "deleted": {
                 "type": "int"
             }
         }
@@ -80,19 +80,19 @@
     "theme": "Tema",
     "syncLocal": "Sincronizar • Local",
     "dontAutoCopyOver": "No Copiar Automáticamente",
-    "dontAutoCopyOverDesc": "Los archivos y medios que superen un cierto tamaño ({SIZE}) no se copiarán automáticamente.",
+    "dontAutoCopyOverDesc": "Los archivos y medios que superen un cierto tamaño ({size}) no se copiarán automáticamente.",
     "@dontAutoCopyOverDesc": {
         "placeholders": {
-            "SIZE": {
+            "size": {
                 "type": "String"
             }
         }
     },
     "dontAutoUploadOver": "No Subir Automáticamente",
-    "dontAutoUploadOverDesc": "Los archivos y medios que superen un cierto tamaño ({SIZE}) no se subirán automáticamente.",
+    "dontAutoUploadOverDesc": "Los archivos y medios que superen un cierto tamaño ({size}) no se subirán automáticamente.",
     "@dontAutoUploadOverDesc": {
         "placeholders": {
-            "SIZE": {
+            "size": {
                 "type": "String"
             }
         }
@@ -107,23 +107,23 @@
     "connectNow": "Conectar Ahora",
     "tips": "ⓘ Consejos",
     "cloudStorageInfoDefault": "\n\nGoogle Drive no conectado, la sincronización de archivos y medios está deshabilitada.",
-    "cloudStorageInfo": "{INFO}Tus archivos y medios se sincronizan de manera segura a través de dispositivos utilizando Google Drive para proteger tu privacidad.",
+    "cloudStorageInfo": "{info}Tus archivos y medios se sincronizan de manera segura a través de dispositivos utilizando Google Drive para proteger tu privacidad.",
     "@cloudStorageInfo": {
         "placeholders": {
-            "INFO": {
+            "info": {
                 "type": "String"
             }
         }
     },
     "attentionNeeded": "⚠ ¡Atención Necesaria!",
     "isPaused": "¿Está Pausado?",
-    "isPausedDesc": "{isPaused, select, true{La copia automática no está pausada} other{La copia automática está pausada hasta {TILL}}}",
+    "isPausedDesc": "{isPaused, select, true{La copia automática no está pausada} other{La copia automática está pausada hasta {till}}}",
     "@isPausedDesc": {
         "placeholders": {
             "isPaused": {
                 "type": "String"
             },
-            "TILL": {
+            "till": {
                 "type": "String"
             }
         }
@@ -140,10 +140,10 @@
     "autoSyncIntervalDesc": "El portapapeles se sincronizará automáticamente",
     "clipboardShortcut": "Atajo de Portapapeles",
     "clipboardShortcutDesc": "Accede fácilmente al portapapeles en cualquier lugar",
-    "clipboardShortcutPreview": "Tecla de Atajo Actual : {KEY}",
+    "clipboardShortcutPreview": "Tecla de Atajo Actual : {key}",
     "@clipboardShortcutPreview": {
         "placeholders": {
-            "KEY": {
+            "key": {
                 "type": "String"
             }
         }
@@ -161,10 +161,10 @@
     "changeCollection": "Cambiar Colección",
     "removeFromCollection": "Eliminar de la Colección",
     "compactMode": "Modo Compacto",
-    "createACollection": "Crear una nueva colección ( {LEFT} restantes )",
+    "createACollection": "Crear una nueva colección ( {left} restantes )",
     "@createACollection": {
         "placeholders": {
-            "LEFT": {
+            "left": {
                 "type": "String"
             }
         }
@@ -183,18 +183,18 @@
     "syncNotAvailable": "Sincronización No Disponible",
     "checkingForRecord": "Buscando Registros",
     "sync": "Sincronizar",
-    "syncing": "Sincronizando {PROGRESS}",
+    "syncing": "Sincronizando {progress}",
     "@syncing": {
         "placeholders": {
-            "PROGRESS": {
+            "progress": {
                 "type": "String"
             }
         }
     },
-    "syncingCheckFailed": "Error en la Comprobación de Sincronización: {MESSAGE}",
+    "syncingCheckFailed": "Error en la Comprobación de Sincronización: {message}",
     "@syncingCheckFailed": {
         "placeholders": {
-            "MESSAGE": {
+            "message": {
                 "type": "String"
             }
         }
@@ -217,10 +217,10 @@
     "beta": "PUBLIC BETA",
     "featureListDetail": "CopyCat Clipboard está actualmente en fase Beta. Mientras nos esforzamos por ofrecer una experiencia sin problemas, puede que encuentres errores ocasionales. Mantente atento a las próximas características y mejoras.",
     "currentPlan": "Plan Actual",
-    "currentPlanLabel": "Plan Actual • {LABEL}",
+    "currentPlanLabel": "Plan Actual • {label}",
     "@currentPlanLabel": {
         "placeholders": {
-            "LABEL": {
+            "label": {
                 "type": "String"
             }
         }
@@ -348,10 +348,10 @@
     "year": "año",
     "month": "mes",
     "manageSubscriptions": "Gestionar Suscripciones",
-    "promoSub": "Estás usando una suscripción promocional hasta {TILL}",
+    "promoSub": "Estás usando una suscripción promocional hasta {till}",
     "@promoSub": {
         "placeholders": {
-            "TILL": {
+            "till": {
                 "type": "String"
             }
         }
