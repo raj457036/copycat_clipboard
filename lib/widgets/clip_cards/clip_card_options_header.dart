@@ -116,7 +116,10 @@ class ClipCardOptionsHeader extends StatelessWidget {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Icon(Icons.download_for_offline_outlined),
+                      : Icon(
+                          Icons.download_for_offline_outlined,
+                          color: colors.onSurfaceVariant,
+                        ),
                   onPressed: hasFocusForPaste || item.downloading
                       ? null
                       : () => downloadFile(context, item),
@@ -132,7 +135,10 @@ class ClipCardOptionsHeader extends StatelessWidget {
                   ),
                 )
               else
-                PrimaryClipActionButton(item: item),
+                PrimaryClipActionButton(
+                  item: item,
+                  hasFocusForPaste: hasFocusForPaste,
+                ),
             ],
           );
         },
