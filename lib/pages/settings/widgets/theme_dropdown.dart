@@ -21,6 +21,7 @@ class ThemeDropdown extends StatelessWidget {
       builder: (context, state) {
         return DropdownButtonHideUnderline(
           child: DropdownButton<ThemeMode>(
+            autofocus: true,
             value: state,
             padding: const EdgeInsets.symmetric(horizontal: padding16),
             borderRadius: radius12,
