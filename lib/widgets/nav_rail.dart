@@ -63,7 +63,10 @@ class LeftNavRail extends StatelessWidget {
                       ),
                     ),
                     NavigationRailDestination(
-                      icon: const Icon(Icons.settings),
+                      icon: Tooltip(
+                        message: "$metaKey + X",
+                        child: const Icon(Icons.settings),
+                      ),
                       label: Text(
                         context.locale.settings,
                         overflow: TextOverflow.ellipsis,

@@ -25,6 +25,10 @@ class CollectionPageIntent extends Intent {
   const CollectionPageIntent();
 }
 
+class SettingsPageIntent extends Intent {
+  const SettingsPageIntent();
+}
+
 class PasteIntent extends Intent {
   const PasteIntent();
 }
@@ -51,6 +55,12 @@ final searchKeySet = SingleActivator(
 
 final collectionKeySet = SingleActivator(
   LogicalKeyboardKey.keyC,
+  meta: Platform.isMacOS,
+  control: Platform.isWindows || Platform.isLinux,
+);
+
+final settingsKeySet = SingleActivator(
+  LogicalKeyboardKey.keyX,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
 );
@@ -85,6 +95,7 @@ class KeyboardShortcutProvider extends StatelessWidget {
         searchKeySet: const SearchPageIntent(),
         homeKeySet: const HomePageIntent(),
         collectionKeySet: const CollectionPageIntent(),
+        settingsKeySet: const SettingsPageIntent(),
         if (isDesktopPlatform) closeWindowKeySet: const HideWindowIntent(),
         if (activePageIndex == 0) pasteKeySet: const PasteIntent(),
         if (activePageIndex != 3) syncKeySet: const RefreshIntent(),
@@ -115,6 +126,15 @@ class KeyboardShortcutProvider extends StatelessWidget {
             final isCollectionPage = activePageIndex == 2;
             if (!isCollectionPage) {
               context.goNamed(RouteConstants.collections);
+            }
+            return null;
+          },
+        ),
+        SettingsPageIntent: CallbackAction<SettingsPageIntent>(
+          onInvoke: (intent) {
+            final isSettingsPage = activePageIndex == 3;
+            if (!isSettingsPage) {
+              context.goNamed(RouteConstants.settings);
             }
             return null;
           },
