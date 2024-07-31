@@ -169,7 +169,7 @@ class ClipCard extends StatelessWidget {
             margin: EdgeInsets.zero,
             child: Material(
               child: InkWell(
-                autofocus: autoFocus,
+                autofocus: hasFocusForPaste && autoFocus,
                 borderRadius: radius12,
                 onTap: () => performPrimaryAction(context, hasFocusForPaste),
                 child: Column(
@@ -200,6 +200,7 @@ class ClipCard extends StatelessWidget {
                             ),
                           Expanded(
                             child: Card.outlined(
+                              color: Colors.transparent,
                               margin: EdgeInsets.zero,
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
