@@ -85,25 +85,37 @@ class ClipCardOptionsHeader extends StatelessWidget {
               ),
               width8,
               if (width > 100 && item.type == ClipItemType.url)
-                IconButton(
-                  onPressed: () => launchUrl(item),
-                  icon: const Icon(
-                    Icons.open_in_new,
-                  ),
-                  tooltip: context.locale.openInBrowser,
-                  style: IconButton.styleFrom(
-                    shape: const RoundedRectangleBorder(),
+                Focus(
+                  canRequestFocus: !hasFocusForPaste,
+                  skipTraversal: hasFocusForPaste,
+                  descendantsAreTraversable: !hasFocusForPaste,
+                  descendantsAreFocusable: !hasFocusForPaste,
+                  child: IconButton(
+                    onPressed: () => launchUrl(item),
+                    icon: const Icon(
+                      Icons.open_in_new,
+                    ),
+                    tooltip: context.locale.openInBrowser,
+                    style: IconButton.styleFrom(
+                      shape: const RoundedRectangleBorder(),
+                    ),
                   ),
                 ),
               if (width > 100 && item.textCategory == TextCategory.phone)
-                IconButton(
-                  onPressed: () => launchPhone(item),
-                  icon: const Icon(
-                    Icons.call,
-                  ),
-                  tooltip: context.locale.makePhoneCall,
-                  style: IconButton.styleFrom(
-                    shape: const RoundedRectangleBorder(),
+                Focus(
+                  canRequestFocus: !hasFocusForPaste,
+                  skipTraversal: hasFocusForPaste,
+                  descendantsAreTraversable: !hasFocusForPaste,
+                  descendantsAreFocusable: !hasFocusForPaste,
+                  child: IconButton(
+                    onPressed: () => launchPhone(item),
+                    icon: const Icon(
+                      Icons.call,
+                    ),
+                    tooltip: context.locale.makePhoneCall,
+                    style: IconButton.styleFrom(
+                      shape: const RoundedRectangleBorder(),
+                    ),
                   ),
                 ),
               if (item.needDownload)

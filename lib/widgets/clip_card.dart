@@ -30,9 +30,11 @@ class ClipCard extends StatelessWidget {
   final ClipboardItem item;
   final bool deleteAllowed;
   final List<MenuItem> customMenuItems;
+  final void Function()? onFocus;
   const ClipCard({
     super.key,
     required this.item,
+    this.onFocus,
     this.autoFocus = true,
     this.canPaste = false,
     this.deleteAllowed = true,
@@ -166,61 +168,67 @@ class ClipCard extends StatelessWidget {
         },
         builder: (context, hasFocusForPaste) {
           return Card.outlined(
-            margin: EdgeInsets.zero,
-            child: Material(
-              child: InkWell(
-                autofocus: hasFocusForPaste && autoFocus,
-                borderRadius: radius12,
-                onTap: () => performPrimaryAction(context, hasFocusForPaste),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ClipCardOptionsHeader(
-                      item: item,
-                      hasFocusForPaste: hasFocusForPaste,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (item.title != null)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: padding8,
-                                vertical: padding2,
-                              ),
-                              child: Text(
-                                item.title!,
-                                style: textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 2,
-                              ),
+            child: InkWell(
+              onFocusChange: (value) {
+                if (value) {
+                  Scrollable.ensureVisible(
+                    context,
+                    alignment: 0.5,
+                    duration: Durations.medium1,
+                  );
+                }
+              },
+              autofocus: hasFocusForPaste && autoFocus,
+              borderRadius: radius12,
+              onTap: () => performPrimaryAction(context, hasFocusForPaste),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipCardOptionsHeader(
+                    item: item,
+                    hasFocusForPaste: hasFocusForPaste,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (item.title != null)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: padding8,
+                              vertical: padding2,
                             ),
-                          Expanded(
-                            child: Card.outlined(
-                              color: Colors.transparent,
-                              margin: EdgeInsets.zero,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(15),
-                                ),
+                            child: Text(
+                              item.title!,
+                              style: textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: item.encrypted
-                                  ? const EncryptedClipItem()
-                                  : getPreview(),
+                              maxLines: 2,
                             ),
                           ),
-                        ],
-                      ),
+                        Expanded(
+                          child: Card.outlined(
+                            color: Colors.transparent,
+                            margin: EdgeInsets.zero,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                bottomRight: Radius.circular(15),
+                              ),
+                            ),
+                            child: item.encrypted
+                                ? const EncryptedClipItem()
+                                : getPreview(),
+                          ),
+                        ),
+                      ],
                     ),
-                    DisableForLocalUser(
-                      child: ClipCardSyncStatusFooter(item: item),
-                    ),
-                  ],
-                ),
+                  ),
+                  DisableForLocalUser(
+                    child: ClipCardSyncStatusFooter(item: item),
+                  ),
+                ],
               ),
             ),
           );

@@ -25,7 +25,7 @@ class PrimaryClipActionButton extends StatelessWidget {
         padding: const EdgeInsets.all(padding8),
         child: Icon(
           Icons.paste,
-          color: colors.onSurfaceVariant,
+          color: colors.outline,
         ),
       );
     }
