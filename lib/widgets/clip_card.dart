@@ -173,8 +173,12 @@ class ClipCard extends StatelessWidget {
                 borderRadius: radius12,
                 onTap: () => performPrimaryAction(context, hasFocusForPaste),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    ClipCardOptionsHeader(item: item),
+                    ClipCardOptionsHeader(
+                      item: item,
+                      hasFocusForPaste: hasFocusForPaste,
+                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
