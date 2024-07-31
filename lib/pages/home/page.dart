@@ -193,7 +193,7 @@ class HomePageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-
+    final colors = context.colors;
     final floatingActionButton =
         getFloatingActionButton(context, 0, isMobile: isMobile);
     return LeftNavRail(
@@ -222,24 +222,29 @@ class HomePageBody extends StatelessWidget {
 
             return GridView.builder(
               padding: insetLTR16,
+              primary: true,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
-                crossAxisSpacing: padding8,
-                mainAxisSpacing: padding8,
                 childAspectRatio: isMobile ? 2 / 3 : 1,
               ),
               itemCount: items.length + (hasMore ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == items.length) {
                   return Card.outlined(
-                    margin: EdgeInsets.zero,
-                    child: Center(
-                      child: TextButton.icon(
-                        onPressed: () => _loadMore(context),
-                        label: Text(
-                          context.locale.loadMore,
+                    color: colors.secondaryContainer,
+                    child: InkWell(
+                      borderRadius: radius12,
+                      onTap: () => _loadMore(context),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.more_horiz_rounded),
+                            width8,
+                            Text(context.locale.loadMore),
+                          ],
                         ),
-                        icon: const Icon(Icons.read_more),
                       ),
                     ),
                   );

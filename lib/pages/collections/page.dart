@@ -100,6 +100,7 @@ class CollectionsPage extends StatelessWidget {
                                 itemBuilder: (BuildContext context, int index) {
                                   final collection = collections[index];
                                   return ClipCollectionListItem(
+                                    autoFocus: index == 0,
                                     collection: collection,
                                     shape: !isMobile
                                         ? const RoundedRectangleBorder(

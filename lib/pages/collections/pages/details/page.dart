@@ -7,6 +7,7 @@ import 'package:clipboard/widgets/clip_card.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,7 @@ class CollectionDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final title = "${collection.emoji} • ${collection.title}";
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
@@ -90,24 +92,30 @@ class CollectionDetailPage extends StatelessWidget {
                   final hasMoreResult = hasMore ? 1 : 0;
 
                   return GridView.builder(
+                    primary: true,
                     padding: isMobile ? insetLTR16 : insetAll16,
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 250,
-                      crossAxisSpacing: padding8,
-                      mainAxisSpacing: padding8,
                       childAspectRatio: isMobile ? 2 / 3 : 1,
                     ),
                     itemCount: results.length + hasMoreResult,
                     itemBuilder: (context, index) {
                       if (index == results.length) {
                         return Card.outlined(
-                          child: Center(
-                            child: TextButton.icon(
-                              onPressed: () => loadMore(context),
-                              label: Text(
-                                context.locale.loadMore,
+                          color: colors.secondaryContainer,
+                          child: InkWell(
+                            borderRadius: radius12,
+                            onTap: () => loadMore(context),
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.more_horiz_rounded),
+                                  width8,
+                                  Text(context.locale.loadMore),
+                                ],
                               ),
-                              icon: const Icon(Icons.read_more),
                             ),
                           ),
                         );

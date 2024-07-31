@@ -11,10 +11,12 @@ import 'package:go_router/go_router.dart';
 class ClipCollectionListItem extends StatelessWidget {
   final ClipCollection collection;
   final ShapeBorder? shape;
+  final bool autoFocus;
 
   const ClipCollectionListItem({
     super.key,
     this.shape,
+    this.autoFocus = false,
     required this.collection,
   });
 
@@ -59,6 +61,7 @@ class ClipCollectionListItem extends StatelessWidget {
       ],
       child: ListTile(
         shape: shape,
+        autofocus: autoFocus,
         leading: Text(
           collection.emoji,
           style: textTheme.headlineMedium,

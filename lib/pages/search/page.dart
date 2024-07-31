@@ -115,11 +115,10 @@ class SearchPage extends StatelessWidget {
                     final hasMoreResult = hasMore ? 1 : 0;
 
                     return GridView.builder(
+                      primary: true,
                       padding: isMobile ? insetLTR16 : insetAll16,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 250,
-                        crossAxisSpacing: padding8,
-                        mainAxisSpacing: padding8,
                         childAspectRatio: isMobile ? 2 / 3 : 1,
                       ),
                       itemCount: results.length + hasMoreResult,
