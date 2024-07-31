@@ -14,6 +14,7 @@ import 'package:clipboard/widgets/clip_cards/text_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/url_clip_card.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/menu.dart';
+import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
@@ -24,12 +25,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ClipCard extends StatelessWidget {
+  final bool autoFocus;
+  final bool canPaste;
   final ClipboardItem item;
   final bool deleteAllowed;
   final List<MenuItem> customMenuItems;
   const ClipCard({
     super.key,
     required this.item,
+    this.autoFocus = true,
+    this.canPaste = false,
     this.deleteAllowed = true,
     this.customMenuItems = const [],
   });
@@ -73,6 +78,26 @@ class ClipCard extends StatelessWidget {
 
     final item_ = await item.decrypt();
     persitCubit.persist(item_);
+  }
+
+  Future<void> pasteOnLastWindow(BuildContext context) async {
+    final focusManager = WindowFocusManager.of(context);
+    focusManager?.toggleAndPaste(item);
+  }
+
+  Future<void> performPrimaryAction(
+    BuildContext context,
+    bool hasFocusForPaste,
+  ) async {
+    if (item.encrypted) {
+      decryptItem(context);
+    } else if (item.needDownload) {
+      downloadFile(context);
+    } else if (hasFocusForPaste) {
+      pasteOnLastWindow(context);
+    } else {
+      preview(context);
+    }
   }
 
   @override
@@ -134,60 +159,67 @@ class ClipCard extends StatelessWidget {
           ),
         ...customMenuItems,
       ],
-      child: Card.outlined(
-        margin: EdgeInsets.zero,
-        child: Material(
-          child: InkWell(
-            borderRadius: radius12,
-            onTap: item.encrypted
-                ? () => decryptItem(context)
-                : () => preview(context),
-            child: Column(
-              children: [
-                ClipCardOptionsHeader(item: item),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (item.title != null)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: padding8,
-                            vertical: padding2,
-                          ),
-                          child: Text(
-                            item.title!,
-                            style: textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+      child: BlocSelector<AppConfigCubit, AppConfigState, bool>(
+        selector: (state) {
+          return state.config.lastFocusedWindowId != null &&
+              state.config.smartPaste;
+        },
+        builder: (context, hasFocusForPaste) {
+          return Card.outlined(
+            margin: EdgeInsets.zero,
+            child: Material(
+              child: InkWell(
+                autofocus: autoFocus,
+                borderRadius: radius12,
+                onTap: () => performPrimaryAction(context, hasFocusForPaste),
+                child: Column(
+                  children: [
+                    ClipCardOptionsHeader(item: item),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (item.title != null)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: padding8,
+                                vertical: padding2,
+                              ),
+                              child: Text(
+                                item.title!,
+                                style: textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                              ),
                             ),
-                            maxLines: 2,
-                          ),
-                        ),
-                      Expanded(
-                        child: Card.outlined(
-                          margin: EdgeInsets.zero,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
+                          Expanded(
+                            child: Card.outlined(
+                              margin: EdgeInsets.zero,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(15),
+                                ),
+                              ),
+                              child: item.encrypted
+                                  ? const EncryptedClipItem()
+                                  : getPreview(),
                             ),
                           ),
-                          child: item.encrypted
-                              ? const EncryptedClipItem()
-                              : getPreview(),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    DisableForLocalUser(
+                      child: ClipCardSyncStatusFooter(item: item),
+                    ),
+                  ],
                 ),
-                DisableForLocalUser(
-                  child: ClipCardSyncStatusFooter(item: item),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

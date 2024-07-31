@@ -27,6 +27,7 @@ class TextPreviewBody extends StatelessWidget {
     );
     if (bg != null) {
       return Material(
+        type: MaterialType.card,
         color: bg,
         borderRadius: radiusBottom12,
         child: body,
