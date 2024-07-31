@@ -248,6 +248,7 @@ class HomePageBody extends StatelessWidget {
                 final item = items[index];
                 return ClipCard(
                   key: ValueKey("clipboard-item-${item.id}"),
+                  autoFocus: index == 0,
                   item: item,
                 );
               },

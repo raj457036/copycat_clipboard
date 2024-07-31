@@ -11,10 +11,12 @@ import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:flutter/material.dart';
 
 class ClipCardOptionsHeader extends StatelessWidget {
+  final bool hasFocusForPaste;
   final ClipboardItem item;
 
   const ClipCardOptionsHeader({
     super.key,
+    this.hasFocusForPaste = false,
     required this.item,
   });
 
@@ -115,7 +117,7 @@ class ClipCardOptionsHeader extends StatelessWidget {
                           ),
                         )
                       : const Icon(Icons.download_for_offline_outlined),
-                  onPressed: item.downloading
+                  onPressed: hasFocusForPaste || item.downloading
                       ? null
                       : () => downloadFile(context, item),
                   tooltip: item.downloading
