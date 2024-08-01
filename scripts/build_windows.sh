@@ -1,1 +1,1 @@
-flutter build windows --dart-define-from-file="local/prod.json" --obfuscate --split-debug-info=./build-symbols
+flutter build windows --dart-define-from-file="local/prod.json" --obfuscate --split-debug-info=./build_symbols
