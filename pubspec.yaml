@@ -82,6 +82,7 @@ dependencies:
   copycat_base:
     path: packages/copycat_base
   
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

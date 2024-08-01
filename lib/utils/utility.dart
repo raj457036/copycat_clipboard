@@ -33,18 +33,6 @@ T clamp<T extends num>(T value, [T? min, T? max]) {
   return value;
 }
 
-String formatBytes(int sizeInBytes, {bool precise = true}) {
-  const mb = 1024 * 1024;
-  const gb = mb * 1024;
-  if (sizeInBytes < 1024) {
-    return '$sizeInBytes bytes';
-  } else if (sizeInBytes < gb) {
-    return '${(sizeInBytes / mb).toStringAsFixed(precise ? 2 : 0)} MB';
-  } else {
-    return '${(sizeInBytes / gb).toStringAsFixed(precise ? 2 : 0)} GB';
-  }
-}
-
 bool get isDesktopPlatform =>
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 

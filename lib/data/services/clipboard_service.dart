@@ -103,27 +103,68 @@ class ClipboardService with ClipboardListener {
     for (final item in reader.items) {
       DataFormat? selectedFormat;
       final itemFormats = item.getFormats(Formats.standardFormats);
-      for (final format in itemFormats) {
-        if (selectedFormat == null) {
-          selectedFormat = format;
-          selectedPref = _clipTypePriority.indexOf(selectedFormat);
-          continue;
-        }
-
-        final pref = _clipTypePriority.indexOf(format);
-
-        if ((pref != -1 && pref < selectedPref) || selectedPref == -1) {
-          selectedFormat = format;
-          selectedPref = pref;
-        }
-      }
+      (selectedFormat, selectedPref) = filterOutByPriority(
+        itemFormats,
+        prefScore: selectedPref,
+      );
       if (selectedFormat != null) {
         res.add(selectedFormat);
       }
     }
 
+    await processSingleReaderDataFormat(reader, res, manual: manual);
+    return null;
+  }
+
+  (DataFormat<Object>?, int) filterOutByPriority(
+      List<DataFormat<Object>> itemFormats,
+      {int prefScore = -1}) {
+    DataFormat? selectedFormat;
+    for (final format in itemFormats) {
+      if (selectedFormat == null) {
+        selectedFormat = format;
+        prefScore = _clipTypePriority.indexOf(selectedFormat);
+        continue;
+      }
+
+      final pref = _clipTypePriority.indexOf(format);
+
+      if ((pref != -1 && pref < prefScore) || prefScore == -1) {
+        selectedFormat = format;
+        prefScore = pref;
+      }
+    }
+    return (selectedFormat, prefScore);
+  }
+
+  Future<List<ClipItem?>?> processMultipleReaderDataFormat(
+    Iterable<(DataReader, DataFormat<Object>)> readerSet, {
+    bool manual = false,
+  }) async {
     final clips = await Future.wait(
-      res.map(
+      readerSet.map(
+        (record) {
+          final (reader, format) = record;
+          return processor.process(reader, format);
+        },
+      ),
+    );
+
+    if (manual) {
+      return clips;
+    }
+
+    onCopy?.add(clips);
+    return null;
+  }
+
+  Future<List<ClipItem?>?> processSingleReaderDataFormat(
+    DataReader reader,
+    Iterable<DataFormat<Object>> data, {
+    bool manual = false,
+  }) async {
+    final clips = await Future.wait(
+      data.map(
         (format) {
           return processor.process(reader, format);
         },

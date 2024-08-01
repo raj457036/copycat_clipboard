@@ -64,8 +64,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
     if (item.serverId != null) {
       emit(CloudPersistanceState.updatingItem(item));
-
-      final result = await repo.update(item);
+      final encrypted = await item.encrypt();
+      final result = await repo.update(encrypted);
       emit(
         result.fold(
           (l) => CloudPersistanceState.error(
@@ -107,7 +107,8 @@ class CloudPersistanceCubit extends Cubit<CloudPersistanceState> {
 
   Future<void> _create(ClipboardItem item, {int retryCount = 0}) async {
     emit(CloudPersistanceState.creatingItem(item));
-    final result = await repo.create(item);
+    final encrypted = await item.encrypt();
+    final result = await repo.create(encrypted);
     emit(
       result.fold(
         (l) => CloudPersistanceState.error(
