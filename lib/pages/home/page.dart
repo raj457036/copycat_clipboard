@@ -20,6 +20,7 @@ import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_pro/widgets/drag_drop/drop_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upgrader/upgrader.dart';
@@ -196,69 +197,88 @@ class HomePageBody extends StatelessWidget {
     final colors = context.colors;
     final floatingActionButton =
         getFloatingActionButton(context, 0, isMobile: isMobile);
-    return LeftNavRail(
-      floatingActionButton: floatingActionButton,
-      navbarActiveIndex: 0,
-      child: RefreshIndicator(
-        onRefresh: () async => await syncChanges(context),
-        child: BlocSelector<ClipboardCubit, ClipboardState,
-            (List<ClipboardItem>, bool, bool)>(
-          selector: (state) {
-            return (state.items, state.hasMore, state.loading);
-          },
-          builder: (context, state) {
-            final (items, hasMore, loading) = state; //Subject;
+    return ClipDropRegion(
+      itemPriorityFilter: (itemFormats, {prefScore = -1}) {
+        final cubit = context.read<OfflinePersistanceCubit>();
+        return cubit.clipboard.filterOutByPriority(
+          itemFormats,
+          prefScore: prefScore,
+        );
+      },
+      itemPaster: (res) async {
+        final cubit = context.read<OfflinePersistanceCubit>();
+        final clips = await cubit.clipboard.processMultipleReaderDataFormat(
+          res,
+          manual: true,
+        );
+        if (clips != null) {
+          cubit.onClips(clips, manualPaste: true);
+        }
+      },
+      child: LeftNavRail(
+        floatingActionButton: floatingActionButton,
+        navbarActiveIndex: 0,
+        child: RefreshIndicator(
+          onRefresh: () async => await syncChanges(context),
+          child: BlocSelector<ClipboardCubit, ClipboardState,
+              (List<ClipboardItem>, bool, bool)>(
+            selector: (state) {
+              return (state.items, state.hasMore, state.loading);
+            },
+            builder: (context, state) {
+              final (items, hasMore, loading) = state; //Subject;
 
-            if (items.isEmpty) {
-              if (loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Center(
-                child: Text(context.locale.emptyClipboard),
-              );
-            }
-
-            return GridView.builder(
-              padding: insetLTR16,
-              primary: true,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 250,
-                childAspectRatio: isMobile ? 2 / 3 : 1,
-              ),
-              itemCount: items.length + (hasMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == items.length) {
-                  return Card.outlined(
-                    color: colors.secondaryContainer,
-                    child: InkWell(
-                      borderRadius: radius12,
-                      onTap: () => _loadMore(context),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.more_horiz_rounded),
-                            width8,
-                            Text(context.locale.loadMore),
-                          ],
-                        ),
-                      ),
-                    ),
+              if (items.isEmpty) {
+                if (loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
-
-                final item = items[index];
-                return ClipCard(
-                  key: ValueKey("clipboard-item-${item.id}"),
-                  autoFocus: index == 0,
-                  item: item,
+                return Center(
+                  child: Text(context.locale.emptyClipboard),
                 );
-              },
-            );
-          },
+              }
+
+              return GridView.builder(
+                padding: insetLTR16,
+                primary: true,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 250,
+                  childAspectRatio: isMobile ? 2 / 3 : 1,
+                ),
+                itemCount: items.length + (hasMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == items.length) {
+                    return Card.outlined(
+                      color: colors.secondaryContainer,
+                      child: InkWell(
+                        borderRadius: radius12,
+                        onTap: () => _loadMore(context),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.more_horiz_rounded),
+                              width8,
+                              Text(context.locale.loadMore),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  final item = items[index];
+                  return ClipCard(
+                    key: ValueKey("clipboard-item-${item.id}"),
+                    autoFocus: index == 0,
+                    item: item,
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
