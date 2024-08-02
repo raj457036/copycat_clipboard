@@ -1,6 +1,7 @@
 import 'package:clipboard/pages/search/widgets/search_bar.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -83,9 +84,7 @@ class SearchPage extends StatelessWidget {
                     ),
                   );
                 case SearchingState():
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 case SearchErrorState(:final failure):
                   return Center(
                     child: Text(failure.message),
@@ -124,17 +123,7 @@ class SearchPage extends StatelessWidget {
                       itemCount: results.length + hasMoreResult,
                       itemBuilder: (context, index) {
                         if (index == results.length) {
-                          return Card.outlined(
-                            child: Center(
-                              child: TextButton.icon(
-                                onPressed: () => loadMore(context),
-                                label: Text(
-                                  context.locale.loadMore,
-                                ),
-                                icon: const Icon(Icons.read_more),
-                              ),
-                            ),
-                          );
+                          return LoadMoreCard(loadMore: loadMore);
                         }
 
                         final item = results[index];
