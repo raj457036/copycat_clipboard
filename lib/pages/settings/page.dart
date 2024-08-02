@@ -1,5 +1,4 @@
 import 'package:clipboard/di/di.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/e2ee_settings.dart';
 import 'package:clipboard/pages/settings/widgets/enable_sync_switch.dart';
@@ -21,6 +20,7 @@ import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

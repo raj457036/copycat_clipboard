@@ -1,13 +1,5 @@
 import "dart:async";
 
-import "package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart";
-import "package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart";
-import "package:clipboard/bloc/collection_clips_cubit/collection_clips_cubit.dart";
-import "package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart";
-import "package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
-import "package:clipboard/bloc/search_cubit/search_cubit.dart";
-import "package:clipboard/constants/key.dart";
-import "package:clipboard/constants/strings/route_constants.dart";
 import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/account/page.dart";
 import "package:clipboard/pages/collections/page.dart";
@@ -25,6 +17,14 @@ import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
+import "package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart";
+import "package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart";
+import "package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart";
+import "package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart";
+import "package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
+import "package:copycat_base/bloc/search_cubit/search_cubit.dart";
+import "package:copycat_base/constants/key.dart";
+import "package:copycat_base/constants/strings/route_constants.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";

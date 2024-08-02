@@ -1,8 +1,8 @@
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/snackbar.dart';
 import 'package:copycat_base/db/subscription/subscription.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/datetime_extension.dart';
+import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher_string.dart';

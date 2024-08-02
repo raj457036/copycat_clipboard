@@ -11,7 +11,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  super_clipboard: ^0.8.17
   injectable: ^2.4.2
   flutter_bloc: ^8.1.6
   bloc: ^8.1.4
@@ -26,7 +25,6 @@ dependencies:
   form_validator: ^2.1.1
   google_fonts: ^6.2.1
   window_manager: ^0.3.9
-  clipboard_watcher: ^0.2.1
   timeago: ^3.7.0
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1
@@ -43,24 +41,16 @@ dependencies:
   intl: ^0.19.0
   app_links: ^6.1.4
   device_preview: ^1.2.0
-  toastification: ^2.0.0
   async: ^2.11.0
   win32_registry: ^1.1.3
   share_handler: ^0.0.21
-  share_plus: ^9.0.0
   universal_io: ^2.2.2
   easy_worker: ^1.0.1
   emoji_picker_flutter: ^2.2.0
   duration: ^3.0.13
   open_filex: ^4.4.0
   hotkey_manager: ^0.2.3
-  launch_at_startup: ^0.3.1
   atom_event_bus: ^0.0.5
-  platform_device_id:
-    git:
-      url: https://github.com/raj457036/platform_device_id.git
-      ref: master
-      path: "platform_device_id"
   google_mobile_ads: ^5.1.0
   focus_window:
     path: ./plugins/focus_window
@@ -71,12 +61,11 @@ dependencies:
   encrypt: ^5.0.3
   upgrader: ^10.3.0
   retry: ^3.1.2
-  ntp: ^2.0.0
-  tiny_storage: ^1.1.0
   firebase_analytics: ^11.1.0
   firebase_core: ^3.1.1
   firebase_core_desktop: ^1.0.2
   firebase_crashlytics: ^4.0.2
+  launch_at_startup: ^0.3.1
   copycat_pro:
     path: packages/copycat_pro
   copycat_base:

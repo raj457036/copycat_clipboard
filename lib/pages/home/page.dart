@@ -1,12 +1,4 @@
-import 'package:clipboard/bloc/clipboard_cubit/clipboard_cubit.dart';
-import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/constants/key.dart';
-import 'package:clipboard/constants/strings/strings.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
-import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/compact_mode_toggle.dart';
@@ -15,11 +7,19 @@ import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
+import 'package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart';
+import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
+import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_pro/widgets/drag_drop/drop_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -198,23 +198,6 @@ class HomePageBody extends StatelessWidget {
     final floatingActionButton =
         getFloatingActionButton(context, 0, isMobile: isMobile);
     return ClipDropRegion(
-      itemPriorityFilter: (itemFormats, {prefScore = -1}) {
-        final cubit = context.read<OfflinePersistanceCubit>();
-        return cubit.clipboard.filterOutByPriority(
-          itemFormats,
-          prefScore: prefScore,
-        );
-      },
-      itemPaster: (res) async {
-        final cubit = context.read<OfflinePersistanceCubit>();
-        final clips = await cubit.clipboard.processMultipleReaderDataFormat(
-          res,
-          manual: true,
-        );
-        if (clips != null) {
-          cubit.onClips(clips, manualPaste: true);
-        }
-      },
       child: LeftNavRail(
         floatingActionButton: floatingActionButton,
         navbarActiveIndex: 0,

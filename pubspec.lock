@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: b46f62516902afb04befa4b30eb6a12ac1f58ca8cb25fb9d632407259555dd3d
+      sha256: b1595874fbc8f7a50da90f5d8f327bb0bfd6a95dc906c390efe991540c3b54aa
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.39"
+    version: "1.3.40"
   analyzer:
     dependency: "direct overridden"
     description:
@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "0.4.1"
   clipboard_watcher:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: clipboard_watcher
       sha256: a6c98d9a30c47d1c5655ed48c46f554b04545da018f28992fb2540d1d14d863a
@@ -447,14 +447,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.3"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -491,34 +483,34 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_analytics
-      sha256: "2017da2cb0745fa912e13aadfc94e49691796cf6b7ed37edbca2a2388713da11"
+      sha256: "064e5b57b0693305946b7caa6a80ed80a918f46804c247b6cd7ed9cd327df48f"
       url: "https://pub.dev"
     source: hosted
-    version: "11.2.0"
+    version: "11.2.1"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_analytics_platform_interface
-      sha256: "4ea00fe31ff74c92c613e082193b55bd21f0653b536dd77cc1ba4cf60771d214"
+      sha256: d094547c9022c404b5ca39b7209607fc80e75e39d38875f050508fa4346b3e74
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0"
+    version: "4.2.1"
   firebase_analytics_web:
     dependency: transitive
     description:
       name: firebase_analytics_web
-      sha256: e5ce84f0c4e6fb8f8ca673d009445938a61845d8fa6b42c11913d5bbdbedf300
+      sha256: "06dc023b0144c0df630a56b6262cc9e7d6069fe78148853d97614dbefb6ea923"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.9"
+    version: "0.5.9+1"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "5159984ce9b70727473eb388394650677c02c925aaa6c9439905e1f30966a4d5"
+      sha256: "3187f4f8e49968573fd7403011dca67ba95aae419bc0d8131500fae160d94f92"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.3.0"
   firebase_core_dart:
     dependency: transitive
     description:
@@ -547,26 +539,26 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: "23509cb3cddfb3c910c143279ac3f07f06d3120f7d835e4a5d4b42558e978712"
+      sha256: e8d1e22de72cb21cdcfc5eed7acddab3e99cd83f3b317f54f7a96c32f25fd11e
       url: "https://pub.dev"
     source: hosted
-    version: "2.17.3"
+    version: "2.17.4"
   firebase_crashlytics:
     dependency: "direct main"
     description:
       name: firebase_crashlytics
-      sha256: da32da3b441d1bee73ca990085a3ae174b9fb3585229f02a278a2ea42454d784
+      sha256: "30260e1b8ad1464b41ca4531b44ce63d752daaf2f12c92ca6cdcd82b270abecc"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.3"
+    version: "4.0.4"
   firebase_crashlytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_crashlytics_platform_interface
-      sha256: b7567106ed57bbadaa0610774cc17a10b82ed04a1aba99790f303385ac4ba78f
+      sha256: a75e1826d92ea4e86e4a753c7b5d64b844a362676fa653185f1581c859186d18
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.39"
+    version: "3.6.40"
   fixnum:
     dependency: transitive
     description:
@@ -882,14 +874,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  iconsax_flutter:
-    dependency: transitive
-    description:
-      name: iconsax_flutter
-      sha256: "95b65699da8ea98f87c5d232f06b0debaaf1ec1332b697e4d90969ec9a93037d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   image:
     dependency: "direct main"
     description:
@@ -1131,7 +1115,7 @@ packages:
     source: hosted
     version: "0.5.0"
   ntp:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: ntp
       sha256: "198db73e5059b334b50dbe8c626011c26576778ee9fc53f4c55c1d89d08ed2d2"
@@ -1234,14 +1218,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
-  pausable_timer:
-    dependency: transitive
-    description:
-      name: pausable_timer
-      sha256: "6ef1a95441ec3439de6fb63f39a011b67e693198e7dae14e20675c3c00e86074"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0+3"
   petitparser:
     dependency: transitive
     description:
@@ -1267,7 +1243,7 @@ packages:
     source: hosted
     version: "3.1.5"
   platform_device_id:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: platform_device_id
       ref: master
@@ -1460,7 +1436,7 @@ packages:
     source: hosted
     version: "0.0.6"
   share_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: share_plus
       sha256: ef3489a969683c4f3d0239010cc8b7a2a46543a8d139e111c06c558875083544
@@ -1682,7 +1658,7 @@ packages:
     source: hosted
     version: "2.5.8"
   super_clipboard:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: super_clipboard
       sha256: c72d2ae8c3a66b20a104523add86b7c2813b1d4cced893a9764b84fb97ac8e2a
@@ -1746,21 +1722,13 @@ packages:
     source: hosted
     version: "1.0.1"
   tiny_storage:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: tiny_storage
       sha256: "5b099bf6fd75d5f995e03a2966ecec8f0ab9a2ad2e4c1b26d54b72d8600f1a8d"
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  toastification:
-    dependency: "direct main"
-    description:
-      name: toastification
-      sha256: "5e751acc2fb5b8d008138dac255d62290fde4e5a24824f29809ac098c3dfe395"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   tray_manager:
     dependency: "direct main"
     description:

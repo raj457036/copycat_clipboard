@@ -1,14 +1,14 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/l10n/l10n.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:clipboard/pages/login/widgets/local_signin_button.dart';
-import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
+import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/domain/model/localization.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_pro/widgets/forms/login_form.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

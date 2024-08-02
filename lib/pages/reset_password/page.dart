@@ -1,7 +1,7 @@
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/snackbar.dart';
+import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/domain/model/localization.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_pro/widgets/forms/reset_password_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,7 +1,7 @@
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class PreviewOptions extends StatelessWidget {
