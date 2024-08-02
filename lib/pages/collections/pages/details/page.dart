@@ -1,4 +1,5 @@
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -6,7 +7,6 @@ import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clip_collection/clipcollection.dart';
 import 'package:copycat_base/l10n/l10n.dart';
-import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +24,6 @@ class CollectionDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     final title = "${collection.emoji} • ${collection.title}";
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
@@ -101,24 +100,7 @@ class CollectionDetailPage extends StatelessWidget {
                     itemCount: results.length + hasMoreResult,
                     itemBuilder: (context, index) {
                       if (index == results.length) {
-                        return Card.outlined(
-                          color: colors.secondaryContainer,
-                          child: InkWell(
-                            borderRadius: radius12,
-                            onTap: () => loadMore(context),
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.more_horiz_rounded),
-                                  width8,
-                                  Text(context.locale.loadMore),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
+                        return LoadMoreCard(loadMore: loadMore);
                       }
 
                       final item = results[index];

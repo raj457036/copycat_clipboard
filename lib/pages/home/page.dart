@@ -3,10 +3,12 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/compact_mode_toggle.dart';
 import 'package:clipboard/widgets/hide_window_button.dart';
+import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:clipboard/widgets/share_listener.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
+import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -194,11 +196,13 @@ class HomePageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final colors = context.colors;
-    final floatingActionButton =
-        getFloatingActionButton(context, 0, isMobile: isMobile);
-    return ClipDropRegion(
-      child: LeftNavRail(
+    final floatingActionButton = getFloatingActionButton(
+      context,
+      0,
+      isMobile: isMobile,
+    );
+    return SubscriptionBuilder(builder: (context, subscription) {
+      final content = LeftNavRail(
         floatingActionButton: floatingActionButton,
         navbarActiveIndex: 0,
         child: RefreshIndicator(
@@ -213,9 +217,7 @@ class HomePageBody extends StatelessWidget {
 
               if (items.isEmpty) {
                 if (loading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
                 return Center(
                   child: Text(context.locale.emptyClipboard),
@@ -232,24 +234,7 @@ class HomePageBody extends StatelessWidget {
                 itemCount: items.length + (hasMore ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == items.length) {
-                    return Card.outlined(
-                      color: colors.secondaryContainer,
-                      child: InkWell(
-                        borderRadius: radius12,
-                        onTap: () => _loadMore(context),
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.more_horiz_rounded),
-                              width8,
-                              Text(context.locale.loadMore),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    return LoadMoreCard(loadMore: _loadMore);
                   }
 
                   final item = items[index];
@@ -263,7 +248,13 @@ class HomePageBody extends StatelessWidget {
             },
           ),
         ),
-      ),
-    );
+      );
+
+      if (subscription != null && subscription.dragNdrop) {
+        return ClipDropRegion(child: content);
+      }
+
+      return content;
+    });
   }
 }

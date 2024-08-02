@@ -204,7 +204,6 @@ class SubscriptionInfoDialog extends StatelessWidget {
         final isMobile = Breakpoints.isMobile(constraints.maxWidth);
 
         return SubscriptionBuilder(
-          autoDowngrade: false,
           builder: (context, state) {
             if (state == null) {
               return AlertDialog(

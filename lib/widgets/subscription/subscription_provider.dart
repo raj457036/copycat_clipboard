@@ -9,13 +9,11 @@ typedef SubscriptionWidgetBuilder = Widget Function(
 );
 
 class SubscriptionBuilder extends StatelessWidget {
-  final bool autoDowngrade;
   final SubscriptionWidgetBuilder builder;
 
   const SubscriptionBuilder({
     super.key,
     required this.builder,
-    this.autoDowngrade = true,
   });
 
   @override
