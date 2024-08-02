@@ -1,11 +1,13 @@
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -27,6 +29,15 @@ Future<void> copyToClipboard(
   } catch (e) {
     showTextSnackbar("⭕️ Failed to copy. Something went wrong!");
   }
+}
+
+Future<void> preview(BuildContext context, ClipboardItem item) async {
+  context.pushNamed(
+    RouteConstants.preview,
+    pathParameters: {
+      "id": item.id.toString(),
+    },
+  );
 }
 
 Future<void> shareClipboardItem(

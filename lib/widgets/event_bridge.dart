@@ -87,8 +87,7 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) async {
             switch (state) {
               case OfflinePersistanceSaved(:final item, synced: false):
-                final encrypted = await item.encrypt();
-                context.read<CloudPersistanceCubit>().persist(encrypted);
+                context.read<CloudPersistanceCubit>().persist(item);
                 break;
               case OfflinePersistanceError(:final failure):
                 showFailureSnackbar(failure);
@@ -101,10 +100,9 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) async {
             switch (state) {
               case CloudPersistanceSaved(:final item):
-                final decrypted = await item.decrypt();
                 context
                     .read<OfflinePersistanceCubit>()
-                    .persist(decrypted, synced: true);
+                    .persist(item, synced: true);
                 break;
               case CloudPersistanceDeleted(:final item):
                 context.read<OfflinePersistanceCubit>().delete(item);

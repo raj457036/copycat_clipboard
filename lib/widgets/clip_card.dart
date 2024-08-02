@@ -11,7 +11,6 @@ import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
-import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
@@ -23,7 +22,6 @@ import 'package:copycat_base/widgets/clip_cards/media_clip_card.dart';
 import 'package:copycat_pro/widgets/drag_drop/drag_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ClipCard extends StatelessWidget {
   final bool autoFocus;
@@ -49,15 +47,6 @@ class ClipCard extends StatelessWidget {
       ClipItemType.url => UrlClipCard(item: item),
       ClipItemType.file => FileClipCard(item: item),
     };
-  }
-
-  Future<void> preview(BuildContext context) async {
-    context.pushNamed(
-      RouteConstants.preview,
-      pathParameters: {
-        "id": item.id.toString(),
-      },
-    );
   }
 
   Future<void> downloadFile(
@@ -99,7 +88,7 @@ class ClipCard extends StatelessWidget {
     } else if (hasFocusForPaste) {
       pasteOnLastWindow(context);
     } else {
-      preview(context);
+      copyToClipboard(context, item);
     }
   }
 
@@ -131,7 +120,7 @@ class ClipCard extends StatelessWidget {
           MenuItem(
             icon: Icons.edit_note_rounded,
             text: context.locale.previewEdit,
-            onPressed: () => preview(context),
+            onPressed: () => preview(context, item),
           ),
           if (item.type == ClipItemType.url)
             MenuItem(

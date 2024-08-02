@@ -114,7 +114,7 @@ class Menu extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: child,
-      // onLongPress: () => openOptionDialog(context),
+      onDoubleTap: () => openOptionDialog(context),
       onSecondaryTapDown: (detail) {
         if (width <= 600) {
           openOptionDialog(context);
