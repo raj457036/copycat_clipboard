@@ -83,7 +83,6 @@ class TextClipCard extends StatelessWidget {
           child: Text(
             item.text!,
             overflow: TextOverflow.fade,
-            // maxLines: 10,
             style: textTheme.bodySmall,
           ),
         );
