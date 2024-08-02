@@ -227,7 +227,7 @@ class MainApp extends StatelessWidget {
 
     if (kDebugMode) {
       return DevicePreview(
-        enabled: true,
+        enabled: false,
         tools: const [
           ...DevicePreview.defaultTools,
           DevicePreviewScreenshot(
