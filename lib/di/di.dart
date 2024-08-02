@@ -1,3 +1,5 @@
+import 'package:copycat_base/di/di.module.dart';
+import 'package:copycat_pro/di/di.module.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,9 +9,10 @@ final sl = GetIt.instance;
 
 @InjectableInit(
   preferRelativeImports: false,
-  generateForDir: [
-    "lib",
-    "packages/copycat_pro/lib",
+  throwOnMissingDependencies: true,
+  externalPackageModulesBefore: [
+    ExternalModule(CopycatProPackageModule),
+    ExternalModule(CopycatBasePackageModule),
   ],
 )
 Future<void> configureDependencies() async => await sl.init();

@@ -1,4 +1,3 @@
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/preview/widgets/clip_detail_form.dart';
 import 'package:clipboard/pages/preview/widgets/file_preview.dart';
 import 'package:clipboard/pages/preview/widgets/media_preview.dart';
@@ -8,6 +7,7 @@ import 'package:clipboard/pages/preview/widgets/url_preview.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 Widget previewWidget({required ClipboardItem item, required bool isMobile}) {

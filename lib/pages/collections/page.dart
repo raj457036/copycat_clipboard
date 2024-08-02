@@ -1,6 +1,3 @@
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/local_user.dart';
@@ -8,8 +5,11 @@ import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:clipboard/widgets/pro_tip_banner.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
+import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

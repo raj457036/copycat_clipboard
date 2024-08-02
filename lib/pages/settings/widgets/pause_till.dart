@@ -1,6 +1,6 @@
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:copycat_base/utils/utility.dart';

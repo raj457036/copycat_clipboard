@@ -1,7 +1,7 @@
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/widgets/dialogs/subscription_info.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/subscription/subscription_provider.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class ActivePlanAction extends StatelessWidget {

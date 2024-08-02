@@ -1,8 +1,8 @@
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/attention_button.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class LeftNavRail extends StatelessWidget {
