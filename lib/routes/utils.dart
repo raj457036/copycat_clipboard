@@ -45,18 +45,19 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
     );
   }
   if (navbarActiveIndex == 2) {
-    return const Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        DisableForLocalUser(
-          ifLocal: CreateCollectionButton(
-            localMode: true,
-          ),
-          child: CreateCollectionButton(),
+    final actions = [
+      const DisableForLocalUser(
+        ifLocal: CreateCollectionButton(
+          localMode: true,
         ),
-        height8,
-        SyncStatusButton()
-      ],
+        child: CreateCollectionButton(),
+      ),
+      height8,
+      const SyncStatusButton()
+    ];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: isMobile ? actions.reversed.toList() : actions,
     );
   }
   return null;

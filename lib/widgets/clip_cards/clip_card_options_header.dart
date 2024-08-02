@@ -71,12 +71,12 @@ class ClipCardOptionsHeader extends StatelessWidget {
           final width = constraints.maxWidth;
           return Row(
             children: [
-              width8,
+              width12,
               Expanded(
                 child: Text(
                   created,
-                  style: textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
+                  style: textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w400,
                     color: colors.outline,
                   ),
                   maxLines: 2,
