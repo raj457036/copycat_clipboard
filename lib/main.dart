@@ -39,6 +39,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:universal_io/io.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:window_manager/window_manager.dart';
@@ -48,6 +49,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeServices();
+
   runApp(const MainApp());
 }
 
@@ -68,6 +70,8 @@ Future<void> initializeServices() async {
 
   await initializeFirebase();
   await configureDependencies();
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
 }
 
 Future<void> initializeDesktopServices() async {

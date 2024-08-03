@@ -28,11 +28,10 @@ class ClipCard extends StatelessWidget {
   final ClipboardItem item;
   final bool deleteAllowed;
   final List<MenuItem> customMenuItems;
-  final void Function()? onFocus;
+
   const ClipCard({
     super.key,
     required this.item,
-    this.onFocus,
     this.autoFocus = true,
     this.canPaste = false,
     this.deleteAllowed = true,

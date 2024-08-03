@@ -161,10 +161,15 @@ class KeyboardShortcutProvider extends StatelessWidget {
         ),
         HideWindowIntent: CallbackAction<HideWindowIntent>(
           onInvoke: (intent) async {
-            final canPop = context.canPop();
+            final router = GoRouter.maybeOf(context);
+            if (router == null) return null;
+            final canPop = router.canPop();
             if (!canPop) {
               WindowFocusManager.of(context)?.restore();
+            } else {
+              router.pop();
             }
+
             return null;
           },
         )
