@@ -76,41 +76,38 @@ class _ShareListenerState extends State<ShareListener> {
 
     subscription = handler.sharedMediaStream.listen((SharedMedia media) async {
       logger.i("Received shared media: $media");
-      if (mounted) {
-        showTextSnackbar(
-          context.locale.pastingTheSharedContent,
-          isLoading: true,
-          duration: 10,
-        );
-      }
 
       try {
-        await putMediaToClipboard(media);
-
-        if (Platform.isAndroid && mounted) {
+        if (mounted) {
           showTextSnackbar(
-            // ignore: use_build_context_synchronously
-            "✅ ${context.locale.done}",
-            closePrevious: true,
-            duration: 15,
-            isProgress: true,
-            action: SnackBarAction(
-              // ignore: use_build_context_synchronously
-              label: context.locale.backToApp,
-              onPressed: () {
-                SystemNavigator.pop(animated: true);
-              },
-            ),
+            context.locale.pastingTheSharedContent,
+            isLoading: true,
+            duration: 10,
           );
+        }
+        await putMediaToClipboard(media);
+        closeSnackbar();
+        if (Platform.isAndroid) {
+          if (mounted) {
+            showTextSnackbar(
+              "✅ ${context.locale.done}",
+              closePrevious: true,
+              duration: 15,
+              isProgress: true,
+              action: SnackBarAction(
+                // ignore: use_build_context_synchronously
+                label: context.locale.backToApp,
+                onPressed: () {
+                  SystemNavigator.pop(animated: true);
+                },
+              ),
+            );
+          }
         }
       } catch (e) {
         // ignore: use_build_context_synchronously
         if (mounted) {
           showTextSnackbar("❌ ${context.locale.failed}", closePrevious: true);
-        }
-      } finally {
-        if (mounted) {
-          closeSnackbar();
         }
       }
       // closeSnackbar();
