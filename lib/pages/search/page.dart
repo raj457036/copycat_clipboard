@@ -26,6 +26,7 @@ class SearchPage extends StatelessWidget {
     final isMobile = Breakpoints.isMobile(width);
     final floatingActionButton =
         getFloatingActionButton(context, 1, isMobile: isMobile);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: kToolbarHeight + (isMobile ? 45 : 30),
