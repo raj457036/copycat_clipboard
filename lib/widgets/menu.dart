@@ -115,6 +115,7 @@ class Menu extends StatelessWidget {
     return GestureDetector(
       child: child,
       onDoubleTap: () => openOptionDialog(context),
+      onLongPress: () => openOptionDialog(context),
       onSecondaryTapDown: (detail) {
         if (width <= 600) {
           openOptionDialog(context);
