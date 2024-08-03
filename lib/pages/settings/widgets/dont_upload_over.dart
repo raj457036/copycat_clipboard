@@ -40,87 +40,30 @@ class DontAutoUploadOver extends StatelessWidget {
           trailing: DropdownButtonHideUnderline(
             child: DropdownButton<int>(
               value: state,
+              alignment: Alignment.centerRight,
+              enableFeedback: true,
               padding: const EdgeInsets.symmetric(horizontal: padding16),
               borderRadius: radius12,
               items: [
                 DropdownMenuItem(
                   value: $5MB,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox.square(
-                        dimension: 24,
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        ),
-                      ),
-                      width12,
-                      Text(context.locale.$5MB),
-                    ],
-                  ),
+                  child: Text(context.locale.$5MB),
                 ),
                 DropdownMenuItem(
                   value: $10MB,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox.square(
-                        dimension: 24,
-                        child: Icon(
-                          Icons.circle,
-                          size: 10,
-                        ),
-                      ),
-                      width12,
-                      Text(context.locale.$10MB),
-                    ],
-                  ),
+                  child: Text(context.locale.$10MB),
                 ),
                 DropdownMenuItem(
                   value: $20MB,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox.square(
-                        dimension: 24,
-                        child: Icon(
-                          Icons.circle,
-                          size: 15,
-                        ),
-                      ),
-                      width12,
-                      Text(context.locale.$20MB),
-                    ],
-                  ),
+                  child: Text(context.locale.$20MB),
                 ),
                 DropdownMenuItem(
                   value: $50MB,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox.square(
-                        dimension: 24,
-                        child: Icon(
-                          Icons.circle,
-                          size: 20,
-                        ),
-                      ),
-                      width12,
-                      Text(context.locale.$50MB),
-                    ],
-                  ),
+                  child: Text(context.locale.$50MB),
                 ),
                 DropdownMenuItem(
                   value: $100MB,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.circle, size: 24),
-                      width12,
-                      Text(context.locale.$100MB),
-                    ],
-                  ),
+                  child: Text(context.locale.$100MB),
                 ),
               ],
               onChanged: (size) {
