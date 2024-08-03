@@ -1,8 +1,8 @@
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/enums/clip_type.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/enums/clip_type.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
 class TextPreviewBody extends StatelessWidget {
@@ -27,8 +27,9 @@ class TextPreviewBody extends StatelessWidget {
     );
     if (bg != null) {
       return Material(
+        type: MaterialType.card,
         color: bg,
-        borderRadius: radius8,
+        borderRadius: radiusBottom12,
         child: body,
       );
     }
@@ -82,7 +83,6 @@ class TextClipCard extends StatelessWidget {
           child: Text(
             item.text!,
             overflow: TextOverflow.fade,
-            // maxLines: 10,
             style: textTheme.bodySmall,
           ),
         );

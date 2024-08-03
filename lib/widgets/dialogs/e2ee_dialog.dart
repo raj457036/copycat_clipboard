@@ -1,20 +1,20 @@
 import 'dart:convert' show jsonEncode, jsonDecode, utf8;
 
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/data/services/encryption.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/export_e2ee.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/generate_e2ee.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/import_e2ee.dart';
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
+import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/domain/model/auth_user/auth_user.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/snackbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as su;
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 import 'package:window_manager/window_manager.dart';
@@ -153,9 +153,9 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
           return state.config.enc2;
         },
         builder: (context, enc2Key) {
-          return BlocSelector<AuthCubit, AuthState, su.User?>(
+          return BlocSelector<AuthCubit, AuthState, AuthUser?>(
             selector: (state) {
-              return state.whenOrNull(authenticated: (_, user) => user);
+              return state.whenOrNull(authenticated: (user, _) => user);
             },
             builder: (context, user) {
               if (rebuilding) {
@@ -172,8 +172,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                 );
               }
               if (user == null) return const SizedBox.shrink();
-              final keyId = user.userMetadata?["enc2KeyId"];
-              final enc1 = user.userMetadata?["enc1"];
+              final keyId = user.enc2KeyId;
+              final enc1 = user.enc1;
 
               if (keyId == null || enc1 == null) {
                 return GenerateE2eeDialog(

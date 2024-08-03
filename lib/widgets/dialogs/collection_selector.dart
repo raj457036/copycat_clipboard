@@ -1,12 +1,13 @@
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/common_extension.dart';
 import 'package:clipboard/widgets/create_collection_button.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
+import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ClipCollectionSelectionDialog extends StatelessWidget {
   const ClipCollectionSelectionDialog({super.key});
@@ -70,7 +71,7 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
                     subtitle: collection.description != null
                         ? Text(collection.description!)
                         : null,
-                    onTap: () => Navigator.pop(context, collection),
+                    onTap: () => context.pop(collection),
                   );
                 },
               );

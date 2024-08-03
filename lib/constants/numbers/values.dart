@@ -1,1 +1,0 @@
-const defaultCollectionCount = 3;

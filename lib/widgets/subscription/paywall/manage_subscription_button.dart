@@ -1,20 +1,21 @@
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/datetime_extension.dart';
-import 'package:clipboard/utils/snackbar.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/datetime_extension.dart';
+import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ManageSubscriptionButton extends StatelessWidget {
   const ManageSubscriptionButton({super.key});
 
-  Future<void> manageSubscription(BuildContext context, CustomerInfo customer,
-      Subscription subscription) async {
-    if (customer.managementURL != null) {
-      launchUrlString(customer.managementURL!);
+  Future<void> manageSubscription(
+    BuildContext context,
+    Subscription subscription,
+  ) async {
+    if (subscription.managementUrl != null) {
+      launchUrlString(subscription.managementUrl!);
       return;
     }
     if (subscription.source == "PROMO") {
@@ -31,10 +32,10 @@ class ManageSubscriptionButton extends StatelessWidget {
     return BlocBuilder<MonetizationCubit, MonetizationState>(
       builder: (context, state) {
         return state.when(
-            unknown: () => SizedBox.shrink(),
-            active: (info, sub) {
+            unknown: () => const SizedBox.shrink(),
+            active: (sub) {
               return ElevatedButton(
-                onPressed: () => manageSubscription(context, info, sub),
+                onPressed: () => manageSubscription(context, sub),
                 child: Text(context.locale.manageSubscriptions),
               );
             });

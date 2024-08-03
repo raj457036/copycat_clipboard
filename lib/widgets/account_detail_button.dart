@@ -1,5 +1,5 @@
-import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/l10n/l10n.dart';
+import 'package:copycat_base/constants/strings/route_constants.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

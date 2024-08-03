@@ -1,19 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/drive_setup_cubit/drive_setup_cubit.dart';
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/bloc/window_action_cubit/window_action_cubit.dart';
-import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/di/di.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
+import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
+import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
+import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';

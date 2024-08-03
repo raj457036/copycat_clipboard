@@ -1,10 +1,10 @@
-import 'package:clipboard/constants/strings/route_constants.dart';
-import 'package:clipboard/constants/widget_styles.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/create_collection_button.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/sync_status.dart';
+import 'package:copycat_base/constants/strings/route_constants.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,18 +45,19 @@ Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
     );
   }
   if (navbarActiveIndex == 2) {
-    return const Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        DisableForLocalUser(
-          ifLocal: CreateCollectionButton(
-            localMode: true,
-          ),
-          child: CreateCollectionButton(),
+    final actions = [
+      const DisableForLocalUser(
+        ifLocal: CreateCollectionButton(
+          localMode: true,
         ),
-        height8,
-        SyncStatusButton()
-      ],
+        child: CreateCollectionButton(),
+      ),
+      height8,
+      const SyncStatusButton()
+    ];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: isMobile ? actions.reversed.toList() : actions,
     );
   }
   return null;

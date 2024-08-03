@@ -8,32 +8,21 @@
       "name": "clipboard",
       "request": "launch",
       "type": "dart",
-      "args": [
-        "--dart-define-from-file",
-        "local/prod.json",
-        "--verbose"
-      ]
+      "args": ["--dart-define-from-file", "local/prod.json", "--verbose"]
     },
     {
       "name": "clipboard (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
-      "args": [
-        "--dart-define-from-file",
-        "local/prod.json",
-        "--verbose"
-      ]
+      "args": ["--dart-define-from-file", "local/prod.json", "--verbose"]
     },
     {
       "name": "clipboard (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
-      "args": [
-        "--dart-define-from-file",
-        "local/prod.json"
-      ]
+      "args": ["--dart-define-from-file", "local/prod.json"]
     }
   ]
 }

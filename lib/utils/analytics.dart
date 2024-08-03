@@ -1,13 +1,7 @@
-import 'package:clipboard/routes/routes.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/utils/utility.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
-Future<void> logFeatureUsed({
-  required String feature,
-  Map<String, dynamic>? parameters,
-}) async {
-  if (!isAnalyticsSupported) return;
-  await analytics.logEvent(name: "copycat_feature_used", parameters: {
-    "feature": feature,
-    ...?parameters,
-  });
-}
+final analyticNavigationObservers = [
+  if (isAnalyticsSupported)
+    FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+];

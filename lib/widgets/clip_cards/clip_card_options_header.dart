@@ -1,20 +1,22 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/db/clipboard_item/clipboard_item.dart';
-import 'package:clipboard/enums/clip_type.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
-import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/utils/datetime_extension.dart';
 import 'package:clipboard/widgets/clip_cards/primary_clip_action_button.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/enums/clip_type.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:flutter/material.dart';
 
 class ClipCardOptionsHeader extends StatelessWidget {
+  final bool hasFocusForPaste;
   final ClipboardItem item;
 
   const ClipCardOptionsHeader({
     super.key,
+    this.hasFocusForPaste = false,
     required this.item,
   });
 
@@ -69,12 +71,12 @@ class ClipCardOptionsHeader extends StatelessWidget {
           final width = constraints.maxWidth;
           return Row(
             children: [
-              width8,
+              width12,
               Expanded(
                 child: Text(
                   created,
-                  style: textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
+                  style: textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w400,
                     color: colors.outline,
                   ),
                   maxLines: 2,
@@ -83,25 +85,37 @@ class ClipCardOptionsHeader extends StatelessWidget {
               ),
               width8,
               if (width > 100 && item.type == ClipItemType.url)
-                IconButton(
-                  onPressed: () => launchUrl(item),
-                  icon: const Icon(
-                    Icons.open_in_new,
-                  ),
-                  tooltip: context.locale.openInBrowser,
-                  style: IconButton.styleFrom(
-                    shape: const RoundedRectangleBorder(),
+                Focus(
+                  canRequestFocus: !hasFocusForPaste,
+                  skipTraversal: hasFocusForPaste,
+                  descendantsAreTraversable: !hasFocusForPaste,
+                  descendantsAreFocusable: !hasFocusForPaste,
+                  child: IconButton(
+                    onPressed: () => launchUrl(item),
+                    icon: const Icon(
+                      Icons.open_in_new,
+                    ),
+                    tooltip: context.locale.openInBrowser,
+                    style: IconButton.styleFrom(
+                      shape: const RoundedRectangleBorder(),
+                    ),
                   ),
                 ),
               if (width > 100 && item.textCategory == TextCategory.phone)
-                IconButton(
-                  onPressed: () => launchPhone(item),
-                  icon: const Icon(
-                    Icons.call,
-                  ),
-                  tooltip: context.locale.makePhoneCall,
-                  style: IconButton.styleFrom(
-                    shape: const RoundedRectangleBorder(),
+                Focus(
+                  canRequestFocus: !hasFocusForPaste,
+                  skipTraversal: hasFocusForPaste,
+                  descendantsAreTraversable: !hasFocusForPaste,
+                  descendantsAreFocusable: !hasFocusForPaste,
+                  child: IconButton(
+                    onPressed: () => launchPhone(item),
+                    icon: const Icon(
+                      Icons.call,
+                    ),
+                    tooltip: context.locale.makePhoneCall,
+                    style: IconButton.styleFrom(
+                      shape: const RoundedRectangleBorder(),
+                    ),
                   ),
                 ),
               if (item.needDownload)
@@ -114,8 +128,11 @@ class ClipCardOptionsHeader extends StatelessWidget {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Icon(Icons.download_for_offline_outlined),
-                  onPressed: item.downloading
+                      : Icon(
+                          Icons.download_for_offline_outlined,
+                          color: colors.onSurfaceVariant,
+                        ),
+                  onPressed: hasFocusForPaste || item.downloading
                       ? null
                       : () => downloadFile(context, item),
                   tooltip: item.downloading
@@ -130,7 +147,10 @@ class ClipCardOptionsHeader extends StatelessWidget {
                   ),
                 )
               else
-                PrimaryClipActionButton(item: item),
+                PrimaryClipActionButton(
+                  item: item,
+                  hasFocusForPaste: hasFocusForPaste,
+                ),
             ],
           );
         },

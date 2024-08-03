@@ -1,4 +1,4 @@
-import 'package:clipboard/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:flutter/material.dart';
 
 typedef DynamicWidgetBuilder = Widget Function(

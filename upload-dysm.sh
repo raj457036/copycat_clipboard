@@ -1,5 +1,5 @@
 flutterfire upload-crashlytics-symbols \
---debug-symbols-path=/Users/rajsingh/Developers/Personal/clipboard/clipboard/build-symbols \
+--debug-symbols-path=/Users/rajsingh/Developers/Personal/clipboard/clipboard/build_symbols \
 --upload-symbols-script-path=/Users/rajsingh/Developers/Personal/clipboard/clipboard/macos/Pods/FirebaseCrashlytics/upload-symbols  \
 --platform=macos \
 --apple-project-path=/Users/rajsingh/Developers/Personal/clipboard/clipboard/macos \

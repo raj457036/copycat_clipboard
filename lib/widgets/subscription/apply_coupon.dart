@@ -1,9 +1,7 @@
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/l10n/l10n.dart';
-import 'package:clipboard/routes/routes.dart';
-import 'package:clipboard/utils/snackbar.dart';
-import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,14 +57,6 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
         loading = false;
       });
     } else {
-      if (isAnalyticsSupported) {
-        analytics.logEvent(
-          name: "Apply Promo Code",
-          parameters: {
-            "promo_code": couponController.text,
-          },
-        );
-      }
       if (context.mounted) {
         // ignore: use_build_context_synchronously
         showTextSnackbar(context.locale.subscriptionUpdated);

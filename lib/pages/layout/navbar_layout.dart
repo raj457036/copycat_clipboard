@@ -1,7 +1,7 @@
-import 'package:clipboard/common/logging.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/network_observer.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class NavBarPage extends StatefulWidget {
