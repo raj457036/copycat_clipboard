@@ -95,16 +95,18 @@ Future<void> initializeDesktopServices() async {
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
+    skipTaskbar: true,
     titleBarStyle:
         Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
     windowButtonVisibility: false,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
     await windowManager.setClosable(false);
-    await windowManager.setSkipTaskbar(true);
     if (Platform.isMacOS) {
-      await windowManager.setVisibleOnAllWorkspaces(false,
-          visibleOnFullScreen: true);
+      await windowManager.setVisibleOnAllWorkspaces(
+        false,
+        visibleOnFullScreen: true,
+      );
     }
   });
 }
