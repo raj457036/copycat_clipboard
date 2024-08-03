@@ -107,6 +107,7 @@ class CollectionDetailPage extends StatelessWidget {
                       return ClipCard(
                         key: ValueKey("clipboard-item-//${item.id}"),
                         item: item,
+                        autoFocus: index == 0,
                         // deleteAllowed: false,
                       );
                     },
