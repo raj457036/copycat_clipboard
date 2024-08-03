@@ -1,8 +1,8 @@
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/db/clip_collection/clipcollection.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/widgets/dialogs/collection_selector.dart';
+import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/clip_collection/clipcollection.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,14 +1,15 @@
-import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/bloc/search_cubit/search_cubit.dart';
-import 'package:clipboard/constants/numbers/breakpoints.dart';
-import 'package:clipboard/constants/strings/asset_constants.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/l10n/l10n.dart';
 import 'package:clipboard/pages/search/widgets/search_bar.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
+import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/search_cubit/search_cubit.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/constants/strings/asset_constants.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,9 +84,7 @@ class SearchPage extends StatelessWidget {
                     ),
                   );
                 case SearchingState():
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 case SearchErrorState(:final failure):
                   return Center(
                     child: Text(failure.message),
@@ -115,27 +114,16 @@ class SearchPage extends StatelessWidget {
                     final hasMoreResult = hasMore ? 1 : 0;
 
                     return GridView.builder(
+                      primary: true,
                       padding: isMobile ? insetLTR16 : insetAll16,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 250,
-                        crossAxisSpacing: padding8,
-                        mainAxisSpacing: padding8,
                         childAspectRatio: isMobile ? 2 / 3 : 1,
                       ),
                       itemCount: results.length + hasMoreResult,
                       itemBuilder: (context, index) {
                         if (index == results.length) {
-                          return Card.outlined(
-                            child: Center(
-                              child: TextButton.icon(
-                                onPressed: () => loadMore(context),
-                                label: Text(
-                                  context.locale.loadMore,
-                                ),
-                                icon: const Icon(Icons.read_more),
-                              ),
-                            ),
-                          );
+                          return LoadMoreCard(loadMore: loadMore);
                         }
 
                         final item = results[index];

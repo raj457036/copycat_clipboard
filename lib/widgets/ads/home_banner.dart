@@ -1,4 +1,4 @@
-import 'package:clipboard/constants/strings/strings.dart';
+import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:universal_io/io.dart';

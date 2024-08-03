@@ -1,4 +1,4 @@
-import 'package:clipboard/l10n/l10n.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 enum MenuItemType { option, divider }
@@ -114,7 +114,7 @@ class Menu extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: child,
-      onLongPress: () => openOptionDialog(context),
+      onDoubleTap: () => openOptionDialog(context),
       onSecondaryTapDown: (detail) {
         if (width <= 600) {
           openOptionDialog(context);

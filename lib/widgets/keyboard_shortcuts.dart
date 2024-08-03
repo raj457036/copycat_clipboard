@@ -1,4 +1,4 @@
-import 'package:clipboard/common/logging.dart';
+import 'package:copycat_base/common/logging.dart';
 import 'package:flutter/widgets.dart';
 
 class LoggingActionDispatcher extends ActionDispatcher {

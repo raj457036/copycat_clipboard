@@ -1,15 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/bloc/auth_cubit/auth_cubit.dart';
-import 'package:clipboard/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:clipboard/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
-import 'package:clipboard/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/data/services/encryption.dart';
 import 'package:clipboard/routes/utils.dart';
-import 'package:clipboard/utils/snackbar.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
+import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,12 +51,16 @@ class EventBridge extends StatelessWidget {
 
                   if (!EncrypterWorker.instance.isRunning) {
                     if (config.enc2Key == null) return;
-                    final enc1 = context.read<AuthCubit>().enc1Key;
-                    if (enc1 == null) return;
-                    final encMngr = EncryptionManager(config.enc2Key!);
-                    final enc1Decrypt = encMngr.decrypt(enc1);
-                    await EncrypterWorker.instance.start(enc1Decrypt);
-                    await Future.delayed(const Duration(seconds: 1));
+                    final authState = context.read<AuthCubit>().state;
+
+                    if (authState is AuthenticatedAuthState) {
+                      final enc1 = authState.user.enc1;
+                      if (enc1 == null) return;
+                      final encMngr = EncryptionManager(config.enc2Key!);
+                      final enc1Decrypt = encMngr.decrypt(enc1);
+                      await EncrypterWorker.instance.start(enc1Decrypt);
+                      await Future.delayed(const Duration(seconds: 1));
+                    }
                   }
 
                   if (context.mounted) {
@@ -80,7 +84,7 @@ class EventBridge extends StatelessWidget {
           },
         ),
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             switch (state) {
               case OfflinePersistanceSaved(:final item, synced: false):
                 context.read<CloudPersistanceCubit>().persist(item);

@@ -1,0 +1,6 @@
+[submodule "packages/copycat_pro"]
+	path = packages/copycat_pro
+	url = https://github.com/raj457036/copycat_pro
+[submodule "packages/copycat_base"]
+	path = packages/copycat_base
+	url = https://github.com/raj457036/copycat_base

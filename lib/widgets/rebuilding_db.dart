@@ -1,5 +1,4 @@
-import 'package:clipboard/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:clipboard/l10n/l10n.dart';
+import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,11 +31,11 @@ class _RebuildingDbOverlayState extends State<RebuildingDbOverlay> {
         }
       },
       child: rebuilding
-          ? MaterialApp(
+          ? const MaterialApp(
               home: Scaffold(
                 body: Center(
                   child: Text(
-                    context.locale.rebuildingDB,
+                    "⏱️ Rebuilding Database\nPlease Wait...",
                     textAlign: TextAlign.center,
                   ),
                 ),

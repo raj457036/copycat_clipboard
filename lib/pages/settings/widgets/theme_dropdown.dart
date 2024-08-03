@@ -1,6 +1,6 @@
-import 'package:clipboard/bloc/app_config_cubit/app_config_cubit.dart';
-import 'package:clipboard/constants/widget_styles.dart';
-import 'package:clipboard/l10n/l10n.dart';
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +21,7 @@ class ThemeDropdown extends StatelessWidget {
       builder: (context, state) {
         return DropdownButtonHideUnderline(
           child: DropdownButton<ThemeMode>(
+            autofocus: true,
             value: state,
             padding: const EdgeInsets.symmetric(horizontal: padding16),
             borderRadius: radius12,

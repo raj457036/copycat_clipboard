@@ -1,5 +1,5 @@
-import 'package:clipboard/bloc/monetization_cubit/monetization_cubit.dart';
-import 'package:clipboard/db/subscription/subscription.dart';
+import 'package:copycat_base/db/subscription/subscription.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,13 +9,11 @@ typedef SubscriptionWidgetBuilder = Widget Function(
 );
 
 class SubscriptionBuilder extends StatelessWidget {
-  final bool autoDowngrade;
   final SubscriptionWidgetBuilder builder;
 
   const SubscriptionBuilder({
     super.key,
     required this.builder,
-    this.autoDowngrade = true,
   });
 
   @override
@@ -23,7 +21,7 @@ class SubscriptionBuilder extends StatelessWidget {
     return BlocSelector<MonetizationCubit, MonetizationState, Subscription?>(
       selector: (state) {
         return state.whenOrNull(
-          active: (info, subscription) {
+          active: (subscription) {
             return subscription;
           },
         );
