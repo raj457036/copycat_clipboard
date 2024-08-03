@@ -130,7 +130,7 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
 
             return KeyboardShortcutProvider(
               activePageIndex: activeIndex,
-              child: navPage,
+              child: FocusScope(autofocus: true, child: navPage),
             );
           },
           routes: [
