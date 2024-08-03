@@ -26,8 +26,11 @@ void onNavItemTapped(BuildContext context, int index) {
   }
 }
 
-Widget? getFloatingActionButton(BuildContext context, int navbarActiveIndex,
-    {bool isMobile = false}) {
+Widget? getFloatingActionButton(
+  BuildContext context,
+  int navbarActiveIndex, {
+  bool isMobile = false,
+}) {
   if (navbarActiveIndex == 0) {
     final actions = [
       FloatingActionButton(

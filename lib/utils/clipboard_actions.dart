@@ -1,3 +1,4 @@
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -21,7 +22,7 @@ Future<void> copyToClipboard(
     final cubit = context.read<OfflinePersistanceCubit>();
     final result = await cubit.copyToClipboard(item, saveFile: saveFile);
     if (noAck || !context.mounted) return;
-    if (result) {
+    if (result && isDesktopPlatform) {
       showTextSnackbar(
         saveFile ? context.locale.exportSuccess : context.locale.copySuccess,
       );

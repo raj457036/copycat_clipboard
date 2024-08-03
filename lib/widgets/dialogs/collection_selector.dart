@@ -56,7 +56,7 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
           case ClipCollectionLoaded(:final collections):
             {
               if (collections.isEmpty) {
-                return const NoCollectionAvailable();
+                return const NoCollectionAvailable(dialogMode: true);
               }
               return ListView.builder(
                 itemCount: collections.length,
