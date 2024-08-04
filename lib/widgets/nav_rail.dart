@@ -21,6 +21,8 @@ class LeftNavRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+    final labelStyle =
+        textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (Breakpoints.isMobile(constraints.maxWidth)) {
@@ -34,8 +36,8 @@ class LeftNavRail extends StatelessWidget {
                 width: 82,
                 child: NavigationRailTheme(
                   data: NavigationRailThemeData(
-                    selectedLabelTextStyle: textTheme.labelSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    selectedLabelTextStyle: labelStyle,
+                    unselectedLabelTextStyle: labelStyle,
                   ),
                   child: NavigationRail(
                     destinations: [
@@ -105,7 +107,6 @@ class LeftNavRail extends StatelessWidget {
                     ),
                     labelType: NavigationRailLabelType.all,
                     groupAlignment: -.6,
-                    elevation: 1,
                     selectedIndex: navbarActiveIndex,
                     onDestinationSelected: (idx) =>
                         onNavItemTapped(context, idx),

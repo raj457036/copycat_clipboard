@@ -51,7 +51,7 @@ class HomePageBody extends StatelessWidget {
             }
 
             return GridView.builder(
-              padding: insetLTR16,
+              padding: isMobile ? insetLRB16 : insetRB16,
               primary: true,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,

@@ -116,7 +116,7 @@ class CollectionsPage extends StatelessWidget {
 
                               if (isMobile) return builder;
                               return SliverPadding(
-                                padding: insetAll16,
+                                padding: isMobile ? insetLRB16 : insetTRB16,
                                 sliver: builder,
                               );
                             }
