@@ -27,6 +27,9 @@ class SearchPage extends StatelessWidget {
     final floatingActionButton =
         getFloatingActionButton(context, 1, isMobile: isMobile);
 
+    // WORKAROUND: somehow when click on an empty space this, the scaffold lost focus
+    FocusScope.of(context).requestFocus();
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: kToolbarHeight + (isMobile ? 45 : 30),

@@ -128,9 +128,12 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               child: child,
             );
 
-            return KeyboardShortcutProvider(
-              activePageIndex: activeIndex,
-              child: FocusScope(autofocus: true, child: navPage),
+            return FocusScope(
+              autofocus: true,
+              child: KeyboardShortcutProvider(
+                activePageIndex: activeIndex,
+                child: navPage,
+              ),
             );
           },
           routes: [
