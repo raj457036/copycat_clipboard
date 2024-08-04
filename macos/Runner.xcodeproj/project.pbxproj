@@ -683,6 +683,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = KX6GY6A9T3;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "CopyCat Clipboard";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -822,6 +823,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KX6GY6A9T3;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "CopyCat Clipboard";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -848,6 +850,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = KX6GY6A9T3;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "CopyCat Clipboard";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
