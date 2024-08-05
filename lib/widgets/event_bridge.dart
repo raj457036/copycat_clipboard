@@ -59,7 +59,6 @@ class EventBridge extends StatelessWidget {
                       final encMngr = EncryptionManager(config.enc2Key!);
                       final enc1Decrypt = encMngr.decrypt(enc1);
                       await EncrypterWorker.instance.start(enc1Decrypt);
-                      await Future.delayed(const Duration(seconds: 1));
                     }
                   }
 
@@ -114,7 +113,7 @@ class EventBridge extends StatelessWidget {
                 ):
                 {
                   if (retryCount.isNegative) return;
-                  if (retryCount > 2) return;
+                  if (retryCount > 3) return;
 
                   await waitHere(retryCount + 1);
 

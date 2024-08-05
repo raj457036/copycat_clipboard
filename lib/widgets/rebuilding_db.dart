@@ -31,8 +31,11 @@ class _RebuildingDbOverlayState extends State<RebuildingDbOverlay> {
         }
       },
       child: rebuilding
-          ? const MaterialApp(
-              home: Scaffold(
+          ? MaterialApp(
+              themeMode: ThemeMode.system,
+              theme: ThemeData.light(useMaterial3: true),
+              darkTheme: ThemeData.dark(useMaterial3: true),
+              home: const Scaffold(
                 body: Center(
                   child: Text(
                     "⏱️ Rebuilding Database\nPlease Wait...",

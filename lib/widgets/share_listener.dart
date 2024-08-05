@@ -52,7 +52,6 @@ class _ShareListenerState extends State<ShareListener> {
     final handler = ShareHandlerPlatform.instance;
     final media = await handler.getInitialSharedMedia();
     if (media != null) {
-      await Future.delayed(const Duration(milliseconds: 1500));
       logger.i("Received initial shared media!");
       await putMediaToClipboard(media);
       await handler.resetInitialSharedMedia();
