@@ -140,12 +140,17 @@ class ClipCard extends StatelessWidget {
             text: context.locale.open,
             onPressed: () => openFile(item),
           ),
+        MenuItem(
+          icon: Icons.collections_bookmark_outlined,
+          text: context.locale.changeCollection,
+          onPressed: () => changeCollection(context, item),
+        ),
         if (deleteAllowed) const MenuItem(type: MenuItemType.divider),
         if (deleteAllowed)
           MenuItem(
             icon: Icons.delete_outline,
             text: context.locale.delete,
-            onPressed: () => deleteItem(context, item),
+            onPressed: () => deleteClipboardItem(context, item),
           ),
         ...customMenuItems,
       ],
@@ -164,6 +169,8 @@ class ClipCard extends StatelessWidget {
                     alignment: 0.5,
                     duration: Durations.medium1,
                   );
+                  // final cubit = context.read<FocusedClipitemCubit>();
+                  // cubit.focused(item);
                 }
               },
               autofocus: hasFocusForPaste && autoFocus,

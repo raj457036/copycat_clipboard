@@ -1,3 +1,4 @@
+import 'package:clipboard/widgets/dialogs/collection_selector.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -70,7 +71,10 @@ Future<void> launchPhone(ClipboardItem item) async {
   await launchUrlString("tel:${item.text}");
 }
 
-Future<bool> deleteItem(BuildContext context, ClipboardItem item) async {
+Future<bool> deleteClipboardItem(
+  BuildContext context,
+  ClipboardItem item,
+) async {
   final confirmation = await const ConfirmDialog(
     title: "Delete Item",
     message: "Are you sure to delete this item?",
@@ -108,4 +112,22 @@ Future<void> pasteContent(BuildContext context) async {
   );
   await context.read<OfflinePersistanceCubit>().paste();
   showTextSnackbar("Paste success", closePrevious: true);
+}
+
+Future<void> changeCollection(BuildContext context, ClipboardItem item) async {
+  final cubit = context.read<OfflinePersistanceCubit>();
+  final router = GoRouter.of(context);
+
+  final collection = await ClipCollectionSelectionDialog(
+    selectedCollectionId: item.collectionId,
+  ).open(context);
+
+  if (collection != null) {
+    final updatedItem = item.copyWith(
+      collectionId: collection.id,
+      serverCollectionId: collection.serverId,
+    )..applyId(item);
+    cubit.persist(updatedItem);
+    router.pop();
+  }
 }

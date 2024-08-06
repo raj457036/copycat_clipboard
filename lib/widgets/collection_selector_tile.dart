@@ -49,7 +49,9 @@ class ClipCollectionSelectorStateTile
   }
 
   Future<void> selectCollection() async {
-    final selected = await const ClipCollectionSelectionDialog().open(context);
+    final selected = await ClipCollectionSelectionDialog(
+      selectedCollectionId: collection?.id,
+    ).open(context);
 
     if (selected == null) return;
     setState(() {

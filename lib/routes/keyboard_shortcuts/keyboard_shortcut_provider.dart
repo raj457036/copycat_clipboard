@@ -41,43 +41,59 @@ class HideWindowIntent extends Intent {
   const HideWindowIntent();
 }
 
+class EditClipboardItemIntent extends Intent {
+  const EditClipboardItemIntent();
+}
+
 final homeKeySet = SingleActivator(
   LogicalKeyboardKey.keyD,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
+  includeRepeats: false,
 );
 
 final searchKeySet = SingleActivator(
   LogicalKeyboardKey.keyF,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
+  includeRepeats: false,
 );
 
 final collectionKeySet = SingleActivator(
   LogicalKeyboardKey.keyC,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
+  includeRepeats: false,
 );
 
 final settingsKeySet = SingleActivator(
   LogicalKeyboardKey.keyX,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
+  includeRepeats: false,
 );
 
 final pasteKeySet = SingleActivator(
   LogicalKeyboardKey.keyV,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
+  includeRepeats: false,
 );
 
 final syncKeySet = SingleActivator(
   LogicalKeyboardKey.keyR,
   meta: Platform.isMacOS,
   control: Platform.isWindows || Platform.isLinux,
+  includeRepeats: false,
 );
 
 const closeWindowKeySet = SingleActivator(LogicalKeyboardKey.escape);
+// final editClipItemKeySet = SingleActivator(
+//   LogicalKeyboardKey.keyE,
+//   meta: Platform.isMacOS,
+//   control: Platform.isWindows || Platform.isLinux,
+//   includeRepeats: false,
+// );
 
 class KeyboardShortcutProvider extends StatelessWidget {
   final Widget child;
@@ -96,6 +112,7 @@ class KeyboardShortcutProvider extends StatelessWidget {
         homeKeySet: const HomePageIntent(),
         collectionKeySet: const CollectionPageIntent(),
         settingsKeySet: const SettingsPageIntent(),
+        // editClipItemKeySet: const EditClipboardItemIntent(),
         if (isDesktopPlatform) closeWindowKeySet: const HideWindowIntent(),
         if (activePageIndex == 0) pasteKeySet: const PasteIntent(),
         if (activePageIndex != 3) syncKeySet: const RefreshIntent(),
@@ -172,7 +189,19 @@ class KeyboardShortcutProvider extends StatelessWidget {
 
             return null;
           },
-        )
+        ),
+        // EditClipboardItemIntent: CallbackAction<EditClipboardItemIntent>(
+        //   onInvoke: (intent) async {
+        //     final cubit = context.read<FocusedClipitemCubit>();
+
+        //     switch (cubit.state) {
+        //       case FocusedClipItem(:final item):
+        //         await preview(context, item);
+        //     }
+
+        //     return null;
+        //   },
+        // ),
       },
       child: child,
     );

@@ -10,7 +10,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ClipCollectionSelectionDialog extends StatelessWidget {
-  const ClipCollectionSelectionDialog({super.key});
+  final int? selectedCollectionId;
+  const ClipCollectionSelectionDialog({
+    super.key,
+    this.selectedCollectionId,
+  });
 
   Future<ClipCollection?> open(BuildContext context) async {
     return await showDialog<ClipCollection?>(
@@ -37,6 +41,7 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+    final colors = context.colors;
     return ConstrainedBox(
       constraints: const BoxConstraints.tightFor(
         width: 550,
@@ -62,11 +67,14 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
                 itemCount: collections.length,
                 itemBuilder: (context, index) {
                   final collection = collections[index];
+
                   return ListTile(
                     leading: Text(
                       collection.emoji,
                       style: textTheme.titleLarge,
                     ),
+                    selected: selectedCollectionId == collection.id,
+                    selectedTileColor: colors.surfaceContainerHighest,
                     title: Text(collection.title),
                     subtitle: collection.description != null
                         ? Text(collection.description!)
