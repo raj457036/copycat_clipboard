@@ -3,16 +3,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    
+
     <application 
         android:label="CopyCat Clipboard" 
         android:name="${applicationName}" 
         android:icon="@mipmap/ic_launcher"
-        android:resizeableActivity="true"
     >
         <activity 
-            android:supportsPictureInPicture="true" 
             android:name=".MainActivity" 
             android:exported="true" 
             android:launchMode="singleInstance" 
@@ -20,7 +17,14 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" 
             android:hardwareAccelerated="true" 
             android:windowSoftInputMode="adjustResize"
+            android:resizeableActivity="true"
         >
+            <layout
+            android:defaultHeight="500dp"
+            android:defaultWidth="600dp"
+            android:gravity="top|end"
+            android:minHeight="450dp"
+            android:minWidth="300dp" />
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -46,21 +50,43 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="text/*"/>
             </intent-filter>
+            <!-- Images -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="image/*"/>
             </intent-filter>
             <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <!-- End Images -->
+
+             <!-- Videos -->
+            <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="video/*"/>
             </intent-filter>
             <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+            <!-- End Videos -->
+            <!-- Files -->
+            <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="*/*"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+            <!-- End Files -->
         </activity>
 
         <!-- support for samsung multiwindow -->
