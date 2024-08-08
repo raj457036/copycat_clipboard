@@ -1,5 +1,6 @@
 import 'package:clipboard/pages/search/widgets/search_bar.dart';
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
@@ -117,25 +118,32 @@ class SearchPage extends StatelessWidget {
 
                     final hasMoreResult = hasMore ? 1 : 0;
 
-                    return GridView.builder(
-                      primary: true,
-                      padding: isMobile ? insetLRB16 : insetRB16,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 250,
-                        childAspectRatio: isMobile ? 2 / 3 : 1,
-                      ),
-                      itemCount: results.length + hasMoreResult,
-                      itemBuilder: (context, index) {
-                        if (index == results.length) {
-                          return LoadMoreCard(loadMore: loadMore);
-                        }
+                    return CanPasteBuilder(
+                      builder: (context, canPaste) {
+                        {
+                          return GridView.builder(
+                            primary: true,
+                            padding: isMobile ? insetLRB16 : insetRB16,
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 250,
+                              childAspectRatio: isMobile ? 2 / 3 : 1,
+                            ),
+                            itemCount: results.length + hasMoreResult,
+                            itemBuilder: (context, index) {
+                              if (index == results.length) {
+                                return LoadMoreCard(loadMore: loadMore);
+                              }
 
-                        final item = results[index];
-                        return ClipCard(
-                          key: ValueKey("clipboard-item-//${item.id}"),
-                          item: item,
-                          // deleteAllowed: false,
-                        );
+                              final item = results[index];
+                              return ClipCard(
+                                key: ValueKey("clipboard-item-//${item.id}"),
+                                item: item,
+                                canPaste: canPaste,
+                              );
+                            },
+                          );
+                        }
                       },
                     );
                   }
