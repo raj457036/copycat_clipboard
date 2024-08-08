@@ -1,4 +1,5 @@
 import 'package:clipboard/routes/utils.dart';
+import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/nav_rail.dart';
@@ -33,46 +34,49 @@ class HomePageBody extends StatelessWidget {
       navbarActiveIndex: 0,
       child: RefreshIndicator(
         onRefresh: () async => await syncChanges(context),
-        child: BlocSelector<ClipboardCubit, ClipboardState,
-            (List<ClipboardItem>, bool, bool)>(
-          selector: (state) {
-            return (state.items, state.hasMore, state.loading);
-          },
-          builder: (context, state) {
-            final (items, hasMore, loading) = state; //Subject;
+        child: CanPasteBuilder(builder: (context, canPaste) {
+          return BlocSelector<ClipboardCubit, ClipboardState,
+              (List<ClipboardItem>, bool, bool)>(
+            selector: (state) {
+              return (state.items, state.hasMore, state.loading);
+            },
+            builder: (context, state) {
+              final (items, hasMore, loading) = state; //Subject;
 
-            if (items.isEmpty) {
-              if (loading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return Center(
-                child: Text(context.locale.emptyClipboard),
-              );
-            }
-
-            return GridView.builder(
-              padding: isMobile ? insetLRB16 : insetRB16,
-              primary: true,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 250,
-                childAspectRatio: isMobile ? 2 / 3 : 1,
-              ),
-              itemCount: items.length + (hasMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == items.length) {
-                  return LoadMoreCard(loadMore: _loadMore);
+              if (items.isEmpty) {
+                if (loading) {
+                  return const Center(child: CircularProgressIndicator());
                 }
-
-                final item = items[index];
-                return ClipCard(
-                  key: ValueKey("clipboard-item-${item.id}"),
-                  autoFocus: index == 0,
-                  item: item,
+                return Center(
+                  child: Text(context.locale.emptyClipboard),
                 );
-              },
-            );
-          },
-        ),
+              }
+
+              return GridView.builder(
+                padding: isMobile ? insetLRB16 : insetRB16,
+                primary: true,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 250,
+                  childAspectRatio: isMobile ? 2 / 3 : 1,
+                ),
+                itemCount: items.length + (hasMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == items.length) {
+                    return LoadMoreCard(loadMore: _loadMore);
+                  }
+
+                  final item = items[index];
+                  return ClipCard(
+                    key: ValueKey("clipboard-item-${item.id}"),
+                    autoFocus: index == 0,
+                    item: item,
+                    canPaste: canPaste,
+                  );
+                },
+              );
+            },
+          );
+        }),
       ),
     );
 

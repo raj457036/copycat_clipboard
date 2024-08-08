@@ -1,5 +1,6 @@
 import 'package:clipboard/widgets/dialogs/collection_selector.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
+import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
@@ -69,6 +70,11 @@ Future<void> launchUrl(ClipboardItem item) async {
 
 Future<void> launchPhone(ClipboardItem item) async {
   await launchUrlString("tel:${item.text}");
+}
+
+Future<void> pasteOnLastWindow(BuildContext context, ClipboardItem item) async {
+  final focusManager = WindowFocusManager.of(context);
+  focusManager?.toggleAndPaste(item);
 }
 
 Future<bool> deleteClipboardItem(
