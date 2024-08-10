@@ -18,6 +18,7 @@ class SearchInputBar extends StatefulWidget {
 class _SearchBarStInputate extends State<SearchInputBar> {
   late final EventRule focusEventRule;
   late final FocusNode focusNode;
+  late final FocusNode filterButtonNode;
 
   @override
   void initState() {
@@ -26,6 +27,9 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       EventListener((_) => focusNode.requestFocus()),
     ]);
     focusNode = FocusNode();
+    filterButtonNode = FocusNode(
+      skipTraversal: true,
+    );
     search("");
   }
 
@@ -33,6 +37,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
   void dispose() {
     focusEventRule.cancel();
     focusNode.dispose();
+    filterButtonNode.dispose();
     super.dispose();
   }
 
@@ -42,27 +47,48 @@ class _SearchBarStInputate extends State<SearchInputBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SearchBar(
-      focusNode: focusNode,
-      padding: const EdgeInsets.symmetric(
-        horizontal: padding16,
-        vertical: padding2,
-      ).msp,
-      onTapOutside: (event) => FocusManager.instance.primaryFocus?.nextFocus(),
-      leading: const Icon(Icons.search_rounded),
-      hintText: context.locale.searchInClipboard,
-      trailing: [if (isDesktopPlatform) Text("$metaKey + F")],
-      autoFocus: true,
-      // trailing: [
-      //   IconButton(
-      //     icon: const Icon(Icons.filter_alt_rounded),
-      //     onPressed: () {
-      //       // context.read<SearchCubit>().clear();
-      //     },
-      //   ),
-      // ],
-      textInputAction: TextInputAction.search,
-      onSubmitted: search,
+    final textTheme = context.textTheme;
+    final colors = context.colors;
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: padding12,
+        right: padding12,
+        left: padding12,
+      ),
+      child: SearchBar(
+        focusNode: focusNode,
+        elevation: 0.0.msp,
+        padding: const EdgeInsets.symmetric(
+          horizontal: padding16,
+          vertical: padding2,
+        ).msp,
+        onTapOutside: (event) =>
+            FocusManager.instance.primaryFocus?.nextFocus(),
+        leading: const Icon(Icons.search_rounded),
+        hintText: context.locale.searchInClipboard,
+        trailing: [
+          if (isDesktopPlatform)
+            Text(
+              "$metaKey + F",
+              style: textTheme.labelLarge?.copyWith(
+                color: colors.outline,
+              ),
+            ),
+          width4,
+          IconButton(
+            icon: const Icon(Icons.tune_rounded),
+            tooltip: "Show search options",
+            focusNode: filterButtonNode,
+            onPressed: () {
+              // context.read<SearchCubit>().clear();
+            },
+          ),
+        ],
+        autoFocus: true,
+        textInputAction: TextInputAction.search,
+        onSubmitted: search,
+      ),
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:clipboard/pages/collections/widgets/appbar.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:clipboard/widgets/pro_tip_banner.dart';
@@ -22,7 +24,12 @@ class CollectionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-
+    final crossAxisCount = Breakpoints.on<int>(
+      width,
+      default_: 1,
+      tablet: 2,
+      desktop: 3,
+    );
     return BlocListener<SyncManagerCubit, SyncManagerState>(
       listenWhen: ((previous, current) {
         return current is ClipCollectionSyncedSyncState;
@@ -31,79 +38,71 @@ class CollectionsPage extends StatelessWidget {
         onRefresh(context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-
-          title: Text(context.locale.collections),
-          // actions: [
-          //   ActivePlanAction(compact: isMobile),
-          //   width12,
-          // ],
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(55),
-            child: DisableForLocalUser(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 12.0),
-                child: ProTipTile(
-                  tip: context.locale.useCollectionProTip,
-                ),
+        appBar: isMobilePlatform ? const CollectionAppBar() : null,
+        body: Column(
+          children: [
+            DisableForLocalUser(
+              child: ProTipTile(
+                tip: context.locale.useCollectionProTip,
               ),
             ),
-          ),
-        ),
-        body: ScaffoldBody(
-          child: RefreshIndicator(
-              onRefresh: () => onRefresh(context),
-              child: BlocBuilder<ClipCollectionCubit, ClipCollectionState>(
-                builder: (context, state) {
-                  switch (state) {
-                    case ClipCollectionInitial():
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    case ClipCollectionError(:final failure):
-                      return Center(
-                        child: Text(failure.message),
-                      );
-                    case ClipCollectionLoaded(:final collections):
-                      {
-                        if (collections.isEmpty) {
-                          return const Center(
-                            child: NoCollectionAvailable(),
-                          );
-                        }
-
-                        final crossAxisCount = isMobile ? 1 : 3;
-                        final aspectRatio = width / (68 * crossAxisCount);
-                        final builder = GridView.builder(
-                          padding: isMobile
-                              ? insetLRB16
-                              : const EdgeInsets.all(padding12),
-                          itemCount: collections.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: crossAxisCount,
-                            childAspectRatio: aspectRatio,
-                          ),
-                          itemBuilder: (BuildContext context, int index) {
-                            final collection = collections[index];
-                            return ClipCollectionListItem(
-                              autoFocus: index == 0,
-                              collection: collection,
-                              shape: !isMobile
-                                  ? const RoundedRectangleBorder(
-                                      borderRadius: radius8,
-                                    )
-                                  : null,
+            Expanded(
+              child: ScaffoldBody(
+                child: RefreshIndicator(
+                    onRefresh: () => onRefresh(context),
+                    child:
+                        BlocBuilder<ClipCollectionCubit, ClipCollectionState>(
+                      builder: (context, state) {
+                        switch (state) {
+                          case ClipCollectionInitial():
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
-                          },
-                        );
+                          case ClipCollectionError(:final failure):
+                            return Center(
+                              child: Text(failure.message),
+                            );
+                          case ClipCollectionLoaded(:final collections):
+                            {
+                              if (collections.isEmpty) {
+                                return const Center(
+                                  child: NoCollectionAvailable(),
+                                );
+                              }
 
-                        return builder;
-                      }
-                  }
-                },
-              )),
+                              final aspectRatio = width / (68 * crossAxisCount);
+                              final builder = GridView.builder(
+                                padding: isMobile
+                                    ? const EdgeInsets.only(bottom: padding12)
+                                    : inset12,
+                                itemCount: collections.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  childAspectRatio: aspectRatio,
+                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  final collection = collections[index];
+                                  return ClipCollectionListItem(
+                                    autoFocus: isDesktopPlatform && index == 0,
+                                    collection: collection,
+                                    shape: !isMobile
+                                        ? const RoundedRectangleBorder(
+                                            borderRadius: radius8,
+                                          )
+                                        : null,
+                                  );
+                                },
+                              );
+
+                              return builder;
+                            }
+                        }
+                      },
+                    )),
+              ),
+            ),
+          ],
         ),
       ),
     );
