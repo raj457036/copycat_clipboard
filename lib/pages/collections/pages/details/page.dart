@@ -1,6 +1,7 @@
 import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
+import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -69,55 +70,65 @@ class CollectionDetailPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(title),
         ),
-        body: BlocBuilder<CollectionClipsCubit, CollectionClipsState>(
-          builder: (context, state) {
-            switch (state) {
-              case InitialCollectionClipsState() ||
-                    SearchingCollectionClipsState():
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              case CollectionClipsErrorState(:final failure):
-                return Center(
-                  child: Text(failure.message),
-                );
-              case CollectionClipsResultsState(:final results, :final hasMore):
-                {
-                  if (results.isEmpty) {
-                    return Center(
-                      child: Text(context.locale.noResultsWereFound),
-                    );
+        body: ScaffoldBody(
+          margin: const EdgeInsets.only(
+            right: padding12,
+          ),
+          child: BlocBuilder<CollectionClipsCubit, CollectionClipsState>(
+            builder: (context, state) {
+              switch (state) {
+                case InitialCollectionClipsState() ||
+                      SearchingCollectionClipsState():
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case CollectionClipsErrorState(:final failure):
+                  return Center(
+                    child: Text(failure.message),
+                  );
+                case CollectionClipsResultsState(
+                    :final results,
+                    :final hasMore
+                  ):
+                  {
+                    if (results.isEmpty) {
+                      return Center(
+                        child: Text(context.locale.noResultsWereFound),
+                      );
+                    }
+
+                    final hasMoreResult = hasMore ? 1 : 0;
+
+                    return CanPasteBuilder(builder: (context, canPaste) {
+                      return GridView.builder(
+                        primary: true,
+                        padding: isMobile ? insetLRB16 : insetAll16,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 250,
+                          childAspectRatio: isMobile ? 2 / 3 : 1,
+                          mainAxisSpacing: padding8,
+                          crossAxisSpacing: padding8,
+                        ),
+                        itemCount: results.length + hasMoreResult,
+                        itemBuilder: (context, index) {
+                          if (index == results.length) {
+                            return LoadMoreCard(loadMore: loadMore);
+                          }
+
+                          final item = results[index];
+                          return ClipCard(
+                            key: ValueKey("clipboard-item-//${item.id}"),
+                            item: item,
+                            autoFocus: index == 0,
+                            canPaste: canPaste,
+                          );
+                        },
+                      );
+                    });
                   }
-
-                  final hasMoreResult = hasMore ? 1 : 0;
-
-                  return CanPasteBuilder(builder: (context, canPaste) {
-                    return GridView.builder(
-                      primary: true,
-                      padding: isMobile ? insetLRB16 : insetAll16,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 250,
-                        childAspectRatio: isMobile ? 2 / 3 : 1,
-                      ),
-                      itemCount: results.length + hasMoreResult,
-                      itemBuilder: (context, index) {
-                        if (index == results.length) {
-                          return LoadMoreCard(loadMore: loadMore);
-                        }
-
-                        final item = results[index];
-                        return ClipCard(
-                          key: ValueKey("clipboard-item-//${item.id}"),
-                          item: item,
-                          autoFocus: index == 0,
-                          canPaste: canPaste,
-                        );
-                      },
-                    );
-                  });
-                }
-            }
-          },
+              }
+            },
+          ),
         ),
       ),
     );

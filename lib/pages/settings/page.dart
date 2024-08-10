@@ -10,17 +10,17 @@ import 'package:clipboard/pages/settings/widgets/startup_launch_switch.dart';
 import 'package:clipboard/pages/settings/widgets/sync_interval.dart';
 import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
-import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/account_detail_button.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:clipboard/widgets/logout_button.dart';
-import 'package:clipboard/widgets/nav_rail.dart';
+import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -34,10 +34,11 @@ class SettingsPage extends StatelessWidget {
     final build = info.buildNumber;
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final floatingActionButton =
-        getFloatingActionButton(context, 3, isMobile: isMobile);
+    final colors = context.colors;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: colors.surface,
+        scrolledUnderElevation: 0,
         title: Text(context.locale.settings),
         actions: [
           ActivePlanAction(compact: isMobile),
@@ -48,9 +49,10 @@ class SettingsPage extends StatelessWidget {
           width12,
         ],
       ),
-      body: LeftNavRail(
-        floatingActionButton: floatingActionButton,
-        navbarActiveIndex: 3,
+      body: ScaffoldBody(
+        margin: const EdgeInsets.only(
+          right: padding12,
+        ),
         child: Align(
           alignment: Alignment.topCenter,
           child: SingleChildScrollView(

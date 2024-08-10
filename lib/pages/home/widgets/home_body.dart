@@ -1,8 +1,6 @@
-import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
-import 'package:clipboard/widgets/nav_rail.dart';
 import 'package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
@@ -23,61 +21,54 @@ class HomePageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final floatingActionButton = getFloatingActionButton(
-      context,
-      0,
-      isMobile: isMobile,
-    );
 
-    final content = LeftNavRail(
-      floatingActionButton: floatingActionButton,
-      navbarActiveIndex: 0,
-      child: RefreshIndicator(
-        onRefresh: () async => await syncChanges(context),
-        child: CanPasteBuilder(builder: (context, canPaste) {
-          return BlocSelector<ClipboardCubit, ClipboardState,
-              (List<ClipboardItem>, bool, bool)>(
-            selector: (state) {
-              return (state.items, state.hasMore, state.loading);
-            },
-            builder: (context, state) {
-              final (items, hasMore, loading) = state; //Subject;
+    final content = RefreshIndicator(
+      onRefresh: () async => await syncChanges(context),
+      child: CanPasteBuilder(builder: (context, canPaste) {
+        return BlocSelector<ClipboardCubit, ClipboardState,
+            (List<ClipboardItem>, bool, bool)>(
+          selector: (state) {
+            return (state.items, state.hasMore, state.loading);
+          },
+          builder: (context, state) {
+            final (items, hasMore, loading) = state; //Subject;
 
-              if (items.isEmpty) {
-                if (loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return Center(
-                  child: Text(context.locale.emptyClipboard),
-                );
+            if (items.isEmpty) {
+              if (loading) {
+                return const Center(child: CircularProgressIndicator());
               }
-
-              return GridView.builder(
-                padding: isMobile ? insetLRB16 : insetRB16,
-                primary: true,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 250,
-                  childAspectRatio: isMobile ? 2 / 3 : 1,
-                ),
-                itemCount: items.length + (hasMore ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == items.length) {
-                    return LoadMoreCard(loadMore: _loadMore);
-                  }
-
-                  final item = items[index];
-                  return ClipCard(
-                    key: ValueKey("clipboard-item-${item.id}"),
-                    autoFocus: index == 0,
-                    item: item,
-                    canPaste: canPaste,
-                  );
-                },
+              return Center(
+                child: Text(context.locale.emptyClipboard),
               );
-            },
-          );
-        }),
-      ),
+            }
+
+            return GridView.builder(
+              padding: isMobile ? insetLRB16 : insetRTB12,
+              primary: true,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
+                childAspectRatio: isMobile ? 2 / 3 : 1,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: items.length + (hasMore ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == items.length) {
+                  return LoadMoreCard(loadMore: _loadMore);
+                }
+
+                final item = items[index];
+                return ClipCard(
+                  key: ValueKey("clipboard-item-${item.id}"),
+                  autoFocus: index == 0,
+                  item: item,
+                  canPaste: canPaste,
+                );
+              },
+            );
+          },
+        );
+      }),
     );
 
     return content;

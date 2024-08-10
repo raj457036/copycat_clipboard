@@ -26,6 +26,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       EventListener((_) => focusNode.requestFocus()),
     ]);
     focusNode = FocusNode();
+    search("");
   }
 
   @override
@@ -35,8 +36,8 @@ class _SearchBarStInputate extends State<SearchInputBar> {
     super.dispose();
   }
 
-  void search(String text) {
-    context.read<SearchCubit>().search(text);
+  Future<void> search(String text) async {
+    await context.read<SearchCubit>().search(text);
   }
 
   @override
@@ -45,7 +46,9 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       focusNode: focusNode,
       padding: const EdgeInsets.symmetric(
         horizontal: padding16,
+        vertical: padding2,
       ).msp,
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.nextFocus(),
       leading: const Icon(Icons.search_rounded),
       hintText: context.locale.searchInClipboard,
       trailing: [if (isDesktopPlatform) Text("$metaKey + F")],

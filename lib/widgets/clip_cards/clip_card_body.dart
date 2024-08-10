@@ -92,15 +92,17 @@ class _ClipCardBodyState extends State<ClipCardBody> {
 
     final selectedShape = selected
         ? RoundedRectangleBorder(
-            side: BorderSide(color: colors.primary, width: 2.2),
+            side: BorderSide(color: colors.primary, width: 2.5),
             borderRadius: radius12,
           )
         : null;
 
     return Card.outlined(
-      elevation: selected ? 10 : 0,
+      margin: EdgeInsets.zero,
+      elevation: selected ? 2 : 0,
       shape: selectedShape,
       child: InkWell(
+        focusColor: colors.surface,
         onFocusChange: (value) {
           if (value) {
             Scrollable.ensureVisible(

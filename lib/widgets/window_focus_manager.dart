@@ -92,6 +92,14 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   }
 
   @override
+  Future<void> onWindowClose() async {
+    bool isPreventClose = await windowManager.isPreventClose();
+    if (isPreventClose && mounted) {
+      await windowManager.hide();
+    }
+  }
+
+  @override
   void onWindowFocus() {
     // Make sure to call once.
     setState(() {});
@@ -107,6 +115,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   void initState() {
     super.initState();
     windowManager.addListener(this);
+    windowManager.setPreventClose(true);
     appConfigCubit = context.read();
   }
 
