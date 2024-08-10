@@ -102,10 +102,11 @@ class CollectionDetailPage extends StatelessWidget {
                     return CanPasteBuilder(builder: (context, canPaste) {
                       return GridView.builder(
                         primary: true,
-                        padding: isMobile ? insetLRB16 : insetAll16,
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        padding: isMobile ? insetLR8BT12 : insetAll16,
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 250,
-                          childAspectRatio: isMobile ? 2 / 3 : 1,
+                          childAspectRatio: 1,
                           mainAxisSpacing: padding8,
                           crossAxisSpacing: padding8,
                         ),

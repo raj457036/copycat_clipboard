@@ -1,6 +1,7 @@
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/attention_button.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -22,6 +23,13 @@ class NavrailLayout extends StatelessWidget {
     final textTheme = context.textTheme;
     final labelStyle =
         textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold);
+    final width = MediaQuery.of(context).size.width;
+
+    final isMobileView = Breakpoints.isMobile(width);
+    if (isMobileView) {
+      return child;
+    }
+
     return Row(
       children: [
         SizedBox(
@@ -30,6 +38,7 @@ class NavrailLayout extends StatelessWidget {
             data: NavigationRailThemeData(
               selectedLabelTextStyle: labelStyle,
               unselectedLabelTextStyle: labelStyle,
+              elevation: 0,
             ),
             child: NavigationRail(
               destinations: [
