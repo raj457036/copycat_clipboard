@@ -5,7 +5,6 @@ import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clip_collection/clipcollection.dart';
 import 'package:copycat_base/l10n/l10n.dart';
@@ -27,8 +26,7 @@ class CollectionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = "${collection.emoji} • ${collection.title}";
-    final width = MediaQuery.of(context).size.width;
-    final isMobile = Breakpoints.isMobile(width);
+
     return MultiBlocListener(
       listeners: [
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
@@ -102,7 +100,7 @@ class CollectionDetailPage extends StatelessWidget {
                     return CanPasteBuilder(builder: (context, canPaste) {
                       return GridView.builder(
                         primary: true,
-                        padding: isMobile ? insetLR8BT12 : insetAll16,
+                        padding: inset12,
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 250,
