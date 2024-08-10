@@ -88,26 +88,22 @@ Future<void> initializeDesktopServices() async {
     appPath: Platform.resolvedExecutable,
   );
 
-  WindowOptions windowOptions = WindowOptions(
+  WindowOptions windowOptions = const WindowOptions(
     size: initialWindowSize,
     minimumSize: minimumWindowSize,
     center: true,
+
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
     skipTaskbar: true,
-    titleBarStyle:
-        Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
-    windowButtonVisibility: false,
+    windowButtonVisibility: true,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    await windowManager.setClosable(false);
-    if (Platform.isMacOS) {
-      await windowManager.setVisibleOnAllWorkspaces(
-        false,
-        visibleOnFullScreen: true,
-      );
-    }
+    await windowManager.setVisibleOnAllWorkspaces(
+      true,
+      visibleOnFullScreen: true,
+    );
   });
 }
 
@@ -198,6 +194,21 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final content = AuthListener(
+      child: EventBridge(
+        child: WindowFocusManager.fromPlatform(
+          child: TrayManager.fromPlatform(
+            child: const SystemShortcutListener(
+              child: RebuildingDbOverlay(
+                child: AppLinkListener(
+                  child: AppContent(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
     final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => sl()),
@@ -212,24 +223,12 @@ class MainApp extends StatelessWidget {
         if (isDesktopPlatform)
           BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
-      child: GestureDetector(
-        onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-        child: AuthListener(
-          child: EventBridge(
-            child: WindowFocusManager.fromPlatform(
-              child: TrayManager.fromPlatform(
-                child: const SystemShortcutListener(
-                  child: RebuildingDbOverlay(
-                    child: AppLinkListener(
-                      child: AppContent(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      child: isMobilePlatform
+          ? GestureDetector(
+              onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+              child: content,
+            )
+          : content,
     );
 
     if (kDebugMode) {

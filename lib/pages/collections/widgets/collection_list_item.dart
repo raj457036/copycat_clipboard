@@ -75,6 +75,8 @@ class ClipCollectionListItem extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        isThreeLine: true,
+        titleAlignment: ListTileTitleAlignment.center,
         trailing: const Icon(Icons.chevron_right),
         onTap: () => showDetail(context),
       ),

@@ -1,9 +1,8 @@
 import 'package:clipboard/pages/search/widgets/search_bar.dart';
-import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
-import 'package:clipboard/widgets/nav_rail.dart';
+import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/search_cubit/search_cubit.dart';
@@ -25,21 +24,22 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final floatingActionButton =
-        getFloatingActionButton(context, 1, isMobile: isMobile);
 
-    // WORKAROUND: somehow when click on an empty space this, the scaffold lost focus
     FocusScope.of(context).requestFocus();
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: kToolbarHeight + (isMobile ? 45 : 30),
-        centerTitle: true,
-        title: const SearchInputBar(),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: padding8,
+            top: padding8,
+            right: padding8,
+          ),
+          child: Center(child: SearchInputBar()),
+        ),
       ),
-      body: LeftNavRail(
-        floatingActionButton: floatingActionButton,
-        navbarActiveIndex: 1,
+      body: ScaffoldBody(
         child: MultiBlocListener(
           listeners: [
             BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
@@ -123,11 +123,15 @@ class SearchPage extends StatelessWidget {
                         {
                           return GridView.builder(
                             primary: true,
-                            padding: isMobile ? insetLRB16 : insetRB16,
+                            padding: isMobile
+                                ? insetLRB16
+                                : const EdgeInsets.all(padding12),
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 250,
                               childAspectRatio: isMobile ? 2 / 3 : 1,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
                             ),
                             itemCount: results.length + hasMoreResult,
                             itemBuilder: (context, index) {

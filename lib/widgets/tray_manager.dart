@@ -1,3 +1,4 @@
+import 'package:clipboard/utils/extensions.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,11 +72,7 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayIconMouseDown() async {
-    if (Platform.isWindows || Platform.isLinux) {
-      await windowManager.show();
-    } else {
-      trayManager.popUpContextMenu();
-    }
+    await windowManager.toggle();
   }
 
   @override
