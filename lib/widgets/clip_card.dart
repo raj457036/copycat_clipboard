@@ -1,7 +1,6 @@
 import 'package:clipboard/widgets/clip_cards/clip_card_body.dart';
 import 'package:clipboard/widgets/clip_cards/clip_menu.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
-import 'package:copycat_pro/widgets/drag_drop/drag_item.dart';
 import 'package:flutter/material.dart';
 
 class ClipCard extends StatelessWidget {
@@ -18,15 +17,12 @@ class ClipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableItem(
+    return ClipCardMenu(
       item: item,
-      child: ClipCardMenu(
+      child: ClipCardBody(
         item: item,
-        child: ClipCardBody(
-          item: item,
-          focused: autoFocus,
-          canPaste: canPaste,
-        ),
+        focused: autoFocus,
+        canPaste: canPaste,
       ),
     );
   }

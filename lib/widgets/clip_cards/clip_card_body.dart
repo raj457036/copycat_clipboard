@@ -5,9 +5,11 @@ import 'package:clipboard/widgets/clip_cards/encrypted_card.dart';
 import 'package:clipboard/widgets/clip_cards/text_clip_card.dart';
 import 'package:clipboard/widgets/clip_cards/url_clip_card.dart';
 import 'package:clipboard/widgets/local_user.dart';
+import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
@@ -16,6 +18,7 @@ import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_base/widgets/clip_cards/file_clip_card.dart';
 import 'package:copycat_base/widgets/clip_cards/media_clip_card.dart';
+import 'package:copycat_pro/widgets/drag_drop/drag_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +35,71 @@ class ClipCardPreview extends StatelessWidget {
       ClipItemType.url => UrlClipCard(item: item),
       ClipItemType.file => FileClipCard(item: item),
     };
+  }
+}
+
+class ClipCardBodyContent extends StatelessWidget {
+  final ClipboardItem item;
+  final bool canPaste;
+  const ClipCardBodyContent({
+    super.key,
+    required this.item,
+    required this.canPaste,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    return DraggableItem(
+      item: item,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipCardOptionsHeader(
+            item: item,
+            hasFocusForPaste: canPaste,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (item.title != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: padding8,
+                      vertical: padding2,
+                    ),
+                    child: Text(
+                      item.title!,
+                      style: textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                    ),
+                  ),
+                Expanded(
+                  child: Card.filled(
+                    color: Colors.transparent,
+                    margin: EdgeInsets.zero,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                      ),
+                    ),
+                    child: ClipCardPreview(item: item),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          DisableForLocalUser(
+            child: ClipCardSyncStatusFooter(item: item),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -88,7 +156,8 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final textTheme = context.textTheme;
+    final menu = Menu.of(context);
+    final width = MediaQuery.of(context).size.width;
 
     final selectedShape = selected
         ? RoundedRectangleBorder(
@@ -103,6 +172,15 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       shape: selectedShape,
       child: InkWell(
         focusColor: colors.surface,
+        onTap: () => performPrimaryAction(context),
+        onSecondaryTapDown: (detail) {
+          if (Breakpoints.isMobile(width)) {
+            menu.openOptionDialog(context);
+            return;
+          }
+          final position = detail.globalPosition;
+          menu.openPopupMenu(context, position);
+        },
         onFocusChange: (value) {
           if (value) {
             Scrollable.ensureVisible(
@@ -120,53 +198,9 @@ class _ClipCardBodyState extends State<ClipCardBody> {
         },
         autofocus: widget.focused,
         borderRadius: radius12,
-        onTap: () => performPrimaryAction(context),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ClipCardOptionsHeader(
-              item: widget.item,
-              hasFocusForPaste: widget.canPaste,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (widget.item.title != null)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: padding8,
-                        vertical: padding2,
-                      ),
-                      child: Text(
-                        widget.item.title!,
-                        style: textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 2,
-                      ),
-                    ),
-                  Expanded(
-                    child: Card.filled(
-                      color: Colors.transparent,
-                      margin: EdgeInsets.zero,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                      ),
-                      child: ClipCardPreview(item: widget.item),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            DisableForLocalUser(
-              child: ClipCardSyncStatusFooter(item: widget.item),
-            ),
-          ],
+        child: ClipCardBodyContent(
+          canPaste: widget.canPaste,
+          item: widget.item,
         ),
       ),
     );

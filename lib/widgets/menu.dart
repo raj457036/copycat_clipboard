@@ -33,14 +33,13 @@ class MenuItem {
         );
 }
 
-class Menu extends StatelessWidget {
+class Menu extends InheritedWidget {
   final List<MenuItem> items;
-  final Widget child;
 
   const Menu({
     super.key,
     required this.items,
-    required this.child,
+    required super.child,
   });
 
   Future<void> openOptionDialog(BuildContext context) async {
@@ -107,28 +106,27 @@ class Menu extends StatelessWidget {
     ];
     final item = await showMenu(
       context: context,
-      constraints: const BoxConstraints(minWidth: 150),
+      constraints: const BoxConstraints(minWidth: 120),
       position: positionPopup,
       items: options,
+      popUpAnimationStyle: AnimationStyle.noAnimation,
     );
 
     item?.onPressed?.call();
   }
 
+  static Menu? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<Menu>();
+  }
+
+  static Menu of(BuildContext context) {
+    final Menu? result = maybeOf(context);
+    assert(result != null, 'No Menu found in context');
+    return result!;
+  }
+
   @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      child: child,
-      onLongPress: () => openOptionDialog(context),
-      onSecondaryTapDown: (detail) {
-        if (width <= 600) {
-          openOptionDialog(context);
-          return;
-        }
-        final position = detail.globalPosition;
-        openPopupMenu(context, position);
-      },
-    );
+  bool updateShouldNotify(covariant Menu oldWidget) {
+    return items != oldWidget.items;
   }
 }
