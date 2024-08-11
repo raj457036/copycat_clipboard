@@ -8,6 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
+import 'package:clipboard/widgets/orientation_listener.dart';
 import 'package:clipboard/widgets/rebuilding_db.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
@@ -33,7 +34,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -63,10 +63,6 @@ Future<void> initializeServices() async {
     await initializeDesktopServices();
   } else {
     unawaited(MobileAds.instance.initialize());
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
   }
 
   await initializeFirebase();
@@ -140,53 +136,56 @@ class AppContent extends StatelessWidget {
             context.read<AppConfigCubit>().load(subscription);
         }
       },
-      child: BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
-        selector: (state) {
-          return (state.config.themeMode, state.config.locale);
-        },
-        builder: (context, state) {
-          final (theme, langCode) = state;
-          return MaterialApp.router(
-            scaffoldMessengerKey: scaffoldMessengerKey,
-            routeInformationParser: router_.routeInformationParser,
-            routeInformationProvider: router_.routeInformationProvider,
-            routerDelegate: router_.routerDelegate,
-            backButtonDispatcher: router_.backButtonDispatcher,
-            themeMode: theme,
-            theme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: lightColorScheme.onSurface,
-                displayColor: lightColorScheme.onSurface,
-              ),
-              colorScheme: lightColorScheme,
-              brightness: Brightness.light,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: radius12,
+      child: OrientationListener(
+        child:
+            BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
+          selector: (state) {
+            return (state.config.themeMode, state.config.locale);
+          },
+          builder: (context, state) {
+            final (theme, langCode) = state;
+            return MaterialApp.router(
+              scaffoldMessengerKey: scaffoldMessengerKey,
+              routeInformationParser: router_.routeInformationParser,
+              routeInformationProvider: router_.routeInformationProvider,
+              routerDelegate: router_.routerDelegate,
+              backButtonDispatcher: router_.backButtonDispatcher,
+              themeMode: theme,
+              theme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: lightColorScheme.onSurface,
+                  displayColor: lightColorScheme.onSurface,
+                ),
+                colorScheme: lightColorScheme,
+                brightness: Brightness.light,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: radius12,
+                  ),
                 ),
               ),
-            ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: darkColorScheme.onSurface,
-                displayColor: darkColorScheme.onSurface,
-              ),
-              colorScheme: darkColorScheme,
-              brightness: Brightness.dark,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: radius12,
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: darkColorScheme.onSurface,
+                  displayColor: darkColorScheme.onSurface,
+                ),
+                colorScheme: darkColorScheme,
+                brightness: Brightness.dark,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: radius12,
+                  ),
                 ),
               ),
-            ),
-            debugShowCheckedModeBanner: false,
-            locale: Locale(langCode.isEmpty ? "en" : langCode),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-          );
-        },
+              debugShowCheckedModeBanner: false,
+              locale: Locale(langCode.isEmpty ? "en" : langCode),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+            );
+          },
+        ),
       ),
     );
   }
