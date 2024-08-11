@@ -19,10 +19,10 @@ class ConfirmDialog extends StatelessWidget {
     final options = [
       TextButton(
         onPressed: () => Navigator.pop(context, false),
-        autofocus: true,
         child: Text(context.locale.cancel),
       ),
       TextButton(
+        autofocus: true,
         onPressed: () => Navigator.pop(context, true),
         child: Text(context.locale.confirm),
       ),

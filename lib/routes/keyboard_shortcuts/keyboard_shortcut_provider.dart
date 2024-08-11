@@ -190,18 +190,6 @@ class KeyboardShortcutProvider extends StatelessWidget {
             return null;
           },
         ),
-        // EditClipboardItemIntent: CallbackAction<EditClipboardItemIntent>(
-        //   onInvoke: (intent) async {
-        //     final cubit = context.read<FocusedClipitemCubit>();
-
-        //     switch (cubit.state) {
-        //       case FocusedClipItem(:final item):
-        //         await preview(context, item);
-        //     }
-
-        //     return null;
-        //   },
-        // ),
       },
       child: child,
     );

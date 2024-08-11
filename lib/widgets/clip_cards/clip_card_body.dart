@@ -120,6 +120,13 @@ class ClipCardBody extends StatefulWidget {
 
 class _ClipCardBodyState extends State<ClipCardBody> {
   bool selected = false;
+  ShortcutRegistryEntry? entry;
+
+  @override
+  void dispose() {
+    entry?.dispose();
+    super.dispose();
+  }
 
   Future<void> decryptItem(BuildContext context) async {
     final persitCubit = context.read<OfflinePersistanceCubit>();
@@ -153,6 +160,39 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   void select() => !selected ? setState(() => selected = true) : null;
   void unselect() => selected ? setState(() => selected = false) : null;
 
+  void activateShortcuts() {
+    // if (entry != null) return;
+    // final shortcuts = {
+    //   const SingleActivator(LogicalKeyboardKey.keyE):
+    //       VoidCallbackIntent(() {
+    //     print("DDDYUX: ${widget.item.text}");
+    //   })
+    // };
+    // entry = ShortcutRegistry.of(context).addAll(shortcuts);
+  }
+
+  void deactivateShortcuts() {
+    // entry?.dispose();
+    // entry = null;
+  }
+
+  void onFocusChange(bool value) {
+    if (value) {
+      Scrollable.ensureVisible(
+        context,
+        alignment: 0.5,
+        duration: Durations.medium1,
+      );
+      select();
+      activateShortcuts();
+      // final cubit = context.read<FocusedClipitemCubit>();
+      // cubit.focused(item);
+    } else {
+      unselect();
+      deactivateShortcuts();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -173,7 +213,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       child: InkWell(
         focusColor: colors.surface,
         onTap: () => performPrimaryAction(context),
-        onSecondaryTapDown: (detail) {
+        onSecondaryTapDown: (detail) async {
           if (Breakpoints.isMobile(width)) {
             menu.openOptionDialog(context);
             return;
@@ -181,21 +221,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
           final position = detail.globalPosition;
           menu.openPopupMenu(context, position);
         },
-        onFocusChange: (value) {
-          if (value) {
-            Scrollable.ensureVisible(
-              context,
-              alignment: 0.5,
-              duration: Durations.medium1,
-            );
-            select();
-
-            // final cubit = context.read<FocusedClipitemCubit>();
-            // cubit.focused(item);
-          } else {
-            unselect();
-          }
-        },
+        onFocusChange: onFocusChange,
         autofocus: widget.focused,
         borderRadius: radius12,
         child: ClipCardBodyContent(
