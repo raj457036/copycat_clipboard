@@ -27,9 +27,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
       EventListener((_) => focusNode.requestFocus()),
     ]);
     focusNode = FocusNode();
-    filterButtonNode = FocusNode(
-      skipTraversal: true,
-    );
+    filterButtonNode = FocusNode(skipTraversal: true);
     search("");
   }
 
@@ -81,7 +79,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
             tooltip: "Show search options",
             focusNode: filterButtonNode,
             onPressed: () {
-              // context.read<SearchCubit>().clear();
+              // context.read<SearchCubit>().search(searchQuery);
             },
           ),
         ],
