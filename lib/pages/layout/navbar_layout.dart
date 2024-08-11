@@ -2,6 +2,7 @@ import 'package:clipboard/pages/layout/widgets/bottom_navbar.dart';
 import 'package:clipboard/pages/layout/widgets/navrail_layout.dart';
 import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/network_observer.dart';
+import 'package:clipboard/widgets/titlebar.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:flutter/material.dart';
@@ -35,18 +36,20 @@ class _NavBarPageState extends State<NavBarPage> {
       isMobile: smallScreen,
     );
     final scaffold = NetworkObserver(
-      child: Scaffold(
-        body: NavrailLayout(
-          navbarActiveIndex: widget.navbarActiveIndex,
-          floatingActionButton: floatingActions,
-          child: widget.child,
+      child: TitlebarView(
+        child: Scaffold(
+          body: NavrailLayout(
+            navbarActiveIndex: widget.navbarActiveIndex,
+            floatingActionButton: floatingActions,
+            child: widget.child,
+          ),
+          floatingActionButton:
+              smallScreen && widget.depth == 1 ? floatingActions : null,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          bottomNavigationBar: smallScreen && widget.depth == 1
+              ? BottomNavBar(navbarActiveIndex: widget.navbarActiveIndex)
+              : null,
         ),
-        floatingActionButton:
-            smallScreen && widget.depth == 1 ? floatingActions : null,
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: smallScreen && widget.depth == 1
-            ? BottomNavBar(navbarActiveIndex: widget.navbarActiveIndex)
-            : null,
       ),
     );
     return PopScope(

@@ -23,10 +23,13 @@ class CompactModeToggleButton extends StatelessWidget {
           onPressed: () {
             context.read<WindowActionCubit>().toggleCompact();
           },
-          icon: Icon(
-            Icons.view_compact,
-            color: compact ? colors.primary : null,
+          iconSize: 16,
+          padding: EdgeInsets.zero,
+          style: IconButton.styleFrom(
+            shape: const RoundedRectangleBorder(),
           ),
+          color: compact ? colors.error : null,
+          icon: const Icon(Icons.view_compact),
           tooltip: context.locale.compactMode,
         );
       },

@@ -43,10 +43,6 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         ActivePlanAction(compact: isMobile),
         width12,
-        // if (isDesktopPlatform) const PinToTopToggleButton(),
-        // if (isDesktopPlatform) const CompactModeToggleButton(),
-        // if (isDesktopPlatform) const HideWindowButton(),
-        // width12,
       ],
     );
   }

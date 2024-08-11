@@ -28,7 +28,7 @@ class ScaffoldBody extends StatelessWidget {
       margin: margin_,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(12),
+          top: Radius.circular(18),
         ),
       ),
       child: child,
