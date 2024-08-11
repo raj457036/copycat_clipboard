@@ -98,6 +98,8 @@ Future<void> initializeDesktopServices() async {
     title: "CopyCat Clipboard",
     skipTaskbar: true,
     windowButtonVisibility: true,
+    backgroundColor: Colors.transparent,
+    titleBarStyle: TitleBarStyle.hidden,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
     await windowManager.setVisibleOnAllWorkspaces(
@@ -233,7 +235,7 @@ class MainApp extends StatelessWidget {
 
     if (kDebugMode) {
       return DevicePreview(
-        enabled: true,
+        enabled: false,
         tools: const [
           ...DevicePreview.defaultTools,
           DevicePreviewScreenshot(

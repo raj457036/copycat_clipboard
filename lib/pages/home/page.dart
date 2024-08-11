@@ -6,6 +6,7 @@ import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubi
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/constants/key.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -27,7 +28,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = Breakpoints.isMobile(width);
     final colors = context.colors;
+    Widget scaffold = Scaffold(
+      backgroundColor: colors.surfaceContainer,
+      appBar: isMobilePlatform ? const HomeAppbar() : null,
+      body: const HomePageBody(),
+    );
+
+    if (!isMobile) {
+      scaffold = ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(18),
+        ),
+        child: scaffold,
+      );
+    }
     return UpgradeAlert(
       navigatorKey: rootNavKey,
       upgrader: upgrader,
@@ -124,11 +141,7 @@ class HomePage extends StatelessWidget {
             },
           ),
         ],
-        child: Scaffold(
-          backgroundColor: colors.surfaceContainer,
-          appBar: isMobilePlatform ? const HomeAppbar() : null,
-          body: const HomePageBody(),
-        ),
+        child: scaffold,
       ),
     );
   }
