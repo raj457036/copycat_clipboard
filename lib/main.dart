@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/routes/routes.dart';
