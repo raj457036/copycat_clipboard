@@ -74,10 +74,13 @@ class EventBridge extends StatelessWidget {
           },
         ),
         BlocListener<SyncManagerCubit, SyncManagerState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             switch (state) {
               case PartlySyncedSyncState(collections: true):
                 context.read<ClipCollectionCubit>().fetch(fromTop: true);
+                break;
+              case SyncCheckFailedState(:final failure):
+                showFailureSnackbar(failure);
                 break;
             }
           },

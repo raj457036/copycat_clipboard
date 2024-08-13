@@ -32,15 +32,6 @@ class SyncStatusButton extends StatelessWidget {
                 isSyncing = false;
                 icon = Icons.sync_lock_rounded;
                 message = context.locale.syncNotAvailable;
-                Future.delayed(
-                  const Duration(seconds: 2),
-                  () => syncChanges(context),
-                );
-                break;
-              case CheckingSyncState():
-                disabled = true;
-                isSyncing = true;
-                message = context.locale.checkingForRecord;
                 break;
               case SyncingState(:final progress, :final total):
                 disabled = true;
@@ -59,8 +50,17 @@ class SyncStatusButton extends StatelessWidget {
                 icon = Icons.sync_rounded;
                 message = context.locale.synced;
                 break;
+              case CheckingSyncState(needDbRebuilding: true):
+                disabled = true;
+                isSyncing = true;
+                message = context.locale.rebuildingDB;
+                break;
+              default:
+                disabled = true;
+                isSyncing = true;
+                message = context.locale.checkingForRecord;
+                break;
             }
-
             return FloatingActionButton.small(
               onPressed: disabled ? null : () => syncChanges(context),
               tooltip: "$message • $metaKey + R",
