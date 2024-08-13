@@ -2,7 +2,7 @@
 
 import 'package:clipboard/pages/login/widgets/login_form.dart';
 import 'package:clipboard/utils/utility.dart';
-import 'package:clipboard/widgets/attention_button.dart';
+import 'package:clipboard/widgets/dialogs/attention.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';

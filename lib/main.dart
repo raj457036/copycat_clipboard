@@ -9,7 +9,6 @@ import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:clipboard/widgets/orientation_listener.dart';
-import 'package:clipboard/widgets/rebuilding_db.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
@@ -132,8 +131,12 @@ class AppContent extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case MonetizationActive(:final subscription):
-            context.read<SyncManagerCubit>().syncHours = subscription.syncHours;
-            context.read<AppConfigCubit>().load(subscription);
+            {
+              final syncCubit = context.read<SyncManagerCubit>();
+              syncCubit.syncHours = subscription.syncHours;
+              syncCubit.syncChanges(force: true);
+              context.read<AppConfigCubit>().load(subscription);
+            }
         }
       },
       child: OrientationListener(
@@ -201,10 +204,8 @@ class MainApp extends StatelessWidget {
         child: WindowFocusManager.fromPlatform(
           child: TrayManager.fromPlatform(
             child: const SystemShortcutListener(
-              child: RebuildingDbOverlay(
-                child: AppLinkListener(
-                  child: AppContent(),
-                ),
+              child: AppLinkListener(
+                child: AppContent(),
               ),
             ),
           ),

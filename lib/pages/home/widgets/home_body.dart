@@ -46,7 +46,7 @@ class HomePageBody extends StatelessWidget {
               padding: isMobile ? insetLR8BT12 : inset12,
               primary: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 250,
+                maxCrossAxisExtent: 240,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),
