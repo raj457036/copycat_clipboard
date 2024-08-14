@@ -1,5 +1,5 @@
 import 'package:clipboard/pages/login/widgets/local_signin_button.dart';
-import 'package:clipboard/widgets/locale_dropdown.dart';
+import 'package:clipboard/widgets/locale_dropdown_button.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
@@ -140,7 +140,7 @@ class LoginForm extends StatelessWidget {
                   ),
 
                   // const Spacer(),
-                  const LocaleDropdownTile(),
+                  const LocaleDropdownButton(),
                   height10,
                   Text.rich(
                     TextSpan(text: context.locale.termsAgreeP1, children: [
