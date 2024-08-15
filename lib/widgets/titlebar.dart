@@ -4,6 +4,8 @@ import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_io/io.dart';
+import 'package:window_manager/window_manager.dart';
 
 class AppTitle extends StatelessWidget {
   const AppTitle({super.key});
@@ -36,20 +38,27 @@ class TitlebarView extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: colors.surface,
-          ),
-          child: const SizedBox(
-            height: 26,
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                // SizedBox(width: 85),
-                CompactModeToggleButton(),
-                PinToTopToggleButton(),
-              ],
+        DragToMoveArea(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.surface,
+            ),
+            child: SizedBox(
+              height: 26,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // SizedBox(width: 85),
+                  const CompactModeToggleButton(),
+                  const PinToTopToggleButton(),
+                  if (Platform.isWindows)
+                    WindowCaptionButton.close(
+                      brightness: colors.brightness,
+                      onPressed: windowManager.hide,
+                    ),
+                ],
+              ),
             ),
           ),
         ),

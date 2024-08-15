@@ -98,10 +98,12 @@ Future<void> initializeDesktopServices() async {
     titleBarStyle: TitleBarStyle.hidden,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    await windowManager.setVisibleOnAllWorkspaces(
-      true,
-      visibleOnFullScreen: true,
-    );
+    if (Platform.isMacOS) {
+      await windowManager.setVisibleOnAllWorkspaces(
+        true,
+        visibleOnFullScreen: true,
+      );
+    }
   });
 }
 
