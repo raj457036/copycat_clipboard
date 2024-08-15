@@ -70,6 +70,7 @@ dependencies:
     path: packages/copycat_pro
   copycat_base:
     path: packages/copycat_base
+  flutter_colorpicker: ^1.1.0
   
   
 dev_dependencies:

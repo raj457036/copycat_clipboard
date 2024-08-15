@@ -11,6 +11,10 @@ class ThemeDropdownTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(context.locale.theme),
+      contentPadding: const EdgeInsets.only(
+        left: padding16,
+        right: padding4,
+      ),
       trailing: BlocSelector<AppConfigCubit, AppConfigState, ThemeMode>(
         selector: (state) {
           switch (state) {
