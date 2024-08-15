@@ -209,9 +209,12 @@ class SubscriptionInfoDialog extends StatelessWidget {
               return AlertDialog(
                 title: Text(context.locale.subscription),
                 content: Center(
-                  child: Text(
-                    context.locale.nothingHere,
-                    textAlign: TextAlign.center,
+                  child: SizedBox(
+                    width: 250,
+                    child: Text(
+                      context.locale.nothingHere,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               );

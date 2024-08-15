@@ -203,7 +203,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
         ? RoundedRectangleBorder(
             side: BorderSide(
               color: colors.primary,
-              width: 3,
+              width: 2,
               strokeAlign: BorderSide.strokeAlignOutside,
             ),
             borderRadius: radius12,

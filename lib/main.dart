@@ -21,7 +21,6 @@ import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
-import 'package:copycat_base/common/color_schemes.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
@@ -142,13 +141,18 @@ class AppContent extends StatelessWidget {
         }
       },
       child: OrientationListener(
-        child:
-            BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
+        child: BlocSelector<AppConfigCubit, AppConfigState,
+            (ThemeMode, String, ColorScheme, ColorScheme)>(
           selector: (state) {
-            return (state.config.themeMode, state.config.locale);
+            return (
+              state.config.themeMode,
+              state.config.locale,
+              state.config.lightThemeColorScheme,
+              state.config.darkThemeColorScheme,
+            );
           },
           builder: (context, state) {
-            final (theme, langCode) = state;
+            final (theme, langCode, lightColorScheme, darkColorScheme) = state;
             return MaterialApp.router(
               scaffoldMessengerKey: scaffoldMessengerKey,
               routeInformationParser: router_.routeInformationParser,
