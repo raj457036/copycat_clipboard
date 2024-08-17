@@ -39,8 +39,8 @@ class SettingsPage extends StatelessWidget {
             width12,
           ],
         ),
-        body: const ScaffoldBody(
-          margin: EdgeInsets.only(
+        body: ScaffoldBody(
+          margin: const EdgeInsets.only(
             right: padding12,
           ),
           child: Column(
@@ -49,15 +49,13 @@ class SettingsPage extends StatelessWidget {
                 isScrollable: true,
                 tabAlignment: TabAlignment.start,
                 tabs: [
-                  Tab(
-                    text: "General",
-                  ),
-                  Tab(text: "Customization"),
-                  Tab(text: "Syncing"),
-                  Tab(text: "Encryption")
+                  Tab(text: context.locale.general),
+                  Tab(text: context.locale.customization),
+                  Tab(text: context.locale.syncingLabel),
+                  Tab(text: context.locale.encryption)
                 ],
               ),
-              Expanded(
+              const Expanded(
                 child: TabBarView(children: [
                   Align(
                     alignment: Alignment.centerLeft,

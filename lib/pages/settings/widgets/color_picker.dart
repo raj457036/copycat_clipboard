@@ -90,13 +90,13 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
           onPressed: () {
             context.pop();
           },
-          child: const Text("Cancel"),
+          child: Text(context.locale.cancel),
         ),
         TextButton(
           onPressed: () {
             context.pop(color_);
           },
-          child: const Text("Choose"),
+          child: Text(context.locale.done),
         ),
       ],
 
@@ -130,15 +130,14 @@ class ColorPickerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
-    final locale = context.locale;
     return ListTile(
-      title: Text(locale.themeColor),
+      title: Text(context.locale.themeColor),
       contentPadding: const EdgeInsets.only(
         left: padding16,
         right: padding4,
       ),
       subtitle: Text(
-        locale.themeColorDesc,
+        context.locale.themeColorDesc,
         style: textTheme.bodySmall?.copyWith(
           color: colors.outline,
         ),
@@ -153,7 +152,7 @@ class ColorPickerTile extends StatelessWidget {
           );
           return ElevatedButton.icon(
             onPressed: () => chooseColor(context, color),
-            label: Text(locale.change),
+            label: Text(context.locale.change),
             icon: const Icon(Icons.color_lens_rounded),
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(150, 40),
