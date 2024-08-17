@@ -12,11 +12,10 @@ class ThemeVariantDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
-    final locale = context.locale;
     return ListTile(
-      title: Text(locale.colorMode),
+      title: Text(context.locale.colorMode),
       subtitle: Text(
-        locale.colorModeDesc,
+        context.locale.colorModeDesc,
         style: textTheme.bodySmall?.copyWith(
           color: colors.outline,
         ),
@@ -35,39 +34,39 @@ class ThemeVariantDropdown extends StatelessWidget {
               items: [
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.tonalSpot,
-                  child: Text(locale.tonalSpot),
+                  child: Text(context.locale.tonalSpot),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.content,
-                  child: Text(locale.content),
+                  child: Text(context.locale.content),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.expressive,
-                  child: Text(locale.expressive),
+                  child: Text(context.locale.expressive),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.fidelity,
-                  child: Text(locale.fidility),
+                  child: Text(context.locale.fidility),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.fruitSalad,
-                  child: Text(locale.fruitSalad),
+                  child: Text(context.locale.fruitSalad),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.monochrome,
-                  child: Text(locale.monochrome),
+                  child: Text(context.locale.monochrome),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.neutral,
-                  child: Text(locale.neutral),
+                  child: Text(context.locale.neutral),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.rainbow,
-                  child: Text(locale.rainbow),
+                  child: Text(context.locale.rainbow),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.vibrant,
-                  child: Text(locale.vibrant),
+                  child: Text(context.locale.vibrant),
                 ),
               ],
               onChanged: (variant) {
