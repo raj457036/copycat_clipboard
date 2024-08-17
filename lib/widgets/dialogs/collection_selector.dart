@@ -1,4 +1,4 @@
-import 'package:clipboard/widgets/create_collection_button.dart';
+import 'package:clipboard/widgets/fabs/create_collection.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
@@ -25,11 +25,11 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
           children: [
             Text(context.locale.selectCollection),
             const DisableForLocalUser(
-              ifLocal: CreateCollectionButton(
+              ifLocal: CreateCollectionFAB(
                 localMode: true,
                 isFab: false,
               ),
-              child: CreateCollectionButton(isFab: false),
+              child: CreateCollectionFAB(isFab: false),
             ),
           ],
         ),

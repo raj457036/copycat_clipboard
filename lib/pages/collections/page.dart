@@ -1,6 +1,7 @@
 import 'package:clipboard/pages/collections/widgets/appbar.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:clipboard/widgets/pro_tip_banner.dart';
@@ -37,7 +38,8 @@ class CollectionsPage extends StatelessWidget {
       listener: (context, state) {
         onRefresh(context);
       },
-      child: Scaffold(
+      child: CustomScaffold(
+        activeIndex: 2,
         appBar: isMobilePlatform ? const CollectionAppBar() : null,
         body: Column(
           children: [
