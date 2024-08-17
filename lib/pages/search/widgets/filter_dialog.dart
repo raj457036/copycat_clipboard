@@ -291,16 +291,21 @@ class _FilterDialogState extends State<FilterDialog> {
             height8,
             const Divider(),
             height8,
-            Row(
+            OverflowBar(
+              spacing: 10,
+              overflowSpacing: 10,
+              alignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Sort By"),
-                const Spacer(),
                 DropdownMenu<ClipboardSortKey>(
                   hintText: "Select",
                   inputDecorationTheme: const InputDecorationTheme(
                     border: OutlineInputBorder(
                       borderRadius: radius12,
+                      borderSide: BorderSide.none,
                     ),
+                    fillColor: Colors.black12,
+                    filled: true,
                     isDense: true,
                   ),
                   textStyle: textTheme.bodyMedium,
@@ -310,7 +315,7 @@ class _FilterDialogState extends State<FilterDialog> {
                       label: "Last Modified",
                     ),
                     DropdownMenuEntry(
-                      value: ClipboardSortKey.copyCount,
+                      value: ClipboardSortKey.created,
                       label: "Created",
                     ),
                     DropdownMenuEntry(
@@ -328,14 +333,22 @@ class _FilterDialogState extends State<FilterDialog> {
               ],
             ),
             height8,
-            Row(
+            OverflowBar(
+              spacing: 10,
+              overflowSpacing: 10,
+              alignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Sort Order"),
-                const Spacer(),
                 SegmentedButton<SortOrder>(
                   segments: const [
-                    ButtonSegment(value: SortOrder.asc, label: Text("ASC")),
-                    ButtonSegment(value: SortOrder.desc, label: Text("DESC")),
+                    ButtonSegment(
+                      value: SortOrder.asc,
+                      label: Text("ASC"),
+                    ),
+                    ButtonSegment(
+                      value: SortOrder.desc,
+                      label: Text("DESC"),
+                    ),
                   ],
                   onSelectionChanged: setSortOrder,
                   selected: {sortOrder},
