@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class FilterButton extends StatelessWidget {
   final TextEditingController queryController;
   final FocusNode focusNode;
+
   const FilterButton({
     super.key,
     required this.queryController,
