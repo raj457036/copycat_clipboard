@@ -1,5 +1,6 @@
 import 'package:clipboard/pages/search/widgets/filter_dialog.dart';
 import 'package:copycat_base/bloc/search_cubit/search_cubit.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,7 +75,7 @@ class FilterButton extends StatelessWidget {
       builder: (context, state) {
         return IconButton(
           icon: const Icon(Icons.tune_rounded),
-          tooltip: "Apply Filters",
+          tooltip: context.locale.applyFilter,
           focusNode: focusNode,
           color: state.isActive ? colors.primaryContainer : null,
           style: IconButton.styleFrom(

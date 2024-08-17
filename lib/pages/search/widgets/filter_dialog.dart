@@ -181,12 +181,13 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.locale.localeName;
-    final dateFormatter = getLocaleDateFormatter(locale);
+    final locale = context.locale;
+    final localeName = locale.localeName;
+    final dateFormatter = getLocaleDateFormatter(localeName);
     final textTheme = context.textTheme;
     final colors = context.colors;
     return AlertDialog(
-      title: const Text("Search Filters"),
+      title: Text(locale.searchFilters),
       content: SizedBox(
         width: 400,
         child: Column(
@@ -195,12 +196,12 @@ class _FilterDialogState extends State<FilterDialog> {
           children: [
             Row(
               children: [
-                const Text("From"),
+                Text(locale.from),
                 const Spacer(),
                 ElevatedButton(
                   onPressed: selectFrom,
                   child: Text(
-                    from != null ? dateFormatter.format(from!) : "Select",
+                    from != null ? dateFormatter.format(from!) : locale.select,
                   ),
                 )
               ],
@@ -208,12 +209,12 @@ class _FilterDialogState extends State<FilterDialog> {
             height8,
             Row(
               children: [
-                const Text("To"),
+                Text(locale.to),
                 const Spacer(),
                 ElevatedButton(
                   onPressed: selectTo,
                   child: Text(
-                    to != null ? dateFormatter.format(to!) : "Now",
+                    to != null ? dateFormatter.format(to!) : locale.now,
                   ),
                 )
               ],
@@ -223,30 +224,30 @@ class _FilterDialogState extends State<FilterDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Including"),
+                Text(locale.including),
                 height8,
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
                     FilterChip(
-                      label: const Text("Text"),
+                      label: Text(locale.text),
                       onSelected: (_) => setTypeInclusion(_, ClipItemType.text),
                       selected: typeIncludes.contains(ClipItemType.text),
                     ),
                     FilterChip(
-                      label: const Text("URL"),
+                      label: Text(locale.url),
                       onSelected: (_) => setTypeInclusion(_, ClipItemType.url),
                       selected: typeIncludes.contains(ClipItemType.url),
                     ),
                     FilterChip(
-                      label: const Text("Media"),
+                      label: Text(locale.media),
                       onSelected: (_) =>
                           setTypeInclusion(_, ClipItemType.media),
                       selected: typeIncludes.contains(ClipItemType.media),
                     ),
                     FilterChip(
-                      label: const Text("Docs"),
+                      label: Text(locale.docs),
                       onSelected: (_) => setTypeInclusion(_, ClipItemType.file),
                       selected: typeIncludes.contains(ClipItemType.file),
                     ),
@@ -260,9 +261,9 @@ class _FilterDialogState extends State<FilterDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text.rich(TextSpan(text: "Text Categories ", children: [
+                  Text.rich(TextSpan(text: locale.textCategories, children: [
                     TextSpan(
-                      text: "( Exclusive )",
+                      text: locale.exclusive,
                       style: textTheme.bodySmall?.copyWith(
                         color: colors.outline,
                       ),
@@ -274,19 +275,19 @@ class _FilterDialogState extends State<FilterDialog> {
                     runSpacing: 8,
                     children: [
                       FilterChip(
-                        label: const Text("Email"),
+                        label: Text(locale.email),
                         onSelected: (_) =>
                             setTextCategory(_, TextCategory.email),
                         selected: textCategory.contains(TextCategory.email),
                       ),
                       FilterChip(
-                        label: const Text("Phone"),
+                        label: Text(locale.phone),
                         onSelected: (_) =>
                             setTextCategory(_, TextCategory.phone),
                         selected: textCategory.contains(TextCategory.phone),
                       ),
                       FilterChip(
-                        label: const Text("Color"),
+                        label: Text(locale.color),
                         onSelected: (_) =>
                             setTextCategory(_, TextCategory.color),
                         selected: textCategory.contains(TextCategory.color),
@@ -303,9 +304,9 @@ class _FilterDialogState extends State<FilterDialog> {
               overflowSpacing: 10,
               alignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Sort By"),
+                Text(locale.sortBy),
                 DropdownMenu<ClipboardSortKey>(
-                  hintText: "Select",
+                  hintText: locale.select,
                   inputDecorationTheme: const InputDecorationTheme(
                     border: OutlineInputBorder(
                       borderRadius: radius12,
@@ -316,22 +317,22 @@ class _FilterDialogState extends State<FilterDialog> {
                     isDense: true,
                   ),
                   textStyle: textTheme.bodyMedium,
-                  dropdownMenuEntries: const [
+                  dropdownMenuEntries: [
                     DropdownMenuEntry(
                       value: ClipboardSortKey.modified,
-                      label: "Last Modified",
+                      label: locale.lastModified,
                     ),
                     DropdownMenuEntry(
                       value: ClipboardSortKey.created,
-                      label: "Created",
+                      label: locale.created,
                     ),
                     DropdownMenuEntry(
                       value: ClipboardSortKey.copyCount,
-                      label: "Copy Count",
+                      label: locale.copyCount,
                     ),
                     DropdownMenuEntry(
                       value: ClipboardSortKey.lastCopied,
-                      label: "Last Copied",
+                      label: locale.lastCopied,
                     ),
                   ],
                   onSelected: selectSortBy,
@@ -345,16 +346,16 @@ class _FilterDialogState extends State<FilterDialog> {
               overflowSpacing: 10,
               alignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Sort Order"),
+                Text(locale.sortOrder),
                 SegmentedButton<SortOrder>(
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: SortOrder.asc,
-                      label: Text("ASC"),
+                      label: Text(locale.asc),
                     ),
                     ButtonSegment(
                       value: SortOrder.desc,
-                      label: Text("DESC"),
+                      label: Text(locale.desc),
                     ),
                   ],
                   onSelectionChanged: setSortOrder,
@@ -368,7 +369,7 @@ class _FilterDialogState extends State<FilterDialog> {
       actions: [
         ElevatedButton(
           onPressed: applyFilter,
-          child: const Text("Apply Filter"),
+          child: Text(locale.applyFilter),
         ),
       ],
       actionsAlignment: MainAxisAlignment.center,
