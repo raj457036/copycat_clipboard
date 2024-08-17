@@ -1,4 +1,5 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
+import 'package:clipboard/pages/search/widgets/filter_button.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/bloc/search_cubit/search_cubit.dart';
 import 'package:copycat_base/common/events.dart';
@@ -16,36 +17,34 @@ class SearchInputBar extends StatefulWidget {
 }
 
 class _SearchBarStInputate extends State<SearchInputBar> {
+  late final TextEditingController queryController;
   late final EventRule focusEventRule;
-  late final FocusNode focusNode;
-  late final FocusNode filterButtonNode;
+  late final FocusNode focusNode, filterButtonFocusNode;
 
   @override
   void initState() {
     super.initState();
+    queryController = TextEditingController();
     focusEventRule = EventRule<void>(searchFocusEvent, targets: [
       EventListener((_) => focusNode.requestFocus()),
     ]);
     focusNode = FocusNode();
-    filterButtonNode = FocusNode(skipTraversal: true);
+    filterButtonFocusNode = FocusNode(skipTraversal: true);
+
     search("");
   }
 
   @override
   void dispose() {
+    queryController.dispose();
     focusEventRule.cancel();
     focusNode.dispose();
-    filterButtonNode.dispose();
+    filterButtonFocusNode.dispose();
     super.dispose();
   }
 
   Future<void> search(String text) async {
     await context.read<SearchCubit>().search(text);
-  }
-
-  void toggleFilterDrawerToggle() {
-    // context.read<SearchCubit>().search(searchQuery);
-    Scaffold.of(context).openEndDrawer();
   }
 
   @override
@@ -60,11 +59,14 @@ class _SearchBarStInputate extends State<SearchInputBar> {
         left: padding12,
       ),
       child: SearchBar(
+        controller: queryController,
         focusNode: focusNode,
         elevation: 0.0.msp,
-        padding: const EdgeInsets.symmetric(
-          horizontal: padding16,
-          vertical: padding2,
+        padding: const EdgeInsets.only(
+          left: padding16,
+          right: padding8,
+          top: padding2,
+          bottom: padding2,
         ).msp,
         onTapOutside: (event) =>
             FocusManager.instance.primaryFocus?.nextFocus(),
@@ -79,11 +81,9 @@ class _SearchBarStInputate extends State<SearchInputBar> {
               ),
             ),
           width4,
-          IconButton(
-            icon: const Icon(Icons.tune_rounded),
-            tooltip: "Show search options",
-            focusNode: filterButtonNode,
-            onPressed: toggleFilterDrawerToggle,
+          FilterButton(
+            queryController: queryController,
+            focusNode: filterButtonFocusNode,
           ),
         ],
         autoFocus: true,
