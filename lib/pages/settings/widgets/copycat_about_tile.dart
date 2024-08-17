@@ -15,8 +15,8 @@ class CopycatAboutTile extends StatelessWidget {
       dense: true,
       icon: const Icon(Icons.info_outline),
       applicationName: "CopyCat Clipboard",
-      applicationIcon: Image.asset(
-        AssetConstants.copyCatIcon,
+      applicationIcon: const Image(
+        image: AssetImage(AssetConstants.copyCatIcon),
         width: 60,
       ),
       applicationVersion: "$version+$build",

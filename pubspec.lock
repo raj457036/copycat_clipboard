@@ -633,6 +633,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.10+1"
+  flutter_svg_provider:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "7fac97f0e54634a0fbfb12c692e762bf247793c0"
+      url: "https://github.com/raj457036/flutter_svg_provider.git"
+    source: git
+    version: "1.0.8"
   flutter_test:
     dependency: "direct dev"
     description: flutter

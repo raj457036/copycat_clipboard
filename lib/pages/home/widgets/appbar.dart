@@ -1,6 +1,6 @@
+import 'package:clipboard/widgets/copycat_logo.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
-import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -18,17 +18,11 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       title: Stack(
         clipBehavior: Clip.none,
         children: [
-          Positioned(
+          const Positioned(
             top: -13,
             child: RotatedBox(
               quarterTurns: 2,
-              child: Image.asset(
-                AssetConstants.catImage,
-                fit: BoxFit.cover,
-                width: 50,
-                height: 50,
-                alignment: Alignment.topCenter,
-              ),
+              child: CopyCatLogo(dimension: 50),
             ),
           ),
           Padding(

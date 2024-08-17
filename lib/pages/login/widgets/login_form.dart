@@ -44,12 +44,12 @@ class LoginForm extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         if (!isMobile)
-          Positioned(
+          const Positioned(
             top: 0,
             left: 0,
             right: 0,
-            child: Image.asset(
-              AssetConstants.catPeekUpSideDownImage,
+            child: Image(
+              image: AssetImage(AssetConstants.catPeekUpSideDownImage),
               height: 140,
             ),
           ),
@@ -173,8 +173,8 @@ class LoginForm extends StatelessWidget {
                   ),
                   // height12,
                   if (isMobile)
-                    Image.asset(
-                      AssetConstants.catPeekUpSideDownImage,
+                    const Image(
+                      image: AssetImage(AssetConstants.catPeekUpSideDownImage),
                       height: 50,
                     ),
                 ],
