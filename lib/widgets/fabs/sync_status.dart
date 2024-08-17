@@ -7,8 +7,8 @@ import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SyncStatusButton extends StatelessWidget {
-  const SyncStatusButton({super.key});
+class SyncStatusFAB extends StatelessWidget {
+  const SyncStatusFAB({super.key});
 
   @override
   Widget build(BuildContext context) {

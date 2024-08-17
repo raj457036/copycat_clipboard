@@ -1,6 +1,7 @@
 import 'package:clipboard/pages/home/widgets/appbar.dart';
 import 'package:clipboard/pages/home/widgets/home_body.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -31,20 +32,18 @@ class HomePage extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
     final colors = context.colors;
-    Widget scaffold = Scaffold(
+    Widget scaffold = CustomScaffold(
+      activeIndex: 0,
       backgroundColor: colors.surfaceContainer,
       appBar: isMobilePlatform ? const HomeAppbar() : null,
       body: const HomePageBody(),
+      borderRadius: !isMobile
+          ? const BorderRadius.only(
+              topLeft: Radius.circular(18),
+            )
+          : null,
     );
 
-    if (!isMobile) {
-      scaffold = ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(18),
-        ),
-        child: scaffold,
-      );
-    }
     return UpgradeAlert(
       navigatorKey: rootNavKey,
       upgrader: upgrader,

@@ -43,6 +43,11 @@ class _SearchBarStInputate extends State<SearchInputBar> {
     await context.read<SearchCubit>().search(text);
   }
 
+  void toggleFilterDrawerToggle() {
+    // context.read<SearchCubit>().search(searchQuery);
+    Scaffold.of(context).openEndDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
@@ -78,9 +83,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
             icon: const Icon(Icons.tune_rounded),
             tooltip: "Show search options",
             focusNode: filterButtonNode,
-            onPressed: () {
-              // context.read<SearchCubit>().search(searchQuery);
-            },
+            onPressed: toggleFilterDrawerToggle,
           ),
         ],
         autoFocus: true,

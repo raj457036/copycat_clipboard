@@ -3,6 +3,7 @@ import 'package:clipboard/pages/settings/sections/encryption_settings.dart';
 import 'package:clipboard/pages/settings/sections/general_settings.dart';
 import 'package:clipboard/pages/settings/sections/syncing_settings.dart';
 import 'package:clipboard/widgets/account_detail_button.dart';
+import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
@@ -23,7 +24,8 @@ class SettingsPage extends StatelessWidget {
     final colors = context.colors;
     return DefaultTabController(
       length: 4,
-      child: Scaffold(
+      child: CustomScaffold(
+        activeIndex: 3,
         appBar: AppBar(
           backgroundColor: colors.surface,
           scrolledUnderElevation: 0,

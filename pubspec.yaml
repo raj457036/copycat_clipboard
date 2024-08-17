@@ -71,6 +71,7 @@ dependencies:
   copycat_base:
     path: packages/copycat_base
   flutter_colorpicker: ^1.1.0
+  flutter_svg: ^2.0.10+1
   
   
 dev_dependencies:
