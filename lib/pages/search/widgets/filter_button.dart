@@ -71,9 +71,12 @@ class FilterButton extends StatelessWidget {
       builder: (context, state) {
         return IconButton(
           icon: const Icon(Icons.tune_rounded),
-          tooltip: "Show search options",
+          tooltip: "Apply Filters",
           focusNode: focusNode,
-          color: state.isActive ? colors.primary : null,
+          color: state.isActive ? colors.primaryContainer : null,
+          style: IconButton.styleFrom(
+            backgroundColor: state.isActive ? colors.primary : null,
+          ),
           onPressed: () => changeFilter(context, state),
         );
       },

@@ -80,7 +80,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
                 color: colors.outline,
               ),
             ),
-          width4,
+          width12,
           FilterButton(
             queryController: queryController,
             focusNode: filterButtonFocusNode,
