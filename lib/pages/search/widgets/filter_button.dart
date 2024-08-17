@@ -15,7 +15,9 @@ class FilterButton extends StatelessWidget {
   });
 
   Future<void> changeFilter(
-      BuildContext context, SearchFilterState state) async {
+    BuildContext context,
+    SearchFilterState state,
+  ) async {
     final newState = await FilterDialog(state: state).open(context);
     if (newState == null) return;
     if (context.mounted) {
