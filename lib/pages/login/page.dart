@@ -61,8 +61,8 @@ class LoginPage extends StatelessWidget {
                 );
               },
               blendMode: BlendMode.dstIn,
-              child: Image.asset(
-                AssetConstants.catInValley,
+              child: Image(
+                image: const AssetImage(AssetConstants.catInValley),
                 fit: BoxFit.cover,
                 height: height,
                 width: width,

@@ -1,3 +1,4 @@
+import 'package:clipboard/widgets/copycat_logo.dart';
 import 'package:clipboard/widgets/fabs/create_collection.dart';
 import 'package:clipboard/widgets/fabs/paste.dart';
 import 'package:clipboard/widgets/fabs/sync_status.dart';
@@ -8,16 +9,23 @@ import 'package:flutter/material.dart';
 class DynamicFloatingActions extends StatelessWidget {
   final int activeIndex;
   final bool reversed;
+  final bool showCopyCatLogo;
   const DynamicFloatingActions({
     super.key,
     required this.activeIndex,
     required this.reversed,
+    this.showCopyCatLogo = false,
   });
 
   @override
   Widget build(BuildContext context) {
     if (activeIndex == 0) {
-      final actions = [const PasteFAB(), height8, const SyncStatusFAB()];
+      final actions = [
+        if (showCopyCatLogo) const CopyCatLogo(),
+        const PasteFAB(),
+        height8,
+        const SyncStatusFAB()
+      ];
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: reversed ? actions.reversed.toList() : actions,
@@ -25,6 +33,7 @@ class DynamicFloatingActions extends StatelessWidget {
     }
     if (activeIndex == 2) {
       final actions = [
+        if (showCopyCatLogo) const CopyCatLogo(),
         const DisableForLocalUser(
           ifLocal: CreateCollectionFAB(
             localMode: true,

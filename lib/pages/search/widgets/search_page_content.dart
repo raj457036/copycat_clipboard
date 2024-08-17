@@ -1,13 +1,14 @@
 import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/empty.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/search_cubit/search_cubit.dart';
-import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/widgets/clipcard_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,22 +61,8 @@ class SearchPageContent extends StatelessWidget {
                 current is SearchResultState,
             builder: (context, state) {
               switch (state) {
-                case InitialSearchState():
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(
-                          AssetConstants.search,
-                          width: 250,
-                        ),
-                        height16,
-                        Text(context.locale.findWhateverYouLooking),
-                      ],
-                    ),
-                  );
-                case SearchingState():
-                  return const Center(child: CircularProgressIndicator());
+                case InitialSearchState() || SearchingState():
+                  return const ClipcardLoading();
                 case SearchErrorState(:final failure):
                   return Center(
                     child: Text(failure.message),
@@ -84,23 +71,7 @@ class SearchPageContent extends StatelessWidget {
                 case SearchResultState(:final results, :final hasMore):
                   {
                     if (results.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              AssetConstants.noData,
-                              width: 200,
-                            ),
-                            height16,
-                            Text(
-                              context.locale.noResultsWereFound,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      );
+                      return EmptyNote(note: context.locale.noResultsWereFound);
                     }
 
                     final hasMoreResult = hasMore ? 1 : 0;

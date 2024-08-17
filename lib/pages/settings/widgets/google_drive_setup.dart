@@ -80,8 +80,8 @@ class GoogleDriveSetup extends StatelessWidget {
                           context,
                           alreadyConnected: alreadyConnected,
                         ),
-                icon: Image.asset(
-                  AssetConstants.googleDriveLogo,
+                icon: const Image(
+                  image: AssetImage(AssetConstants.googleDriveLogo),
                   height: 20,
                 ),
                 label: Text(text),

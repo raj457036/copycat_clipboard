@@ -29,6 +29,7 @@ class CustomScaffold extends StatelessWidget {
     final floatingActions = DynamicFloatingActions(
       activeIndex: activeIndex,
       reversed: smallScreen,
+      showCopyCatLogo: (activeIndex == 0 || activeIndex == 2) && !smallScreen,
     );
 
     Widget scaffoldBody = body;
