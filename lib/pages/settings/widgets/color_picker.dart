@@ -2,6 +2,7 @@ import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -129,14 +130,15 @@ class ColorPickerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final locale = context.locale;
     return ListTile(
-      title: const Text("Theme Color"),
+      title: Text(locale.themeColor),
       contentPadding: const EdgeInsets.only(
         left: padding16,
         right: padding4,
       ),
       subtitle: Text(
-        "This color will influence the overall look and feel of the app.",
+        locale.themeColorDesc,
         style: textTheme.bodySmall?.copyWith(
           color: colors.outline,
         ),
@@ -151,7 +153,7 @@ class ColorPickerTile extends StatelessWidget {
           );
           return ElevatedButton.icon(
             onPressed: () => chooseColor(context, color),
-            label: const Text("Change"),
+            label: Text(locale.change),
             icon: const Icon(Icons.color_lens_rounded),
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(150, 40),

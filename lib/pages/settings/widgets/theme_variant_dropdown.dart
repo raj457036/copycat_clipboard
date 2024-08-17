@@ -1,5 +1,6 @@
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +12,11 @@ class ThemeVariantDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final locale = context.locale;
     return ListTile(
-      title: const Text("Color Mode"),
+      title: Text(locale.colorMode),
       subtitle: Text(
-        "Select the color mode to customize the appearance of the app. The default option is Tonal Spot.",
+        locale.colorModeDesc,
         style: textTheme.bodySmall?.copyWith(
           color: colors.outline,
         ),
@@ -30,42 +32,42 @@ class ThemeVariantDropdown extends StatelessWidget {
               value: variant,
               padding: const EdgeInsets.symmetric(horizontal: padding16),
               borderRadius: radius12,
-              items: const [
+              items: [
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.tonalSpot,
-                  child: Text("Tonal Spot"),
+                  child: Text(locale.tonalSpot),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.content,
-                  child: Text("Content"),
+                  child: Text(locale.content),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.expressive,
-                  child: Text("Expressive"),
+                  child: Text(locale.expressive),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.fidelity,
-                  child: Text("Fidelity"),
+                  child: Text(locale.fidility),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.fruitSalad,
-                  child: Text("Fruit Salad"),
+                  child: Text(locale.fruitSalad),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.monochrome,
-                  child: Text("Monochrome"),
+                  child: Text(locale.monochrome),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.neutral,
-                  child: Text("Neutral"),
+                  child: Text(locale.neutral),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.rainbow,
-                  child: Text("Rainbow"),
+                  child: Text(locale.rainbow),
                 ),
                 DropdownMenuItem(
                   value: DynamicSchemeVariant.vibrant,
-                  child: Text("Vibrant"),
+                  child: Text(locale.vibrant),
                 ),
               ],
               onChanged: (variant) {
