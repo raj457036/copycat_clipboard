@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class SearchFilterState {
-  final DateTime? from, to;
+  final DateTime? from;
+  final DateTime? to;
   final Set<ClipItemType>? typeIncludes;
   final Set<TextCategory>? textCategories;
   final ClipboardSortKey? sortBy;
@@ -37,6 +38,7 @@ class SearchFilterState {
     if (identical(this, other)) return true;
 
     return other is SearchFilterState &&
+        other.from == from &&
         other.to == to &&
         setEquals(other.typeIncludes, typeIncludes) &&
         setEquals(other.textCategories, textCategories) &&
@@ -46,7 +48,8 @@ class SearchFilterState {
 
   @override
   int get hashCode {
-    return to.hashCode ^
+    return from.hashCode ^
+        to.hashCode ^
         typeIncludes.hashCode ^
         textCategories.hashCode ^
         sortBy.hashCode ^
@@ -167,7 +170,11 @@ class _FilterDialogState extends State<FilterDialog> {
 
     if (mounted) {
       setState(() {
-        to = to_;
+        to = to_?.add(Duration(
+          hours: lastDate.hour,
+          minutes: lastDate.minute,
+          seconds: lastDate.second,
+        ));
       });
     }
   }
