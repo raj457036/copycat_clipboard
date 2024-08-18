@@ -419,10 +419,10 @@ packages:
     dependency: transitive
     description:
       name: easy_worker
-      sha256: "440c57e0118bcaf26c5f492ec6f89e99fcf304f8571cb75ae871fcf43fa506b7"
+      sha256: "66fc98fce0354d64b8db1bba4f7b343cc7f377607d7f91cea01ef18f849f6850"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.3"
   email_validator:
     dependency: transitive
     description:
