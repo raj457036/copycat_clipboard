@@ -416,13 +416,13 @@ packages:
     source: hosted
     version: "3.0.13"
   easy_worker:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: easy_worker
-      sha256: ff69ea7c2f1e1b6ae966b5dda974b52688214f0ad962c608f35c9b980d14ed56
+      sha256: "440c57e0118bcaf26c5f492ec6f89e99fcf304f8571cb75ae871fcf43fa506b7"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.2.1"
   email_validator:
     dependency: transitive
     description:
@@ -1556,14 +1556,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  shimmer:
-    dependency: transitive
-    description:
-      name: shimmer
-      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   shortid:
     dependency: transitive
     description:
