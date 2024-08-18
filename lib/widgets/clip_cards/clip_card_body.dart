@@ -160,22 +160,6 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   void select() => !selected ? setState(() => selected = true) : null;
   void unselect() => selected ? setState(() => selected = false) : null;
 
-  void activateShortcuts() {
-    // if (entry != null) return;
-    // final shortcuts = {
-    //   const SingleActivator(LogicalKeyboardKey.keyE):
-    //       VoidCallbackIntent(() {
-    //     print("DDDYUX: ${widget.item.text}");
-    //   })
-    // };
-    // entry = ShortcutRegistry.of(context).addAll(shortcuts);
-  }
-
-  void deactivateShortcuts() {
-    // entry?.dispose();
-    // entry = null;
-  }
-
   void onFocusChange(bool value) {
     if (value) {
       Scrollable.ensureVisible(
@@ -184,12 +168,10 @@ class _ClipCardBodyState extends State<ClipCardBody> {
         duration: Durations.medium1,
       );
       select();
-      activateShortcuts();
       // final cubit = context.read<FocusedClipitemCubit>();
       // cubit.focused(item);
     } else {
       unselect();
-      deactivateShortcuts();
     }
   }
 
