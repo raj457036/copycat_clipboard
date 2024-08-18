@@ -14,7 +14,6 @@ const _copyCatBaseImage = Image(
 );
 
 String _constructLogo(String primary, String secondary) {
-  print(primary);
   return """
 <svg width="208" height="344" viewBox="0 0 208 344" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="CAT SVG">
