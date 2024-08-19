@@ -98,7 +98,7 @@ class NavLayoutNavrail extends StatelessWidget {
             ],
             trailing: const AttentionButton(),
             leading: SizedBox(
-              height: 150,
+              height: 155,
               child: floatingActionButton,
             ),
             labelType: NavigationRailLabelType.all,
