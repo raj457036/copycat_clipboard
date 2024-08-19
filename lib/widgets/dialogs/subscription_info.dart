@@ -1,7 +1,6 @@
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/subscription/apply_coupon.dart';
 import 'package:clipboard/widgets/subscription/paywall/manage_subscription_button.dart';
-import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
@@ -10,6 +9,7 @@ import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:copycat_pro/utils/monetization.dart';
 import 'package:copycat_pro/widgets/subscription/paywall/paywall.dart';
+import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_io/io.dart';
@@ -46,6 +46,11 @@ class FeatureTabs extends StatelessWidget {
         context.locale.onDeviceStorageDesc,
       ),
       (
+        const Icon(Icons.security_rounded),
+        context.locale.supportE2EE,
+        context.locale.supportE2EEDesc,
+      ),
+      (
         const Icon(Icons.add_to_drive_rounded),
         context.locale.googleDriveIntegration,
         context.locale.googleDriveIntegrationDesc,
@@ -67,8 +72,8 @@ class FeatureTabs extends StatelessWidget {
       ),
       (
         const Icon(Icons.sync_alt_rounded),
-        context.locale.autoSyncEvery60Seconds,
-        context.locale.autoSyncEvery60SecondsDesc,
+        context.locale.autoSyncEvery45Seconds,
+        context.locale.autoSyncEvery45SecondsDesc,
       )
     ];
 
@@ -79,9 +84,14 @@ class FeatureTabs extends StatelessWidget {
         context.locale.withProDesc,
       ),
       (
-        const Icon(Icons.security_rounded),
-        context.locale.supportE2EE,
-        context.locale.supportE2EEDesc,
+        const Icon(Icons.highlight_alt_rounded),
+        context.locale.dragNDropFeature,
+        context.locale.dragNDropFeatureDesc,
+      ),
+      (
+        const Icon(Icons.color_lens_rounded),
+        context.locale.themingFeature,
+        context.locale.themingFeatureDesc,
       ),
       (
         const Icon(Icons.collections_bookmark_rounded),
@@ -89,7 +99,7 @@ class FeatureTabs extends StatelessWidget {
         context.locale.upto50CollectionDesc,
       ),
       (
-        const Icon(Icons.collections_bookmark_rounded),
+        const Icon(Icons.history_rounded),
         context.locale.syncLast720Hr,
         context.locale.syncLast720HrDesc,
       ),

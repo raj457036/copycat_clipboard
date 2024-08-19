@@ -48,8 +48,9 @@ class ProBadge extends StatelessWidget {
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.symmetric(horizontal: padding10),
       backgroundColor: colors.primaryContainer,
-      labelStyle: textTheme.bodySmall?.copyWith(
+      labelStyle: textTheme.labelSmall?.copyWith(
         color: colors.onPrimaryContainer,
+        fontWeight: FontWeight.bold,
       ),
       labelPadding: const EdgeInsets.fromLTRB(2, -6, 2, -6),
     );

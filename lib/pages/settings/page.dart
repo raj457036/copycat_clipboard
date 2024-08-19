@@ -1,5 +1,6 @@
 import 'package:clipboard/pages/settings/sections/customization_settings.dart';
 import 'package:clipboard/pages/settings/sections/encryption_settings.dart';
+import 'package:clipboard/pages/settings/sections/experimental_settings.dart';
 import 'package:clipboard/pages/settings/sections/general_settings.dart';
 import 'package:clipboard/pages/settings/sections/syncing_settings.dart';
 import 'package:clipboard/widgets/account_detail_button.dart';
@@ -8,7 +9,6 @@ import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/logout_button.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
-import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -19,23 +19,21 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final isMobile = Breakpoints.isMobile(width);
     final colors = context.colors;
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: CustomScaffold(
         activeIndex: 3,
         appBar: AppBar(
           backgroundColor: colors.surface,
           scrolledUnderElevation: 0,
           title: Text(context.locale.settings),
-          actions: [
-            ActivePlanAction(compact: isMobile),
+          actions: const [
+            ActivePlanAction(),
             width12,
-            const DisableForLocalUser(child: AccountDetailButton()),
+            DisableForLocalUser(child: AccountDetailButton()),
             width12,
-            const LogoutButton(),
+            LogoutButton(),
             width12,
           ],
         ),
@@ -52,7 +50,8 @@ class SettingsPage extends StatelessWidget {
                   Tab(text: context.locale.general),
                   Tab(text: context.locale.customization),
                   Tab(text: context.locale.syncingLabel),
-                  Tab(text: context.locale.encryption)
+                  Tab(text: context.locale.encryption),
+                  Tab(text: context.locale.experimentalLabel),
                 ],
               ),
               const Expanded(
@@ -72,6 +71,10 @@ class SettingsPage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: EncryptionSettings(),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: ExperimentalSettings(),
                   ),
                 ]),
               ),

@@ -1,9 +1,11 @@
+import 'package:clipboard/widgets/badges.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -130,41 +132,52 @@ class ColorPickerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
-    return ListTile(
-      title: Text(context.locale.themeColor),
-      contentPadding: const EdgeInsets.only(
-        left: padding16,
-        right: padding4,
-      ),
-      subtitle: Text(
-        context.locale.themeColorDesc,
-        style: textTheme.bodySmall?.copyWith(
-          color: colors.outline,
+    return SubscriptionBuilder(builder: (context, subscription) {
+      final hasAccess =
+          subscription != null && subscription.isActive && subscription.theming;
+      return ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(context.locale.themeColor),
+            width8,
+            const ProBadge(),
+          ],
         ),
-      ),
-      trailing: BlocSelector<AppConfigCubit, AppConfigState, int>(
-        selector: (state) {
-          return state.config.themeColor;
-        },
-        builder: (context, themeColor) {
-          final color = Color(
-            themeColor.isNegative ? defaultThemeColor : themeColor,
-          );
-          return ElevatedButton.icon(
-            onPressed: () => chooseColor(context, color),
-            label: Text(context.locale.change),
-            icon: const Icon(Icons.color_lens_rounded),
-            style: ElevatedButton.styleFrom(
-              fixedSize: const Size(150, 40),
-              backgroundColor: colors.primary,
-              foregroundColor: colors.onPrimary,
-              textStyle: textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+        contentPadding: const EdgeInsets.only(
+          left: padding16,
+          right: padding4,
+        ),
+        subtitle: Text(
+          context.locale.themeColorDesc,
+          style: textTheme.bodySmall?.copyWith(
+            color: colors.outline,
+          ),
+        ),
+        trailing: BlocSelector<AppConfigCubit, AppConfigState, int>(
+          selector: (state) {
+            return state.config.themeColor;
+          },
+          builder: (context, themeColor) {
+            final color = Color(
+              themeColor.isNegative ? defaultThemeColor : themeColor,
+            );
+            return ElevatedButton.icon(
+              onPressed: hasAccess ? () => chooseColor(context, color) : null,
+              label: Text(context.locale.change),
+              icon: const Icon(Icons.color_lens_rounded),
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(150, 40),
+                backgroundColor: colors.primary,
+                foregroundColor: colors.onPrimary,
+                textStyle: textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ),
+      );
+    });
   }
 }

@@ -1,6 +1,5 @@
 import 'package:clipboard/widgets/copycat_logo.dart';
 import 'package:clipboard/widgets/subscription/active_plan.dart';
-import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -12,8 +11,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
-    final width = MediaQuery.of(context).size.width;
-    final isMobile = Breakpoints.isMobile(width);
+
     return AppBar(
       title: Stack(
         clipBehavior: Clip.none,
@@ -34,8 +32,8 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       titleTextStyle: textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),
-      actions: [
-        ActivePlanAction(compact: isMobile),
+      actions: const [
+        ActivePlanAction(),
         width12,
       ],
     );

@@ -15,7 +15,7 @@ class TrayManager extends StatefulWidget {
   });
 
   @override
-  State<TrayManager> createState() => _TrayManagerState();
+  State<TrayManager> createState() => TrayManagerState();
 
   static Widget fromPlatform({required Widget child}) {
     if (isMobilePlatform) {
@@ -23,9 +23,12 @@ class TrayManager extends StatefulWidget {
     }
     return TrayManager(child: child);
   }
+
+  static TrayManagerState? maybeOf(BuildContext context) =>
+      context.findAncestorStateOfType<TrayManagerState>();
 }
 
-class _TrayManagerState extends State<TrayManager> with TrayListener {
+class TrayManagerState extends State<TrayManager> with TrayListener {
   bool paused = false;
 
   @override

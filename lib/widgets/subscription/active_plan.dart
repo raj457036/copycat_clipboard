@@ -1,15 +1,10 @@
 import 'package:clipboard/widgets/dialogs/subscription_info.dart';
 import 'package:clipboard/widgets/local_user.dart';
-import 'package:clipboard/widgets/subscription/subscription_provider.dart';
-import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 
 class ActivePlanAction extends StatelessWidget {
-  final bool compact;
-  const ActivePlanAction({
-    super.key,
-    this.compact = false,
-  });
+  const ActivePlanAction({super.key});
 
   Future<void> action(
     BuildContext context, {
@@ -25,9 +20,6 @@ class ActivePlanAction extends StatelessWidget {
       child: SubscriptionBuilder(
         builder: (context, subscription) {
           String label = subscription?.planName ?? "Free";
-          if (!compact) {
-            label = context.locale.currentPlanLabel(label);
-          }
           return ElevatedButton.icon(
             onPressed: () => action(context),
             onLongPress: () => action(context, entitlementGrantMode: true),

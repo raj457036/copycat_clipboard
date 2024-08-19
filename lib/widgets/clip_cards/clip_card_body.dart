@@ -120,11 +120,9 @@ class ClipCardBody extends StatefulWidget {
 
 class _ClipCardBodyState extends State<ClipCardBody> {
   bool selected = false;
-  ShortcutRegistryEntry? entry;
 
   @override
   void dispose() {
-    entry?.dispose();
     super.dispose();
   }
 
