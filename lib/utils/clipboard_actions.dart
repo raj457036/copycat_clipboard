@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> copyToClipboard(
@@ -26,9 +25,8 @@ Future<void> copyToClipboard(
     final cubit = ctx.read<OfflinePersistanceCubit>();
     final result = await cubit.copyToClipboard(item, saveFile: saveFile);
     if (noAck && ctx.mounted) return;
-    if (result && !Platform.isAndroid) {
+    if (result && ctx.mounted) {
       showTextSnackbar(
-        // ignore: use_build_context_synchronously
         saveFile ? ctx.locale.exportSuccess : ctx.locale.copySuccess,
         closePrevious: true,
       );
