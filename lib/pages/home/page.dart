@@ -12,6 +12,7 @@ import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_pro/widgets/drag_drop/drop_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upgrader/upgrader.dart';
@@ -43,6 +44,8 @@ class HomePage extends StatelessWidget {
             )
           : null,
     );
+
+    scaffold = ClipDropRegionProvider(child: scaffold);
 
     return UpgradeAlert(
       navigatorKey: rootNavKey,
