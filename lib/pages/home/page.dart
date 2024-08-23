@@ -15,6 +15,7 @@ import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_pro/widgets/drag_drop/drop_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universal_io/io.dart';
 import 'package:upgrader/upgrader.dart';
 
 final upgrader = Upgrader(
@@ -45,7 +46,10 @@ class HomePage extends StatelessWidget {
           : null,
     );
 
-    scaffold = ClipDropRegionProvider(child: scaffold);
+    // NOTE: drag and drop doesn't work in android for now
+    if (!Platform.isAndroid) {
+      scaffold = ClipDropRegionProvider(child: scaffold);
+    }
 
     return UpgradeAlert(
       navigatorKey: rootNavKey,

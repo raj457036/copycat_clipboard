@@ -18,17 +18,19 @@ class SearchInputBar extends StatefulWidget {
 
 class _SearchBarStInputate extends State<SearchInputBar> {
   late final TextEditingController queryController;
-  late final EventRule focusEventRule;
+  EventRule? focusEventRule;
   late final FocusNode focusNode, filterButtonFocusNode;
 
   @override
   void initState() {
     super.initState();
     queryController = TextEditingController();
-    focusEventRule = EventRule<void>(searchFocusEvent, targets: [
-      EventListener((_) => focusNode.requestFocus()),
-    ]);
     focusNode = FocusNode();
+    if (isDesktopPlatform) {
+      focusEventRule = EventRule<void>(searchFocusEvent, targets: [
+        EventListener((_) => focusNode.requestFocus()),
+      ]);
+    }
     filterButtonFocusNode = FocusNode(skipTraversal: true);
 
     search("");
@@ -37,7 +39,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
   @override
   void dispose() {
     queryController.dispose();
-    focusEventRule.cancel();
+    focusEventRule?.cancel();
     focusNode.dispose();
     filterButtonFocusNode.dispose();
     super.dispose();
@@ -53,8 +55,8 @@ class _SearchBarStInputate extends State<SearchInputBar> {
     final colors = context.colors;
 
     return Padding(
-      padding: const EdgeInsets.only(
-        top: padding12,
+      padding: EdgeInsets.only(
+        top: isDesktopPlatform ? padding12 : padding38,
         right: padding12,
         left: padding12,
       ),
@@ -86,7 +88,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
             focusNode: filterButtonFocusNode,
           ),
         ],
-        autoFocus: true,
+        autoFocus: isDesktopPlatform,
         textInputAction: TextInputAction.search,
         onSubmitted: search,
       ),

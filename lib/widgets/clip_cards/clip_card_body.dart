@@ -1,4 +1,5 @@
 import 'package:clipboard/utils/clipboard_actions.dart';
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
 import 'package:clipboard/widgets/clip_cards/encrypted_card.dart';
@@ -9,7 +10,6 @@ import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
-import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
@@ -21,6 +21,7 @@ import 'package:copycat_base/widgets/clip_cards/media_clip_card.dart';
 import 'package:copycat_pro/widgets/drag_drop/drag_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universal_io/io.dart';
 
 class ClipCardPreview extends StatelessWidget {
   final ClipboardItem item;
@@ -50,56 +51,57 @@ class ClipCardBodyContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
-    return DraggableItem(
-      item: item,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipCardOptionsHeader(
-            item: item,
-            hasFocusForPaste: canPaste,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (item.title != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: padding8,
-                      vertical: padding2,
-                    ),
-                    child: Text(
-                      item.title!,
-                      style: textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 2,
-                    ),
+    final child = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ClipCardOptionsHeader(
+          item: item,
+          hasFocusForPaste: canPaste,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (item.title != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: padding8,
+                    vertical: padding2,
                   ),
-                Expanded(
-                  child: Card.filled(
-                    color: Colors.transparent,
-                    margin: EdgeInsets.zero,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
+                  child: Text(
+                    item.title!,
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: ClipCardPreview(item: item),
+                    maxLines: 2,
                   ),
                 ),
-              ],
-            ),
+              Expanded(
+                child: Card.filled(
+                  color: Colors.transparent,
+                  margin: EdgeInsets.zero,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: ClipCardPreview(item: item),
+                ),
+              ),
+            ],
           ),
-          DisableForLocalUser(
-            child: ClipCardSyncStatusFooter(item: item),
-          ),
-        ],
-      ),
+        ),
+        DisableForLocalUser(
+          child: ClipCardSyncStatusFooter(item: item),
+        ),
+      ],
     );
+
+    // NOTE: drag and drop doesn't work in android for now
+    if (!Platform.isAndroid) return DraggableItem(item: item, child: child);
+    return child;
   }
 }
 
@@ -177,7 +179,6 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final menu = Menu.of(context);
-    final width = MediaQuery.of(context).size.width;
 
     final selectedShape = selected
         ? RoundedRectangleBorder(
@@ -197,8 +198,10 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       child: InkWell(
         focusColor: colors.surface,
         onTap: () => performPrimaryAction(context),
+        onLongPress:
+            Platform.isAndroid ? () => menu.openOptionDialog(context) : null,
         onSecondaryTapDown: (detail) async {
-          if (Breakpoints.isMobile(width)) {
+          if (isMobilePlatform) {
             menu.openOptionDialog(context);
             return;
           }

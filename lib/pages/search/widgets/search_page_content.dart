@@ -1,3 +1,4 @@
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/empty.dart';
@@ -95,6 +96,7 @@ class SearchPageContent extends StatelessWidget {
                         return ClipCard(
                           key: ValueKey("clipboard-item-//${item.id}"),
                           item: item,
+                          autoFocus: index == 0 && isDesktopPlatform,
                           canPaste: canPaste,
                         );
                       },
