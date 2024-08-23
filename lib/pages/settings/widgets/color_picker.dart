@@ -52,7 +52,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
       height = 200;
     } else {
       width = 250;
-      height = 495;
+      height = 510;
     }
     return AlertDialog(
       actionsPadding: const EdgeInsets.only(

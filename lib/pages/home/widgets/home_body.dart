@@ -1,3 +1,4 @@
+import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/can_paste_builder.dart';
 import 'package:clipboard/widgets/clip_card.dart';
 import 'package:clipboard/widgets/empty.dart';
@@ -59,7 +60,7 @@ class HomePageBody extends StatelessWidget {
                 final item = items[index];
                 return ClipCard(
                   key: ValueKey("clipboard-item-${item.id}"),
-                  autoFocus: index == 0,
+                  autoFocus: index == 0 && isDesktopPlatform,
                   item: item,
                   canPaste: canPaste,
                 );
