@@ -33,12 +33,12 @@ T clamp<T extends num>(T value, [T? min, T? max]) {
   return value;
 }
 
-bool get isDesktopPlatform =>
+final isDesktopPlatform =
     Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 
-bool get isApplePlatform => Platform.isIOS || Platform.isMacOS;
+final isApplePlatform = Platform.isIOS || Platform.isMacOS;
 
-bool get isMobilePlatform => Platform.isIOS || Platform.isAndroid;
+final isMobilePlatform = Platform.isIOS || Platform.isAndroid;
 
 Color? hexToColor(ClipboardItem item) {
   if (item.textCategory != TextCategory.color) return null;
