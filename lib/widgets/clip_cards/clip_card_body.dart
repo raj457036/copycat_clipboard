@@ -198,8 +198,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       child: InkWell(
         focusColor: colors.surface,
         onTap: () => performPrimaryAction(context),
-        onLongPress:
-            Platform.isAndroid ? () => menu.openOptionDialog(context) : null,
+        onLongPress: () => menu.openOptionDialog(context),
         onSecondaryTapDown: (detail) async {
           if (isMobilePlatform) {
             menu.openOptionDialog(context);
