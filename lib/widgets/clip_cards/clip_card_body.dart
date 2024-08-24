@@ -178,13 +178,12 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final menu = Menu.of(context);
 
     final selectedShape = selected
         ? RoundedRectangleBorder(
             side: BorderSide(
               color: colors.primary,
-              width: 2,
+              width: 2.5,
               strokeAlign: BorderSide.strokeAlignOutside,
             ),
             borderRadius: radius12,
@@ -198,8 +197,9 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       child: InkWell(
         focusColor: colors.surface,
         onTap: () => performPrimaryAction(context),
-        onLongPress: () => menu.openOptionDialog(context),
+        // onLongPress: () => menu.openOptionDialog(context),
         onSecondaryTapDown: (detail) async {
+          final menu = Menu.of(context);
           if (isMobilePlatform) {
             menu.openOptionDialog(context);
             return;
