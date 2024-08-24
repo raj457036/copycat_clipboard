@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  win32: ^5.5.0
+  win32: ^5.5.4
   universal_io: ^2.2.2
   ffi: ^2.1.2
 

@@ -53,16 +53,16 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
     Menu menu = Menu(
       items: [
         MenuItem(disabled: true, label: "CopyCat Clipboard"),
-        MenuItem.separator(),
-        MenuItem(
-          key: 'show_window',
-          label: 'Show Window',
-        ),
-        MenuItem(
-          key: 'hide_window',
-          label: 'Hide Window',
-          toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
-        ),
+        // MenuItem.separator(),
+        // MenuItem(
+        //   key: 'show_window',
+        //   label: 'Show Window',
+        // ),
+        // MenuItem(
+        //   key: 'hide_window',
+        //   label: 'Hide Window',
+        //   toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
+        // ),
         MenuItem.separator(),
         MenuItem(
           key: 'quit_app',

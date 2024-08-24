@@ -74,6 +74,7 @@ class CollectionDetailPage extends StatelessWidget {
         body: ScaffoldBody(
           margin: const EdgeInsets.only(
             right: padding12,
+            left: padding12,
           ),
           child: BlocBuilder<CollectionClipsCubit, CollectionClipsState>(
             builder: (context, state) {
