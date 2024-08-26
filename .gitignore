@@ -49,3 +49,5 @@ window_dist/installer.exe
 
 **/private/**
 firebase.json
+
+**/secret/**
