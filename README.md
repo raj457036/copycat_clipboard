@@ -1,4 +1,4 @@
-[CopyCat Clipboard]!(assets/images/icons/icon.png)
+![CopyCat Clipboard](assets/images/icons/icon.png)
 
 # CopyCat Clipboard : The clipboard experience you always wanted
 
