@@ -2,24 +2,33 @@ import 'dart:math' show max;
 
 import 'package:clipboard/pages/collections/widgets/dialogs/create_collection.dart';
 import 'package:clipboard/widgets/badges.dart';
-import 'package:clipboard/widgets/subscription/subscription_provider.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:copycat_base/constants/numbers/values.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class CreateCollectionButton extends StatelessWidget {
+class CreateCollectionFAB extends StatelessWidget {
   final bool isFab;
   final bool localMode;
-  const CreateCollectionButton({
+  const CreateCollectionFAB({
     super.key,
     this.isFab = true,
     this.localMode = false,
   });
+
+  void createCollection(BuildContext context) {
+    context.goNamed(
+      RouteConstants.createEditCollection,
+      pathParameters: {
+        "id": "new",
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +63,7 @@ class CreateCollectionButton extends StatelessWidget {
               heroTag: "collection-fab",
               backgroundColor: canCreate ? null : colors.outline,
               mouseCursor: canCreate ? null : SystemMouseCursors.forbidden,
-              onPressed: canCreate
-                  ? () {
-                      context.goNamed(
-                        RouteConstants.createEditCollection,
-                        pathParameters: {
-                          "id": "new",
-                        },
-                      );
-                    }
-                  : null,
+              onPressed: canCreate ? () => createCollection(context) : null,
               tooltip: context.locale.createACollection(remaining),
               child: const Icon(Icons.library_add_rounded),
             );

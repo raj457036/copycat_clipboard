@@ -1,3 +1,5 @@
+import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -17,6 +19,22 @@ class PrimaryClipActionButton extends StatelessWidget {
     final colors = context.colors;
     if (item.encrypted) {
       return const SizedBox.shrink();
+    }
+
+    if (isMobilePlatform) {
+      return IconButton(
+        onPressed: () {
+          final menu = Menu.of(context);
+          menu.openOptionDialog(context);
+        },
+        icon: const Icon(Icons.more_vert_rounded),
+        style: IconButton.styleFrom(
+            shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(12),
+          ),
+        )),
+      );
     }
 
     return Padding(

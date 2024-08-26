@@ -1,12 +1,12 @@
-import 'package:copycat_base/l10n/l10n.dart';
 import 'package:clipboard/pages/login/widgets/local_signin_button.dart';
-import 'package:clipboard/widgets/locale_dropdown.dart';
+import 'package:clipboard/widgets/locale_dropdown_button.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/domain/model/localization.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_pro/widgets/forms/login_form.dart';
@@ -44,12 +44,12 @@ class LoginForm extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         if (!isMobile)
-          Positioned(
+          const Positioned(
             top: 0,
             left: 0,
             right: 0,
-            child: Image.asset(
-              AssetConstants.catPeekUpSideDownImage,
+            child: Image(
+              image: AssetImage(AssetConstants.catPeekUpSideDownImage),
               height: 140,
             ),
           ),
@@ -140,7 +140,7 @@ class LoginForm extends StatelessWidget {
                   ),
 
                   // const Spacer(),
-                  const LocaleDropdown(),
+                  const LocaleDropdownButton(),
                   height10,
                   Text.rich(
                     TextSpan(text: context.locale.termsAgreeP1, children: [
@@ -173,8 +173,8 @@ class LoginForm extends StatelessWidget {
                   ),
                   // height12,
                   if (isMobile)
-                    Image.asset(
-                      AssetConstants.catPeekUpSideDownImage,
+                    const Image(
+                      image: AssetImage(AssetConstants.catPeekUpSideDownImage),
                       height: 50,
                     ),
                 ],

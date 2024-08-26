@@ -20,7 +20,7 @@ class AccountPage extends StatelessWidget {
     ).open(context);
 
     if (answer) {
-      launchUrlString("https://forms.gle/TzAvgA935h8mYP5eA");
+      launchUrlString('https://forms.gle/TzAvgA935h8mYP5eA');
     }
   }
 

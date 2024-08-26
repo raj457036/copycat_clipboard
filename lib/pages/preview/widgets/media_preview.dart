@@ -5,6 +5,7 @@ import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:image/image.dart' as img;
 import 'package:universal_io/io.dart';
 
@@ -19,6 +20,12 @@ class MediaClipPreviewCard extends StatelessWidget {
 
   ImageProvider getPreview() {
     if (item.localPath != null) {
+      if (item.fileMimeType!.contains("svg")) {
+        return Svg(
+          item.localPath!,
+          source: SvgSource.file,
+        );
+      }
       return FileImage(File(item.localPath!));
     }
     if (item.imgBlurHash == null) {

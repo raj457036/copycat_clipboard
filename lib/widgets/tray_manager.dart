@@ -1,3 +1,4 @@
+import 'package:clipboard/utils/extensions.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ class TrayManager extends StatefulWidget {
   });
 
   @override
-  State<TrayManager> createState() => _TrayManagerState();
+  State<TrayManager> createState() => TrayManagerState();
 
   static Widget fromPlatform({required Widget child}) {
     if (isMobilePlatform) {
@@ -22,9 +23,12 @@ class TrayManager extends StatefulWidget {
     }
     return TrayManager(child: child);
   }
+
+  static TrayManagerState? maybeOf(BuildContext context) =>
+      context.findAncestorStateOfType<TrayManagerState>();
 }
 
-class _TrayManagerState extends State<TrayManager> with TrayListener {
+class TrayManagerState extends State<TrayManager> with TrayListener {
   bool paused = false;
 
   @override
@@ -49,16 +53,16 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
     Menu menu = Menu(
       items: [
         MenuItem(disabled: true, label: "CopyCat Clipboard"),
-        MenuItem.separator(),
-        MenuItem(
-          key: 'show_window',
-          label: 'Show Window',
-        ),
-        MenuItem(
-          key: 'hide_window',
-          label: 'Hide Window',
-          toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
-        ),
+        // MenuItem.separator(),
+        // MenuItem(
+        //   key: 'show_window',
+        //   label: 'Show Window',
+        // ),
+        // MenuItem(
+        //   key: 'hide_window',
+        //   label: 'Hide Window',
+        //   toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
+        // ),
         MenuItem.separator(),
         MenuItem(
           key: 'quit_app',
@@ -71,11 +75,7 @@ class _TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayIconMouseDown() async {
-    if (Platform.isWindows || Platform.isLinux) {
-      await windowManager.show();
-    } else {
-      trayManager.popUpContextMenu();
-    }
+    await windowManager.toggle();
   }
 
   @override

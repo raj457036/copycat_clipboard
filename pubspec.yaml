@@ -1,7 +1,7 @@
 name: clipboard
 description: "CopyCat Clipboard: One Clipboard, Limitless Productivity"
 publish_to: 'none'
-version: 0.1.21+51
+version: 0.1.22+52
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -45,7 +45,6 @@ dependencies:
   win32_registry: ^1.1.3
   share_handler: ^0.0.21
   universal_io: ^2.2.2
-  easy_worker: ^1.0.1
   emoji_picker_flutter: ^2.2.0
   duration: ^3.0.13
   open_filex: ^4.4.0
@@ -70,6 +69,11 @@ dependencies:
     path: packages/copycat_pro
   copycat_base:
     path: packages/copycat_base
+  flutter_colorpicker: ^1.1.0
+  flutter_svg: ^2.0.10+1
+  flutter_svg_provider:
+    git:
+      url: https://github.com/raj457036/flutter_svg_provider.git
   
   
 dev_dependencies:
@@ -104,5 +108,5 @@ flutter_launcher_icons:
   macos:
     generate: true
   image_path: "assets/images/icons/icon.png"
-  min_sdk_android: 21
+  min_sdk_android: 24
   remove_alpha_ios: true

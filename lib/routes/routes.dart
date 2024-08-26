@@ -17,6 +17,7 @@ import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
+import "package:clipboard/widgets/share_listener.dart";
 import "package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart";
 import "package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart";
 import "package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart";
@@ -122,10 +123,12 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               _ => 0,
             };
 
-            final navPage = NavBarPage(
-              navbarActiveIndex: activeIndex,
-              depth: depth,
-              child: child,
+            final navPage = ShareListener.fromPlatform(
+              child: NavBarPage(
+                navbarActiveIndex: activeIndex,
+                depth: depth,
+                child: child,
+              ),
             );
 
             return FocusScope(

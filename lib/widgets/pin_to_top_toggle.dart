@@ -23,10 +23,13 @@ class PinToTopToggleButton extends StatelessWidget {
           onPressed: () async {
             context.read<WindowActionCubit>().togglePinned();
           },
-          icon: Icon(
-            Icons.vertical_align_top,
-            color: pinned ? colors.primary : null,
+          iconSize: 16,
+          padding: EdgeInsets.zero,
+          style: IconButton.styleFrom(
+            shape: const RoundedRectangleBorder(),
           ),
+          color: pinned ? colors.error : null,
+          icon: const Icon(Icons.vertical_align_top),
           tooltip: context.locale.pinToTop,
         );
       },

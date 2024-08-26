@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/routes/routes.dart';
@@ -7,7 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
-import 'package:clipboard/widgets/rebuilding_db.dart';
+import 'package:clipboard/widgets/orientation_listener.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
@@ -20,7 +21,6 @@ import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
-import 'package:copycat_base/common/color_schemes.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
@@ -32,7 +32,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -62,10 +61,6 @@ Future<void> initializeServices() async {
     await initializeDesktopServices();
   } else {
     unawaited(MobileAds.instance.initialize());
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
   }
 
   await initializeFirebase();
@@ -88,23 +83,23 @@ Future<void> initializeDesktopServices() async {
     appPath: Platform.resolvedExecutable,
   );
 
-  WindowOptions windowOptions = WindowOptions(
+  WindowOptions windowOptions = const WindowOptions(
     size: initialWindowSize,
     minimumSize: minimumWindowSize,
     center: true,
+
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
     skipTaskbar: true,
-    titleBarStyle:
-        Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal,
-    windowButtonVisibility: false,
+    windowButtonVisibility: true,
+    backgroundColor: Colors.transparent,
+    titleBarStyle: TitleBarStyle.hidden,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    await windowManager.setClosable(false);
     if (Platform.isMacOS) {
       await windowManager.setVisibleOnAllWorkspaces(
-        false,
+        true,
         visibleOnFullScreen: true,
       );
     }
@@ -137,57 +132,69 @@ class AppContent extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case MonetizationActive(:final subscription):
-            context.read<SyncManagerCubit>().syncHours = subscription.syncHours;
-            context.read<AppConfigCubit>().load(subscription);
+            {
+              final syncCubit = context.read<SyncManagerCubit>();
+              syncCubit.syncHours = subscription.syncHours;
+              syncCubit.syncChanges(force: true);
+              context.read<AppConfigCubit>().load(subscription);
+            }
         }
       },
-      child: BlocSelector<AppConfigCubit, AppConfigState, (ThemeMode, String)>(
-        selector: (state) {
-          return (state.config.themeMode, state.config.locale);
-        },
-        builder: (context, state) {
-          final (theme, langCode) = state;
-          return MaterialApp.router(
-            scaffoldMessengerKey: scaffoldMessengerKey,
-            routeInformationParser: router_.routeInformationParser,
-            routeInformationProvider: router_.routeInformationProvider,
-            routerDelegate: router_.routerDelegate,
-            backButtonDispatcher: router_.backButtonDispatcher,
-            themeMode: theme,
-            theme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: lightColorScheme.onSurface,
-                displayColor: lightColorScheme.onSurface,
-              ),
-              colorScheme: lightColorScheme,
-              brightness: Brightness.light,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: radius12,
+      child: OrientationListener(
+        child: BlocSelector<AppConfigCubit, AppConfigState,
+            (ThemeMode, String, ColorScheme, ColorScheme)>(
+          selector: (state) {
+            return (
+              state.config.themeMode,
+              state.config.locale,
+              state.config.lightThemeColorScheme,
+              state.config.darkThemeColorScheme,
+            );
+          },
+          builder: (context, state) {
+            final (theme, langCode, lightColorScheme, darkColorScheme) = state;
+            return MaterialApp.router(
+              scaffoldMessengerKey: scaffoldMessengerKey,
+              routeInformationParser: router_.routeInformationParser,
+              routeInformationProvider: router_.routeInformationProvider,
+              routerDelegate: router_.routerDelegate,
+              backButtonDispatcher: router_.backButtonDispatcher,
+              themeMode: theme,
+              theme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: lightColorScheme.onSurface,
+                  displayColor: lightColorScheme.onSurface,
+                ),
+                colorScheme: lightColorScheme,
+                brightness: Brightness.light,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: radius12,
+                  ),
                 ),
               ),
-            ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              textTheme: textTheme.apply(
-                bodyColor: darkColorScheme.onSurface,
-                displayColor: darkColorScheme.onSurface,
-              ),
-              colorScheme: darkColorScheme,
-              brightness: Brightness.dark,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: radius12,
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                textTheme: textTheme.apply(
+                  bodyColor: darkColorScheme.onSurface,
+                  displayColor: darkColorScheme.onSurface,
+                ),
+                colorScheme: darkColorScheme,
+                brightness: Brightness.dark,
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: radius12,
+                  ),
                 ),
               ),
-            ),
-            debugShowCheckedModeBanner: false,
-            locale: Locale(langCode.isEmpty ? "en" : langCode),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-          );
-        },
+              debugShowCheckedModeBanner: false,
+              locale: Locale(langCode.isEmpty ? "en" : langCode),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+            );
+          },
+        ),
       ),
     );
   }
@@ -198,6 +205,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final content = AuthListener(
+      child: EventBridge(
+        child: WindowFocusManager.fromPlatform(
+          child: TrayManager.fromPlatform(
+            child: const SystemShortcutListener(
+              child: AppLinkListener(
+                child: AppContent(),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
     final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => sl()),
@@ -212,24 +232,12 @@ class MainApp extends StatelessWidget {
         if (isDesktopPlatform)
           BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
-      child: GestureDetector(
-        onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-        child: AuthListener(
-          child: EventBridge(
-            child: WindowFocusManager.fromPlatform(
-              child: TrayManager.fromPlatform(
-                child: const SystemShortcutListener(
-                  child: RebuildingDbOverlay(
-                    child: AppLinkListener(
-                      child: AppContent(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      child: isMobilePlatform
+          ? GestureDetector(
+              onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+              child: content,
+            )
+          : content,
     );
 
     if (kDebugMode) {

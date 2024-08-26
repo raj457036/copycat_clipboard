@@ -1,4 +1,5 @@
 import 'package:clipboard/pages/settings/widgets/info_card.dart';
+import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
@@ -10,6 +11,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class GoogleDriveSetup extends StatelessWidget {
   const GoogleDriveSetup({super.key});
 
+  Future<void> connectGDrive(BuildContext context,
+      {bool alreadyConnected = false}) async {
+    final cubit = context.read<DriveSetupCubit>();
+    if (alreadyConnected) {
+      final confirm = await const ConfirmDialog(
+        title: "⚠️ Re-Connect Google Drive?",
+        message:
+            "Your drive is already connected! Would you like to reconnect?\n\nTo avoid any data loss, please ensure you use the same account as before.",
+      ).open(context);
+
+      if (!confirm) return;
+    }
+    cubit.startSetup();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
@@ -18,6 +34,7 @@ class GoogleDriveSetup extends StatelessWidget {
       builder: (context, state) {
         String text = context.locale.connected;
         bool noClick = false;
+        bool alreadyConnected = false;
         bool hasError = false;
         switch (state) {
           case DriveSetupUnknown(:final waiting):
@@ -26,7 +43,8 @@ class GoogleDriveSetup extends StatelessWidget {
             noClick = true;
           case DriveSetupDone():
             text = context.locale.connected;
-            noClick = true;
+            noClick = false;
+            alreadyConnected = true;
             break;
           case DriveSetupError():
             text = context.locale.connectNow;
@@ -58,11 +76,12 @@ class GoogleDriveSetup extends StatelessWidget {
                 ),
                 onPressed: noClick
                     ? null
-                    : () {
-                        context.read<DriveSetupCubit>().startSetup();
-                      },
-                icon: Image.asset(
-                  AssetConstants.googleDriveLogo,
+                    : () => connectGDrive(
+                          context,
+                          alreadyConnected: alreadyConnected,
+                        ),
+                icon: const Image(
+                  image: AssetImage(AssetConstants.googleDriveLogo),
                   height: 20,
                 ),
                 label: Text(text),
