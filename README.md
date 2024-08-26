@@ -4,6 +4,8 @@
 
 [Download v0.1.22 Here](https://www.entilitystudio.com/copycat-clipboard)
 
+or Download from [EntiltyStudio Public Repos](https://github.com/raj457036/entility_studio_public)
+
 Simplify Your Copy-Paste Tasks Across Devices and Platforms
 
 Copycat Clipboard is an intuitive clipboard manager designed to enhance your workflow. Seamlessly switch between documents, apps, and devices while keeping all your copied items organized and accessible.
