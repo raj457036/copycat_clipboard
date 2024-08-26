@@ -1,3 +1,5 @@
+[CopyCat Clipboard]!(assets/images/icons/icon.png)
+
 # CopyCat Clipboard : The clipboard experience you always wanted
 
 [Download v0.1.22 Here](https://www.entilitystudio.com/copycat-clipboard)
