@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:focus_window/windows_paste_simulator.dart';
+import 'package:focus_window/macos.dart';
+import 'package:focus_window/not_supported.dart';
+import 'package:focus_window/platform_activity_observer_interface.dart';
+import 'package:focus_window/windows.dart';
 import 'package:universal_io/io.dart';
-import "package:win32/win32.dart" show GetForegroundWindow, SetForegroundWindow;
 
 import 'focus_window_platform_interface.dart';
 
@@ -10,45 +11,37 @@ import 'focus_window_platform_interface.dart';
 class MethodChannelFocusWindow extends FocusWindowPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('focus_window');
+  late final PlatformActivityObserverInterface activityObserver;
+
+  MethodChannelFocusWindow() {
+    if (Platform.isMacOS) {
+      activityObserver = const MacosActivityObserver();
+    } else if (Platform.isWindows) {
+      activityObserver = const WindowsActivityObserver();
+    } else {
+      activityObserver = NotSupportedPlatformActivityObserver();
+    }
+  }
 
   @override
   Future<int?> getActiveWindowId() async {
-    if (Platform.isWindows) {
-      final id = GetForegroundWindow();
-      return id;
-    } else if (Platform.isMacOS) {
-      final id = await methodChannel.invokeMethod<int>('getActiveWindowId');
-      return id;
-    }
-    return -1;
+    return activityObserver.getActiveWindowId();
   }
 
   @override
   Future<void> setActiveWindowId(int windowId) async {
-    if (Platform.isWindows) {
-      SetForegroundWindow(windowId);
-    } else if (Platform.isMacOS) {
-      await methodChannel.invokeMethod<void>(
-        'setActiveWindowId',
-        {
-          "windowId": windowId,
-        },
-      );
-    }
+    await activityObserver.setActiveWindowId(windowId);
     return;
   }
 
   @override
   Future<void> pasteContent() async {
-    if (Platform.isWindows) {
-      simulateWindowsPasteShortcut();
-    }
-    if (Platform.isMacOS) {
-      await methodChannel.invokeMethod<void>("pasteContent", {});
-    }
-    if (Platform.isLinux) {
-      await methodChannel.invokeMethod<void>("pasteContent", {});
-    }
+    await activityObserver.pasteContent();
   }
+
+  @override
+  Stream get events => activityObserver.events;
+
+  @override
+  Future<bool> get isObserving => activityObserver.isObserving;
 }

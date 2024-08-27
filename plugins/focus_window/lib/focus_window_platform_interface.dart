@@ -1,8 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:focus_window/activity_info.dart';
+import 'package:focus_window/platform_activity_observer_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'focus_window_method_channel.dart';
 
-abstract class FocusWindowPlatform extends PlatformInterface {
+abstract class FocusWindowPlatform extends PlatformInterface
+    implements PlatformActivityObserverInterface {
   /// Constructs a FocusWindowPlatform.
   FocusWindowPlatform() : super(token: _token);
 
@@ -34,4 +39,48 @@ abstract class FocusWindowPlatform extends PlatformInterface {
   Future<void> pasteContent() {
     throw UnimplementedError("pasteContent() has not been implemented");
   }
+
+  @override
+  Future<Uint8List?> getIcon(String applicationPath) {
+    throw UnimplementedError("getIcon() has not been implemented");
+  }
+
+  @override
+  Future<ActivityInfo> getActivity({bool withIcon = false}) {
+    throw UnimplementedError("ActivityInfo() has not been implemented");
+  }
+
+  @override
+  Future<bool> requestAccessibilityPermission() {
+    throw UnimplementedError(
+      "requestAccessibilityPermission() has not been implemented",
+    );
+  }
+
+  @override
+  Future<bool> isAccessibilityPermissionGranted() {
+    throw UnimplementedError(
+      "isAccessibilityPermissionGranted() has not been implemented",
+    );
+  }
+
+  @override
+  Future<void> startObserver() {
+    throw UnimplementedError(
+      "isAccessibilityPermissionGranted() has not been implemented",
+    );
+  }
+
+  @override
+  Future<void> stopObserver() {
+    throw UnimplementedError(
+      "isAccessibilityPermissionGranted() has not been implemented",
+    );
+  }
+
+  @override
+  Future<bool> get isObserving;
+
+  @override
+  Stream get events;
 }
