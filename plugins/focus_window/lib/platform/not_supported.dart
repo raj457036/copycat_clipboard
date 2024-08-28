@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:focus_window/activity_info.dart';
-import 'package:focus_window/platform_activity_observer_interface.dart';
+import 'package:focus_window/platform/activity_info.dart';
+import 'package:focus_window/platform/platform_activity_observer_interface.dart';
 
 class NotSupportedPlatformActivityObserver
     implements PlatformActivityObserverInterface {

@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:focus_window/macos.dart';
-import 'package:focus_window/not_supported.dart';
-import 'package:focus_window/platform_activity_observer_interface.dart';
-import 'package:focus_window/windows.dart';
+import 'package:focus_window/platform/activity_info.dart';
+import 'package:focus_window/platform/macos.dart';
+import 'package:focus_window/platform/not_supported.dart';
+import 'package:focus_window/platform/platform_activity_observer_interface.dart';
+import 'package:focus_window/platform/windows.dart';
 import 'package:universal_io/io.dart';
 
 import 'focus_window_platform_interface.dart';
@@ -44,4 +45,34 @@ class MethodChannelFocusWindow extends FocusWindowPlatform {
 
   @override
   Future<bool> get isObserving => activityObserver.isObserving;
+
+  @override
+  Future<ActivityInfo> getActivity({bool withIcon = false}) {
+    return activityObserver.getActivity(withIcon: withIcon);
+  }
+
+  @override
+  Future<Uint8List?> getIcon(String applicationPath) {
+    return activityObserver.getIcon(applicationPath);
+  }
+
+  @override
+  Future<bool> isAccessibilityPermissionGranted() {
+    return activityObserver.isAccessibilityPermissionGranted();
+  }
+
+  @override
+  Future<bool> requestAccessibilityPermission() {
+    return activityObserver.requestAccessibilityPermission();
+  }
+
+  @override
+  Future<void> startObserver() {
+    return activityObserver.startObserver();
+  }
+
+  @override
+  Future<void> stopObserver() {
+    return activityObserver.stopObserver();
+  }
 }

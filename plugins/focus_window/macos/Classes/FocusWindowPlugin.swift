@@ -217,7 +217,7 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
         }
 
         var docRef: AnyObject? = nil
-        if AXUIElementCopyAttributeValue(elements.first!, "AXDocument" as CFString, &docRef) == .success {
+        if !elements.isEmpty && AXUIElementCopyAttributeValue(elements.first!, "AXDocument" as CFString, &docRef) == .success {
             let filePath = docRef as! String
             activity["document"] = filePath
         }
@@ -341,12 +341,12 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
             ) -> Void in
             
             if notification == kAXFocusedWindowChangedNotification as CFString {
-                TrackerLibPlugin.windowChangedCallback.focusedWindowChanged(axObserver, window: axElement)
+                FocusWindowPlugin.windowChangedCallback.focusedWindowChanged(axObserver, window: axElement)
             } else {
                 let event: Dictionary<String, String> = [
                     "type": "TabChanged",
                 ]
-                try? TrackerLibPlugin.eventChannel?.success(event: event)
+                try? FocusWindowPlugin.eventChannel?.success(event: event)
             }
           }, &observer)
 
@@ -363,7 +363,7 @@ public class FocusWindowPlugin: NSObject, FlutterPlugin {
         AXUIElementCopyAttributeValue(focusedApp, kAXFocusedWindowAttribute as CFString, &focusedWindow)
 
         if focusedWindow != nil {
-            TrackerLibPlugin.windowChangedCallback.focusedWindowChanged(observer!, window: focusedWindow as! AXUIElement)
+            FocusWindowPlugin.windowChangedCallback.focusedWindowChanged(observer!, window: focusedWindow as! AXUIElement)
         }
       }
 }

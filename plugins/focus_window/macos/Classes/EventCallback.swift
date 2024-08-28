@@ -22,7 +22,7 @@ public class WindowChanged: NSObject {
         let event: Dictionary<String, String> = [
             "type" : "WindowChanged"
         ]
-        try? TrackerLibPlugin.eventChannel?.success(event: event)
+        try? FocusWindowPlugin.eventChannel?.success(event: event)
 
         oldWindow = window
     }

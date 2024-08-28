@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:focus_window/activity_info.dart';
-import 'package:focus_window/platform_activity_observer_interface.dart';
+import 'package:focus_window/platform/activity_info.dart';
+import 'package:focus_window/platform/platform_activity_observer_interface.dart';
 
 // exceptions:
 class AssistiveAccessNotGranted implements Exception {
@@ -27,7 +27,8 @@ class MacosActivityObserver implements PlatformActivityObserverInterface {
 
   @override
   Future<void> startObserver() async {
-    await _channel.invokeMethod("startObserver");
+    final result = await _channel.invokeMethod("startObserver");
+    print(result);
   }
 
   @override

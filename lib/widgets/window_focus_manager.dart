@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -40,6 +42,7 @@ class WindowFocusManager extends StatefulWidget {
 class WindowFocusManagerState extends State<WindowFocusManager>
     with WindowListener {
   int? lastWindowId;
+  StreamSubscription? subscription;
 
   late final AppConfigCubit appConfigCubit;
 
@@ -111,16 +114,34 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
   }
 
+  void onFocuswindowChange(data) {
+    print(data);
+  }
+
+  void startListners() async {
+    // final hasGrant =
+    //     await widget.focusWindow.isAccessibilityPermissionGranted();
+    // print("GRANTED: $hasGrant");
+
+    // final activity = await widget.focusWindow.getActivity();
+    // await widget.focusWindow.startObserver();
+    // print("OBSERVING: ${widget.focusWindow.isObserving}");
+    // subscription ??= widget.focusWindow.events.listen(onFocuswindowChange);
+  }
+
   @override
   void initState() {
     super.initState();
     windowManager.addListener(this);
     windowManager.setPreventClose(true);
     appConfigCubit = context.read();
+    startListners();
   }
 
   @override
   void dispose() {
+    subscription?.cancel();
+    widget.focusWindow.stopObserver();
     windowManager.removeListener(this);
     super.dispose();
   }

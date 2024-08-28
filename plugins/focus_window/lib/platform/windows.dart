@@ -4,9 +4,9 @@ import 'dart:convert' show base64;
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:focus_window/activity_info.dart';
-import 'package:focus_window/utils.dart';
-import 'package:focus_window/windows_paste_simulator.dart';
+import 'package:focus_window/platform/activity_info.dart';
+import 'package:focus_window/platform/utils.dart';
+import 'package:focus_window/platform/windows_paste_simulator.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:win32/win32.dart';
