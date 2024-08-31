@@ -7,6 +7,7 @@ abstract class PlatformActivityObserverInterface {
   Future<ActivityInfo> getActivity({bool withIcon = false});
   Future<bool> requestAccessibilityPermission();
   Future<bool> isAccessibilityPermissionGranted();
+  Future<void> openAccessibilityPermissionSetting();
   Future<void> startObserver();
   Future<void> stopObserver();
   Future<int?> getActiveWindowId();

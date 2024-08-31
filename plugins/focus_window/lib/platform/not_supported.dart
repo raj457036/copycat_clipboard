@@ -55,4 +55,9 @@ class NotSupportedPlatformActivityObserver
   Future<void> setActiveWindowId(int windowId) {
     return Future.value(null);
   }
+
+  @override
+  Future<void> openAccessibilityPermissionSetting() async {
+    return;
+  }
 }

@@ -67,6 +67,11 @@ class MethodChannelFocusWindow extends FocusWindowPlatform {
   }
 
   @override
+  Future<void> openAccessibilityPermissionSetting() {
+    return activityObserver.openAccessibilityPermissionSetting();
+  }
+
+  @override
   Future<void> startObserver() {
     return activityObserver.startObserver();
   }

@@ -23,8 +23,13 @@ class SmartPasteSwitch extends StatelessWidget {
       builder: (context, state) {
         return SwitchListTile(
           value: state,
-          onChanged: (value) {
-            context.read<AppConfigCubit>().toggleSmartPaste(value);
+          onChanged: (value) async {
+            final cubit = context.read<AppConfigCubit>();
+            final hasPermission =
+                await cubit.focusWindow.requestAccessibilityPermission();
+            if (hasPermission) {
+              cubit.toggleSmartPaste(value);
+            }
           },
           title: Text(context.locale.smartPaste),
           subtitle: Text(

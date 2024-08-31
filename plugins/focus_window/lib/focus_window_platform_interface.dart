@@ -61,6 +61,13 @@ abstract class FocusWindowPlatform extends PlatformInterface
   }
 
   @override
+  Future<void> openAccessibilityPermissionSetting() {
+    throw UnimplementedError(
+      "openAccessibilityPermissionSetting() has not been implemented",
+    );
+  }
+
+  @override
   Future<bool> isAccessibilityPermissionGranted() {
     throw UnimplementedError(
       "isAccessibilityPermissionGranted() has not been implemented",

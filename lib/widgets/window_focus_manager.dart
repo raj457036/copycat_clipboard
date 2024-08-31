@@ -118,24 +118,12 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     print(data);
   }
 
-  void startListners() async {
-    // final hasGrant =
-    //     await widget.focusWindow.isAccessibilityPermissionGranted();
-    // print("GRANTED: $hasGrant");
-
-    // final activity = await widget.focusWindow.getActivity();
-    // await widget.focusWindow.startObserver();
-    // print("OBSERVING: ${widget.focusWindow.isObserving}");
-    // subscription ??= widget.focusWindow.events.listen(onFocuswindowChange);
-  }
-
   @override
   void initState() {
     super.initState();
     windowManager.addListener(this);
     windowManager.setPreventClose(true);
     appConfigCubit = context.read();
-    startListners();
   }
 
   @override

@@ -55,9 +55,9 @@ class MacosActivityObserver implements PlatformActivityObserverInterface {
         false;
   }
 
-  Future<bool> openAccessibilityPermissionSetting() async {
-    return await _channel.invokeMethod('openAccessibilityPermissionSetting') ??
-        false;
+  @override
+  Future<void> openAccessibilityPermissionSetting() async {
+    await _channel.invokeMethod('openAccessibilityPermissionSetting');
   }
 
   @override

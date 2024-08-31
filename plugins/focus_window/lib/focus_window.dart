@@ -34,7 +34,12 @@ class FocusWindow {
   Future<bool> get isObserving => FocusWindowPlatform.instance.isObserving;
 
   Future<bool> requestAccessibilityPermission() {
+    // FocusWindowPlatform.instance.
     return FocusWindowPlatform.instance.requestAccessibilityPermission();
+  }
+
+  Future<void> openAccessibilityPermissionSetting() {
+    return FocusWindowPlatform.instance.openAccessibilityPermissionSetting();
   }
 
   Future<void> startObserver() {

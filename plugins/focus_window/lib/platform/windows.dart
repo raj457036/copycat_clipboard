@@ -155,4 +155,9 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
   Future<void> pasteContent() async {
     simulateWindowsPasteShortcut();
   }
+
+  @override
+  Future<void> openAccessibilityPermissionSetting() async {
+    return;
+  }
 }
