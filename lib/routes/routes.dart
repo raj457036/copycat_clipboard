@@ -94,7 +94,8 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                 context.read<OfflinePersistanceCubit>().getItem(id: id);
             return DynamicPage(
               key: state.pageKey,
-              builder: (context, isDialog) => FutureBuilder(
+              fullScreenDialog: true,
+              child: FutureBuilder(
                 future: item,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
@@ -104,7 +105,6 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                   }
                   return ClipboardItemPreviewPage(
                     item: snapshot.data,
-                    isDialog: isDialog,
                   );
                 },
               ),
@@ -214,29 +214,30 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
 
                     return DynamicPage(
                       key: state.pageKey,
-                      builder: (context, isDialog) {
-                        if (id == "new") {
-                          return ClipCollectionCreateEditPage(
-                              isDialog: isDialog);
-                        }
-                        final id_ = int.parse(id);
+                      child: Builder(
+                        builder: (context) {
+                          if (id == "new") {
+                            return const ClipCollectionCreateEditPage();
+                          }
+                          final id_ = int.parse(id);
 
-                        return FutureBuilder(
-                          future: context.read<ClipCollectionCubit>().get(id_),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
+                          return FutureBuilder(
+                            future:
+                                context.read<ClipCollectionCubit>().get(id_),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return ClipCollectionCreateEditPage(
+                                collection: snapshot.data,
                               );
-                            }
-                            return ClipCollectionCreateEditPage(
-                              isDialog: isDialog,
-                              collection: snapshot.data,
-                            );
-                          },
-                        );
-                      },
+                            },
+                          );
+                        },
+                      ),
                     );
                   },
                 ),

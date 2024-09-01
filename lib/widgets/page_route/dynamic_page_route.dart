@@ -1,25 +1,16 @@
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-typedef DynamicWidgetBuilder = Widget Function(
-    BuildContext context, bool isDialog);
-
-class DynamicPage<T> extends Page<T> {
+class DynamicPage<T> extends CustomTransitionPage<T> {
   final Offset? anchorPoint;
-  final Color? barrierColor;
-  final bool barrierDismissible;
-  final String? barrierLabel;
   final bool useSafeArea;
   final CapturedThemes? themes;
-  final DynamicWidgetBuilder builder;
   final bool fullScreenDialog;
 
-  const DynamicPage({
-    required this.builder,
+  DynamicPage({
+    required super.child,
     this.anchorPoint,
-    this.barrierColor = Colors.black87,
-    this.barrierDismissible = true,
-    this.barrierLabel,
     this.useSafeArea = true,
     this.fullScreenDialog = false,
     this.themes,
@@ -27,7 +18,15 @@ class DynamicPage<T> extends Page<T> {
     super.name,
     super.arguments,
     super.restorationId,
-  });
+  }) : super(
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              ScaleTransition(
+            scale: animation,
+            child: child,
+          ),
+          barrierColor: Colors.black54,
+          barrierDismissible: true,
+        );
 
   @override
   Route<T> createRoute(BuildContext context) {
@@ -37,8 +36,8 @@ class DynamicPage<T> extends Page<T> {
     if (Breakpoints.isMobile(width)) {
       return MaterialPageRoute<T>(
         settings: this,
-        builder: (context) => builder(context, false),
-        fullscreenDialog: fullScreenDialog,
+        builder: (context) => child,
+        fullscreenDialog: false,
         maintainState: true,
         barrierDismissible: barrierDismissible,
       );
@@ -47,9 +46,7 @@ class DynamicPage<T> extends Page<T> {
     return DialogRoute<T>(
       context: context,
       settings: this,
-      builder: (context) => Dialog(
-        child: builder(context, true),
-      ),
+      builder: (context) => Dialog(child: child),
       anchorPoint: anchorPoint,
       barrierColor: barrierColor,
       barrierDismissible: barrierDismissible,

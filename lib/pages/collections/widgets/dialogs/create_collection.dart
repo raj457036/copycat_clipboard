@@ -20,7 +20,7 @@ Future<void> showCreateCollectionDialog(BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) => const Dialog(
-        child: ClipCollectionCreateEditPage(isDialog: true),
+        child: ClipCollectionCreateEditPage(),
       ),
     );
   }

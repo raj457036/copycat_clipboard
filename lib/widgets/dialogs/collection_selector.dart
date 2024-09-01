@@ -2,6 +2,7 @@ import 'package:clipboard/widgets/fabs/create_collection.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clip_collection/clipcollection.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
@@ -19,11 +20,13 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
   Future<ClipCollection?> open(BuildContext context) async {
     return await showDialog<ClipCollection?>(
       context: context,
-      builder: (context) => SimpleDialog(
+      builder: (context) => AlertDialog(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(context.locale.selectCollection),
+            FittedBox(
+              child: Text(context.locale.selectCollection),
+            ),
             const DisableForLocalUser(
               ifLocal: CreateCollectionFAB(
                 localMode: true,
@@ -33,7 +36,8 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
             ),
           ],
         ),
-        children: [this],
+        content: this,
+        insetPadding: const EdgeInsets.all(padding12),
       ),
     );
   }

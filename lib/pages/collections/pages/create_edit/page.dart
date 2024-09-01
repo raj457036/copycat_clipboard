@@ -1,4 +1,5 @@
 import 'package:clipboard/pages/collections/pages/create_edit/widgets/create_edit_form.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clip_collection/clipcollection.dart';
 import 'package:copycat_base/l10n/l10n.dart';
@@ -55,13 +56,11 @@ class ClipCollectionCreateEditMobilePageContent extends StatelessWidget {
 }
 
 class ClipCollectionCreateEditPage extends StatelessWidget {
-  final bool isDialog;
   final ClipCollection? collection;
 
   const ClipCollectionCreateEditPage({
     super.key,
     this.collection,
-    this.isDialog = false,
   });
 
   @override
@@ -69,7 +68,9 @@ class ClipCollectionCreateEditPage extends StatelessWidget {
     final title = collection == null
         ? context.locale.createCollection
         : context.locale.editCollection;
-    if (isDialog) {
+    final width = MediaQuery.of(context).size.width;
+    final smallScreen = Breakpoints.isMobile(width);
+    if (!smallScreen) {
       return ClipCollectionCreateEditDesktopPageContent(
         title: title,
         collection: collection,
