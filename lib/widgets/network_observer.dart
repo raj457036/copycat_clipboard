@@ -22,14 +22,14 @@ class NetworkObserver extends StatefulWidget {
 }
 
 class _NetworkObserverState extends State<NetworkObserver> {
-  late StreamSubscription subscription;
+  StreamSubscription? subscription;
   bool wasDisconnected = false;
   late AuthCubit authCubit;
   late MonetizationCubit monetizationCubit;
   late DriveSetupCubit driveSetupCubit;
   late AppConfigCubit appConfigCubit;
 
-  late final Stream<bool> networkObserver;
+  Stream<bool>? networkObserver;
 
   bool transformNetworkStatus(InternetStatus event) {
     return event == InternetStatus.connected;
@@ -37,17 +37,18 @@ class _NetworkObserverState extends State<NetworkObserver> {
 
   @override
   void dispose() {
-    subscription.cancel();
+    subscription?.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    authCubit = BlocProvider.of<AuthCubit>(context);
+    if (authCubit.isLocalAuth) return;
     networkObserver =
         InternetConnection().onStatusChange.map(transformNetworkStatus);
-    subscription = networkObserver.listen(onConnectionChanged);
-    authCubit = BlocProvider.of<AuthCubit>(context);
+    subscription = networkObserver?.listen(onConnectionChanged);
     monetizationCubit = BlocProvider.of<MonetizationCubit>(context);
     driveSetupCubit = BlocProvider.of<DriveSetupCubit>(context);
     appConfigCubit = BlocProvider.of<AppConfigCubit>(context);

@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
@@ -109,41 +108,8 @@ class EventBridge extends StatelessWidget {
               case CloudPersistanceDeleted(:final item):
                 context.read<OfflinePersistanceCubit>().delete(item);
                 break;
-              case CloudPersistanceError(
-                  :final retryCount,
-                  :final failedAction,
-                  :final item
-                ):
-                {
-                  if (retryCount.isNegative) return;
-                  if (retryCount > 3) return;
-
-                  await waitHere(retryCount + 1);
-
-                  switch (failedAction) {
-                    case FailedAction.create ||
-                          FailedAction.update ||
-                          FailedAction.upload:
-                      context.read<CloudPersistanceCubit>().persist(
-                            item,
-                            retryCount: retryCount + 1,
-                          );
-                      break;
-                    case FailedAction.download:
-                      context.read<CloudPersistanceCubit>().download(
-                            item,
-                            retryCount: retryCount + 1,
-                          );
-                      break;
-                    case FailedAction.delete:
-                      context.read<CloudPersistanceCubit>().delete(
-                            item,
-                            retryCount: retryCount + 1,
-                          );
-                      break;
-                    default:
-                  }
-                }
+              case CloudPersistanceError(:final failure, :final item):
+                {}
                 break;
               case _:
             }
