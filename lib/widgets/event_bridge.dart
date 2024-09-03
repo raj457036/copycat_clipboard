@@ -125,7 +125,7 @@ class EventBridge extends StatelessWidget {
               case CloudPersistanceDeleted(:final item):
                 context.read<OfflinePersistanceCubit>().delete(item);
                 break;
-              case CloudPersistanceError(:final failure, :final item):
+              case CloudPersistanceError(:final failure):
                 {
                   // TODO: improve retry strategy
                   showFailureSnackbar(failure);
