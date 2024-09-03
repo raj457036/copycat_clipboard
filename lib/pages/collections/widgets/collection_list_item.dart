@@ -84,6 +84,7 @@ class ClipCollectionListItem extends StatelessWidget {
             isThreeLine: true,
             titleAlignment: ListTileTitleAlignment.center,
             trailing: const Icon(Icons.chevron_right),
+            onLongPress: () => Menu.of(context).openOptionDialog(context),
             onTap: () => showDetail(context),
           ),
         );
