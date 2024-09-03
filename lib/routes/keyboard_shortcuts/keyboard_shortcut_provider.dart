@@ -6,10 +6,8 @@ import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/common/events.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
-import 'package:copycat_base/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 
@@ -167,12 +165,8 @@ class KeyboardShortcutProvider extends StatelessWidget {
         ),
         RefreshIntent: CallbackAction<RefreshIntent>(
           onInvoke: (intent) async {
-            final cubit = context.read<SyncManagerCubit>();
-            final failure = await cubit.syncChanges(force: true);
+            await syncChanges(context);
 
-            if (failure != null) {
-              showFailureSnackbar(failure);
-            }
             return null;
           },
         ),

@@ -8,6 +8,7 @@ import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubi
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,16 @@ class EventBridge extends StatelessWidget {
     super.key,
     required this.child,
   });
+
+  bool shouldSync(List<String>? updatedFields, ClipboardItem item) {
+    if (updatedFields == null) return true;
+    if (updatedFields.contains("copiedCount") && item.copiedCount % 10 == 0) {
+      // if only copied count is changed then only sync after every 10 copy operations.
+      return true;
+    }
+
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +98,14 @@ class EventBridge extends StatelessWidget {
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
           listener: (context, state) async {
             switch (state) {
-              case OfflinePersistanceSaved(:final item, synced: false):
-                context.read<CloudPersistanceCubit>().persist(item);
+              case OfflinePersistanceSaved(
+                  :final item,
+                  synced: false,
+                  :final updatedFields
+                ):
+                if (shouldSync(updatedFields, item)) {
+                  context.read<CloudPersistanceCubit>().persist(item);
+                }
                 break;
               case OfflinePersistanceError(:final failure):
                 showFailureSnackbar(failure);
@@ -111,6 +128,7 @@ class EventBridge extends StatelessWidget {
               case CloudPersistanceError(:final failure, :final item):
                 {
                   // TODO: improve retry strategy
+                  showFailureSnackbar(failure);
                 }
                 break;
               case _:
