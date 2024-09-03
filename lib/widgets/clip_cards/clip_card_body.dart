@@ -63,14 +63,14 @@ class ClipCardBodyContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (item.title != null)
+              if (item.displayTitle != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: padding8,
                     vertical: padding2,
                   ),
                   child: Text(
-                    item.title!,
+                    item.displayTitle!,
                     style: textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/utility.dart';
@@ -40,6 +42,7 @@ class WindowFocusManager extends StatefulWidget {
 class WindowFocusManagerState extends State<WindowFocusManager>
     with WindowListener {
   int? lastWindowId;
+  StreamSubscription? subscription;
 
   late final AppConfigCubit appConfigCubit;
 
@@ -111,6 +114,10 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
   }
 
+  void onFocuswindowChange(data) {
+    print(data);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -121,6 +128,8 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   @override
   void dispose() {
+    subscription?.cancel();
+    widget.focusWindow.stopObserver();
     windowManager.removeListener(this);
     super.dispose();
   }

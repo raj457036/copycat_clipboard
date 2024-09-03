@@ -59,27 +59,36 @@ class ClipCollectionListItem extends StatelessWidget {
           onPressed: () => delete(context),
         ),
       ],
-      child: ListTile(
-        shape: shape,
-        autofocus: autoFocus,
-        leading: Text(
-          collection.emoji,
-          style: textTheme.headlineMedium,
-        ),
-        title: Text(collection.title, maxLines: 1),
-        titleTextStyle: textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
-        subtitle: Text(
-          collection.description ?? context.locale.noDescription,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        isThreeLine: true,
-        titleAlignment: ListTileTitleAlignment.center,
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => showDetail(context),
-      ),
+      child: Builder(builder: (context) {
+        return GestureDetector(
+          onSecondaryTapDown: (detail) {
+            final position = detail.globalPosition;
+            Menu.of(context).openPopupMenu(context, position);
+          },
+          child: ListTile(
+            shape: shape,
+            autofocus: autoFocus,
+            leading: Text(
+              collection.emoji,
+              style: textTheme.headlineMedium,
+            ),
+            title: Text(collection.title, maxLines: 1),
+            titleTextStyle: textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            subtitle: Text(
+              collection.description ?? context.locale.noDescription,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            isThreeLine: true,
+            titleAlignment: ListTileTitleAlignment.center,
+            trailing: const Icon(Icons.chevron_right),
+            onLongPress: () => Menu.of(context).openOptionDialog(context),
+            onTap: () => showDetail(context),
+          ),
+        );
+      }),
     );
   }
 }

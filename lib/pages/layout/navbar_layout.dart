@@ -1,4 +1,5 @@
 import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/widgets/network_observer.dart';
 import 'package:clipboard/widgets/titlebar.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,7 @@ class NavBarPage extends StatefulWidget {
 class _NavBarPageState extends State<NavBarPage> {
   @override
   Widget build(BuildContext context) {
-    //TODO::: Widget child = NetworkObserver(child: widget.child);
-    Widget child = widget.child;
+    Widget child = NetworkObserver(child: widget.child);
     if (isDesktopPlatform) child = TitlebarView(child: child);
     return PopScope(
       canPop: false,

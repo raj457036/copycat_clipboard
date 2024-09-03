@@ -137,6 +137,7 @@ class AppContent extends StatelessWidget {
               syncCubit.syncHours = subscription.syncHours;
               syncCubit.syncChanges(force: true);
               context.read<AppConfigCubit>().load(subscription);
+              context.read<SyncManagerCubit>().loadSub(subscription);
             }
         }
       },

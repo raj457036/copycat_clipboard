@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
+import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:image/image.dart' as img;
@@ -18,7 +20,7 @@ class MediaClipPreviewCard extends StatelessWidget {
     required this.isMobile,
   });
 
-  ImageProvider getPreview() {
+  ImageProvider? getPreview() {
     if (item.localPath != null) {
       if (item.fileMimeType!.contains("svg")) {
         return Svg(
@@ -40,35 +42,55 @@ class MediaClipPreviewCard extends StatelessWidget {
     }
   }
 
-  Icon getIcon() {
+  void open() async {
+    openFile(item);
+  }
+
+  Widget? getPrimaryView(BuildContext context) {
     if (item.fileMimeType != null) {
       if (item.fileMimeType!.startsWith("image")) {
-        return const Icon(
-          Icons.image,
-          color: Colors.white,
+        return const Align(
+          alignment: Alignment(-.98, -.98),
+          child: Icon(
+            Icons.image,
+            color: Colors.white,
+          ),
         );
       }
       if (item.fileMimeType!.startsWith("video")) {
-        return const Icon(
-          Icons.ondemand_video_rounded,
-          color: Colors.white,
+        if (item.inCache) {
+          return Center(
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.play_arrow_rounded),
+              onPressed: open,
+              label: Text(context.locale.open),
+            ),
+          );
+        }
+        return const Align(
+          alignment: Alignment(-.98, -.98),
+          child: Icon(
+            Icons.video_file,
+            color: Colors.white,
+          ),
         );
       }
       if (item.fileMimeType!.startsWith("audio")) {
-        return const Icon(
-          Icons.audiotrack,
-          color: Colors.white,
+        return const Align(
+          alignment: Alignment(-.98, -.98),
+          child: Icon(
+            Icons.audiotrack,
+            color: Colors.white,
+          ),
         );
       }
     }
-    return const Icon(
-      Icons.image,
-      color: Colors.white,
-    );
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    final preview = getPreview();
     return Card.filled(
       margin: isMobile
           ? const EdgeInsets.only(
@@ -86,20 +108,19 @@ class MediaClipPreviewCard extends StatelessWidget {
             ),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: getPreview(),
-            fit: BoxFit.contain,
-          ),
+          image: preview != null
+              ? DecorationImage(
+                  image: preview,
+                  fit: BoxFit.contain,
+                )
+              : null,
           borderRadius: isMobile
               ? radius12
               : const BorderRadius.horizontal(
                   left: Radius.circular(12),
                 ),
         ),
-        child: Align(
-          alignment: const Alignment(0.95, 0.95),
-          child: getIcon(),
-        ),
+        child: getPrimaryView(context),
       ),
     );
   }

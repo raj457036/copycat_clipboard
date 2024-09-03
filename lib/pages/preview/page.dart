@@ -4,6 +4,7 @@ import 'package:clipboard/pages/preview/widgets/media_preview.dart';
 import 'package:clipboard/pages/preview/widgets/preview_options.dart';
 import 'package:clipboard/pages/preview/widgets/text_preview.dart';
 import 'package:clipboard/pages/preview/widgets/url_preview.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
@@ -123,22 +124,27 @@ class ClipboardItemMobilePreviewPageContent extends StatelessWidget {
 }
 
 class ClipboardItemPreviewPage extends StatelessWidget {
-  final bool isDialog;
   final ClipboardItem item;
   const ClipboardItemPreviewPage({
     super.key,
     required this.item,
-    this.isDialog = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (isDialog) {
+    final width = MediaQuery.of(context).size.width;
+    final smallScreen = Breakpoints.isMobile(width);
+    if (!smallScreen) {
       return ClipboardItemDesktopPreviewPageContent(item: item);
     }
     return Scaffold(
       appBar: AppBar(
         title: Text(context.locale.preview),
+        actions: const [
+          CloseButton(),
+          width12,
+        ],
+        automaticallyImplyLeading: false,
       ),
       body: ClipboardItemMobilePreviewPageContent(item: item),
     );

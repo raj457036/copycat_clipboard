@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/routes/utils.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
@@ -9,6 +8,7 @@ import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubi
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +20,16 @@ class EventBridge extends StatelessWidget {
     super.key,
     required this.child,
   });
+
+  bool shouldSync(List<String>? updatedFields, ClipboardItem item) {
+    if (updatedFields == null) return true;
+    if (updatedFields.contains("copiedCount") && item.copiedCount % 10 == 0) {
+      // if only copied count is changed then only sync after every 10 copy operations.
+      return true;
+    }
+
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +98,14 @@ class EventBridge extends StatelessWidget {
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
           listener: (context, state) async {
             switch (state) {
-              case OfflinePersistanceSaved(:final item, synced: false):
-                context.read<CloudPersistanceCubit>().persist(item);
+              case OfflinePersistanceSaved(
+                  :final item,
+                  synced: false,
+                  :final updatedFields
+                ):
+                if (shouldSync(updatedFields, item)) {
+                  context.read<CloudPersistanceCubit>().persist(item);
+                }
                 break;
               case OfflinePersistanceError(:final failure):
                 showFailureSnackbar(failure);
@@ -109,40 +125,10 @@ class EventBridge extends StatelessWidget {
               case CloudPersistanceDeleted(:final item):
                 context.read<OfflinePersistanceCubit>().delete(item);
                 break;
-              case CloudPersistanceError(
-                  :final retryCount,
-                  :final failedAction,
-                  :final item
-                ):
+              case CloudPersistanceError(:final failure):
                 {
-                  if (retryCount.isNegative) return;
-                  if (retryCount > 3) return;
-
-                  await waitHere(retryCount + 1);
-
-                  switch (failedAction) {
-                    case FailedAction.create ||
-                          FailedAction.update ||
-                          FailedAction.upload:
-                      context.read<CloudPersistanceCubit>().persist(
-                            item,
-                            retryCount: retryCount + 1,
-                          );
-                      break;
-                    case FailedAction.download:
-                      context.read<CloudPersistanceCubit>().download(
-                            item,
-                            retryCount: retryCount + 1,
-                          );
-                      break;
-                    case FailedAction.delete:
-                      context.read<CloudPersistanceCubit>().delete(
-                            item,
-                            retryCount: retryCount + 1,
-                          );
-                      break;
-                    default:
-                  }
+                  // TODO: improve retry strategy
+                  showFailureSnackbar(failure);
                 }
                 break;
               case _:

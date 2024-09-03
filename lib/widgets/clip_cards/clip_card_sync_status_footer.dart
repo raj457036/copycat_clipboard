@@ -32,7 +32,7 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
           buttonText = context.locale.uploading;
         }
       } else {
-        buttonText = context.locale.syncing('');
+        buttonText = context.locale.syncing;
       }
     } else {
       buttonText = context.locale.sync;

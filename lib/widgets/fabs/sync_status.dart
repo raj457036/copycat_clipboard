@@ -33,11 +33,6 @@ class SyncStatusFAB extends StatelessWidget {
                 icon = Icons.sync_lock_rounded;
                 message = context.locale.syncNotAvailable;
                 break;
-              case SyncingState(:final progress, :final total):
-                disabled = true;
-                isSyncing = true;
-                message = context.locale.syncing("$progress/$total");
-                break;
               case SyncCheckFailedState(:final failure):
                 disabled = false;
                 isSyncing = false;
