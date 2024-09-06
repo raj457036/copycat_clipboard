@@ -75,8 +75,8 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayIconMouseDown() async {
-    windowManager.toggle();
-    trayManager.popUpContextMenu();
+    await trayManager.popUpContextMenu();
+    await windowManager.toggle();
   }
 
   @override
