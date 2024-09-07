@@ -1,5 +1,6 @@
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/utility.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class PasteFAB extends StatelessWidget {

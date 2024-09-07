@@ -13,7 +13,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   irondash_engine_context
   isar_flutter_libs
   platform_device_id_linux
-  screen_retriever
+  screen_retriever_linux
   super_native_extensions
   tray_manager
   url_launcher_linux

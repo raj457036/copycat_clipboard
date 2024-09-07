@@ -1,8 +1,8 @@
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/compact_mode_toggle.dart';
 import 'package:clipboard/widgets/pin_to_top_toggle.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';

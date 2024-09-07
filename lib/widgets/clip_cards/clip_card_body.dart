@@ -1,5 +1,4 @@
 import 'package:clipboard/utils/clipboard_actions.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
 import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
 import 'package:clipboard/widgets/clip_cards/encrypted_card.dart';
@@ -16,6 +15,7 @@ import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:copycat_base/widgets/clip_cards/file_clip_card.dart';
 import 'package:copycat_base/widgets/clip_cards/media_clip_card.dart';
 import 'package:copycat_pro/widgets/drag_drop/drag_item.dart';

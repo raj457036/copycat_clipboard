@@ -1,6 +1,5 @@
 import 'package:clipboard/pages/collections/widgets/appbar.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
@@ -11,6 +10,7 @@ import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

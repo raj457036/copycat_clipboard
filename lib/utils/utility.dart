@@ -33,13 +33,6 @@ T clamp<T extends num>(T value, [T? min, T? max]) {
   return value;
 }
 
-final isDesktopPlatform =
-    Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-
-final isApplePlatform = Platform.isIOS || Platform.isMacOS;
-
-final isMobilePlatform = Platform.isIOS || Platform.isAndroid;
-
 Color? hexToColor(ClipboardItem item) {
   if (item.textCategory != TextCategory.color) return null;
   String hex = item.text!.replaceAll('#', '');

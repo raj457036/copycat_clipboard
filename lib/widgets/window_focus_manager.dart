@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_window/focus_window.dart';
@@ -68,7 +69,9 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   /// returns true when unfocused and false when focused
   Future<bool> toggleWindow() async {
+    final windowAction = context.windowAction;
     late final bool focused;
+
     if (Platform.isLinux) {
       focused = await windowManager.isVisible();
     } else {
@@ -77,11 +80,11 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     if (focused) {
       await restore();
       await Future.delayed(Durations.short1);
-      await windowManager.hide();
+      await windowAction?.hide();
       return true;
     } else {
       await record();
-      await windowManager.show();
+      await windowAction?.show();
       await Future.delayed(Durations.short1);
       await windowManager.focus();
       return false;
