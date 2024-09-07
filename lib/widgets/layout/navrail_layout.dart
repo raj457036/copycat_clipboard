@@ -16,6 +16,7 @@ class NavrailLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         NavLayoutNavrail(
           navbarActiveIndex: navbarActiveIndex,

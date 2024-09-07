@@ -1,11 +1,11 @@
-import 'package:clipboard/utils/extensions.dart';
+import 'package:clipboard/widgets/window_focus_manager.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:universal_io/io.dart';
-import 'package:window_manager/window_manager.dart';
 
 class TrayManager extends StatefulWidget {
   final Widget child;
@@ -75,8 +75,9 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayIconMouseDown() async {
+    final focusWindow = WindowFocusManager.of(context);
     await trayManager.popUpContextMenu();
-    await windowManager.toggle();
+    await focusWindow?.toggleWindow();
   }
 
   @override
@@ -100,12 +101,13 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayMenuItemClick(MenuItem menuItem) async {
+    final windowAction = context.windowAction;
     switch (menuItem.key) {
       case "show_window":
-        await windowManager.show();
+        await windowAction?.show();
         break;
       case "hide_window":
-        await windowManager.hide();
+        await windowAction?.hide();
         break;
       case "quit_app":
         await quitApp();

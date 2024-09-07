@@ -9,7 +9,6 @@ import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_window/focus_window.dart';
-import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowFocusManager extends StatefulWidget {
@@ -70,23 +69,20 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   /// returns true when unfocused and false when focused
   Future<bool> toggleWindow() async {
     final windowAction = context.windowAction;
-    late final bool focused;
+    final bool focused = windowAction?.isFocused ?? false;
 
-    if (Platform.isLinux) {
-      focused = await windowManager.isVisible();
-    } else {
-      focused = await windowManager.isFocused();
-    }
+    // if (Platform.isLinux) {
+    //   focused = await windowManager.isVisible();
+    // } else {
+    //   focused = await windowManager.isFocused();
+    // }
     if (focused) {
-      await restore();
-      await Future.delayed(Durations.short1);
       await windowAction?.hide();
+      await restore();
       return true;
     } else {
       await record();
       await windowAction?.show();
-      await Future.delayed(Durations.short1);
-      await windowManager.focus();
       return false;
     }
   }
@@ -101,7 +97,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   Future<void> onWindowClose() async {
     bool isPreventClose = await windowManager.isPreventClose();
     if (isPreventClose && mounted) {
-      await windowManager.hide();
+      context.windowAction?.hide();
     }
   }
 
@@ -113,6 +109,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   @override
   void onWindowBlur() {
+    context.windowAction?.isFocused = false;
     lastWindowId = null;
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
   }

@@ -85,7 +85,7 @@ Future<void> initializeDesktopServices() async {
 
   WindowOptions windowOptions = const WindowOptions(
     size: initialWindowSize,
-    minimumSize: minimumWindowSize,
+    // minimumSize: minimumWindowSize,
     center: true,
 
     // make sure to change it in main.cpp ( windows ) &

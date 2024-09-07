@@ -55,7 +55,7 @@ class TitlebarView extends StatelessWidget {
                   if (Platform.isWindows)
                     WindowCaptionButton.close(
                       brightness: colors.brightness,
-                      onPressed: windowManager.hide,
+                      onPressed: context.windowAction?.hide,
                     ),
                 ],
               ),
