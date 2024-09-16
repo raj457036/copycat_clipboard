@@ -57,8 +57,9 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   Future<void> restore() async {
     if (lastWindowId != null) {
-      await widget.focusWindow.setActiveWindowId(lastWindowId!);
-      onWindowBlur();
+      final windowId = lastWindowId;
+      context.windowAction?.hide();
+      await widget.focusWindow.setActiveWindowId(windowId!);
     }
   }
 

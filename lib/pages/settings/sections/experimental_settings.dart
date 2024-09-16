@@ -1,4 +1,6 @@
-import 'package:clipboard/pages/settings/widgets/drag_n_drop_switch.dart';
+import 'package:clipboard/pages/settings/widgets/drag_n_drop/drag_n_drop_switch.dart';
+import 'package:clipboard/pages/settings/widgets/drag_n_drop/hide_when_dragging_switch.dart';
+import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,10 @@ class ExperimentalSettings extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.symmetric(vertical: padding12),
         children: const [
+          SettingHeader(name: "Drag & Drop"),
           DragAndDropSwitchTile(),
+          HideWhenDraggingSwitchTile(),
+          // SettingHeader(name: "Paste Stack"),
         ],
       ),
     );

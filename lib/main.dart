@@ -128,6 +128,7 @@ class AppContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
+
     return BlocListener<MonetizationCubit, MonetizationState>(
       listener: (context, state) {
         switch (state) {

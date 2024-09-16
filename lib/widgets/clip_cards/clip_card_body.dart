@@ -42,10 +42,12 @@ class ClipCardPreview extends StatelessWidget {
 class ClipCardBodyContent extends StatelessWidget {
   final ClipboardItem item;
   final bool canPaste;
+  final bool hovered;
   const ClipCardBodyContent({
     super.key,
     required this.item,
     required this.canPaste,
+    this.hovered = false,
   });
 
   @override
@@ -57,6 +59,7 @@ class ClipCardBodyContent extends StatelessWidget {
         ClipCardOptionsHeader(
           item: item,
           hasFocusForPaste: canPaste,
+          hovered: hovered,
         ),
         Expanded(
           child: Column(
@@ -122,6 +125,7 @@ class ClipCardBody extends StatefulWidget {
 
 class _ClipCardBodyState extends State<ClipCardBody> {
   bool selected = false;
+  bool hovered = false;
 
   @override
   void dispose() {
@@ -175,6 +179,12 @@ class _ClipCardBodyState extends State<ClipCardBody> {
     }
   }
 
+  void onHover(bool isHovered) {
+    setState(() {
+      hovered = isHovered;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -190,11 +200,18 @@ class _ClipCardBodyState extends State<ClipCardBody> {
           )
         : null;
 
+    final cardContent = ClipCardBodyContent(
+      canPaste: widget.canPaste,
+      item: widget.item,
+      hovered: hovered,
+    );
+
     return Card.outlined(
       margin: EdgeInsets.zero,
       elevation: selected ? 2 : 0,
       shape: selectedShape,
       child: InkWell(
+        onHover: onHover,
         focusColor: colors.surface,
         onTap: () => performPrimaryAction(context),
         // onLongPress: () => menu.openOptionDialog(context),
@@ -210,10 +227,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
         onFocusChange: onFocusChange,
         autofocus: widget.focused,
         borderRadius: radius12,
-        child: ClipCardBodyContent(
-          canPaste: widget.canPaste,
-          item: widget.item,
-        ),
+        child: cardContent,
       ),
     );
   }

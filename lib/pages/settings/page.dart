@@ -1,7 +1,7 @@
 import 'package:clipboard/pages/settings/sections/customization_settings.dart';
-import 'package:clipboard/pages/settings/sections/encryption_settings.dart';
 import 'package:clipboard/pages/settings/sections/experimental_settings.dart';
 import 'package:clipboard/pages/settings/sections/general_settings.dart';
+import 'package:clipboard/pages/settings/sections/security_settings.dart';
 import 'package:clipboard/pages/settings/sections/syncing_settings.dart';
 import 'package:clipboard/widgets/account_detail_button.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
@@ -50,7 +50,7 @@ class SettingsPage extends StatelessWidget {
                   Tab(text: context.locale.general),
                   Tab(text: context.locale.customization),
                   Tab(text: context.locale.syncingLabel),
-                  Tab(text: context.locale.encryption),
+                  const Tab(text: "Security"),
                   Tab(text: context.locale.experimentalLabel),
                 ],
               ),
@@ -70,7 +70,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: EncryptionSettings(),
+                    child: SecuritySettings(),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,

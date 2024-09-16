@@ -2,6 +2,22 @@ import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
+class InfoBadge extends StatelessWidget {
+  final String message;
+  const InfoBadge({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: message,
+      child: const Icon(
+        Icons.info_outline_rounded,
+        size: 16,
+      ),
+    );
+  }
+}
+
 class ProBadge extends StatelessWidget {
   final bool noTooltip;
   const ProBadge({super.key, this.noTooltip = false});

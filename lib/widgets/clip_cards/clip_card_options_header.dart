@@ -13,10 +13,12 @@ import 'package:flutter/material.dart';
 class ClipCardOptionsHeader extends StatelessWidget {
   final bool hasFocusForPaste;
   final ClipboardItem item;
+  final bool hovered;
 
   const ClipCardOptionsHeader({
     super.key,
     this.hasFocusForPaste = false,
+    this.hovered = false,
     required this.item,
   });
 
@@ -71,18 +73,29 @@ class ClipCardOptionsHeader extends StatelessWidget {
           final width = constraints.maxWidth;
           return Row(
             children: [
-              width12,
-              Expanded(
-                child: Text(
-                  created,
-                  style: textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: colors.outline,
+              if (hovered)
+                IconButton(
+                  style: IconButton.styleFrom(
+                    fixedSize: const Size.square(24),
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.clip,
+                  tooltip: "Select",
+                  onPressed: () {},
+                  icon: const Icon(Icons.circle_outlined),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(left: padding12),
+                  child: Text(
+                    created,
+                    style: textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: colors.outline,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.clip,
+                  ),
                 ),
-              ),
+              const Spacer(),
               width8,
               if (width > 100 && item.type == ClipItemType.url)
                 Focus(

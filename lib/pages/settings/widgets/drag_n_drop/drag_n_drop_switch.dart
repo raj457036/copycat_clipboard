@@ -21,7 +21,7 @@ class DragAndDropSwitchTile extends StatelessWidget {
       selector: (state) {
         switch (state) {
           case AppConfigLoaded(:final config):
-            return config.enableDragNDrop;
+            return config.enableDragNDrop && isDNDSupported;
           default:
             return false;
         }
@@ -29,15 +29,15 @@ class DragAndDropSwitchTile extends StatelessWidget {
       builder: (context, enabled) {
         return SubscriptionBuilder(
           builder: (context, subscription) {
-            final isInPlan = subscription != null &&
+            final supported = subscription != null &&
                 subscription.isActive &&
-                subscription.dragNdrop;
+                subscription.dragNdrop &&
+                isDNDSupported;
+
             return SwitchListTile(
-                value: isDNDSupported && enabled,
-                onChanged: isInPlan && isDNDSupported
-                    ? (value) {
-                        context.read<AppConfigCubit>().toggleDragNDrop(value);
-                      }
+                value: enabled,
+                onChanged: supported
+                    ? context.read<AppConfigCubit>().toggleDragNDrop
                     : null,
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
