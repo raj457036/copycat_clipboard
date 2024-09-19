@@ -106,6 +106,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   void onWindowFocus() {
     // Make sure to call once.
     setState(() {});
+    context.windowAction?.isFocused = true;
   }
 
   @override

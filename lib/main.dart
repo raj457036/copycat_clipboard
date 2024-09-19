@@ -85,9 +85,8 @@ Future<void> initializeDesktopServices() async {
 
   WindowOptions windowOptions = const WindowOptions(
     size: initialWindowSize,
-    // minimumSize: minimumWindowSize,
+    minimumSize: minimumWindowSize,
     center: true,
-
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
@@ -161,6 +160,7 @@ class AppContent extends StatelessWidget {
               routeInformationProvider: router_.routeInformationProvider,
               routerDelegate: router_.routerDelegate,
               backButtonDispatcher: router_.backButtonDispatcher,
+              color: Colors.transparent,
               themeMode: theme,
               theme: ThemeData(
                 useMaterial3: true,

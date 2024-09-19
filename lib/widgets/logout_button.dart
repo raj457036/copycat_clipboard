@@ -8,7 +8,6 @@ import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.da
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
-import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/data/services/encryption.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/snackbar.dart';
@@ -46,7 +45,7 @@ class LogoutButton extends StatelessWidget {
         context.read<MonetizationCubit>().logout(),
         context.read<ClipCollectionCubit>().reset(),
         context.read<SyncManagerCubit>().reset(),
-        if (isDesktopPlatform) context.read<WindowActionCubit>().reset(),
+        // if (isDesktopPlatform) context.read<WindowActionCubit>().reset(),
         context.read<AppConfigCubit>().reset(),
         clearPersistedRootDir(),
         db.writeTxn(() => db.clear()),
