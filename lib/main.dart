@@ -86,7 +86,6 @@ Future<void> initializeDesktopServices() async {
   WindowOptions windowOptions = const WindowOptions(
     size: initialWindowSize,
     minimumSize: minimumWindowSize,
-    center: true,
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
@@ -96,12 +95,12 @@ Future<void> initializeDesktopServices() async {
     titleBarStyle: TitleBarStyle.hidden,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    if (Platform.isMacOS) {
-      await windowManager.setVisibleOnAllWorkspaces(
-        true,
-        visibleOnFullScreen: true,
-      );
-    }
+    // if (Platform.isMacOS) {
+    //   await windowManager.setVisibleOnAllWorkspaces(
+    //     true,
+    //     visibleOnFullScreen: true,
+    //   );
+    // }
   });
 }
 
