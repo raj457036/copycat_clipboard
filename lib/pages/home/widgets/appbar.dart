@@ -1,7 +1,4 @@
-import 'package:clipboard/widgets/copycat_logo.dart';
-import 'package:clipboard/widgets/subscription/active_plan.dart';
-import 'package:copycat_base/constants/widget_styles.dart';
-import 'package:copycat_base/l10n/l10n.dart';
+import 'package:clipboard/pages/home/widgets/search_bar.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -11,30 +8,19 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
-
+    final size = context.mq.size;
+    if (size.shortestSide < 250) return const SizedBox.shrink();
     return AppBar(
-      title: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          const Positioned(
-            top: -13,
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: CopyCatLogo(dimension: 50),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 53),
-            child: Text(context.locale.appName),
-          ),
-        ],
-      ),
+      title: const SearchInputBar(),
+      backgroundColor: Colors.transparent,
+      scrolledUnderElevation: 0,
+      titleSpacing: 0,
       titleTextStyle: textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),
       actions: const [
-        ActivePlanAction(),
-        width12,
+        // ActivePlanAction(),
+        // width12,
       ],
     );
   }

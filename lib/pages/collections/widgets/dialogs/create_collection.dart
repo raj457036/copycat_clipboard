@@ -1,9 +1,10 @@
 import 'package:clipboard/pages/collections/pages/create_edit/page.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showCreateCollectionDialog(BuildContext context) async {
-  final width = MediaQuery.of(context).size.width;
+  final width = context.mq.size.width;
   final isMobile = Breakpoints.isMobile(width);
 
   if (isMobile) {

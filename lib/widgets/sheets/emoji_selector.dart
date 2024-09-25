@@ -24,7 +24,7 @@ class _EmojiSelectorSheetState extends State<EmojiSelectorSheet>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
+    final mq = context.mq;
     final theme = context.theme;
     final colorScheme = theme.colorScheme;
     return Padding(

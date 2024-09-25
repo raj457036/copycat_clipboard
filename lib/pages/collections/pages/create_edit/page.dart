@@ -68,7 +68,7 @@ class ClipCollectionCreateEditPage extends StatelessWidget {
     final title = collection == null
         ? context.locale.createCollection
         : context.locale.editCollection;
-    final width = MediaQuery.of(context).size.width;
+    final width = context.mq.size.width;
     final smallScreen = Breakpoints.isMobile(width);
     if (!smallScreen) {
       return ClipCollectionCreateEditDesktopPageContent(

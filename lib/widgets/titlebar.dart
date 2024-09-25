@@ -37,42 +37,46 @@ class TitlebarView extends StatelessWidget {
 
     final colors = context.colors;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        BlocSelector<WindowActionCubit, WindowActionState, AppView>(
-          selector: (state) {
-            return state.view;
-          },
-          builder: (context, view) {
-            return DragToMoveArea2(
-              enabled: view == AppView.windowed,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: colors.surface,
-                ),
-                child: SizedBox(
-                  height: 26,
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // SizedBox(width: 85),
-                      const CompactModeToggleButton(),
-                      if (Platform.isWindows)
-                        WindowCaptionButton.close(
-                          brightness: colors.brightness,
-                          onPressed: context.windowAction?.hide,
-                        ),
-                    ],
-                  ),
-                ),
+    return BlocSelector<WindowActionCubit, WindowActionState, AppView>(
+      selector: (state) {
+        return state.view;
+      },
+      builder: (context, view) {
+        final dragToMove = DragToMoveArea2(
+          enabled: view == AppView.windowed,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.surface,
+            ),
+            child: SizedBox(
+              height: 26,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // SizedBox(width: 85),
+                  const CompactModeToggleButton(),
+                  if (Platform.isWindows)
+                    WindowCaptionButton.close(
+                      brightness: colors.brightness,
+                      onPressed: context.windowAction?.hide,
+                    ),
+                ],
               ),
-            );
-          },
-        ),
-        Expanded(child: child),
-      ],
+            ),
+          ),
+        );
+        if (view == AppView.topDocked) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [Expanded(child: child), dragToMove],
+          );
+        }
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [dragToMove, Expanded(child: child)],
+        );
+      },
     );
   }
 }

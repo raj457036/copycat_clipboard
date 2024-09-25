@@ -230,8 +230,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
         BlocProvider<DriveSetupCubit>(create: (context) => sl()),
         // BlocProvider<FocusedClipitemCubit>(create: (context) => sl()),
-        if (isDesktopPlatform)
-          BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
+        BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
       ],
       child: isMobilePlatform
           ? GestureDetector(

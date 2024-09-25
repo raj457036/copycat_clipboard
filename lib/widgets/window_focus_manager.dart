@@ -110,6 +110,11 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   }
 
   @override
+  void onWindowResize() {
+    print("RESIZED");
+  }
+
+  @override
   void onWindowBlur() {
     context.windowAction?.hide();
     lastWindowId = null;

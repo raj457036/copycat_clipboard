@@ -12,7 +12,6 @@ import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/reset_password/page.dart";
-import "package:clipboard/pages/search/page.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/settings/pages/custom_exclusion_rule/custom_exclusion_rule.dart";
 import "package:clipboard/pages/splash_page.dart";
@@ -24,7 +23,6 @@ import "package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart";
 import "package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart";
 import "package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
-import "package:copycat_base/bloc/search_cubit/search_cubit.dart";
 import "package:copycat_base/constants/key.dart";
 import "package:copycat_base/constants/strings/route_constants.dart";
 import "package:flutter/material.dart";
@@ -118,9 +116,8 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
             final depth = state.uri.pathSegments.length;
             final activeIndex = switch (firstSegment) {
               "home" => 0,
-              "search" => 1,
-              "collections" => 2,
-              "settings" => 3,
+              "collections" => 1,
+              "settings" => 2,
               _ => 0,
             };
 
@@ -153,17 +150,6 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                   ),
                 );
               },
-            ),
-            GoRoute(
-              name: RouteConstants.search,
-              path: '/search',
-              pageBuilder: (context, state) => NoTransitionPage(
-                key: state.pageKey,
-                child: BlocProvider<SearchCubit>(
-                  create: (context) => sl(),
-                  child: const SearchPage(),
-                ),
-              ),
             ),
             GoRoute(
               name: RouteConstants.collections,

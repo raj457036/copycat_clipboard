@@ -23,7 +23,7 @@ class SettingsPage extends StatelessWidget {
     return DefaultTabController(
       length: 5,
       child: CustomScaffold(
-        activeIndex: 3,
+        activeIndex: 2,
         appBar: AppBar(
           backgroundColor: colors.surface,
           scrolledUnderElevation: 0,

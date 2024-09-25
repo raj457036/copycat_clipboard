@@ -1,5 +1,7 @@
 import 'package:clipboard/widgets/layout/navrail.dart';
+import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavrailLayout extends StatelessWidget {
   final Widget? floatingActionButton;
@@ -15,15 +17,21 @@ class NavrailLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        NavLayoutNavrail(
-          navbarActiveIndex: navbarActiveIndex,
-          floatingActionButton: floatingActionButton,
-        ),
-        Expanded(child: child),
-      ],
+    return BlocBuilder<WindowActionCubit, WindowActionState>(
+      builder: (context, state) {
+        if (state.view == AppView.topDocked ||
+            state.view == AppView.bottomDocked) return child;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            NavLayoutNavrail(
+              navbarActiveIndex: navbarActiveIndex,
+              floatingActionButton: floatingActionButton,
+            ),
+            Expanded(child: child),
+          ],
+        );
+      },
     );
   }
 }

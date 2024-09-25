@@ -8,12 +8,9 @@ void onNavItemTapped(BuildContext context, int index) {
       context.goNamed(RouteConstants.home);
       break;
     case 1:
-      context.goNamed(RouteConstants.search);
-      break;
-    case 2:
       context.goNamed(RouteConstants.collections);
       break;
-    case 3:
+    case 2:
       context.goNamed(RouteConstants.settings);
       break;
     default:

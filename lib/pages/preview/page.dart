@@ -9,6 +9,7 @@ import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
 Widget previewWidget({required ClipboardItem item, required bool isMobile}) {
@@ -132,7 +133,7 @@ class ClipboardItemPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = context.mq.size.width;
     final smallScreen = Breakpoints.isMobile(width);
     if (!smallScreen) {
       return ClipboardItemDesktopPreviewPageContent(item: item);

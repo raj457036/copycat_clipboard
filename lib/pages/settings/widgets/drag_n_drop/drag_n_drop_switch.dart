@@ -12,7 +12,7 @@ class DragAndDropSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final side = MediaQuery.of(context).size.shortestSide;
+    // final side = context.mq.size.shortestSide;
     // final isTablet = side > Breakpoints.sm;
     bool isDNDSupported = true;
     if (Platform.isAndroid) isDNDSupported = false;

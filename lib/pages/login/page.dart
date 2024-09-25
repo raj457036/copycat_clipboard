@@ -6,6 +6,7 @@ import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
+    final mq = context.mq;
     final isMobile = Breakpoints.isMobile(mq.size.width) ||
         mq.orientation == Orientation.portrait;
     return BlocListener<AuthCubit, AuthState>(

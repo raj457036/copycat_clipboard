@@ -181,6 +181,12 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final size = context.mq.size.shortestSide;
+    if (size < 300) {
+      return const AlertDialog(
+        content: Text("Not enough space"),
+      );
+    }
     final locale = context.locale;
     final localeName = locale.localeName;
     final dateFormatter = getLocaleDateFormatter(localeName);

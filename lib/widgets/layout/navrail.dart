@@ -61,22 +61,6 @@ class NavLayoutNavrail extends StatelessWidget {
                       NavigationRailDestination(
                         padding: EdgeInsets.zero,
                         icon: Tooltip(
-                          message: "$metaKey + F",
-                          child:
-                              const Icon(Icons.content_paste_search_outlined),
-                        ),
-                        selectedIcon: Tooltip(
-                          message: "$metaKey + F",
-                          child: const Icon(Icons.content_paste_search_rounded),
-                        ),
-                        label: Text(
-                          context.locale.search,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      NavigationRailDestination(
-                        padding: EdgeInsets.zero,
-                        icon: Tooltip(
                           message: "$metaKey + C",
                           child:
                               const Icon(Icons.collections_bookmark_outlined),

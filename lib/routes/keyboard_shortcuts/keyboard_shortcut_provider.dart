@@ -127,11 +127,11 @@ class KeyboardShortcutProvider extends StatelessWidget {
         ),
         SearchPageIntent: CallbackAction<SearchPageIntent>(
           onInvoke: (intent) {
-            final isSearchPage = activePageIndex == 1;
-            if (isSearchPage) {
+            final hasSearchField = activePageIndex == 0;
+            if (hasSearchField) {
               EventBus.emit(searchFocusEvent.createPayload(null));
             } else {
-              context.goNamed(RouteConstants.search);
+              context.goNamed(RouteConstants.home);
             }
             return null;
           },

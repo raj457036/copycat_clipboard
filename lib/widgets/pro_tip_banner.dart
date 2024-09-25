@@ -11,7 +11,7 @@ class ProTipTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final width = MediaQuery.of(context).size.width;
+    final width = context.mq.size.width;
     final isMobile = Breakpoints.isMobile(width);
     final tile = ListTile(
       shape: const RoundedRectangleBorder(
