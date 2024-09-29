@@ -52,7 +52,7 @@ Color? hexToColor(ClipboardItem item) {
 }
 
 Color getFg(Color bg) {
-  return bg.computeLuminance() < 0.35 ? Colors.white54 : Colors.black54;
+  return bg.computeLuminance() < 0.1 ? Colors.white54 : Colors.black54;
 }
 
 Future<void> screenshotAsFile(

@@ -5,10 +5,10 @@ import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
-class ClipCardMenu extends StatelessWidget {
+class ClipMenuProvider extends StatelessWidget {
   final Widget child;
   final ClipboardItem item;
-  const ClipCardMenu({
+  const ClipMenuProvider({
     super.key,
     required this.item,
     required this.child,

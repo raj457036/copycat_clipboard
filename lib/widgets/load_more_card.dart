@@ -4,7 +4,7 @@ import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
 class LoadMoreCard extends StatelessWidget {
-  final Function(BuildContext) loadMore;
+  final VoidCallback loadMore;
   const LoadMoreCard({
     super.key,
     required this.loadMore,
@@ -17,7 +17,7 @@ class LoadMoreCard extends StatelessWidget {
       color: colors.secondaryContainer,
       child: InkWell(
         borderRadius: radius12,
-        onTap: () => loadMore(context),
+        onTap: loadMore,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,

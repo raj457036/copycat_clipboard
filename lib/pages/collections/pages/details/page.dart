@@ -1,5 +1,5 @@
 import 'package:clipboard/widgets/can_paste_builder.dart';
-import 'package:clipboard/widgets/clip_card.dart';
+import 'package:clipboard/widgets/clip_item/clip_card/clip_card.dart';
 import 'package:clipboard/widgets/empty.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
@@ -45,10 +45,8 @@ class CollectionDetailPage extends StatelessWidget {
             switch (state) {
               case OfflinePersistanceDeleted(:final item):
                 context.read<CollectionClipsCubit>().deleteItem(item);
-                break;
               case OfflinePersistanceSaved(:final item):
                 context.read<CollectionClipsCubit>().put(item);
-                break;
               case _:
             }
           },
@@ -59,11 +57,9 @@ class CollectionDetailPage extends StatelessWidget {
             case CloudPersistanceUploadingFile(:final item) ||
                   CloudPersistanceDownloadingFile(:final item):
               context.read<CollectionClipsCubit>().put(item);
-              break;
             case CloudPersistanceError(:final failure, :final item):
               showFailureSnackbar(failure);
               context.read<CollectionClipsCubit>().put(item);
-              break;
           }
         }),
       ],
@@ -111,7 +107,9 @@ class CollectionDetailPage extends StatelessWidget {
                         itemCount: results.length + hasMoreResult,
                         itemBuilder: (context, index) {
                           if (index == results.length) {
-                            return LoadMoreCard(loadMore: loadMore);
+                            return LoadMoreCard(
+                              loadMore: () => loadMore(context),
+                            );
                           }
 
                           final item = results[index];

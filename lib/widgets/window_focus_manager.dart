@@ -109,10 +109,10 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     context.windowAction?.isFocused = true;
   }
 
-  @override
-  void onWindowResize() {
-    print("RESIZED");
-  }
+  // @override
+  // void onWindowResize() {
+  //   print("RESIZED");
+  // }
 
   @override
   void onWindowBlur() {

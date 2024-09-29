@@ -37,7 +37,7 @@ class ScaffoldBody extends StatelessWidget {
               borderRadius_ = BorderRadius.zero;
               margin_ = EdgeInsets.zero;
             }
-            break;
+
           default:
             borderRadius_ = const BorderRadius.vertical(
               top: Radius.circular(18),

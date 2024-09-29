@@ -78,7 +78,6 @@ class EventBridge extends StatelessWidget {
                         .decryptAllClipboardItems();
                   }
                 }
-                break;
               case _:
             }
           },
@@ -88,10 +87,8 @@ class EventBridge extends StatelessWidget {
             switch (state) {
               case PartlySyncedSyncState(collections: true):
                 context.read<ClipCollectionCubit>().fetch(fromTop: true);
-                break;
               case SyncCheckFailedState(:final failure):
                 showFailureSnackbar(failure);
-                break;
             }
           },
         ),
@@ -106,10 +103,9 @@ class EventBridge extends StatelessWidget {
                 if (shouldSync(updatedFields, item)) {
                   context.read<CloudPersistanceCubit>().persist(item);
                 }
-                break;
               case OfflinePersistanceError(:final failure):
                 showFailureSnackbar(failure);
-                break;
+
               case _:
             }
           },
@@ -121,16 +117,16 @@ class EventBridge extends StatelessWidget {
                 context
                     .read<OfflinePersistanceCubit>()
                     .persist(item, synced: true);
-                break;
+
               case CloudPersistanceDeleted(:final item):
                 context.read<OfflinePersistanceCubit>().delete(item);
-                break;
+
               case CloudPersistanceError(:final failure):
                 {
                   // TODO: improve retry strategy
                   showFailureSnackbar(failure);
                 }
-                break;
+
               case _:
             }
           },

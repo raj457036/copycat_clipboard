@@ -45,12 +45,10 @@ class GoogleDriveSetup extends StatelessWidget {
             text = context.locale.connected;
             noClick = false;
             alreadyConnected = true;
-            break;
           case DriveSetupError():
             text = context.locale.connectNow;
             noClick = false;
             hasError = true;
-            break;
         }
         return Column(
           mainAxisSize: MainAxisSize.min,

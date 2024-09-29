@@ -1,43 +1,23 @@
 import 'package:clipboard/utils/clipboard_actions.dart';
-import 'package:clipboard/widgets/clip_cards/clip_card_options_header.dart';
-import 'package:clipboard/widgets/clip_cards/clip_card_sync_status_footer.dart';
-import 'package:clipboard/widgets/clip_cards/encrypted_card.dart';
-import 'package:clipboard/widgets/clip_cards/text_clip_card.dart';
-import 'package:clipboard/widgets/clip_cards/url_clip_card.dart';
+import 'package:clipboard/widgets/clip_item/clip_card/clip_card_options_header.dart';
+import 'package:clipboard/widgets/clip_item/clip_preview.dart';
+import 'package:clipboard/widgets/clip_item/clip_sync_status_footer.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
-import 'package:copycat_base/enums/clip_type.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_base/utils/utility.dart';
-import 'package:copycat_base/widgets/clip_cards/file_clip_card.dart';
-import 'package:copycat_base/widgets/clip_cards/media_clip_card.dart';
 import 'package:copycat_pro/widgets/drag_drop/drag_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_io/io.dart';
-
-class ClipCardPreview extends StatelessWidget {
-  final ClipboardItem item;
-  const ClipCardPreview({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    if (item.encrypted) return const EncryptedClipItem();
-    return switch (item.type) {
-      ClipItemType.text => TextClipCard(item: item),
-      ClipItemType.media => MediaClipCard(item: item),
-      ClipItemType.url => UrlClipCard(item: item),
-      ClipItemType.file => FileClipCard(item: item),
-    };
-  }
-}
 
 class ClipCardBodyContent extends StatelessWidget {
   final ClipboardItem item;
@@ -81,23 +61,13 @@ class ClipCardBodyContent extends StatelessWidget {
                   ),
                 ),
               Expanded(
-                child: Card.filled(
-                  color: Colors.transparent,
-                  margin: EdgeInsets.zero,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                  ),
-                  child: ClipCardPreview(item: item),
-                ),
+                child: ClipPreview(item: item, layout: AppLayout.grid),
               ),
             ],
           ),
         ),
         DisableForLocalUser(
-          child: ClipCardSyncStatusFooter(item: item),
+          child: ClipSyncStatusFooter(item: item),
         ),
       ],
     );
@@ -124,7 +94,7 @@ class ClipCardBody extends StatefulWidget {
 }
 
 class _ClipCardBodyState extends State<ClipCardBody> {
-  bool selected = false;
+  bool focused = false;
   bool hovered = false;
 
   @override
@@ -161,8 +131,8 @@ class _ClipCardBodyState extends State<ClipCardBody> {
     }
   }
 
-  void select() => !selected ? setState(() => selected = true) : null;
-  void unselect() => selected ? setState(() => selected = false) : null;
+  void focus() => !focused ? setState(() => focused = true) : null;
+  void unfocus() => focused ? setState(() => focused = false) : null;
 
   void onFocusChange(bool value) {
     if (value) {
@@ -171,15 +141,16 @@ class _ClipCardBodyState extends State<ClipCardBody> {
         alignment: 0.5,
         duration: Durations.medium1,
       );
-      select();
+      focus();
       // final cubit = context.read<FocusedClipitemCubit>();
       // cubit.focused(item);
     } else {
-      unselect();
+      unfocus();
     }
   }
 
   void onHover(bool isHovered) {
+    if (isHovered == hovered) return;
     setState(() {
       hovered = isHovered;
     });
@@ -189,7 +160,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    final selectedShape = selected
+    final selectedShape = focused
         ? RoundedRectangleBorder(
             side: BorderSide(
               color: colors.primary,
@@ -208,7 +179,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
 
     return Card.outlined(
       margin: EdgeInsets.zero,
-      elevation: selected ? 2 : 0,
+      elevation: focused ? 2 : 0,
       shape: selectedShape,
       child: InkWell(
         onHover: onHover,

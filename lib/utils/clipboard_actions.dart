@@ -110,10 +110,8 @@ Future<void> openFile(ClipboardItem item) async {
       case ResultType.error:
       case ResultType.noAppToOpen:
         showTextSnackbar("No application knows how to open this file.");
-        break;
       case ResultType.permissionDenied:
         showTextSnackbar("You don't have permission to open this file.");
-        break;
       case _:
     }
   }

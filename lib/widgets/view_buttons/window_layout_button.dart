@@ -3,8 +3,8 @@ import 'package:copycat_base/common/dock_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CompactModeToggleButton extends StatelessWidget {
-  const CompactModeToggleButton({
+class WindowLayoutButton extends StatelessWidget {
+  const WindowLayoutButton({
     super.key,
   });
 
@@ -34,8 +34,8 @@ class CompactModeToggleButton extends StatelessWidget {
                 shape: const RoundedRectangleBorder(),
               ),
               iconSize: 20,
-              icon: const Icon(Icons.window_rounded),
-              tooltip: 'Change Layout',
+              icon: const Icon(Icons.view_comfortable),
+              tooltip: 'Change View',
             );
           },
 

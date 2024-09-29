@@ -36,12 +36,10 @@ class LoginPage extends StatelessWidget {
               const Duration(seconds: 2),
               showIntoDialog,
             );
-            break;
           case UnauthenticatedAuthState(:final failure):
             if (failure != null) {
               showFailureSnackbar(failure);
             }
-            break;
           default:
         }
       },

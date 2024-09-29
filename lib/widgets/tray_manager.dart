@@ -105,13 +105,13 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
     switch (menuItem.key) {
       case "show_window":
         await windowAction?.show();
-        break;
+
       case "hide_window":
         await windowAction?.hide();
-        break;
+
       case "quit_app":
         await quitApp();
-        break;
+
       default:
     }
   }

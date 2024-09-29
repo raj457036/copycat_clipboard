@@ -34,7 +34,6 @@ class AuthListener extends StatelessWidget {
             rootNavKey.currentContext?.goNamed(RouteConstants.login);
             closeSnackbar();
             await context.windowAction?.show();
-            break;
           case LocalAuthenticatedAuthState():
             {
               rootNavKey.currentContext?.goNamed(RouteConstants.home);
@@ -59,7 +58,6 @@ class AuthListener extends StatelessWidget {
             }
 
             logger.i("Auth State Authenticated");
-            break;
         }
       },
       child: child,

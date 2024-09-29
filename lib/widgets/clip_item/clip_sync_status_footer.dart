@@ -6,12 +6,14 @@ import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ClipCardSyncStatusFooter extends StatelessWidget {
+class ClipSyncStatusFooter extends StatelessWidget {
   final ClipboardItem item;
+  final BorderRadius radius;
 
-  const ClipCardSyncStatusFooter({
+  const ClipSyncStatusFooter({
     super.key,
     required this.item,
+    this.radius = radiusBottom12,
   });
 
   @override
@@ -43,7 +45,7 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: colors.tertiaryContainer,
-          borderRadius: radiusBottom12,
+          borderRadius: radius,
         ),
         child: Padding(
           padding: const EdgeInsets.all(padding8),
@@ -63,21 +65,27 @@ class ClipCardSyncStatusFooter extends StatelessWidget {
                     style: context.textTheme.labelMedium,
                   ),
                 const Spacer(),
-                ElevatedButton(
-                  onPressed: item.isSyncing
-                      ? null
-                      : () {
-                          context.read<CloudPersistanceCubit>().persist(
-                                item.copyWith(userIntent: true)
-                                  ..applyId(
-                                    item,
-                                  ),
-                              );
-                        },
-                  child: Text(
-                    buttonText,
-                    style: context.textTheme.labelSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                Focus(
+                  canRequestFocus: false,
+                  skipTraversal: true,
+                  descendantsAreFocusable: false,
+                  descendantsAreTraversable: false,
+                  child: ElevatedButton(
+                    onPressed: item.isSyncing
+                        ? null
+                        : () {
+                            context.read<CloudPersistanceCubit>().persist(
+                                  item.copyWith(userIntent: true)
+                                    ..applyId(
+                                      item,
+                                    ),
+                                );
+                          },
+                    child: Text(
+                      buttonText,
+                      style: context.textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

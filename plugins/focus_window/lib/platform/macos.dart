@@ -27,8 +27,7 @@ class MacosActivityObserver implements PlatformActivityObserverInterface {
 
   @override
   Future<void> startObserver() async {
-    final result = await _channel.invokeMethod("startObserver");
-    print(result);
+    await _channel.invokeMethod("startObserver");
   }
 
   @override

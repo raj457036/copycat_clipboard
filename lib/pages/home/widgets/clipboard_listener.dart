@@ -24,10 +24,8 @@ class ClipboardChangeListener extends StatelessWidget {
             switch (state) {
               case PartlySyncedSyncState(clipboard: true):
                 context.read<ClipboardCubit>().fetch(fromTop: true);
-                break;
               case SyncedState(refreshLocalCache: true):
                 context.read<ClipboardCubit>().fetch(fromTop: true);
-                break;
               case ClipboardSyncedSyncState(
                   :final added,
                   :final updated,
@@ -55,7 +53,6 @@ class ClipboardChangeListener extends StatelessWidget {
                     }
                   }
                 }
-                break;
             }
           },
         ),
@@ -83,11 +80,9 @@ class ClipboardChangeListener extends StatelessWidget {
               case CloudPersistanceUploadingFile(:final item) ||
                     CloudPersistanceDownloadingFile(:final item):
                 context.read<ClipboardCubit>().put(item);
-                break;
               case CloudPersistanceCreating(:final item) ||
                     CloudPersistanceUpdating(:final item):
                 context.read<ClipboardCubit>().put(item);
-                break;
               case CloudPersistanceDeleting(:final item):
                 context.read<ClipboardCubit>().put(item);
                 showTextSnackbar(
@@ -95,11 +90,9 @@ class ClipboardChangeListener extends StatelessWidget {
                   isLoading: true,
                   closePrevious: true,
                 );
-                break;
               case CloudPersistanceError(:final item, :final failure):
                 showFailureSnackbar(failure);
                 context.read<ClipboardCubit>().put(item);
-                break;
               case _:
             }
           },
