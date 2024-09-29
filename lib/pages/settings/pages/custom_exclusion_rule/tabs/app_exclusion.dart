@@ -36,9 +36,8 @@ class AppExclusionTab extends StatelessWidget {
       allowMultiple: true,
     );
 
-    if (result == null || result.count == 0) return [];
-
     windowManager.focus();
+    if (result == null || result.count == 0) return [];
 
     final files = result.files.map(
       (e) => AppInfo(
