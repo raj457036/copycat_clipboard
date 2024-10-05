@@ -1,7 +1,8 @@
-import 'package:clipboard/widgets/view_buttons/view_layout_button.dart';
-import 'package:clipboard/widgets/view_buttons/window_layout_button.dart';
+import 'package:clipboard/widgets/view_buttons/app_layout_button.dart';
+import 'package:clipboard/widgets/view_buttons/app_view_button.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/utility.dart';
@@ -56,9 +57,9 @@ class TitlebarView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const ViewLayoutToggleButton(),
+                  const AppLayoutToggleButton(),
                   width2,
-                  const WindowLayoutButton(),
+                  const AppViewButton(),
                   if (Platform.isWindows)
                     WindowCaptionButton.close(
                       brightness: colors.brightness,

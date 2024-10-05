@@ -1,28 +1,40 @@
 import 'dart:ui' as ui;
 
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OrientationListener extends StatefulWidget {
+class StateInitializer extends StatefulWidget {
   final Widget child;
-  const OrientationListener({
+  const StateInitializer({
     super.key,
     required this.child,
   });
 
   @override
-  State<OrientationListener> createState() => _OrientationListenerState();
+  State<StateInitializer> createState() => _StateInitializerState();
 }
 
-class _OrientationListenerState extends State<OrientationListener>
+class _StateInitializerState extends State<StateInitializer>
     with WidgetsBindingObserver {
   ui.FlutterView? _view;
+
+  Future<void> setupWindow() async {
+    final appConfigCubit = context.read<AppConfigCubit>();
+    final windowCubit = context.read<WindowActionCubit>();
+    await Future.delayed(Durations.extralong4);
+    final appConfig = appConfigCubit.state.config;
+    windowCubit.setup(appConfig.view, appConfig.windowSize);
+  }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    setupWindow();
   }
 
   @override

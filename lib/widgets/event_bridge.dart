@@ -7,11 +7,18 @@ import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.da
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
+import 'package:copycat_base/constants/key.dart';
+import 'package:copycat_base/constants/strings/route_constants.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class EventBridge extends StatelessWidget {
   final Widget child;
@@ -33,8 +40,24 @@ class EventBridge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // bool firstTime = true;
     return MultiBlocListener(
       listeners: [
+        if (isDesktopPlatform)
+          BlocListener<AppConfigCubit, AppConfigState>(
+            listenWhen: (previous, current) =>
+                previous.config.view != current.config.view,
+            listener: (context, state) {
+              final view = state.config.view;
+              if (view != AppView.windowed) {
+                rootNavKey.currentContext?.goNamed(RouteConstants.home);
+              }
+              final size = view == AppView.windowed
+                  ? initialWindowSize
+                  : state.config.windowSize;
+              context.read<WindowActionCubit>().setup(view, size);
+            },
+          ),
         BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) =>
               (previous.config.autoSyncInterval !=

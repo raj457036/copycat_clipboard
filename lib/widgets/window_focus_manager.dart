@@ -5,6 +5,7 @@ import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/debounce.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,6 +44,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     with WindowListener {
   int? lastWindowId;
   StreamSubscription? subscription;
+  final debounce = Debouncer(milliseconds: 650);
 
   late final AppConfigCubit appConfigCubit;
 
@@ -109,10 +111,21 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     context.windowAction?.isFocused = true;
   }
 
-  // @override
-  // void onWindowResize() {
-  //   print("RESIZED");
-  // }
+  Future<void> onResized() async {
+    final appConfig = context.read<AppConfigCubit>();
+    final size = await windowManager.getSize();
+    appConfig.changeWindowSize(
+      width: size.width,
+      height: size.height,
+    );
+  }
+
+  @override
+  void onWindowResize() {
+    if (context.windowAction?.isFocused ?? false) {
+      debounce(onResized);
+    }
+  }
 
   @override
   void onWindowBlur() {

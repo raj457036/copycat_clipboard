@@ -8,7 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
-import 'package:clipboard/widgets/orientation_listener.dart';
+import 'package:clipboard/widgets/state_initializer.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
@@ -84,7 +84,7 @@ Future<void> initializeDesktopServices() async {
   );
 
   WindowOptions windowOptions = const WindowOptions(
-    size: initialWindowSize,
+    size: minimumWindowSize,
     minimumSize: minimumWindowSize,
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
@@ -101,6 +101,7 @@ Future<void> initializeDesktopServices() async {
     //     visibleOnFullScreen: true,
     //   );
     // }
+    windowManager.hide();
   });
 }
 
@@ -126,21 +127,20 @@ class AppContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
-
     return BlocListener<MonetizationCubit, MonetizationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         switch (state) {
           case MonetizationActive(:final subscription):
             {
               final syncCubit = context.read<SyncManagerCubit>();
               syncCubit.syncHours = subscription.syncHours;
+              syncCubit.loadSub(subscription);
               syncCubit.syncChanges(force: true);
               context.read<AppConfigCubit>().load(subscription);
-              context.read<SyncManagerCubit>().loadSub(subscription);
             }
         }
       },
-      child: OrientationListener(
+      child: StateInitializer(
         child: BlocSelector<AppConfigCubit, AppConfigState,
             (ThemeMode, String, ColorScheme, ColorScheme)>(
           selector: (state) {
@@ -222,7 +222,7 @@ class MainApp extends StatelessWidget {
     final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => sl()),
-        BlocProvider<AppConfigCubit>(create: (context) => sl()),
+        BlocProvider<AppConfigCubit>(create: (context) => sl()..load()),
         BlocProvider<MonetizationCubit>(create: (context) => sl()),
         BlocProvider<SyncManagerCubit>(create: (context) => sl()),
         BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
@@ -230,7 +230,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
         BlocProvider<DriveSetupCubit>(create: (context) => sl()),
         // BlocProvider<FocusedClipitemCubit>(create: (context) => sl()),
-        BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
+        BlocProvider<WindowActionCubit>(create: (context) => sl()),
       ],
       child: isMobilePlatform
           ? GestureDetector(

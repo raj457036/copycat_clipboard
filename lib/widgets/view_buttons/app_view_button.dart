@@ -1,12 +1,19 @@
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/dock_icons.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class WindowLayoutButton extends StatelessWidget {
-  const WindowLayoutButton({
+class AppViewButton extends StatelessWidget {
+  const AppViewButton({
     super.key,
   });
+
+  void changeView(BuildContext context, AppView view) {
+    final appConfigCubit = context.read<AppConfigCubit>();
+    appConfigCubit.changeAppView(view);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,36 +54,27 @@ class WindowLayoutButton extends StatelessWidget {
                 size: 26,
               ),
               child: const Text("Window"),
-              onPressed: () =>
-                  context.read<WindowActionCubit>().setWindowdView(),
+              onPressed: () => changeView(context, AppView.windowed),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockRight),
               child: const Text("Dock Right"),
-              onPressed: () => context
-                  .read<WindowActionCubit>()
-                  .setDockedView(AppView.rightDocked),
+              onPressed: () => changeView(context, AppView.rightDocked),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockBottom),
               child: const Text("Dock Bottom"),
-              onPressed: () => context
-                  .read<WindowActionCubit>()
-                  .setDockedView(AppView.bottomDocked),
+              onPressed: () => changeView(context, AppView.bottomDocked),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockLeft),
               child: const Text("Dock Left"),
-              onPressed: () => context
-                  .read<WindowActionCubit>()
-                  .setDockedView(AppView.leftDocked),
+              onPressed: () => changeView(context, AppView.leftDocked),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockTop),
               child: const Text("Dock Top"),
-              onPressed: () => context
-                  .read<WindowActionCubit>()
-                  .setDockedView(AppView.topDocked),
+              onPressed: () => changeView(context, AppView.topDocked),
             ),
           ],
         );

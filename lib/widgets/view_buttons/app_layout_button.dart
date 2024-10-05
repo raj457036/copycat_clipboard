@@ -4,8 +4,8 @@ import 'package:copycat_base/widgets/app_layout_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ViewLayoutToggleButton extends StatelessWidget {
-  const ViewLayoutToggleButton({super.key});
+class AppLayoutToggleButton extends StatelessWidget {
+  const AppLayoutToggleButton({super.key});
 
   void changeLayout(BuildContext context, AppLayout layout) {
     context.read<AppConfigCubit>().changeAppLayout(layout);

@@ -6,13 +6,6 @@ import 'package:flutter/material.dart';
 import "package:universal_io/io.dart";
 import 'package:uuid/uuid.dart';
 
-/// Simple wrapper around [Future.delayed] to wait for few seconds.
-///
-/// Default: 2 seconds
-Future<void> wait([int seconds = 2]) async {
-  await Future.delayed(Duration(seconds: seconds));
-}
-
 String formatDuration(Duration duration) {
   String twoDigits(int n) => n.toString().padLeft(2, '0');
 
