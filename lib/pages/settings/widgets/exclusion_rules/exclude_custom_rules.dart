@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ExcludeCustomRules extends StatelessWidget {
-  const ExcludeCustomRules({super.key});
+  final bool enabled;
+  const ExcludeCustomRules({
+    super.key,
+    this.enabled = true,
+  });
 
   Future<void> navigateTo(BuildContext context) async {
     context.goNamed(RouteConstants.customExclusionRules);
@@ -27,10 +31,17 @@ class ExcludeCustomRules extends StatelessWidget {
             ProBadge(),
           ],
         ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+          ),
+        ),
         subtitle: const Text(
           "Exclude by app, title, url or regex pattern",
         ),
-        onTap: hasAccess ? () => navigateTo(context) : null,
+        enabled: enabled,
+        trailing: const Icon(Icons.keyboard_arrow_right_rounded),
+        onTap: hasAccess && enabled ? () => navigateTo(context) : null,
       );
     });
   }

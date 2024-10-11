@@ -1,6 +1,5 @@
 import 'package:clipboard/pages/settings/widgets/e2ee_settings.dart';
-import 'package:clipboard/pages/settings/widgets/exclusion_rules/exclude_custom_rules.dart';
-import 'package:clipboard/pages/settings/widgets/exclusion_rules/exlcude_sensitive_info.dart';
+import 'package:clipboard/pages/settings/widgets/exclusion_rules/exclusion_rules_switch_tile.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
@@ -28,10 +27,7 @@ class SecuritySettings extends StatelessWidget {
             ),
           ),
           const Divider(indent: padding12, endIndent: padding12),
-          height12,
-          const SettingHeader(icon: Icons.rule, name: "Exclusion Rules"),
-          const ExcludeSensitiveInfoSwitchTile(),
-          const ExcludeCustomRules(),
+          const ExclusionRulesSwitchTile(),
         ],
       ),
     );

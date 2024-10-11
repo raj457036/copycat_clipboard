@@ -14,6 +14,7 @@ import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/reset_password/page.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/settings/pages/custom_exclusion_rule/custom_exclusion_rule.dart";
+import "package:clipboard/pages/settings/pages/exclusion_rules.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
@@ -239,12 +240,20 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: RouteConstants.customExclusionRules,
-                  path: "custom-exclusion-rules",
-                  builder: (context, state) => CustomExclusionRulePage(
-                    key: state.pageKey,
-                  ),
-                ),
+                    name: RouteConstants.exclusionRules,
+                    path: "exclusion-rules",
+                    builder: (context, state) => ExclusionRulesPage(
+                          key: state.pageKey,
+                        ),
+                    routes: [
+                      GoRoute(
+                        name: RouteConstants.customExclusionRules,
+                        path: "custom",
+                        builder: (context, state) => CustomExclusionRulePage(
+                          key: state.pageKey,
+                        ),
+                      ),
+                    ]),
               ],
             ),
           ],

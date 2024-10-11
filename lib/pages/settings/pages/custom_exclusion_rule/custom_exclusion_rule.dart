@@ -27,7 +27,7 @@ class _CustomExclusionRulePageState extends State<CustomExclusionRulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Exclusion Rules"),
+        title: const Text("Custom Exclusion Rules"),
         centerTitle: false,
       ),
       body: Row(
