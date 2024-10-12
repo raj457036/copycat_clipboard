@@ -13,11 +13,15 @@ class ClipCardOptionsHeader extends StatelessWidget {
   final bool hasFocusForPaste;
   final ClipboardItem item;
   final bool hovered;
+  final bool selected;
+  final bool selectionActive;
 
   const ClipCardOptionsHeader({
     super.key,
     this.hasFocusForPaste = false,
     this.hovered = false,
+    this.selected = false,
+    required this.selectionActive,
     required this.item,
   });
 
@@ -64,20 +68,24 @@ class ClipCardOptionsHeader extends StatelessWidget {
       child: Row(
         children: [
           LeadingClipboardOption(
+            clipId: item.id,
             created: item.created,
-            hovered: hovered,
+            hovered: hovered || selectionActive,
+            selected: selected,
           ),
           const Spacer(),
           width8,
-          SecondaryClipActionButton(
-            item: item,
-            hasFocusForPaste: hasFocusForPaste,
-          ),
-          PrimaryClipActionButton(
-            item: item,
-            hasFocusForPaste: hasFocusForPaste,
-            layout: AppLayout.grid,
-          ),
+          if (!selectionActive)
+            SecondaryClipActionButton(
+              item: item,
+              hasFocusForPaste: hasFocusForPaste,
+            ),
+          if (!selectionActive)
+            PrimaryClipActionButton(
+              item: item,
+              hasFocusForPaste: hasFocusForPaste,
+              layout: AppLayout.grid,
+            ),
         ],
       ),
     );

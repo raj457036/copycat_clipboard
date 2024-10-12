@@ -6,6 +6,7 @@ import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
@@ -23,11 +24,15 @@ class ClipCardBodyContent extends StatelessWidget {
   final ClipboardItem item;
   final bool canPaste;
   final bool hovered;
+  final bool selected;
+  final bool selectionActive;
   const ClipCardBodyContent({
     super.key,
     required this.item,
     required this.canPaste,
+    required this.selectionActive,
     this.hovered = false,
+    this.selected = false,
   });
 
   @override
@@ -40,6 +45,8 @@ class ClipCardBodyContent extends StatelessWidget {
           item: item,
           hasFocusForPaste: canPaste,
           hovered: hovered,
+          selected: selected,
+          selectionActive: selectionActive,
         ),
         Expanded(
           child: Column(
@@ -66,14 +73,17 @@ class ClipCardBodyContent extends StatelessWidget {
             ],
           ),
         ),
-        DisableForLocalUser(
-          child: ClipSyncStatusFooter(item: item),
-        ),
+        if (!selected)
+          DisableForLocalUser(
+            child: ClipSyncStatusFooter(item: item),
+          ),
       ],
     );
 
     // NOTE: drag and drop doesn't work in android for now
-    if (!Platform.isAndroid) return DraggableItem(item: item, child: child);
+    if (!Platform.isAndroid && !selected) {
+      return DraggableItem(item: item, child: child);
+    }
     return child;
   }
 }
@@ -82,11 +92,15 @@ class ClipCardBody extends StatefulWidget {
   final ClipboardItem item;
   final bool focused;
   final bool canPaste;
+  final bool selected;
+  final bool selectionActive;
   const ClipCardBody({
     super.key,
     required this.item,
     required this.focused,
     required this.canPaste,
+    required this.selected,
+    required this.selectionActive,
   });
 
   @override
@@ -156,11 +170,20 @@ class _ClipCardBodyState extends State<ClipCardBody> {
     });
   }
 
+  void toggleSelect(BuildContext context) {
+    final cubit = context.read<SelectedClipsCubit>();
+    if (widget.selected) {
+      cubit.unselect(widget.item.id);
+      return;
+    }
+    cubit.select(widget.item.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    final selectedShape = focused
+    final selectedShape = focused || widget.selected
         ? RoundedRectangleBorder(
             side: BorderSide(
               color: colors.primary,
@@ -175,6 +198,8 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       canPaste: widget.canPaste,
       item: widget.item,
       hovered: hovered,
+      selected: widget.selected,
+      selectionActive: widget.selectionActive,
     );
 
     return Card.outlined(
@@ -184,17 +209,21 @@ class _ClipCardBodyState extends State<ClipCardBody> {
       child: InkWell(
         onHover: onHover,
         focusColor: colors.surface,
-        onTap: () => performPrimaryAction(context),
+        onTap: !widget.selectionActive
+            ? () => performPrimaryAction(context)
+            : () => toggleSelect(context),
         // onLongPress: () => menu.openOptionDialog(context),
-        onSecondaryTapDown: (detail) async {
-          final menu = Menu.of(context);
-          if (isMobilePlatform) {
-            menu.openOptionDialog(context);
-            return;
-          }
-          final position = detail.globalPosition;
-          menu.openPopupMenu(context, position);
-        },
+        onSecondaryTapDown: !widget.selectionActive
+            ? (detail) async {
+                final menu = Menu.of(context);
+                if (isMobilePlatform) {
+                  menu.openOptionDialog(context);
+                  return;
+                }
+                final position = detail.globalPosition;
+                menu.openPopupMenu(context, position);
+              }
+            : null,
         onFocusChange: onFocusChange,
         autofocus: widget.focused,
         borderRadius: radius12,

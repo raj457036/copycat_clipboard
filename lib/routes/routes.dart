@@ -24,6 +24,7 @@ import "package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart";
 import "package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart";
 import "package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
+import "package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart";
 import "package:copycat_base/constants/key.dart";
 import "package:copycat_base/constants/strings/route_constants.dart";
 import "package:flutter/material.dart";
@@ -145,8 +146,14 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               pageBuilder: (context, state) {
                 return NoTransitionPage(
                   key: state.pageKey,
-                  child: BlocProvider<ClipboardCubit>(
-                    create: (context) => sl()..fetch(),
+                  child: MultiBlocProvider(
+                    providers: [
+                      BlocProvider<ClipboardCubit>(
+                        create: (context) => sl()..fetch(),
+                      ),
+                      BlocProvider<SelectedClipsCubit>(
+                          create: (context) => sl()),
+                    ],
                     child: const HomePage(),
                   ),
                 );

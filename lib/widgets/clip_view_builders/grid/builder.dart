@@ -1,4 +1,5 @@
 import 'package:clipboard/widgets/clip_item/clip_card/clip_card.dart';
+import 'package:clipboard/widgets/clip_view_builders/selected_clip_provider.dart';
 import 'package:clipboard/widgets/empty.dart';
 import 'package:clipboard/widgets/load_more_card.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
@@ -41,28 +42,33 @@ class ClipGridBuilder extends StatelessWidget {
       return EmptyNote(note: context.locale.emptyClipboard);
     }
 
-    return GridView.builder(
-      padding: isMobile ? const EdgeInsets.all(padding8) : inset12,
-      primary: true,
-      scrollDirection: scrollDirection,
-      gridDelegate: delegate,
-      itemCount: items.length + (hasMore ? 1 : 0),
-      itemBuilder: (context, index) {
-        if (index == items.length) {
-          return LoadMoreCard(
-            key: const ValueKey("clipboard-items-load-more"),
-            loadMore: loadMore,
-          );
-        }
+    return SelectedClipProvider(builder: (context, selectedClips) {
+      return GridView.builder(
+        padding: isMobile ? const EdgeInsets.all(padding8) : inset12,
+        primary: true,
+        scrollDirection: scrollDirection,
+        gridDelegate: delegate,
+        itemCount: items.length + (hasMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == items.length) {
+            return LoadMoreCard(
+              key: const ValueKey("clipboard-items-load-more"),
+              loadMore: loadMore,
+            );
+          }
 
-        final item = items[index];
-        return ClipCard(
-          key: ValueKey("clipboard-item-${item.id}"),
-          autoFocus: index == 0 && isDesktopPlatform,
-          item: item,
-          canPaste: canPaste,
-        );
-      },
-    );
+          final item = items[index];
+          final isSelected = selectedClips.contains(item.id);
+          return ClipCard(
+            key: ValueKey("clipboard-item-${item.id}"),
+            autoFocus: !isSelected && index == 0 && isDesktopPlatform,
+            item: item,
+            canPaste: canPaste,
+            selected: isSelected,
+            selectionActive: selectedClips.isNotEmpty,
+          );
+        },
+      );
+    });
   }
 }

@@ -5,6 +5,7 @@ import 'package:clipboard/widgets/clip_item/clip_sync_status_footer.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
@@ -21,6 +22,8 @@ import 'package:universal_io/io.dart';
 class ClipListItem extends StatefulWidget {
   final bool autofocus;
   final bool canPaste;
+  final bool selected;
+  final bool selectionActive;
   final ClipboardItem item;
 
   const ClipListItem({
@@ -28,6 +31,8 @@ class ClipListItem extends StatefulWidget {
     required this.item,
     this.autofocus = false,
     this.canPaste = false,
+    this.selected = false,
+    this.selectionActive = false,
   });
 
   @override
@@ -92,12 +97,21 @@ class _ClipListItemState extends State<ClipListItem> {
     }
   }
 
+  void toggleSelect(BuildContext context) {
+    final cubit = context.read<SelectedClipsCubit>();
+    if (widget.selected) {
+      cubit.unselect(widget.item.id);
+      return;
+    }
+    cubit.select(widget.item.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = context.textTheme;
 
-    final selectedShape = focused
+    final selectedShape = focused || widget.selected
         ? RoundedRectangleBorder(
             side: BorderSide(
               color: colors.primary,
@@ -124,17 +138,20 @@ class _ClipListItemState extends State<ClipListItem> {
           child: InkWell(
             borderRadius: radius8,
             autofocus: widget.autofocus,
-            onTap: () => performPrimaryAction(context),
-            // onLongPress: () => menu.openOptionDialog(context),
-            onSecondaryTapDown: (detail) async {
-              final menu = Menu.of(context);
-              if (isMobilePlatform) {
-                menu.openOptionDialog(context);
-                return;
-              }
-              final position = detail.globalPosition;
-              menu.openPopupMenu(context, position);
-            },
+            onTap: !widget.selectionActive
+                ? () => performPrimaryAction(context)
+                : () => toggleSelect(context),
+            onSecondaryTapDown: !widget.selectionActive
+                ? (detail) async {
+                    final menu = Menu.of(context);
+                    if (isMobilePlatform) {
+                      menu.openOptionDialog(context);
+                      return;
+                    }
+                    final position = detail.globalPosition;
+                    menu.openPopupMenu(context, position);
+                  }
+                : null,
             onFocusChange: onFocusChange,
             onHover: onHover,
             child: Column(
@@ -144,6 +161,9 @@ class _ClipListItemState extends State<ClipListItem> {
                 ClipListItemOptionHeader(
                   item: widget.item,
                   hasFocusForPaste: widget.canPaste,
+                  hovered: hovered,
+                  selected: widget.selected,
+                  selectionActive: widget.selectionActive,
                 ),
                 if (widget.item.displayTitle != null)
                   Padding(
@@ -166,12 +186,13 @@ class _ClipListItemState extends State<ClipListItem> {
                     layout: AppLayout.list,
                   ),
                 ),
-                ClipSyncStatusFooter(
-                  item: widget.item,
-                  radius: const BorderRadius.vertical(
-                    bottom: Radius.circular(8),
+                if (!widget.selected)
+                  ClipSyncStatusFooter(
+                    item: widget.item,
+                    radius: const BorderRadius.vertical(
+                      bottom: Radius.circular(8),
+                    ),
                   ),
-                ),
               ],
             ),
           ),
