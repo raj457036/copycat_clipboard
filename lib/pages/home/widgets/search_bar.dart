@@ -100,6 +100,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final size = context.mq.size;
 
     return Focus(
       descendantsAreTraversable: false,
@@ -148,12 +149,13 @@ class _SearchBarStInputate extends State<SearchInputBar> {
                   onSubmitted: search,
                 ),
               ),
-              width8,
-              FilterButton(
-                size: 35,
-                onChange: onFilterChange,
-                initialState: filterState ?? const SearchFilterState(),
-              ),
+              if (size.width > 300) width8,
+              if (size.width > 300)
+                FilterButton(
+                  size: 35,
+                  onChange: onFilterChange,
+                  initialState: filterState ?? const SearchFilterState(),
+                ),
             ],
           ),
         ),

@@ -181,10 +181,10 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final size = context.mq.size.shortestSide;
-    if (size < 300) {
+    final size = context.mq.size;
+    if (size.width < 300) {
       return const AlertDialog(
-        content: Text("Not enough space"),
+        content: Center(child: Text("∅")),
       );
     }
     final locale = context.locale;
@@ -193,192 +193,213 @@ class _FilterDialogState extends State<FilterDialog> {
     final textTheme = context.textTheme;
     final colors = context.colors;
     return AlertDialog(
-      title: Text(locale.searchFilters),
-      content: SizedBox(
-        width: 400,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Text(locale.from),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: selectFrom,
-                  child: Text(
-                    from != null ? dateFormatter.format(from!) : locale.select,
-                  ),
-                )
-              ],
+      insetPadding:
+          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+      title: Row(
+        children: [
+          Text(locale.searchFilters),
+          const Spacer(),
+          if (size.height < 300)
+            ElevatedButton(
+              onPressed: applyFilter,
+              child: Text(locale.applyFilter),
             ),
-            height8,
-            Row(
-              children: [
-                Text(locale.to),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: selectTo,
-                  child: Text(
-                    to != null ? dateFormatter.format(to!) : locale.now,
-                  ),
-                )
-              ],
-            ),
-            height8,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(locale.including),
-                height8,
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    FilterChip(
-                      label: Text(locale.text),
-                      onSelected: (_) => setTypeInclusion(_, ClipItemType.text),
-                      selected: typeIncludes.contains(ClipItemType.text),
+        ],
+      ),
+      content: SingleChildScrollView(
+        child: SizedBox(
+          width: 400,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Text(locale.from),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: selectFrom,
+                    child: Text(
+                      from != null
+                          ? dateFormatter.format(from!)
+                          : locale.select,
                     ),
-                    FilterChip(
-                      label: Text(locale.url),
-                      onSelected: (_) => setTypeInclusion(_, ClipItemType.url),
-                      selected: typeIncludes.contains(ClipItemType.url),
+                  )
+                ],
+              ),
+              height8,
+              Row(
+                children: [
+                  Text(locale.to),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: selectTo,
+                    child: Text(
+                      to != null ? dateFormatter.format(to!) : locale.now,
                     ),
-                    FilterChip(
-                      label: Text(locale.media),
-                      onSelected: (_) =>
-                          setTypeInclusion(_, ClipItemType.media),
-                      selected: typeIncludes.contains(ClipItemType.media),
-                    ),
-                    FilterChip(
-                      label: Text(locale.docs),
-                      onSelected: (_) => setTypeInclusion(_, ClipItemType.file),
-                      selected: typeIncludes.contains(ClipItemType.file),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            height12,
-            if (typeIncludes.contains(ClipItemType.text))
+                  )
+                ],
+              ),
+              height8,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text.rich(TextSpan(text: locale.textCategories, children: [
-                    TextSpan(
-                      text: locale.exclusive,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colors.outline,
-                      ),
-                    ),
-                  ])),
+                  Text(locale.including),
                   height8,
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
                       FilterChip(
-                        label: Text(locale.email),
+                        label: Text(locale.text),
                         onSelected: (_) =>
-                            setTextCategory(_, TextCategory.email),
-                        selected: textCategory.contains(TextCategory.email),
+                            setTypeInclusion(_, ClipItemType.text),
+                        selected: typeIncludes.contains(ClipItemType.text),
                       ),
                       FilterChip(
-                        label: Text(locale.phone),
+                        label: Text(locale.url),
                         onSelected: (_) =>
-                            setTextCategory(_, TextCategory.phone),
-                        selected: textCategory.contains(TextCategory.phone),
+                            setTypeInclusion(_, ClipItemType.url),
+                        selected: typeIncludes.contains(ClipItemType.url),
                       ),
                       FilterChip(
-                        label: Text(locale.color),
+                        label: Text(locale.media),
                         onSelected: (_) =>
-                            setTextCategory(_, TextCategory.color),
-                        selected: textCategory.contains(TextCategory.color),
+                            setTypeInclusion(_, ClipItemType.media),
+                        selected: typeIncludes.contains(ClipItemType.media),
+                      ),
+                      FilterChip(
+                        label: Text(locale.docs),
+                        onSelected: (_) =>
+                            setTypeInclusion(_, ClipItemType.file),
+                        selected: typeIncludes.contains(ClipItemType.file),
                       ),
                     ],
                   )
                 ],
               ),
-            height8,
-            const Divider(),
-            height8,
-            OverflowBar(
-              spacing: 10,
-              overflowSpacing: 10,
-              alignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(locale.sortBy),
-                DropdownMenu<ClipboardSortKey>(
-                  hintText: locale.select,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(
-                      borderRadius: radius12,
-                      borderSide: BorderSide.none,
-                    ),
-                    fillColor: Colors.black12,
-                    filled: true,
-                    isDense: true,
-                  ),
-                  textStyle: textTheme.bodyMedium,
-                  dropdownMenuEntries: [
-                    DropdownMenuEntry(
-                      value: ClipboardSortKey.modified,
-                      label: locale.lastModified,
-                    ),
-                    DropdownMenuEntry(
-                      value: ClipboardSortKey.created,
-                      label: locale.created,
-                    ),
-                    DropdownMenuEntry(
-                      value: ClipboardSortKey.copyCount,
-                      label: locale.copyCount,
-                    ),
-                    DropdownMenuEntry(
-                      value: ClipboardSortKey.lastCopied,
-                      label: locale.lastCopied,
-                    ),
+              height12,
+              if (typeIncludes.contains(ClipItemType.text))
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text.rich(TextSpan(text: locale.textCategories, children: [
+                      TextSpan(
+                        text: " ${locale.exclusive}",
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colors.outline,
+                        ),
+                      ),
+                    ])),
+                    height8,
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        FilterChip(
+                          label: Text(locale.email),
+                          onSelected: (_) =>
+                              setTextCategory(_, TextCategory.email),
+                          selected: textCategory.contains(TextCategory.email),
+                        ),
+                        FilterChip(
+                          label: Text(locale.phone),
+                          onSelected: (_) =>
+                              setTextCategory(_, TextCategory.phone),
+                          selected: textCategory.contains(TextCategory.phone),
+                        ),
+                        FilterChip(
+                          label: Text(locale.color),
+                          onSelected: (_) =>
+                              setTextCategory(_, TextCategory.color),
+                          selected: textCategory.contains(TextCategory.color),
+                        ),
+                      ],
+                    )
                   ],
-                  onSelected: selectSortBy,
-                  initialSelection: sortBy,
-                )
-              ],
-            ),
-            height8,
-            OverflowBar(
-              spacing: 10,
-              overflowSpacing: 10,
-              alignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(locale.sortOrder),
-                SegmentedButton<SortOrder>(
-                  segments: [
-                    ButtonSegment(
-                      value: SortOrder.asc,
-                      label: Text(locale.asc),
+                ),
+              height8,
+              const Divider(),
+              height8,
+              OverflowBar(
+                spacing: 10,
+                overflowSpacing: 10,
+                alignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(locale.sortBy),
+                  DropdownMenu<ClipboardSortKey>(
+                    hintText: locale.select,
+                    inputDecorationTheme: const InputDecorationTheme(
+                      border: OutlineInputBorder(
+                        borderRadius: radius12,
+                        borderSide: BorderSide.none,
+                      ),
+                      fillColor: Colors.black12,
+                      filled: true,
+                      isDense: true,
                     ),
-                    ButtonSegment(
-                      value: SortOrder.desc,
-                      label: Text(locale.desc),
-                    ),
-                  ],
-                  onSelectionChanged: setSortOrder,
-                  selected: {sortOrder},
-                )
-              ],
-            ),
-          ],
+                    textStyle: textTheme.bodyMedium,
+                    dropdownMenuEntries: [
+                      DropdownMenuEntry(
+                        value: ClipboardSortKey.modified,
+                        label: locale.lastModified,
+                      ),
+                      DropdownMenuEntry(
+                        value: ClipboardSortKey.created,
+                        label: locale.created,
+                      ),
+                      DropdownMenuEntry(
+                        value: ClipboardSortKey.copyCount,
+                        label: locale.copyCount,
+                      ),
+                      DropdownMenuEntry(
+                        value: ClipboardSortKey.lastCopied,
+                        label: locale.lastCopied,
+                      ),
+                    ],
+                    onSelected: selectSortBy,
+                    initialSelection: sortBy,
+                  )
+                ],
+              ),
+              height8,
+              OverflowBar(
+                spacing: 10,
+                overflowSpacing: 10,
+                alignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(locale.sortOrder),
+                  SegmentedButton<SortOrder>(
+                    segments: [
+                      ButtonSegment(
+                        value: SortOrder.asc,
+                        label: Text(locale.asc),
+                      ),
+                      ButtonSegment(
+                        value: SortOrder.desc,
+                        label: Text(locale.desc),
+                      ),
+                    ],
+                    onSelectionChanged: setSortOrder,
+                    selected: {sortOrder},
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      actions: [
-        ElevatedButton(
-          onPressed: applyFilter,
-          child: Text(locale.applyFilter),
-        ),
-      ],
       actionsAlignment: MainAxisAlignment.center,
+      actions: size.height > 300
+          ? [
+              ElevatedButton(
+                onPressed: applyFilter,
+                child: Text(locale.applyFilter),
+              ),
+            ]
+          : null,
     );
   }
 

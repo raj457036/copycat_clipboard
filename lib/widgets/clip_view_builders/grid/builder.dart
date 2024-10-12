@@ -42,7 +42,7 @@ class ClipGridBuilder extends StatelessWidget {
     }
 
     return GridView.builder(
-      padding: isMobile ? insetLR8BT12 : inset12,
+      padding: isMobile ? const EdgeInsets.all(padding8) : inset12,
       primary: true,
       scrollDirection: scrollDirection,
       gridDelegate: delegate,
