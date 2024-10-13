@@ -4,6 +4,7 @@ import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/account/page.dart";
 import "package:clipboard/pages/collections/page.dart";
 import "package:clipboard/pages/collections/pages/create_edit/page.dart";
+import "package:clipboard/pages/collections/pages/details/clip_collection_provider.dart";
 import "package:clipboard/pages/collections/pages/details/page.dart";
 import "package:clipboard/pages/drive_setup/page.dart";
 import "package:clipboard/pages/home/page.dart";
@@ -21,7 +22,6 @@ import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
 import "package:clipboard/widgets/share_listener.dart";
 import "package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart";
 import "package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart";
-import "package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart";
 import "package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
 import "package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart";
@@ -168,37 +168,20 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: RouteConstants.collectionDetail,
-                  path: ":id",
-                  redirect: idPresentOrRedirect,
-                  pageBuilder: (context, state) {
-                    final id = int.parse(state.pathParameters["id"]!);
+                    name: RouteConstants.collectionDetail,
+                    path: ":id",
+                    redirect: idPresentOrRedirect,
+                    builder: (context, state) {
+                      final id = int.parse(state.pathParameters["id"]!);
 
-                    final collection =
-                        context.read<ClipCollectionCubit>().get(id);
-
-                    return NoTransitionPage(
-                      key: state.pageKey,
-                      child: FutureBuilder(
-                          future: collection,
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            return BlocProvider<CollectionClipsCubit>(
-                              create: (context) =>
-                                  sl(param1: snapshot.data)..search(),
-                              child: CollectionDetailPage(
-                                collection: snapshot.data,
-                              ),
-                            );
-                          }),
-                    );
-                  },
-                ),
+                      return ClipCollectionProvider(
+                        collectionId: id,
+                        builder: (context, collection) => CollectionDetailPage(
+                          key: state.pageKey,
+                          collection: collection,
+                        ),
+                      );
+                    }),
                 GoRoute(
                   name: RouteConstants.createEditCollection,
                   path: 'write/:id',

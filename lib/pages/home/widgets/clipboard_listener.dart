@@ -59,17 +59,24 @@ class ClipboardChangeListener extends StatelessWidget {
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
           listener: (context, state) {
             switch (state) {
-              case OfflinePersistanceDeleted(:final item):
-                context.read<ClipboardCubit>().deleteItem(item);
-                showTextSnackbar(
-                  context.locale.itemDeleted,
-                  closePrevious: true,
-                );
+              case OfflinePersistanceDeleted(:final items):
+                {
+                  context.read<ClipboardCubit>().deleteItem(items);
+                  showTextSnackbar(
+                    context.locale.itemDeleted,
+                    closePrevious: true,
+                  );
+                }
               case OfflinePersistanceSaved(
-                  :final item,
+                  :final items,
                   :final created,
                 ):
-                context.read<ClipboardCubit>().put(item, isNew: created);
+                {
+                  final cubit = context.read<ClipboardCubit>();
+                  for (var item in items) {
+                    cubit.put(item, isNew: created);
+                  }
+                }
               case _:
             }
           },
@@ -83,8 +90,9 @@ class ClipboardChangeListener extends StatelessWidget {
               case CloudPersistanceCreating(:final item) ||
                     CloudPersistanceUpdating(:final item):
                 context.read<ClipboardCubit>().put(item);
-              case CloudPersistanceDeleting(:final item):
-                context.read<ClipboardCubit>().put(item);
+              case CloudPersistanceDeleting(:final items):
+                final cubit = context.read<ClipboardCubit>();
+                items.forEach(cubit.put);
                 showTextSnackbar(
                   context.locale.deletingFromCloud,
                   isLoading: true,
@@ -92,7 +100,9 @@ class ClipboardChangeListener extends StatelessWidget {
                 );
               case CloudPersistanceError(:final item, :final failure):
                 showFailureSnackbar(failure);
-                context.read<ClipboardCubit>().put(item);
+                if (item != null) {
+                  context.read<ClipboardCubit>().put(item);
+                }
               case _:
             }
           },

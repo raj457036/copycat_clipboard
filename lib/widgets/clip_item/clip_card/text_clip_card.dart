@@ -34,7 +34,7 @@ class TextPreviewBody extends StatelessWidget {
       return Material(
         type: MaterialType.card,
         color: bg,
-        borderRadius: radiusBottom12,
+        borderRadius: layout == AppLayout.grid ? radiusBottom12 : radiusBottom8,
         child: body,
       );
     }
@@ -64,7 +64,8 @@ class TextClipCard extends StatelessWidget {
         if (bg != null) {
           fg = getFg(bg);
         }
-        return SizedBox.expand(
+        return SizedBox(
+          width: double.infinity,
           child: TextPreviewBody(
             bg: bg,
             layout: layout,
@@ -81,14 +82,18 @@ class TextClipCard extends StatelessWidget {
         );
       case TextCategory.email:
       case TextCategory.phone:
-        return TextPreviewBody(
-          bg: colors.secondaryContainer,
-          layout: layout,
-          child: Text(
-            item.text!,
-            style: textTheme.titleMedium,
-            maxLines: 2,
-            overflow: TextOverflow.fade,
+        return SizedBox(
+          width: double.infinity,
+          child: TextPreviewBody(
+            bg: colors.secondaryContainer,
+            layout: layout,
+            child: Text(
+              item.text!,
+              textAlign: TextAlign.center,
+              style: textTheme.titleMedium,
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+            ),
           ),
         );
       default:

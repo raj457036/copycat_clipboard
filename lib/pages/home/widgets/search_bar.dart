@@ -1,10 +1,10 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/search/filter_button.dart';
-import 'package:clipboard/widgets/search/filter_dialog.dart';
 import 'package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:copycat_base/common/events.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/domain/model/search_filter_state.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/utility.dart';
@@ -64,7 +64,6 @@ class _SearchBarStInputate extends State<SearchInputBar> {
   }
 
   Future<void> search(String text) async {
-    setState(() {});
     await context.read<ClipboardCubit>().fetch(
           query: text,
           fromTop: true,
@@ -78,12 +77,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
     final searchCubit = context.read<ClipboardCubit>();
     searchCubit.fetch(
       query: queryController.text,
-      from: filterState?.from,
-      to: filterState?.to,
-      sortBy: filterState?.sortBy,
-      order: filterState?.sortOrder,
-      textCategories: filterState?.textCategories,
-      clipTypes: filterState?.typeIncludes,
+      filterState: filterState,
       fromTop: true,
     );
   }

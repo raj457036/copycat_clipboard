@@ -50,7 +50,7 @@ class ClipCardBodyContent extends StatelessWidget {
         ),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
               if (item.displayTitle != null)
@@ -130,7 +130,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
     }
 
     final item_ = await widget.item.decrypt();
-    persitCubit.persist(item_);
+    persitCubit.persist([item_]);
   }
 
   Future<void> performPrimaryAction(BuildContext context) async {
@@ -173,10 +173,10 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   void toggleSelect(BuildContext context) {
     final cubit = context.read<SelectedClipsCubit>();
     if (widget.selected) {
-      cubit.unselect(widget.item.id);
+      cubit.unselect(widget.item);
       return;
     }
-    cubit.select(widget.item.id);
+    cubit.select(widget.item);
   }
 
   @override

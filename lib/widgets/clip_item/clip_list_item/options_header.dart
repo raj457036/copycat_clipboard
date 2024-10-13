@@ -24,34 +24,42 @@ class ClipListItemOptionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        LeadingClipboardOption(
-          clipId: item.id,
-          createdPadding: const EdgeInsets.symmetric(
-            vertical: padding8,
-            horizontal: padding10,
+    return SizedBox(
+      height: 26,
+      child: Row(
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: LeadingClipboardOption(
+                item: item,
+                createdPadding: const EdgeInsets.symmetric(
+                  vertical: padding4,
+                  horizontal: padding10,
+                ),
+                padding: EdgeInsets.zero,
+                created: item.created,
+                hovered: hovered || selectionActive,
+                selected: selected,
+                layout: AppLayout.list,
+              ),
+            ),
           ),
-          padding: EdgeInsets.zero,
-          created: item.created,
-          hovered: hovered || selectionActive,
-          selected: selected,
-        ),
-        const Spacer(),
-        if (!selectionActive)
-          SecondaryClipActionButton(
-            item: item,
-            hasFocusForPaste: hasFocusForPaste,
-            layout: AppLayout.list,
-          ),
-        if (!selectionActive)
-          PrimaryClipActionButton(
-            item: item,
-            hasFocusForPaste: hasFocusForPaste,
-            layout: AppLayout.list,
-          ),
-        width6,
-      ],
+          if (!selectionActive)
+            SecondaryClipActionButton(
+              item: item,
+              hasFocusForPaste: hasFocusForPaste,
+              layout: AppLayout.list,
+            ),
+          if (!selectionActive)
+            PrimaryClipActionButton(
+              item: item,
+              hasFocusForPaste: hasFocusForPaste,
+              layout: AppLayout.list,
+            ),
+          // width4,
+        ],
+      ),
     );
   }
 }

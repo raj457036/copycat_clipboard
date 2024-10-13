@@ -20,36 +20,39 @@ class SecondaryClipActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isGrid = layout == AppLayout.grid;
     final iconSize = isGrid ? 24.0 : 18.0;
-    return SizedBox.square(
-      dimension: 32,
-      child: Focus(
-        canRequestFocus: false,
-        skipTraversal: true,
-        descendantsAreFocusable: false,
-        child: switch (item.type) {
-          ClipItemType.url => IconButton(
-              onPressed: () => launchUrl(item),
-              icon: const Icon(Icons.open_in_new),
+    final action = switch (item.type) {
+      ClipItemType.url => IconButton(
+          onPressed: () => launchUrl(item),
+          icon: const Icon(Icons.open_in_new),
+          iconSize: iconSize,
+          tooltip: context.locale.openInBrowser,
+          style: IconButton.styleFrom(
+            padding: EdgeInsets.zero,
+          ),
+        ),
+      ClipItemType.text => switch (item.textCategory) {
+          TextCategory.phone => IconButton(
+              onPressed: () => launchPhone(item),
+              icon: const Icon(Icons.call),
               iconSize: iconSize,
-              tooltip: context.locale.openInBrowser,
+              tooltip: context.locale.makePhoneCall,
               style: IconButton.styleFrom(
                 padding: EdgeInsets.zero,
               ),
             ),
-          ClipItemType.text => switch (item.textCategory) {
-              TextCategory.phone => IconButton(
-                  onPressed: () => launchPhone(item),
-                  icon: const Icon(Icons.call),
-                  iconSize: iconSize,
-                  tooltip: context.locale.makePhoneCall,
-                  style: IconButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                  ),
-                ),
-              _ => const SizedBox.shrink()
-            },
           _ => const SizedBox.shrink()
         },
+      _ => null
+    };
+
+    if (action == null) return const SizedBox.shrink();
+    return SizedBox.square(
+      dimension: iconSize * 1.44,
+      child: Focus(
+        canRequestFocus: false,
+        skipTraversal: true,
+        descendantsAreFocusable: false,
+        child: action,
       ),
     );
   }

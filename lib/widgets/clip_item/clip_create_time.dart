@@ -30,7 +30,7 @@ class ClipCreateTime extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: colors.outline,
         ),
-        maxLines: 2,
+        maxLines: 1,
         overflow: TextOverflow.clip,
       ),
     );

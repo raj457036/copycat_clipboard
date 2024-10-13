@@ -85,7 +85,7 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
       collectionId: collectionId?.$1,
       serverCollectionId: collectionId?.$2,
     )..applyId(widget.item);
-    cubit.persist(updatedItem);
+    cubit.persist([updatedItem]);
     GoRouter.of(context).pop();
   }
 

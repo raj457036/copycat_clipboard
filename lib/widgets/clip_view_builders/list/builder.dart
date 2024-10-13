@@ -53,7 +53,7 @@ class ClipListBuilder extends StatelessWidget {
           }
 
           final item = items[index];
-          final isSelected = selectedClips.contains(item.id);
+          final isSelected = selectedClips.contains(item);
           return ClipMenuProvider(
             item: item,
             child: ClipListItem(

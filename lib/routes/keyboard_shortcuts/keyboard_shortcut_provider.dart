@@ -147,7 +147,7 @@ class KeyboardShortcutProvider extends StatelessWidget {
               ),
               CollectionPageIntent: CallbackAction<CollectionPageIntent>(
                 onInvoke: (intent) {
-                  final isCollectionPage = activePageIndex == 2;
+                  final isCollectionPage = activePageIndex == 1;
                   if (!isCollectionPage) {
                     context.goNamed(RouteConstants.collections);
                   }
@@ -156,7 +156,7 @@ class KeyboardShortcutProvider extends StatelessWidget {
               ),
               SettingsPageIntent: CallbackAction<SettingsPageIntent>(
                 onInvoke: (intent) {
-                  final isSettingsPage = activePageIndex == 3;
+                  final isSettingsPage = activePageIndex == 2;
                   if (!isSettingsPage) {
                     context.goNamed(RouteConstants.settings);
                   }

@@ -18,6 +18,11 @@ class ClipMenuProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Menu(
       items: [
+        MenuItem(
+          icon: Icons.check_circle_outline_rounded,
+          text: "Select",
+          onPressed: () => selectClip(context, item),
+        ),
         if (!item.inCache)
           MenuItem(
             icon: Icons.download_for_offline_outlined,
@@ -72,7 +77,7 @@ class ClipMenuProvider extends StatelessWidget {
         MenuItem(
           icon: Icons.delete_outline,
           text: context.locale.delete,
-          onPressed: () => deleteClipboardItem(context, item),
+          onPressed: () => deleteClipboardItem(context, [item]),
         ),
       ],
       child: child,

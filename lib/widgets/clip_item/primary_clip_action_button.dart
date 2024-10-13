@@ -55,31 +55,41 @@ class PrimaryClipActionButton extends StatelessWidget {
     }
 
     if (isMobilePlatform) {
-      return IconButton(
-        onPressed: () {
-          final menu = Menu.of(context);
-          menu.openOptionDialog(context);
-        },
-        icon: const Icon(Icons.more_vert_rounded),
-        style: IconButton.styleFrom(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(12),
+      return SizedBox.square(
+        dimension: iconSize * 1.44,
+        child: IconButton(
+          onPressed: () {
+            final menu = Menu.of(context);
+            menu.openOptionDialog(context);
+          },
+          iconSize: iconSize,
+          icon: const Icon(Icons.more_vert_rounded),
+          style: IconButton.styleFrom(
+            padding: EdgeInsets.zero,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12),
+              ),
             ),
           ),
         ),
       );
     }
 
-    return Padding(
-      padding: isGrid
-          ? const EdgeInsets.all(padding8)
-          : const EdgeInsets.all(padding4),
-      child: Icon(
-        hasFocusForPaste ? Icons.paste : Icons.copy,
-        color: colors.outline,
-        size: iconSize,
-      ),
-    );
+    // return SizedBox.square(
+    //   dimension: iconSize * 1.44,
+    //   child: IconButton(
+    //     onPressed: null,
+    //     iconSize: iconSize,
+    //     style: IconButton.styleFrom(
+    //       padding: EdgeInsets.zero,
+    //     ),
+    //     icon: Icon(
+    //       hasFocusForPaste ? Icons.paste : Icons.copy,
+    //       color: colors.outline,
+    //     ),
+    //   ),
+    // );
+    return const SizedBox.shrink();
   }
 }

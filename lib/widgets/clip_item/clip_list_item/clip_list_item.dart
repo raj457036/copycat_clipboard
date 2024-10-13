@@ -82,7 +82,7 @@ class _ClipListItemState extends State<ClipListItem> {
     }
 
     final item_ = await widget.item.decrypt();
-    persitCubit.persist(item_);
+    persitCubit.persist([item_]);
   }
 
   Future<void> performPrimaryAction(BuildContext context) async {
@@ -100,10 +100,10 @@ class _ClipListItemState extends State<ClipListItem> {
   void toggleSelect(BuildContext context) {
     final cubit = context.read<SelectedClipsCubit>();
     if (widget.selected) {
-      cubit.unselect(widget.item.id);
+      cubit.unselect(widget.item);
       return;
     }
-    cubit.select(widget.item.id);
+    cubit.select(widget.item);
   }
 
   @override
@@ -134,7 +134,7 @@ class _ClipListItemState extends State<ClipListItem> {
       child: Material(
         shape: selectedShape,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 80, maxHeight: 220),
+          constraints: const BoxConstraints(minHeight: 60, maxHeight: 220),
           child: InkWell(
             borderRadius: radius8,
             autofocus: widget.autofocus,

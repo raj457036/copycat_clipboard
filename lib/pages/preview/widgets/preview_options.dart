@@ -67,7 +67,7 @@ class PreviewOptions extends StatelessWidget {
             ),
           IconButton.outlined(
             onPressed: () async {
-              final done = await deleteClipboardItem(context, item);
+              final done = await deleteClipboardItem(context, [item]);
               // ignore: use_build_context_synchronously
               if (done) Navigator.pop(context);
             },

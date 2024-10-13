@@ -1,4 +1,5 @@
 import 'package:clipboard/widgets/search/filter_dialog.dart';
+import 'package:copycat_base/domain/model/search_filter_state.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';

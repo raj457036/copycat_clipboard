@@ -3,6 +3,7 @@ import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
@@ -24,8 +25,9 @@ Future<void> copyToClipboard(
     final ctx = context.mounted ? context : rootNavKey.currentContext!;
     final cubit = ctx.read<OfflinePersistanceCubit>();
     final result = await cubit.copyToClipboard(item, saveFile: saveFile);
-    if (noAck && ctx.mounted) return;
-    if (result && ctx.mounted) {
+    if (!ctx.mounted) return;
+    if (noAck) return;
+    if (result) {
       showTextSnackbar(
         saveFile ? ctx.locale.exportSuccess : ctx.locale.copySuccess,
         closePrevious: true,
@@ -62,6 +64,14 @@ Future<void> shareClipboardItem(
   });
 }
 
+Future<void> selectClip(
+  BuildContext context,
+  ClipboardItem item,
+) async {
+  final ctx = context.mounted ? context : rootNavKey.currentContext!;
+  ctx.read<SelectedClipsCubit>().select(item);
+}
+
 Future<void> downloadFile(
   BuildContext context,
   ClipboardItem item,
@@ -87,18 +97,18 @@ Future<void> pasteOnLastWindow(BuildContext context, ClipboardItem item) async {
 
 Future<bool> deleteClipboardItem(
   BuildContext context,
-  ClipboardItem item,
+  List<ClipboardItem> items,
 ) async {
   final ctx = context.mounted ? context : rootNavKey.currentContext!;
   final confirmation = await const ConfirmDialog(
-    title: "Delete Item",
-    message: "Are you sure to delete this item?",
+    title: "Confirm Delete",
+    message: "Are you sure to delete this item(s)?",
   ).open(ctx);
 
   if (!confirmation) return false;
 
   // ignore: use_build_context_synchronously
-  await ctx.read<CloudPersistanceCubit>().delete(item);
+  await ctx.read<CloudPersistanceCubit>().deleteMany(items);
   return true;
 }
 
@@ -142,7 +152,7 @@ Future<void> changeCollection(BuildContext context, ClipboardItem item) async {
       collectionId: collection.id,
       serverCollectionId: collection.serverId,
     )..applyId(item);
-    cubit.persist(updatedItem);
+    cubit.persist([updatedItem]);
     router.pop();
   }
 }
