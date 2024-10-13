@@ -48,10 +48,11 @@ flutter:
         pluginClass: FocusWindowPluginCApi
 
   # To add assets to your plugin package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-  #
+  assets:
+    - window_utils/GetActivity.ps1
+    - window_utils/GetIcon.ps1
+    - window_utils/GetUrl.ps1
+  
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
   #

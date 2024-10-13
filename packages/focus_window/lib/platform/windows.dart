@@ -15,6 +15,7 @@ import 'platform_activity_observer_interface.dart';
 
 final _cache = <String, String>{};
 ActivityInfo? _lastActivity;
+bool cached = false;
 
 class WindowsActivityObserver implements PlatformActivityObserverInterface {
   const WindowsActivityObserver();
@@ -25,14 +26,14 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
     if (!_cache.containsKey('GetActivity')) {
       futures.add(
         rootBundle
-            .loadString('packages/tracker_libs/windows_utils/Get-Activity.ps1')
+            .loadString('packages/focus_window/window_utils/GetActivity.ps1')
             .then((value) => _cache['GetActivity'] = value),
       );
     }
     if (!_cache.containsKey('GetIcon')) {
       futures.add(
         rootBundle
-            .loadString('plugins/focus_window/windows_utils/Get-Icon.ps1')
+            .loadString('packages/focus_window/window_utils/GetIcon.ps1')
             .then((value) async {
           final tempDir = await getTemporaryDirectory();
           final file = File(p.join(tempDir.path, '._gi.ps1'));
@@ -44,7 +45,7 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
     if (!_cache.containsKey('GetUrl')) {
       futures.add(
         rootBundle
-            .loadString('packages/tracker_libs/windows_utils/Get-Url.ps1')
+            .loadString('packages/focus_window/window_utils/GetUrl.ps1')
             .then((value) async {
           final tempDir = await getTemporaryDirectory();
           final file = File(p.join(tempDir.path, '._gu.ps1'));
@@ -54,16 +55,8 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
       );
     }
 
-    if (!_cache.containsKey('GetScreenshot')) {
-      futures.add(
-        rootBundle
-            .loadString(
-                'packages/tracker_libs/windows_utils/Get-Screenshot.ps1')
-            .then((value) => _cache['GetScreenshot'] = value),
-      );
-    }
-
     await Future.wait(futures);
+    cached = true;
   }
 
   @override
@@ -78,22 +71,21 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
   }
 
   Future<String?> getUrl(String app, String windowTitle) async {
-    throw UnimplementedError();
-
-    // final result = await runInPowershell(
-    //   [
-    //     _cache['GetUrl']!,
-    //     '-app',
-    //     app,
-    //     '-windowTitle',
-    //     "'$windowTitle'",
-    //   ],
-    // );
-    // return result;
+    final result = await runInPowershell(
+      [
+        _cache['GetUrl']!,
+        '-app',
+        app,
+        '-windowTitle',
+        "'$windowTitle'",
+      ],
+    );
+    return result;
   }
 
   @override
   Future<ActivityInfo> getActivity({bool withIcon = false}) async {
+    if (!cached) await cacheAll();
     final result = await runInPowershell([
       _cache['GetActivity']!,
     ]);

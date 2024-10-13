@@ -4,6 +4,7 @@ import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
 
 class AppExclusionTab extends StatelessWidget {
@@ -30,9 +31,17 @@ class AppExclusionTab extends StatelessWidget {
   }
 
   Future<Iterable<AppInfo>> selectApp() async {
+    final List<String> ext;
+    if (Platform.isMacOS) {
+      ext = ["app"];
+    } else if (Platform.isWindows) {
+      ext = ["exe"];
+    } else {
+      ext = ["bin"];
+    }
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ["app"],
+      allowedExtensions: ext,
       allowMultiple: true,
     );
 

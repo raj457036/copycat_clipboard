@@ -16,7 +16,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             title: const SearchInputBar(),
             backgroundColor: Colors.transparent,
             scrolledUnderElevation: 0,
-            titleSpacing: 0,
+            centerTitle: true,
             titleTextStyle: textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
