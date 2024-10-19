@@ -20,10 +20,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             titleTextStyle: textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
-            actions: const [
-              // ActivePlanAction(),
-              // width12,
-            ],
+            titleSpacing: 8,
           );
     return SelectionAppbar(
       defaultChild: defaultAppBar,

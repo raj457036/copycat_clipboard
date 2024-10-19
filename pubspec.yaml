@@ -24,8 +24,7 @@ dependencies:
   dartz: ^0.10.1
   form_validator: ^2.1.1
   google_fonts: ^6.2.1
-  # window_manager: ^0.4.2
-  window_manager_plus: ^1.0.5
+  window_manager: ^0.4.2
   timeago: ^3.7.0
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1

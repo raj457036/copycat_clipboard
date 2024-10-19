@@ -1,5 +1,7 @@
 import 'package:clipboard/widgets/view_buttons/app_layout_button.dart';
 import 'package:clipboard/widgets/view_buttons/app_view_button.dart';
+import 'package:clipboard/widgets/view_buttons/navigate_to_home.dart';
+import 'package:clipboard/widgets/view_buttons/pin_to_top_button.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
@@ -45,18 +47,20 @@ class TitlebarView extends StatelessWidget {
         return state.view;
       },
       builder: (context, view) {
+        final isWindowMode = view == AppView.windowed;
         final dragToMove = DragToMoveArea2(
-          enabled: view == AppView.windowed,
+          enabled: isWindowMode,
           child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: colors.surface,
-            ),
+            decoration: BoxDecoration(color: colors.surface),
             child: SizedBox(
               height: 26,
               width: double.infinity,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  if (!isWindowMode) const NavigationButtons(),
+                  const Spacer(),
+                  if (!isWindowMode) const PinToTopButton(),
+                  width2,
                   const AppLayoutToggleButton(),
                   width2,
                   const AppViewButton(),

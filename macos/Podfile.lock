@@ -213,8 +213,6 @@ PODS:
     - FlutterMacOS
   - window_manager (0.2.0):
     - FlutterMacOS
-  - window_manager_plus (0.0.1):
-    - FlutterMacOS
 
 DEPENDENCIES:
   - app_links (from `Flutter/ephemeral/.symlinks/plugins/app_links/macos`)
@@ -246,7 +244,6 @@ DEPENDENCIES:
   - tray_manager (from `Flutter/ephemeral/.symlinks/plugins/tray_manager/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
   - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
-  - window_manager_plus (from `Flutter/ephemeral/.symlinks/plugins/window_manager_plus/macos`)
 
 SPEC REPOS:
   trunk:
@@ -332,8 +329,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
   window_manager:
     :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
-  window_manager_plus:
-    :path: Flutter/ephemeral/.symlinks/plugins/window_manager_plus/macos
 
 SPEC CHECKSUMS:
   app_links: 10e0a0ab602ffaf34d142cd4862f29d34b303b2a
@@ -387,7 +382,6 @@ SPEC CHECKSUMS:
   tray_manager: 9064e219c56d75c476e46b9a21182087930baf90
   url_launcher_macos: 5f437abeda8c85500ceb03f5c1938a8c5a705399
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
-  window_manager_plus: 18e39c7256dbb1e9bbc810417a5506de91f7129b
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 

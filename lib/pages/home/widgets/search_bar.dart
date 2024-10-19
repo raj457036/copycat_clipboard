@@ -99,59 +99,56 @@ class _SearchBarStInputate extends State<SearchInputBar> {
     return Focus(
       descendantsAreTraversable: false,
       skipTraversal: true,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: padding8),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 40,
-            minWidth: 200,
-            maxWidth: 450,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: SearchBar(
-                  controller: queryController,
-                  focusNode: focusNode,
-                  onTapOutside: (event) =>
-                      FocusManager.instance.primaryFocus?.nextFocus(),
-                  elevation: 0.0.msp,
-                  padding: const EdgeInsets.only(left: padding12).msp,
-                  leading: const Icon(Icons.search_rounded),
-                  hintText: context.locale.searchInClipboard,
-                  trailing: [
-                    if (isDesktopPlatform)
-                      Padding(
-                        padding: const EdgeInsets.only(right: padding10),
-                        child: Text(
-                          "$metaKey + F",
-                          style: textTheme.labelLarge?.copyWith(
-                            color: colors.outline,
-                          ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxHeight: 40,
+          minWidth: 200,
+          maxWidth: 450,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: SearchBar(
+                controller: queryController,
+                focusNode: focusNode,
+                onTapOutside: (event) =>
+                    FocusManager.instance.primaryFocus?.nextFocus(),
+                elevation: 0.0.msp,
+                padding: const EdgeInsets.only(left: padding12).msp,
+                leading: const Icon(Icons.search_rounded),
+                hintText: context.locale.searchInClipboard,
+                trailing: [
+                  if (isDesktopPlatform)
+                    Padding(
+                      padding: const EdgeInsets.only(right: padding10),
+                      child: Text(
+                        "$metaKey + F",
+                        style: textTheme.labelLarge?.copyWith(
+                          color: colors.outline,
                         ),
                       ),
-                    if (isActive)
-                      IconButton(
-                        onPressed: clear,
-                        icon: const Icon(Icons.clear_rounded),
-                        color: colors.outline,
-                        tooltip: "Reset Search",
-                      ),
-                  ],
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: search,
-                ),
+                    ),
+                  if (isActive)
+                    IconButton(
+                      onPressed: clear,
+                      icon: const Icon(Icons.clear_rounded),
+                      color: colors.outline,
+                      tooltip: "Reset Search",
+                    ),
+                ],
+                textInputAction: TextInputAction.search,
+                onSubmitted: search,
               ),
-              if (size.width > 300) width8,
-              if (size.width > 300)
-                FilterButton(
-                  size: 35,
-                  onChange: onFilterChange,
-                  initialState: filterState ?? const SearchFilterState(),
-                ),
-            ],
-          ),
+            ),
+            if (size.width > 300) width8,
+            if (size.width > 300)
+              FilterButton(
+                size: 35,
+                onChange: onFilterChange,
+                initialState: filterState ?? const SearchFilterState(),
+              ),
+          ],
         ),
       ),
     );

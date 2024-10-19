@@ -41,16 +41,14 @@ class AppViewButton extends StatelessWidget {
                 shape: const RoundedRectangleBorder(),
               ),
               iconSize: 20,
-              icon: const Icon(Icons.view_comfortable),
+              icon: const Icon(Icons.dashboard_rounded),
               tooltip: 'Change View',
             );
           },
-
-          // tooltip: "Change Layout",
           menuChildren: [
             MenuItemButton(
               leadingIcon: const Icon(
-                Icons.flip_to_front_rounded,
+                Icons.crop_landscape,
                 size: 26,
               ),
               child: const Text("Window"),

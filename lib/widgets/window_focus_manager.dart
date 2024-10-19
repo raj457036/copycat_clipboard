@@ -129,7 +129,9 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   @override
   void onWindowBlur() {
-    context.windowAction?.hide();
+    if (!appConfigCubit.isPinned) {
+      context.windowAction?.hide();
+    }
     lastWindowId = null;
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
   }

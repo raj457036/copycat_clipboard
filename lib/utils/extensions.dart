@@ -1,6 +1,6 @@
-import 'dart:ui';
-
+import 'package:flutter/widgets.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
 extension WindowManagerExtenstion on WindowManager {
@@ -25,4 +25,21 @@ extension ColorExtensions on Color {
         enableAlpha: enableAlpha,
         toUpperCase: toUpperCase,
       );
+}
+
+extension GoRouterExtension on GoRouter {
+  String location() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    final String? location = matchList.last.route.name;
+    return location ?? "";
+  }
+}
+
+extension BuildContextExtension on BuildContext {
+  String get location {
+    return GoRouter.of(this).location();
+  }
 }

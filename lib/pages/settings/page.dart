@@ -41,45 +41,48 @@ class SettingsPage extends StatelessWidget {
           margin: const EdgeInsets.only(
             right: padding12,
           ),
-          child: Column(
-            children: [
-              TabBar(
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                tabs: [
-                  Tab(text: context.locale.general),
-                  Tab(text: context.locale.customization),
-                  Tab(text: context.locale.syncingLabel),
-                  const Tab(text: "Security"),
-                  Tab(text: context.locale.experimentalLabel),
-                ],
-              ),
-              const Expanded(
-                child: TabBarView(children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: GeneralSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomizationSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: SyncingSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: SecuritySettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: ExperimentalSettings(),
-                  ),
-                ]),
-              ),
-            ],
-          ),
+          child: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth < 300) return const SizedBox.shrink();
+            return Column(
+              children: [
+                TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  tabs: [
+                    Tab(text: context.locale.general),
+                    Tab(text: context.locale.customization),
+                    Tab(text: context.locale.syncingLabel),
+                    const Tab(text: "Security"),
+                    Tab(text: context.locale.experimentalLabel),
+                  ],
+                ),
+                const Expanded(
+                  child: TabBarView(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: GeneralSettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomizationSettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SyncingSettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SecuritySettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ExperimentalSettings(),
+                    ),
+                  ]),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
