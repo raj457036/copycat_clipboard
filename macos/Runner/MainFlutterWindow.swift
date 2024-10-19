@@ -1,9 +1,9 @@
 import Cocoa
 import FlutterMacOS
 import LaunchAtLogin
-import window_manager
+import window_manager_plus
 
-class MainFlutterWindow: NSWindow {
+class MainFlutterWindow: NSPanel {
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController.init()
     let windowFrame = self.frame
@@ -27,6 +27,7 @@ class MainFlutterWindow: NSWindow {
       }
     }
 
+    WindowManagerPlusPlugin.RegisterGeneratedPlugins = RegisterGeneratedPlugins
     RegisterGeneratedPlugins(registry: flutterViewController)
 
     super.awakeFromNib()

@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
-extension WindowManagerExtenstion on WindowManager {
+extension WindowManagerExtenstion on WindowManagerPlus {
   Future<void> toggle() async {
     final isVisible_ = await isVisible();
     if (isVisible_) {

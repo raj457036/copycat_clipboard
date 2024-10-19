@@ -32,7 +32,6 @@ import sign_in_with_apple
 import super_native_extensions
 import tray_manager
 import url_launcher_macos
-import window_manager
 import window_manager_plus
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
@@ -63,6 +62,5 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   SuperNativeExtensionsPlugin.register(with: registry.registrar(forPlugin: "SuperNativeExtensionsPlugin"))
   TrayManagerPlugin.register(with: registry.registrar(forPlugin: "TrayManagerPlugin"))
   UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
-  WindowManagerPlugin.register(with: registry.registrar(forPlugin: "WindowManagerPlugin"))
   WindowManagerPlusPlugin.register(with: registry.registrar(forPlugin: "WindowManagerPlusPlugin"))
 }

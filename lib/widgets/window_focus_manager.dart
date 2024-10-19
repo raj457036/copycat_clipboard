@@ -10,7 +10,7 @@ import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_window/focus_window.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
 class WindowFocusManager extends StatefulWidget {
   final Widget child;
@@ -57,6 +57,14 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     }
   }
 
+  @override
+  Future<dynamic> onEventFromWindow(
+      String eventName, int fromWindowId, dynamic arguments) async {
+    print(
+        '[${WindowManagerPlus.current}] Event $eventName from Window $fromWindowId with arguments $arguments');
+    return 'Hello from ${WindowManagerPlus.current}';
+  }
+
   Future<void> restore() async {
     if (lastWindowId != null) {
       final windowId = lastWindowId;
@@ -75,9 +83,9 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     final bool focused = windowAction?.isFocused ?? false;
 
     // if (Platform.isLinux) {
-    //   focused = await windowManager.isVisible();
+    //   focused = await WindowManagerPlus.current.isVisible();
     // } else {
-    //   focused = await windowManager.isFocused();
+    //   focused = await WindowManagerPlus.current.isFocused();
     // }
     if (focused) {
       await windowAction?.hide();
@@ -97,15 +105,15 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   }
 
   @override
-  Future<void> onWindowClose() async {
-    bool isPreventClose = await windowManager.isPreventClose();
+  Future<void> onWindowClose([int? windowId]) async {
+    bool isPreventClose = await WindowManagerPlus.current.isPreventClose();
     if (isPreventClose && mounted) {
       context.windowAction?.hide();
     }
   }
 
   @override
-  void onWindowFocus() {
+  void onWindowFocus([int? windowId]) {
     // Make sure to call once.
     setState(() {});
     context.windowAction?.isFocused = true;
@@ -113,7 +121,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   Future<void> onResized() async {
     final appConfig = context.read<AppConfigCubit>();
-    final size = await windowManager.getSize();
+    final size = await WindowManagerPlus.current.getSize();
     appConfig.changeWindowSize(
       width: size.width,
       height: size.height,
@@ -121,14 +129,14 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   }
 
   @override
-  void onWindowResize() {
+  void onWindowResize([int? windowId]) {
     if (context.windowAction?.isFocused ?? false) {
       debounce(onResized);
     }
   }
 
   @override
-  void onWindowBlur() {
+  void onWindowBlur([int? windowId]) {
     context.windowAction?.hide();
     lastWindowId = null;
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
@@ -141,8 +149,8 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   @override
   void initState() {
     super.initState();
-    windowManager.addListener(this);
-    windowManager.setPreventClose(true);
+    WindowManagerPlus.current.addListener(this);
+    WindowManagerPlus.current.setPreventClose(true);
     appConfigCubit = context.read();
   }
 
@@ -150,7 +158,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   void dispose() {
     subscription?.cancel();
     widget.focusWindow.stopObserver();
-    windowManager.removeListener(this);
+    WindowManagerPlus.current.removeListener(this);
     super.dispose();
   }
 

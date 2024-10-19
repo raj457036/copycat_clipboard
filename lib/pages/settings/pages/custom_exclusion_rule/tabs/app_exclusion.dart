@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_io/io.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
 class AppExclusionTab extends StatelessWidget {
   const AppExclusionTab({super.key});
@@ -45,7 +45,7 @@ class AppExclusionTab extends StatelessWidget {
       allowMultiple: true,
     );
 
-    windowManager.focus();
+    WindowManagerPlus.current.focus();
     if (result == null || result.count == 0) return [];
 
     final files = result.files.map(

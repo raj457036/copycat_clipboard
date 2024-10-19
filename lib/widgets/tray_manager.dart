@@ -1,11 +1,10 @@
-import 'package:clipboard/widgets/window_focus_manager.dart';
-import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:universal_io/io.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
 class TrayManager extends StatefulWidget {
   final Widget child;
@@ -44,6 +43,16 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
     super.dispose();
   }
 
+  Future<void> createWindow() async {
+    final newWindow = await WindowManagerPlus.createWindow([
+      'pastestack',
+      'Paste Stack',
+    ]);
+    if (newWindow != null) {
+      print('New Created Window: $newWindow');
+    }
+  }
+
   Future<void> initTray() async {
     await trayManager.setIcon(
       Platform.isWindows
@@ -54,10 +63,10 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
       items: [
         MenuItem(disabled: true, label: "CopyCat Clipboard"),
         // MenuItem.separator(),
-        // MenuItem(
-        //   key: 'show_window',
-        //   label: 'Show Window',
-        // ),
+        MenuItem(
+          key: 'paste_stack',
+          label: 'Open Paste Stack',
+        ),
         // MenuItem(
         //   key: 'hide_window',
         //   label: 'Hide Window',
@@ -75,9 +84,9 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayIconMouseDown() async {
-    final focusWindow = WindowFocusManager.of(context);
+    // final focusWindow = WindowFocusManager.of(context);
     await trayManager.popUpContextMenu();
-    await focusWindow?.toggleWindow();
+    // await focusWindow?.toggleWindow();
   }
 
   @override
@@ -101,13 +110,13 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
 
   @override
   Future<void> onTrayMenuItemClick(MenuItem menuItem) async {
-    final windowAction = context.windowAction;
+    // final windowAction = context.windowAction;
     switch (menuItem.key) {
-      case "show_window":
-        await windowAction?.show();
+      case "paste_stack":
+        await createWindow();
 
-      case "hide_window":
-        await windowAction?.hide();
+      // case "hide_window":
+      //   await windowAction?.hide();
 
       case "quit_app":
         await quitApp();

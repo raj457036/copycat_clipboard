@@ -5,7 +5,7 @@ import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
 bool _visible = false;
 
@@ -15,7 +15,7 @@ class InconsistentTiming extends StatelessWidget {
   Future<void> open() async {
     if (_visible) return;
     await Future.delayed(const Duration(seconds: 5));
-    windowManager
+    WindowManagerPlus.current
       ..show()
       ..focus();
     _visible = true;

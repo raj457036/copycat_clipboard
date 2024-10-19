@@ -1,13 +1,17 @@
 import Cocoa
 import FlutterMacOS
 import app_links
+import window_manager_plus
 
 @NSApplicationMain
 class AppDelegate: FlutterAppDelegate {
 
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-    return false
-  }
+    let relevantWindows = NSApp.windows.filter { $0 is MainFlutterWindow || $0 is WindowManagerPlusFlutterWindow }
+    return relevantWindows.isEmpty
+    // return false
+}
+
 
   override func application(
     _ application: NSApplication,

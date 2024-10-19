@@ -8,6 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
+import 'package:clipboard/widgets/paste_stack.dart';
 import 'package:clipboard/widgets/state_initializer.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
@@ -21,6 +22,7 @@ import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
+import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
@@ -41,67 +43,85 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:universal_io/io.dart';
 import 'package:upgrader/upgrader.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
 import 'firebase_options.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeServices();
+String windowName = "";
 
+Future<void> main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeServices(args);
+
+  if (windowName == "pastestack") {
+    runApp(const PasteStackApp());
+    return;
+  }
   runApp(const MainApp());
 }
 
-Future<void> initializeServices() async {
+Future<void> initializeServices(List<String> args) async {
   if (kDebugMode) {
     Bloc.observer = CustomBlocObserver();
     await Upgrader.clearSavedSettings();
   }
   if (isDesktopPlatform) {
-    await initializeDesktopServices();
+    await initializeDesktopServices(args);
   } else {
     unawaited(MobileAds.instance.initialize());
   }
-
-  await initializeFirebase();
-  await configureDependencies();
-  timeago.setLocaleMessages('fr', timeago.FrMessages());
-  timeago.setLocaleMessages('de', timeago.DeMessages());
+  if (windowName != "pastestack") {
+    await initializeFirebase();
+    await configureDependencies();
+    timeago.setLocaleMessages('fr', timeago.FrMessages());
+    timeago.setLocaleMessages('de', timeago.DeMessages());
+  }
 }
 
-Future<void> initializeDesktopServices() async {
-  await windowManager.ensureInitialized();
-  await updateWindowsRegistry();
+Future<void> initializeDesktopServices(List<String> args) async {
+  final windowId = args.isEmpty ? 0 : int.tryParse(args[0]) ?? 0;
+  windowName = args.length > 1 ? args[1] : '';
+  logger.w("WINDOW ID: $windowId");
+  await WindowManagerPlus.ensureInitialized(windowId);
 
-  if (kDebugMode) {
-    await hotKeyManager.unregisterAll();
+  if (windowId == 0) {
+    await updateWindowsRegistry();
+    if (kDebugMode) {
+      await hotKeyManager.unregisterAll();
+    }
+
+    final packageInfo = await PackageInfo.fromPlatform();
+    launchAtStartup.setup(
+      appName: packageInfo.appName,
+      appPath: Platform.resolvedExecutable,
+    );
   }
 
-  final packageInfo = await PackageInfo.fromPlatform();
-  launchAtStartup.setup(
-    appName: packageInfo.appName,
-    appPath: Platform.resolvedExecutable,
-  );
-
-  WindowOptions windowOptions = const WindowOptions(
+  WindowOptions windowOptions = WindowOptions(
     size: minimumWindowSize,
     minimumSize: minimumWindowSize,
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
-    skipTaskbar: true,
+    skipTaskbar: windowId == 0,
     windowButtonVisibility: true,
     backgroundColor: Colors.transparent,
-    titleBarStyle: TitleBarStyle.hidden,
+    titleBarStyle: windowId == 0 ? TitleBarStyle.hidden : null,
+    alwaysOnTop: windowId == 1,
   );
-  windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
+  WindowManagerPlus.current.waitUntilReadyToShow(windowOptions).then((_) async {
     // if (Platform.isMacOS) {
-    //   await windowManager.setVisibleOnAllWorkspaces(
+    //   await WindowManagerPlus.current.setVisibleOnAllWorkspaces(
     //     true,
     //     visibleOnFullScreen: true,
     //   );
     // }
-    windowManager.hide();
+    if (windowId == 0) {
+      WindowManagerPlus.current.hide();
+    } else {
+      WindowManagerPlus.current.show();
+    }
   });
 }
 

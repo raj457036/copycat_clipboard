@@ -10,7 +10,7 @@ import 'package:copycat_base/widgets/drag_to_move_area_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_io/io.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_manager_plus/window_manager_plus.dart';
 
 class AppTitle extends StatelessWidget {
   const AppTitle({super.key});
