@@ -44,12 +44,26 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
     super.dispose();
   }
 
+  String get icon {
+    if (paused) {
+      return Platform.isWindows
+          ? 'assets/images/icons/tray_icon_paused.ico'
+          : 'assets/images/icons/tray_icon_paused.png';
+    }
+    return Platform.isWindows
+        ? 'assets/images/icons/tray_icon.ico'
+        : 'assets/images/icons/tray_icon.png';
+  }
+
+  void togglePause() {
+    setState(() {
+      paused = !paused;
+    });
+    initTray();
+  }
+
   Future<void> initTray() async {
-    await trayManager.setIcon(
-      Platform.isWindows
-          ? 'assets/images/icons/tray_icon.ico'
-          : 'assets/images/icons/tray_icon.png',
-    );
+    await trayManager.setIcon(icon);
     Menu menu = Menu(
       items: [
         MenuItem(disabled: true, label: "CopyCat Clipboard"),
@@ -58,10 +72,10 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
         //   key: 'show_window',
         //   label: 'Show Window',
         // ),
-        // MenuItem(
-        //   key: 'hide_window',
-        //   label: 'Hide Window',
-        //   toolTip: "Tip: Use keyboard shortcut to show the clipboard.",
+        // MenuItem.checkbox(
+        //   checked: paused,
+        //   key: 'pause_copycat',
+        //   label: "Paused",
         // ),
         MenuItem.separator(),
         MenuItem(
@@ -76,8 +90,8 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
   @override
   Future<void> onTrayIconMouseDown() async {
     final focusWindow = WindowFocusManager.of(context);
-    await trayManager.popUpContextMenu();
     await focusWindow?.toggleWindow();
+    trayManager.popUpContextMenu();
   }
 
   @override
@@ -106,8 +120,8 @@ class TrayManagerState extends State<TrayManager> with TrayListener {
       case "show_window":
         await windowAction?.show();
 
-      case "hide_window":
-        await windowAction?.hide();
+      case "pause_copycat":
+        togglePause();
 
       case "quit_app":
         await quitApp();

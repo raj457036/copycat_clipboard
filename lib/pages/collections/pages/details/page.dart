@@ -28,7 +28,6 @@ class CollectionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = "${collection.emoji} • ${collection.title}";
-
     return CollectionClipboardListener(
       child: Scaffold(
         appBar: SelectionAppbar(

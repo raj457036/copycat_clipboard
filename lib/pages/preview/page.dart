@@ -67,10 +67,7 @@ class ClipboardItemDesktopPreviewPageContent extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(padding16),
-                  child: ClipDetailForm(item: item, isMobile: false),
-                ),
+                child: ClipDetailForm(item: item, isMobile: false),
               ),
             ],
           ),
@@ -114,10 +111,7 @@ class ClipboardItemMobilePreviewPageContent extends StatelessWidget {
           constraints: BoxConstraints.loose(
             const Size.fromHeight(550),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(padding16),
-            child: ClipDetailForm(item: item, isMobile: true),
-          ),
+          child: ClipDetailForm(item: item, isMobile: true),
         ),
       ],
     );

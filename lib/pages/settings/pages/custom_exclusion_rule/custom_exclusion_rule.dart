@@ -33,29 +33,32 @@ class _CustomExclusionRulePageState extends State<CustomExclusionRulePage> {
       ),
       body: Row(
         children: [
-          NavigationRail(
-            selectedIndex: selectedIndex,
-            extended: true,
-            minExtendedWidth: 140,
-            onDestinationSelected: onDestinationSelected,
-            destinations: [
-              NavigationRailDestination(
-                icon: const Icon(Icons.apps),
-                label: Text(context.locale.apps),
-              ),
-              NavigationRailDestination(
-                icon: const Icon(Icons.abc),
-                label: Text(context.locale.title),
-              ),
-              NavigationRailDestination(
-                icon: const Icon(Icons.link),
-                label: Text(context.locale.url),
-              ),
-              NavigationRailDestination(
-                icon: const Icon(Icons.pattern_rounded),
-                label: Text(context.locale.pattern),
-              ),
-            ],
+          Align(
+            alignment: Alignment.centerLeft,
+            child: NavigationRail(
+              selectedIndex: selectedIndex,
+              extended: true,
+              minExtendedWidth: 140,
+              onDestinationSelected: onDestinationSelected,
+              destinations: [
+                NavigationRailDestination(
+                  icon: const Icon(Icons.apps),
+                  label: Text(context.locale.apps),
+                ),
+                NavigationRailDestination(
+                  icon: const Icon(Icons.abc),
+                  label: Text(context.locale.title),
+                ),
+                NavigationRailDestination(
+                  icon: const Icon(Icons.link),
+                  label: Text(context.locale.url),
+                ),
+                NavigationRailDestination(
+                  icon: const Icon(Icons.pattern_rounded),
+                  label: Text(context.locale.pattern),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ScaffoldBody(

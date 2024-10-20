@@ -1,15 +1,12 @@
 import 'package:clipboard/pages/collections/widgets/appbar.dart';
 import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
-import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
-import 'package:clipboard/widgets/pro_tip_banner.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
-import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +41,11 @@ class CollectionsPage extends StatelessWidget {
         appBar: isMobilePlatform ? const CollectionAppBar() : null,
         body: Column(
           children: [
-            DisableForLocalUser(
-              child: ProTipTile(
-                tip: context.locale.useCollectionProTip,
-              ),
-            ),
+            // DisableForLocalUser(
+            //   child: ProTipTile(
+            //     tip: context.locale.useCollectionProTip,
+            //   ),
+            // ),
             height10,
             Expanded(
               child: ScaffoldBody(

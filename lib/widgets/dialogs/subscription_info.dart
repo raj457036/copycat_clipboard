@@ -84,6 +84,11 @@ class FeatureTabs extends StatelessWidget {
         context.locale.withProDesc,
       ),
       (
+        const Icon(Icons.rule_rounded),
+        context.locale.customExclusionRuleFeature,
+        context.locale.customExclusionRuleFeatureDesc,
+      ),
+      (
         const Icon(Icons.highlight_alt_rounded),
         context.locale.dragNDropFeature,
         context.locale.dragNDropFeatureDesc,

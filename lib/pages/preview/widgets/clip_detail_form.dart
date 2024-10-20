@@ -105,42 +105,52 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.locale.editDetails,
-            style: textTheme.titleMedium,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(padding16),
+        physics: const ClampingScrollPhysics(),
+        child: SizedBox(
+          height: 320,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.locale.editDetails,
+                style: textTheme.titleMedium,
+              ),
+              height16,
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: context.locale.title,
+                ),
+                controller: titleController,
+                validator:
+                    ValidationBuilder(optional: true).maxLength(100).build(),
+              ),
+              height12,
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: context.locale.description,
+                ),
+                minLines: 2,
+                maxLines: 6,
+                controller: descriptionController,
+                validator:
+                    ValidationBuilder(optional: true).maxLength(255).build(),
+              ),
+              height12,
+              ClipCollectionSelectorTile(
+                onChange: setCollection,
+                collectionId: collectionId?.$1,
+              ),
+              if (!widget.isMobile) const Spacer() else height16,
+              ButtonBar(
+                children:
+                    Platform.isWindows ? options.reversed.toList() : options,
+              )
+            ],
           ),
-          height16,
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: context.locale.title,
-            ),
-            controller: titleController,
-            validator: ValidationBuilder(optional: true).maxLength(100).build(),
-          ),
-          height12,
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: context.locale.description,
-            ),
-            minLines: 2,
-            maxLines: 6,
-            controller: descriptionController,
-            validator: ValidationBuilder(optional: true).maxLength(255).build(),
-          ),
-          height12,
-          ClipCollectionSelectorTile(
-            onChange: setCollection,
-            collectionId: collectionId?.$1,
-          ),
-          if (!widget.isMobile) const Spacer() else height16,
-          ButtonBar(
-            children: Platform.isWindows ? options.reversed.toList() : options,
-          )
-        ],
+        ),
       ),
     );
   }

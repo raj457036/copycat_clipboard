@@ -57,7 +57,7 @@ class AppViewButton extends StatelessWidget {
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockRight),
-              child: Text(context.locale.viewDockRigth),
+              child: Text(context.locale.viewDockRight),
               onPressed: () => changeView(context, AppView.rightDocked),
             ),
             MenuItemButton(

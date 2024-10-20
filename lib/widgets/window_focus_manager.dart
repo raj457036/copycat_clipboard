@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/debounce.dart';
@@ -114,6 +115,8 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   Future<void> onResized() async {
     final appConfig = context.read<AppConfigCubit>();
     final size = await windowManager.getSize();
+    logger.d("Resized: $size");
+
     appConfig.changeWindowSize(
       width: size.width,
       height: size.height,

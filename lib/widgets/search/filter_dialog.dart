@@ -146,6 +146,7 @@ class _FilterDialogState extends State<FilterDialog> {
     final textTheme = context.textTheme;
     final colors = context.colors;
     return AlertDialog(
+      contentPadding: const EdgeInsets.only(bottom: padding10),
       insetPadding:
           const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
       title: Row(
@@ -160,6 +161,10 @@ class _FilterDialogState extends State<FilterDialog> {
         ],
       ),
       content: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: padding16,
+          vertical: padding16,
+        ),
         child: SizedBox(
           width: 400,
           child: Column(
