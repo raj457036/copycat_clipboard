@@ -1,6 +1,7 @@
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -40,10 +41,8 @@ class ExclusionRulesSwitchTile extends StatelessWidget {
           children: [
             Expanded(
               child: ListTile(
-                title: const Text("Exclusion Rules"),
-                subtitle: const Text(
-                  "Prevent information from copying to clipboard. Tap to enter.",
-                ),
+                title: Text(context.locale.exclusionRules),
+                subtitle: Text(context.locale.exclusionRulesDesc),
                 onTap: () => openDetail(context),
               ),
             ),

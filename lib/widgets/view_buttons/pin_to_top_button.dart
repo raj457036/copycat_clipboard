@@ -1,4 +1,5 @@
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +31,7 @@ class PinToTopButton extends StatelessWidget {
           color: pinned ? colors.primary : colors.outlineVariant,
           iconSize: 20,
           icon: const Icon(Icons.push_pin_rounded),
-          tooltip: pinned ? "Unpin" : "Pin",
+          tooltip: pinned ? context.locale.unpin : context.locale.pin,
         );
       },
     );

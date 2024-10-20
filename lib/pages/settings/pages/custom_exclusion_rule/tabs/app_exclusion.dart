@@ -1,6 +1,7 @@
 import 'package:clipboard/widgets/empty.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +64,7 @@ class AppExclusionTab extends StatelessWidget {
       children: [
         ListTile(
           leading: const Icon(Icons.add_rounded),
-          title: const Text("Add a new app"),
+          title: Text(context.locale.excludeAnApp),
           dense: true,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -84,7 +85,7 @@ class AppExclusionTab extends StatelessWidget {
             },
             builder: (context, rules) {
               if (rules.isEmpty) {
-                return const EmptyNote(note: "Nothing here!");
+                return EmptyNote(note: context.locale.noCustomAppExcluded);
               }
               return ListView.builder(
                 itemCount: rules.length,
@@ -97,7 +98,7 @@ class AppExclusionTab extends StatelessWidget {
                     leading: IconButton(
                       onPressed: () => deleteItem(context, index),
                       icon: const Icon(Icons.remove_circle_rounded),
-                      tooltip: "Remove",
+                      tooltip: context.locale.removeCustomApp,
                     ),
                   );
                 },

@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class NavigationButtons extends StatefulWidget {
-  const NavigationButtons({
-    super.key,
-  });
+  const NavigationButtons({super.key});
 
   @override
   State<NavigationButtons> createState() => _NavigationButtonsState();

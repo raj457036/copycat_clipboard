@@ -1,6 +1,7 @@
 import 'package:clipboard/widgets/badges.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -22,13 +23,13 @@ class ExcludeCustomRules extends StatelessWidget {
       final hasAccess =
           subscription != null && subscription.customExclusionRules;
       return ListTile(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Custom Rules"),
+            Text(context.locale.customRules),
             width8,
-            ProBadge(),
+            const ProBadge(),
           ],
         ),
         shape: const RoundedRectangleBorder(
@@ -36,8 +37,8 @@ class ExcludeCustomRules extends StatelessWidget {
             topLeft: Radius.circular(16),
           ),
         ),
-        subtitle: const Text(
-          "Exclude by app, title, url or regex pattern",
+        subtitle: Text(
+          context.locale.customRulesDesc,
         ),
         enabled: enabled,
         trailing: const Icon(Icons.keyboard_arrow_right_rounded),

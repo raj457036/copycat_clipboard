@@ -48,10 +48,6 @@ class LocaleDropdownButton extends StatelessWidget {
                 value: const Locale("zh"),
                 child: Text(context.locale.zh),
               ),
-              DropdownMenuItem(
-                value: const Locale("zh-cn"),
-                child: Text(context.locale.zh_cn),
-              ),
             ],
             onChanged: (locale) {
               if (locale != null) {

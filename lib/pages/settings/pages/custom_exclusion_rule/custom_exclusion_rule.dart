@@ -4,6 +4,7 @@ import 'package:clipboard/pages/settings/pages/custom_exclusion_rule/tabs/title_
 import 'package:clipboard/pages/settings/pages/custom_exclusion_rule/tabs/url_text_exclusion.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class CustomExclusionRulePage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _CustomExclusionRulePageState extends State<CustomExclusionRulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Custom Exclusion Rules"),
+        title: Text(context.locale.customExclusionRules),
         centerTitle: false,
       ),
       body: Row(
@@ -37,22 +38,22 @@ class _CustomExclusionRulePageState extends State<CustomExclusionRulePage> {
             extended: true,
             minExtendedWidth: 140,
             onDestinationSelected: onDestinationSelected,
-            destinations: const [
+            destinations: [
               NavigationRailDestination(
-                icon: Icon(Icons.apps),
-                label: Text("Apps"),
+                icon: const Icon(Icons.apps),
+                label: Text(context.locale.apps),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.abc),
-                label: Text("Title"),
+                icon: const Icon(Icons.abc),
+                label: Text(context.locale.title),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.link),
-                label: Text("Url"),
+                icon: const Icon(Icons.link),
+                label: Text(context.locale.url),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.pattern_rounded),
-                label: Text("Pattern"),
+                icon: const Icon(Icons.pattern_rounded),
+                label: Text(context.locale.pattern),
               ),
             ],
           ),

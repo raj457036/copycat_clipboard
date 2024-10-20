@@ -68,6 +68,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
           query: text,
           fromTop: true,
         );
+    setState(() {});
   }
 
   void onFilterChange(SearchFilterState? filterState) {
@@ -134,7 +135,7 @@ class _SearchBarStInputate extends State<SearchInputBar> {
                       onPressed: clear,
                       icon: const Icon(Icons.clear_rounded),
                       color: colors.outline,
-                      tooltip: "Reset Search",
+                      tooltip: context.locale.resetSearch,
                     ),
                 ],
                 textInputAction: TextInputAction.search,

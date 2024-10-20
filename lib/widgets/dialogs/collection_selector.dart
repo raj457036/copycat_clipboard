@@ -20,25 +20,28 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
   Future<ClipCollection?> open(BuildContext context) async {
     return await showDialog<ClipCollection?>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FittedBox(
-              child: Text(context.locale.selectCollection),
-            ),
-            const DisableForLocalUser(
+      builder: (context) {
+        final isDense = context.mq.size.shortestSide < dockedLRMaxWidth;
+        return AlertDialog(
+          title: ListTile(
+            dense: isDense,
+            title: Text(context.locale.selectCollection),
+            trailing: const DisableForLocalUser(
               ifLocal: CreateCollectionFAB(
                 localMode: true,
                 isFab: false,
               ),
               child: CreateCollectionFAB(isFab: false),
             ),
-          ],
-        ),
-        content: this,
-        insetPadding: const EdgeInsets.all(padding12),
-      ),
+            contentPadding: isDense ? const EdgeInsets.all(padding10) : null,
+          ),
+          titlePadding: isDense ? EdgeInsets.zero : null,
+          content: this,
+          contentPadding:
+              isDense ? const EdgeInsets.only(bottom: padding10) : null,
+          insetPadding: const EdgeInsets.all(padding12),
+        );
+      },
     );
   }
 
@@ -46,6 +49,8 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final isDense = context.mq.size.shortestSide < dockedLRMaxWidth;
+    final isVeryDense = context.mq.size.shortestSide < 250;
     return ConstrainedBox(
       constraints: const BoxConstraints.tightFor(
         width: 550,
@@ -77,10 +82,11 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
                       collection.emoji,
                       style: textTheme.titleLarge,
                     ),
+                    dense: isDense,
                     selected: selectedCollectionId == collection.id,
                     selectedTileColor: colors.surfaceContainerHighest,
                     title: Text(collection.title),
-                    subtitle: collection.description != null
+                    subtitle: !isVeryDense && collection.description != null
                         ? Text(collection.description!)
                         : null,
                     onTap: () => context.pop(collection),

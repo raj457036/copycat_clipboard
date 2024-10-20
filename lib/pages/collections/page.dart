@@ -49,6 +49,7 @@ class CollectionsPage extends StatelessWidget {
                 tip: context.locale.useCollectionProTip,
               ),
             ),
+            height10,
             Expanded(
               child: ScaffoldBody(
                 child: RefreshIndicator(
@@ -72,7 +73,7 @@ class CollectionsPage extends StatelessWidget {
                               );
                             }
 
-                            final aspectRatio = width / (68 * crossAxisCount);
+                            final aspectRatio = width / (56 * crossAxisCount);
                             final builder = GridView.builder(
                               padding: isMobile
                                   ? const EdgeInsets.only(bottom: padding12)

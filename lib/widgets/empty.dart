@@ -15,6 +15,8 @@ class EmptyNote extends StatelessWidget {
     final colors = context.colors;
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
@@ -28,6 +30,7 @@ class EmptyNote extends StatelessWidget {
             style: textTheme.bodyLarge?.copyWith(
               color: colors.outline,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

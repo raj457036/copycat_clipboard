@@ -33,10 +33,6 @@ class AttentionDialog extends StatelessWidget {
     await launchUrlString(discordUrl);
   }
 
-  Future<void> openGoogleGroup() async {
-    await launchUrlString(googleGroupUrl);
-  }
-
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
@@ -149,19 +145,6 @@ class AttentionDialog extends StatelessWidget {
                         isThreeLine: true,
                         trailing: const Icon(Icons.chevron_right_rounded),
                         onTap: openDiscord,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: radius12,
-                        ),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.group),
-                        title: Text(context.locale.joinGoogleGroup),
-                        subtitle: Text(
-                          context.locale.joinGoogleGroupDesc,
-                        ),
-                        isThreeLine: true,
-                        trailing: const Icon(Icons.chevron_right_rounded),
-                        onTap: openGoogleGroup,
                         shape: const RoundedRectangleBorder(
                           borderRadius: radius12,
                         ),

@@ -12,6 +12,7 @@ class ProTipTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final width = context.mq.size.width;
+    if (width < 300) return const SizedBox.shrink();
     final isMobile = Breakpoints.isMobile(width);
     final tile = ListTile(
       shape: const RoundedRectangleBorder(

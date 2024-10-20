@@ -5,6 +5,7 @@ import 'package:clipboard/widgets/scaffold_body.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +38,7 @@ class ExclusionRulesPage extends StatelessWidget {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             centerTitle: false,
-            title: const Text("Exclusion Rules"),
+            title: Text(context.locale.exclusionRules),
             actions: [
               Switch(
                 value: state.enable,
@@ -61,12 +62,12 @@ class ExclusionRulesPage extends StatelessWidget {
                     ExcludeCustomRules(enabled: enable),
                     const Divider(),
                     height8,
-                    const SettingHeader(
+                    SettingHeader(
                       // icon: Icons.filter_alt_rounded,
-                      name: "Predefined Exclusion Rules",
+                      name: context.locale.predefinedExclRules,
                     ),
                     SwitchListTile(
-                      title: const Text("Password Manager"),
+                      title: Text(context.locale.passwordManagers),
                       value: state.passwordManager,
                       onChanged: enable
                           ? (value) {
@@ -78,7 +79,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Common Password Patterns"),
+                      title: Text(context.locale.commonPasswordPatterns),
                       value: state.passwords,
                       onChanged: enable
                           ? (value) {
@@ -90,7 +91,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Credit Card Number"),
+                      title: Text(context.locale.creditCardNumber),
                       value: state.creditCard,
                       onChanged: enable
                           ? (value) {
@@ -102,7 +103,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Phone Number"),
+                      title: Text(context.locale.phoneNumber),
                       value: state.phone,
                       onChanged: enable
                           ? (value) {
@@ -114,7 +115,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Email"),
+                      title: Text(context.locale.email),
                       value: state.email,
                       onChanged: enable
                           ? (value) {
@@ -126,7 +127,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Bank Account Number"),
+                      title: Text(context.locale.bankAccountNumber),
                       value: state.bankAccount,
                       onChanged: enable
                           ? (value) {
@@ -138,7 +139,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Passport Number"),
+                      title: Text(context.locale.passportNumber),
                       value: state
                           .personalInfo, // TODO: Support more personal info
                       onChanged: enable
@@ -151,7 +152,7 @@ class ExclusionRulesPage extends StatelessWidget {
                           : null,
                     ),
                     SwitchListTile(
-                      title: const Text("Sensitive Urls"),
+                      title: Text(context.locale.sensitiveUrls),
                       value: state.sensitiveUrls,
                       onChanged: enable
                           ? (value) {

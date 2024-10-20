@@ -2,6 +2,7 @@ import 'package:clipboard/widgets/empty.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,7 +64,7 @@ class _TitleTextExclusionTabState extends State<TitleTextExclusionTab> {
       children: [
         ListTile(
           // dense: true,
-          title: const Text("Prevent copy when title contains these text"),
+          title: Text(context.locale.excludeTitle),
           subtitle: TextField(
             focusNode: focusNode,
             controller: controller,
@@ -86,7 +87,7 @@ class _TitleTextExclusionTabState extends State<TitleTextExclusionTab> {
             },
             builder: (context, rules) {
               if (rules.isEmpty) {
-                return const EmptyNote(note: "Nothing here!");
+                return EmptyNote(note: context.locale.noCustomTitleExcluded);
               }
               return ListView.builder(
                 itemCount: rules.length,
@@ -98,7 +99,7 @@ class _TitleTextExclusionTabState extends State<TitleTextExclusionTab> {
                     leading: IconButton(
                       onPressed: () => deleteItem(context, index),
                       icon: const Icon(Icons.remove_circle_rounded),
-                      tooltip: "Remove",
+                      tooltip: context.locale.removeCustomTitle,
                     ),
                   );
                 },

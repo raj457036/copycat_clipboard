@@ -67,6 +67,7 @@ class ClipCollectionListItem extends StatelessWidget {
           },
           child: ListTile(
             shape: shape,
+            dense: true,
             autofocus: autoFocus,
             leading: Text(
               collection.emoji,

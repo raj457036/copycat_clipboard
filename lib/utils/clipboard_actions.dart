@@ -100,9 +100,9 @@ Future<bool> deleteClipboardItem(
   List<ClipboardItem> items,
 ) async {
   final ctx = context.mounted ? context : rootNavKey.currentContext!;
-  final confirmation = await const ConfirmDialog(
-    title: "Confirm Delete",
-    message: "Are you sure to delete this item(s)?",
+  final confirmation = await ConfirmDialog(
+    title: context.locale.delete,
+    message: context.locale.sureToDeleteItem,
   ).open(ctx);
 
   if (!confirmation) return false;
@@ -119,9 +119,15 @@ Future<void> openFile(ClipboardItem item) async {
     switch (result.type) {
       case ResultType.error:
       case ResultType.noAppToOpen:
-        showTextSnackbar("No application knows how to open this file.");
+        final error =
+            rootNavKey.currentContext?.locale.noAppFoundToHandleFile ??
+                "No application found to open this file.";
+        showTextSnackbar(error);
       case ResultType.permissionDenied:
-        showTextSnackbar("You don't have permission to open this file.");
+        final error =
+            rootNavKey.currentContext?.locale.fileOpenPermissionNotGranted ??
+                "Permission to open this file not granted.";
+        showTextSnackbar(error);
       case _:
     }
   }

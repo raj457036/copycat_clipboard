@@ -52,7 +52,7 @@ class SettingsPage extends StatelessWidget {
                     Tab(text: context.locale.general),
                     Tab(text: context.locale.customization),
                     Tab(text: context.locale.syncingLabel),
-                    const Tab(text: "Security"),
+                    Tab(text: context.locale.security),
                     Tab(text: context.locale.experimentalLabel),
                   ],
                 ),

@@ -2,6 +2,7 @@ import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/dock_icons.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,7 +43,7 @@ class AppViewButton extends StatelessWidget {
               ),
               iconSize: 20,
               icon: const Icon(Icons.dashboard_rounded),
-              tooltip: 'Change View',
+              tooltip: context.locale.changeView,
             );
           },
           menuChildren: [
@@ -51,27 +52,27 @@ class AppViewButton extends StatelessWidget {
                 Icons.crop_landscape,
                 size: 26,
               ),
-              child: const Text("Window"),
+              child: Text(context.locale.viewWindow),
               onPressed: () => changeView(context, AppView.windowed),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockRight),
-              child: const Text("Dock Right"),
+              child: Text(context.locale.viewDockRigth),
               onPressed: () => changeView(context, AppView.rightDocked),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockBottom),
-              child: const Text("Dock Bottom"),
+              child: Text(context.locale.viewDockBottom),
               onPressed: () => changeView(context, AppView.bottomDocked),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockLeft),
-              child: const Text("Dock Left"),
+              child: Text(context.locale.viewDockLeft),
               onPressed: () => changeView(context, AppView.leftDocked),
             ),
             MenuItemButton(
               leadingIcon: const Icon(DockIcons.dockTop),
-              child: const Text("Dock Top"),
+              child: Text(context.locale.viewDockTop),
               onPressed: () => changeView(context, AppView.topDocked),
             ),
           ],

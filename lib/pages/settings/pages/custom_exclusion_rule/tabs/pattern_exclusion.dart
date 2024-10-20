@@ -2,6 +2,7 @@ import 'package:clipboard/widgets/empty.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,9 +63,8 @@ class _PatternExclusionTabState extends State<PatternExclusionTab> {
     return Column(
       children: [
         ListTile(
-          // dense: true,
-          title: const Text(
-            "Prevent copy when text match these regex patterns",
+          title: Text(
+            context.locale.excludePattern,
           ),
           subtitle: TextField(
             focusNode: focusNode,
@@ -88,7 +88,7 @@ class _PatternExclusionTabState extends State<PatternExclusionTab> {
             },
             builder: (context, rules) {
               if (rules.isEmpty) {
-                return const EmptyNote(note: "Nothing here!");
+                return EmptyNote(note: context.locale.noCustomPatternExcluded);
               }
               return ListView.builder(
                 itemCount: rules.length,
@@ -100,7 +100,7 @@ class _PatternExclusionTabState extends State<PatternExclusionTab> {
                     leading: IconButton(
                       onPressed: () => deleteItem(context, index),
                       icon: const Icon(Icons.remove_circle_rounded),
-                      tooltip: "Remove",
+                      tooltip: context.locale.removeCustomPattern,
                     ),
                   );
                 },
