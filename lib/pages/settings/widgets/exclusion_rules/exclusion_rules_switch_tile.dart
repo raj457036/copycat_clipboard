@@ -2,6 +2,7 @@ import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +27,7 @@ class ExclusionRulesSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSupported = isDesktopPlatform;
     return BlocSelector<AppConfigCubit, AppConfigState, bool>(
       selector: (state) {
         switch (state) {
@@ -42,8 +44,11 @@ class ExclusionRulesSwitchTile extends StatelessWidget {
             Expanded(
               child: ListTile(
                 title: Text(context.locale.exclusionRules),
-                subtitle: Text(context.locale.exclusionRulesDesc),
+                subtitle: isSupported
+                    ? Text(context.locale.exclusionRulesDesc)
+                    : Text(context.locale.featureNotSupported),
                 onTap: () => openDetail(context),
+                enabled: isSupported,
               ),
             ),
             const SizedBox(
@@ -62,7 +67,9 @@ class ExclusionRulesSwitchTile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: padding10),
                   child: Switch(
                     value: enabled,
-                    onChanged: (value) => onChanged(context, value),
+                    onChanged: isSupported
+                        ? (value) => onChanged(context, value)
+                        : null,
                   ),
                 ),
               ),

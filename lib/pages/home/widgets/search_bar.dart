@@ -1,8 +1,10 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/search/filter_button.dart';
+import 'package:clipboard/widgets/view_buttons/app_layout_button.dart';
 import 'package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart';
 import 'package:copycat_base/common/events.dart';
+import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/domain/model/search_filter_state.dart';
 import 'package:copycat_base/l10n/l10n.dart';
@@ -145,10 +147,12 @@ class _SearchBarStInputate extends State<SearchInputBar> {
             if (size.width > 300) width8,
             if (size.width > 300)
               FilterButton(
-                size: 35,
+                size: 40,
                 onChange: onFilterChange,
                 initialState: filterState ?? const SearchFilterState(),
               ),
+            if (isMobilePlatform && Breakpoints.isMobile(size.width))
+              const AppLayoutToggleButton(rounded: true),
           ],
         ),
       ),

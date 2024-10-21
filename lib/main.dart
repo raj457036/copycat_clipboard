@@ -67,6 +67,7 @@ Future<void> initializeServices() async {
   await configureDependencies();
   timeago.setLocaleMessages('fr', timeago.FrMessages());
   timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('zh', timeago.ZhCnMessages());
 }
 
 Future<void> initializeDesktopServices() async {

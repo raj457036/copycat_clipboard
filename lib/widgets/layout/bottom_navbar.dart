@@ -34,12 +34,6 @@ class BottomNavBar extends StatelessWidget {
                 label: context.locale.clipboard.sub(end: 15),
                 tooltip: context.locale.clipboard,
               ),
-              // NavigationDestination(
-              //   icon: const Icon(Icons.content_paste_search_outlined),
-              //   selectedIcon: const Icon(Icons.content_paste_search_rounded),
-              //   label: context.locale.search,
-              //   tooltip: context.locale.searchClipboard,
-              // ),
               NavigationDestination(
                 icon: const Icon(Icons.collections_bookmark_outlined),
                 selectedIcon: const Icon(Icons.collections_bookmark_rounded),
@@ -49,7 +43,7 @@ class BottomNavBar extends StatelessWidget {
               NavigationDestination(
                 icon: const Icon(Icons.settings_outlined),
                 selectedIcon: const Icon(Icons.settings_rounded),
-                label: context.locale.settings.substring(0, 8),
+                label: context.locale.settings.sub(start: 0, end: 8),
                 tooltip: context.locale.settings,
               ),
             ],
