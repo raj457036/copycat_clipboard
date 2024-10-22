@@ -40,6 +40,7 @@ class ProTipTile extends StatelessWidget {
       padding: const EdgeInsets.only(
         right: padding12,
         top: padding12,
+        bottom: padding10,
       ),
       child: tile,
     );

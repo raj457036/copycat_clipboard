@@ -24,6 +24,7 @@ class TextPreviewBody extends StatelessWidget {
       padding: layout == AppLayout.grid
           ? const EdgeInsets.all(padding8)
           : const EdgeInsets.only(
+              top: padding10,
               left: padding10,
               right: padding10,
               bottom: padding10,
@@ -87,22 +88,28 @@ class TextClipCard extends StatelessWidget {
           child: TextPreviewBody(
             bg: colors.secondaryContainer,
             layout: layout,
-            child: Text(
-              item.text!,
-              textAlign: TextAlign.center,
-              style: textTheme.titleMedium,
-              maxLines: 2,
-              overflow: TextOverflow.fade,
+            child: Align(
+              heightFactor: 1,
+              child: Text(
+                item.text!,
+                textAlign: TextAlign.center,
+                style: textTheme.titleMedium,
+                maxLines: 2,
+                overflow: TextOverflow.fade,
+              ),
             ),
           ),
         );
       default:
-        return TextPreviewBody(
-          layout: layout,
-          child: Text(
-            item.text!,
-            overflow: TextOverflow.fade,
-            style: textTheme.bodySmall,
+        return SizedBox(
+          width: double.infinity,
+          child: TextPreviewBody(
+            layout: layout,
+            child: Text(
+              item.text!,
+              overflow: TextOverflow.fade,
+              style: textTheme.bodySmall,
+            ),
           ),
         );
     }

@@ -61,8 +61,6 @@ class _ClipListItemState extends State<ClipListItem> {
         duration: Durations.medium1,
       );
       focus();
-      // final cubit = context.read<FocusedClipitemCubit>();
-      // cubit.focused(item);
     } else {
       unfocus();
     }

@@ -86,8 +86,16 @@ Future<void> launchUrl(ClipboardItem item) async {
   }
 }
 
-Future<void> launchPhone(ClipboardItem item) async {
-  await launchUrlString("tel:${item.text}");
+Future<void> launchPhone(ClipboardItem item, {bool message = false}) async {
+  if (message) {
+    await launchUrlString("sms:${item.text}");
+  } else {
+    await launchUrlString("tel:${item.text}");
+  }
+}
+
+Future<void> launchEmail(ClipboardItem item) async {
+  await launchUrlString("mailto:${item.text}");
 }
 
 Future<void> pasteOnLastWindow(BuildContext context, ClipboardItem item) async {

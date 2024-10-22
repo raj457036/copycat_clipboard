@@ -26,6 +26,7 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
           title: ListTile(
             dense: isDense,
             title: Text(context.locale.selectCollection),
+            subtitle: Text(context.locale.selectCollectionSub),
             trailing: const DisableForLocalUser(
               ifLocal: CreateCollectionFAB(
                 localMode: true,

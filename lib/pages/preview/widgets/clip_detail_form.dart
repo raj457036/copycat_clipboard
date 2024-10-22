@@ -109,7 +109,7 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
         padding: const EdgeInsets.all(padding16),
         physics: const ClampingScrollPhysics(),
         child: SizedBox(
-          height: 320,
+          height: 360,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

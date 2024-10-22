@@ -18,31 +18,49 @@ class SecondaryClipActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isGrid = layout == AppLayout.grid;
-    final iconSize = isGrid ? 24.0 : 18.0;
+    const iconSize = 24.0;
     final action = switch (item.type) {
       ClipItemType.url => IconButton(
           onPressed: () => launchUrl(item),
-          icon: const Icon(Icons.open_in_new),
+          icon: const Icon(Icons.outbound_rounded),
           iconSize: iconSize,
           tooltip: context.locale.openInBrowser,
           style: IconButton.styleFrom(
             padding: EdgeInsets.zero,
           ),
         ),
+      ClipItemType.file || ClipItemType.media => item.inCache
+          ? IconButton(
+              onPressed: () => openFile(item),
+              icon: const Icon(Icons.outbound_rounded),
+              iconSize: iconSize,
+              tooltip: context.locale.open,
+              style: IconButton.styleFrom(
+                padding: EdgeInsets.zero,
+              ),
+            )
+          : null,
       ClipItemType.text => switch (item.textCategory) {
           TextCategory.phone => IconButton(
-              onPressed: () => launchPhone(item),
-              icon: const Icon(Icons.call),
+              onPressed: () => launchPhone(item, message: true),
+              icon: const Icon(Icons.outbound_rounded),
               iconSize: iconSize,
-              tooltip: context.locale.makePhoneCall,
+              tooltip: context.locale.open,
+              style: IconButton.styleFrom(
+                padding: EdgeInsets.zero,
+              ),
+            ),
+          TextCategory.email => IconButton(
+              onPressed: () => launchEmail(item),
+              icon: const Icon(Icons.outbound_rounded),
+              iconSize: iconSize,
+              tooltip: context.locale.email,
               style: IconButton.styleFrom(
                 padding: EdgeInsets.zero,
               ),
             ),
           _ => const SizedBox.shrink()
         },
-      _ => null
     };
 
     if (action == null) return const SizedBox.shrink();

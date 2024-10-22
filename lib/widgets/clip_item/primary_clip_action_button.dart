@@ -22,7 +22,7 @@ class PrimaryClipActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isGrid = layout == AppLayout.grid;
     final colors = context.colors;
-    final double iconSize = isGrid ? 24 : 18;
+    const iconSize = 24.0;
 
     if (item.encrypted) {
       return const SizedBox.shrink();

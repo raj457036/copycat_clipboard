@@ -25,7 +25,7 @@ class ClipListItemOptionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 26,
+      height: 36,
       child: Row(
         children: [
           Expanded(

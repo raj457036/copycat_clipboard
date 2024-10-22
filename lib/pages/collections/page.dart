@@ -32,6 +32,7 @@ class CollectionsPage extends StatelessWidget {
       tablet: 2,
       desktop: 3,
     );
+    final isDense = width < dockedLRMaxWidth;
     return BlocListener<SyncManagerCubit, SyncManagerState>(
       listenWhen: ((previous, current) {
         return current is ClipCollectionSyncedSyncState;
@@ -50,7 +51,6 @@ class CollectionsPage extends StatelessWidget {
                   tip: context.locale.useCollectionProTip,
                 ),
               ),
-            height10,
             Expanded(
               child: ScaffoldBody(
                 child: RefreshIndicator(
@@ -95,6 +95,7 @@ class CollectionsPage extends StatelessWidget {
                                           borderRadius: radius8,
                                         )
                                       : null,
+                                  isDense: isDense,
                                 );
                               },
                             );
