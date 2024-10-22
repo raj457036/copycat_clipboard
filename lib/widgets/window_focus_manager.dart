@@ -4,6 +4,7 @@ import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/debounce.dart';
@@ -131,16 +132,13 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   }
 
   @override
-  void onWindowBlur() {
-    if (!appConfigCubit.isPinned) {
+  Future<void> onWindowBlur() async {
+    final isDocked = appConfigCubit.state.config.view != AppView.windowed;
+    if (!appConfigCubit.isPinned && isDocked) {
       context.windowAction?.hide();
     }
     lastWindowId = null;
     appConfigCubit.setLastFocusedWindowId(lastWindowId);
-  }
-
-  void onFocuswindowChange(data) {
-    print(data);
   }
 
   @override
