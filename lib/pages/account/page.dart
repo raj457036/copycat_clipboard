@@ -26,7 +26,7 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = context.mq.size.width;
     final isPhone = Breakpoints.isMobile(width);
     final colors = context.colors;
     final content = BlocSelector<AuthCubit, AuthState, AuthUser?>(

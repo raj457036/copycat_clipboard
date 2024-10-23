@@ -1,18 +1,18 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:window_manager/window_manager.dart';
 
 class AppLinkListener extends StatefulWidget {
   final Widget child;
@@ -39,7 +39,7 @@ class _AppLinkListenerState extends State<AppLinkListener> {
     }
 
     if (isDesktopPlatform) {
-      await windowManager.show();
+      await context.windowAction?.show();
       await Future.delayed(const Duration(seconds: 2));
     }
 

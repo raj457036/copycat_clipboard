@@ -12,6 +12,30 @@
     <true/>
 	<key>com.apple.security.files.downloads.read-write</key>
 	<true/>
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<array>
+		<string>com.google.Chrome</string>
+		<string>com.google.Chrome.beta</string>
+		<string>com.google.Chrome.dev</string>
+		<string>com.google.Chrome.canary</string>
+		<string>com.brave.Browser</string>
+		<string>com.brave.Browser.beta</string>
+		<string>com.brave.Browser.nightly</string>
+		<string>com.microsoft.edgemac</string>
+		<string>com.microsoft.edgemac.Beta</string>
+		<string>com.microsoft.edgemac.Dev</string>
+		<string>com.microsoft.edgemac.Canary</string>
+		<string>com.mighty.app</string>
+		<string>com.ghostbrowser.gb1</string>
+		<string>com.bookry.wavebox</string>
+		<string>com.pushplaylabs.sidekick</string>
+		<string>com.operasoftware.Opera</string>
+		<string>com.operasoftware.OperaNext</string>
+		<string>com.operasoftware.OperaDeveloper</string>
+		<string>com.vivaldi.Vivaldi</string>
+		<string>com.apple.Safari</string>
+		<string>com.apple.SafariTechnologyPreview</string>
+	</array>
 	<key>keychain-access-groups</key>
 	<array/>
 </dict>

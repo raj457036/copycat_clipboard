@@ -99,7 +99,7 @@ class Menu extends InheritedWidget {
               children: [
                 Icon(menuItem.icon, size: 18),
                 width6,
-                Text(menuItem.text!),
+                Text(menuItem.text!, overflow: TextOverflow.fade, maxLines: 1),
               ],
             ),
           ),

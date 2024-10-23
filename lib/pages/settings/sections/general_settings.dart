@@ -1,5 +1,6 @@
 import 'package:clipboard/pages/settings/widgets/copycat_about_tile.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
+import 'package:clipboard/pages/settings/widgets/download_desktop_client.dart';
 import 'package:clipboard/pages/settings/widgets/pause_till.dart';
 import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
 import 'package:clipboard/pages/settings/widgets/startup_launch_switch.dart';
@@ -18,6 +19,7 @@ class GeneralSettings extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.symmetric(vertical: padding12),
         children: const [
+          DownloadDesktopClientTile(),
           LocaleDropdownTile(),
           SmartPasteSwitch(),
           SetupToggleHotKey(),

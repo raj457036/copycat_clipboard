@@ -51,22 +51,23 @@ class CreateCollectionFAB extends StatelessWidget {
             final canCreate = localMode || collection > count;
             final remaining =
                 localMode ? "∞" : max(collection - count, 0).toString();
+            Widget child;
             if (!isFab) {
-              if (!canCreate) return const SizedBox.shrink();
-              return IconButton.filledTonal(
+              child = IconButton.filledTonal(
                 onPressed: () => showCreateCollectionDialog(context),
                 icon: const Icon(Icons.add),
                 tooltip: context.locale.createACollection(remaining),
               );
+            } else {
+              child = FloatingActionButton(
+                heroTag: "collection-fab",
+                backgroundColor: canCreate ? null : colors.outline,
+                mouseCursor: canCreate ? null : SystemMouseCursors.forbidden,
+                onPressed: canCreate ? () => createCollection(context) : null,
+                tooltip: context.locale.createACollection(remaining),
+                child: const Icon(Icons.library_add_rounded),
+              );
             }
-            Widget child = FloatingActionButton(
-              heroTag: "collection-fab",
-              backgroundColor: canCreate ? null : colors.outline,
-              mouseCursor: canCreate ? null : SystemMouseCursors.forbidden,
-              onPressed: canCreate ? () => createCollection(context) : null,
-              tooltip: context.locale.createACollection(remaining),
-              child: const Icon(Icons.library_add_rounded),
-            );
 
             if (!canCreate) {
               child = Stack(

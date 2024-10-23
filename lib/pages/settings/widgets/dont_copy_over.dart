@@ -1,4 +1,3 @@
-import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/numbers/file_sizes.dart';
 import 'package:copycat_base/constants/widget_styles.dart';

@@ -12,11 +12,13 @@ class ClipCollectionListItem extends StatelessWidget {
   final ClipCollection collection;
   final ShapeBorder? shape;
   final bool autoFocus;
+  final bool isDense;
 
   const ClipCollectionListItem({
     super.key,
     this.shape,
     this.autoFocus = false,
+    this.isDense = false,
     required this.collection,
   });
 
@@ -66,6 +68,7 @@ class ClipCollectionListItem extends StatelessWidget {
             Menu.of(context).openPopupMenu(context, position);
           },
           child: ListTile(
+            dense: isDense,
             shape: shape,
             autofocus: autoFocus,
             leading: Text(

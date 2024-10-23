@@ -6,13 +6,6 @@ import 'package:flutter/material.dart';
 import "package:universal_io/io.dart";
 import 'package:uuid/uuid.dart';
 
-/// Simple wrapper around [Future.delayed] to wait for few seconds.
-///
-/// Default: 2 seconds
-Future<void> wait([int seconds = 2]) async {
-  await Future.delayed(Duration(seconds: seconds));
-}
-
 String formatDuration(Duration duration) {
   String twoDigits(int n) => n.toString().padLeft(2, '0');
 
@@ -33,13 +26,6 @@ T clamp<T extends num>(T value, [T? min, T? max]) {
   return value;
 }
 
-final isDesktopPlatform =
-    Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-
-final isApplePlatform = Platform.isIOS || Platform.isMacOS;
-
-final isMobilePlatform = Platform.isIOS || Platform.isAndroid;
-
 Color? hexToColor(ClipboardItem item) {
   if (item.textCategory != TextCategory.color) return null;
   String hex = item.text!.replaceAll('#', '');
@@ -59,7 +45,7 @@ Color? hexToColor(ClipboardItem item) {
 }
 
 Color getFg(Color bg) {
-  return bg.computeLuminance() < 0.35 ? Colors.white54 : Colors.black54;
+  return bg.computeLuminance() < 0.1 ? Colors.white54 : Colors.black54;
 }
 
 Future<void> screenshotAsFile(

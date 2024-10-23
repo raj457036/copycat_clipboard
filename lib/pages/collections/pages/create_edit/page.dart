@@ -16,29 +16,31 @@ class ClipCollectionCreateEditDesktopPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
-    return ConstrainedBox(
-      constraints: const BoxConstraints.tightFor(
-        width: 550,
-        height: 550,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          height16,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: padding16),
-            child: Text(
-              title,
-              style: textTheme.titleLarge,
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints.tightFor(
+          width: 550,
+          height: 400,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            height16,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: padding16),
+              child: Text(
+                title,
+                style: textTheme.titleLarge,
+              ),
             ),
-          ),
-          Expanded(
-            child: ClipCollectionCreateEditForm(
-              collection: collection,
+            Expanded(
+              child: ClipCollectionCreateEditForm(
+                collection: collection,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -68,7 +70,7 @@ class ClipCollectionCreateEditPage extends StatelessWidget {
     final title = collection == null
         ? context.locale.createCollection
         : context.locale.editCollection;
-    final width = MediaQuery.of(context).size.width;
+    final width = context.mq.size.width;
     final smallScreen = Breakpoints.isMobile(width);
     if (!smallScreen) {
       return ClipCollectionCreateEditDesktopPageContent(

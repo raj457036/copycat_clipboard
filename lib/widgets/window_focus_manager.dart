@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
+import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/debounce.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_window/focus_window.dart';
-import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowFocusManager extends StatefulWidget {
@@ -43,6 +46,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
     with WindowListener {
   int? lastWindowId;
   StreamSubscription? subscription;
+  final debounce = Debouncer(milliseconds: 650);
 
   late final AppConfigCubit appConfigCubit;
 
@@ -57,8 +61,9 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   Future<void> restore() async {
     if (lastWindowId != null) {
-      await widget.focusWindow.setActiveWindowId(lastWindowId!);
-      onWindowBlur();
+      final windowId = lastWindowId;
+      context.windowAction?.hide();
+      await widget.focusWindow.setActiveWindowId(windowId!);
     }
   }
 
@@ -68,22 +73,21 @@ class WindowFocusManagerState extends State<WindowFocusManager>
 
   /// returns true when unfocused and false when focused
   Future<bool> toggleWindow() async {
-    late final bool focused;
-    if (Platform.isLinux) {
-      focused = await windowManager.isVisible();
-    } else {
-      focused = await windowManager.isFocused();
-    }
+    final windowAction = context.windowAction;
+    final bool focused = windowAction?.isFocused ?? false;
+
+    // if (Platform.isLinux) {
+    //   focused = await windowManager.isVisible();
+    // } else {
+    //   focused = await windowManager.isFocused();
+    // }
     if (focused) {
+      await windowAction?.hide();
       await restore();
-      await Future.delayed(Durations.short1);
-      await windowManager.hide();
       return true;
     } else {
       await record();
-      await windowManager.show();
-      await Future.delayed(Durations.short1);
-      await windowManager.focus();
+      await windowAction?.show();
       return false;
     }
   }
@@ -98,7 +102,7 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   Future<void> onWindowClose() async {
     bool isPreventClose = await windowManager.isPreventClose();
     if (isPreventClose && mounted) {
-      await windowManager.hide();
+      context.windowAction?.hide();
     }
   }
 
@@ -106,16 +110,35 @@ class WindowFocusManagerState extends State<WindowFocusManager>
   void onWindowFocus() {
     // Make sure to call once.
     setState(() {});
+    context.windowAction?.isFocused = true;
+  }
+
+  Future<void> onResized() async {
+    final appConfig = context.read<AppConfigCubit>();
+    final size = await windowManager.getSize();
+    logger.d("Resized: $size");
+
+    appConfig.changeWindowSize(
+      width: size.width,
+      height: size.height,
+    );
   }
 
   @override
-  void onWindowBlur() {
-    lastWindowId = null;
-    appConfigCubit.setLastFocusedWindowId(lastWindowId);
+  void onWindowResize() {
+    if (context.windowAction?.isFocused ?? false) {
+      debounce(onResized);
+    }
   }
 
-  void onFocuswindowChange(data) {
-    print(data);
+  @override
+  Future<void> onWindowBlur() async {
+    final isDocked = appConfigCubit.state.config.view != AppView.windowed;
+    if (!appConfigCubit.isPinned && isDocked) {
+      context.windowAction?.hide();
+    }
+    lastWindowId = null;
+    appConfigCubit.setLastFocusedWindowId(lastWindowId);
   }
 
   @override

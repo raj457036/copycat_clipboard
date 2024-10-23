@@ -32,29 +32,28 @@ class SyncStatusFAB extends StatelessWidget {
                 isSyncing = false;
                 icon = Icons.sync_lock_rounded;
                 message = context.locale.syncNotAvailable;
-                break;
+
               case SyncCheckFailedState(:final failure):
                 disabled = false;
                 isSyncing = false;
                 icon = Icons.sync_problem_rounded;
                 message = context.locale.syncingCheckFailed(failure.message);
-                break;
+
               case SyncedState():
                 disabled = false;
                 isSyncing = false;
                 icon = Icons.sync_rounded;
                 message = context.locale.synced;
-                break;
+
               case CheckingSyncState(needDbRebuilding: true):
                 disabled = true;
                 isSyncing = true;
                 message = context.locale.rebuildingDB;
-                break;
+
               default:
                 disabled = true;
                 isSyncing = true;
                 message = context.locale.checkingForRecord;
-                break;
             }
             return FloatingActionButton.small(
               onPressed: disabled ? null : () => syncChanges(context),

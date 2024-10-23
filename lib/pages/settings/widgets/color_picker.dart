@@ -44,7 +44,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     final theme = context.theme;
     final textTheme = context.textTheme;
     final colors = context.colors;
-    final size = MediaQuery.of(context).size;
+    final size = context.mq.size;
     final isMobile = Breakpoints.isMobile(size.width);
     final double width, height;
     if (size.width > 650) {

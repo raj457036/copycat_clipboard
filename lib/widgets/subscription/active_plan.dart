@@ -20,11 +20,15 @@ class ActivePlanAction extends StatelessWidget {
       child: SubscriptionBuilder(
         builder: (context, subscription) {
           String label = subscription?.planName ?? "Free";
-          return ElevatedButton.icon(
-            onPressed: () => action(context),
-            onLongPress: () => action(context, entitlementGrantMode: true),
-            icon: const Icon(Icons.loyalty_rounded),
-            label: Text(label),
+          return Focus(
+            skipTraversal: true,
+            descendantsAreFocusable: false,
+            child: TextButton.icon(
+              onPressed: () => action(context),
+              onLongPress: () => action(context, entitlementGrantMode: true),
+              icon: const Icon(Icons.loyalty_rounded),
+              label: Text(label),
+            ),
           );
         },
       ),

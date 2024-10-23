@@ -8,7 +8,7 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
-import 'package:clipboard/widgets/orientation_listener.dart';
+import 'package:clipboard/widgets/state_initializer.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
@@ -67,6 +67,7 @@ Future<void> initializeServices() async {
   await configureDependencies();
   timeago.setLocaleMessages('fr', timeago.FrMessages());
   timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('zh', timeago.ZhCnMessages());
 }
 
 Future<void> initializeDesktopServices() async {
@@ -84,10 +85,8 @@ Future<void> initializeDesktopServices() async {
   );
 
   WindowOptions windowOptions = const WindowOptions(
-    size: initialWindowSize,
+    size: minimumWindowSize,
     minimumSize: minimumWindowSize,
-    center: true,
-
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
@@ -97,12 +96,13 @@ Future<void> initializeDesktopServices() async {
     titleBarStyle: TitleBarStyle.hidden,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    if (Platform.isMacOS) {
-      await windowManager.setVisibleOnAllWorkspaces(
-        true,
-        visibleOnFullScreen: true,
-      );
-    }
+    // if (Platform.isMacOS) {
+    //   await windowManager.setVisibleOnAllWorkspaces(
+    //     true,
+    //     visibleOnFullScreen: true,
+    //   );
+    // }
+    windowManager.hide();
   });
 }
 
@@ -129,19 +129,19 @@ class AppContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
     return BlocListener<MonetizationCubit, MonetizationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         switch (state) {
           case MonetizationActive(:final subscription):
             {
               final syncCubit = context.read<SyncManagerCubit>();
               syncCubit.syncHours = subscription.syncHours;
+              syncCubit.loadSub(subscription);
               syncCubit.syncChanges(force: true);
               context.read<AppConfigCubit>().load(subscription);
-              context.read<SyncManagerCubit>().loadSub(subscription);
             }
         }
       },
-      child: OrientationListener(
+      child: StateInitializer(
         child: BlocSelector<AppConfigCubit, AppConfigState,
             (ThemeMode, String, ColorScheme, ColorScheme)>(
           selector: (state) {
@@ -160,6 +160,7 @@ class AppContent extends StatelessWidget {
               routeInformationProvider: router_.routeInformationProvider,
               routerDelegate: router_.routerDelegate,
               backButtonDispatcher: router_.backButtonDispatcher,
+              color: Colors.transparent,
               themeMode: theme,
               theme: ThemeData(
                 useMaterial3: true,
@@ -222,16 +223,14 @@ class MainApp extends StatelessWidget {
     final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => sl()),
-        BlocProvider<AppConfigCubit>(create: (context) => sl()),
+        BlocProvider<AppConfigCubit>(create: (context) => sl()..load()),
         BlocProvider<MonetizationCubit>(create: (context) => sl()),
         BlocProvider<SyncManagerCubit>(create: (context) => sl()),
         BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
         BlocProvider<CloudPersistanceCubit>(create: (context) => sl()),
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
         BlocProvider<DriveSetupCubit>(create: (context) => sl()),
-        // BlocProvider<FocusedClipitemCubit>(create: (context) => sl()),
-        if (isDesktopPlatform)
-          BlocProvider<WindowActionCubit>(create: (context) => sl()..fetch()),
+        BlocProvider<WindowActionCubit>(create: (context) => sl()),
       ],
       child: isMobilePlatform
           ? GestureDetector(

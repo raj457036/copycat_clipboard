@@ -7,11 +7,18 @@ import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.da
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
+import 'package:copycat_base/constants/key.dart';
+import 'package:copycat_base/constants/strings/route_constants.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/data/services/encryption.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class EventBridge extends StatelessWidget {
   final Widget child;
@@ -33,8 +40,24 @@ class EventBridge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // bool firstTime = true;
     return MultiBlocListener(
       listeners: [
+        if (isDesktopPlatform)
+          BlocListener<AppConfigCubit, AppConfigState>(
+            listenWhen: (previous, current) =>
+                previous.config.view != current.config.view,
+            listener: (context, state) {
+              final view = state.config.view;
+              if (view != AppView.windowed) {
+                rootNavKey.currentContext?.goNamed(RouteConstants.home);
+              }
+              final size = view == AppView.windowed
+                  ? initialWindowSize
+                  : state.config.windowSize;
+              context.read<WindowActionCubit>().setup(view, size);
+            },
+          ),
         BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) =>
               (previous.config.autoSyncInterval !=
@@ -78,7 +101,6 @@ class EventBridge extends StatelessWidget {
                         .decryptAllClipboardItems();
                   }
                 }
-                break;
               case _:
             }
           },
@@ -88,10 +110,8 @@ class EventBridge extends StatelessWidget {
             switch (state) {
               case PartlySyncedSyncState(collections: true):
                 context.read<ClipCollectionCubit>().fetch(fromTop: true);
-                break;
               case SyncCheckFailedState(:final failure):
                 showFailureSnackbar(failure);
-                break;
             }
           },
         ),
@@ -99,17 +119,19 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) async {
             switch (state) {
               case OfflinePersistanceSaved(
-                  :final item,
+                  :final items,
                   synced: false,
                   :final updatedFields
                 ):
-                if (shouldSync(updatedFields, item)) {
-                  context.read<CloudPersistanceCubit>().persist(item);
+                {
+                  final forSync =
+                      items.where((item) => shouldSync(updatedFields, item));
+                  final cubit = context.read<CloudPersistanceCubit>();
+                  forSync.forEach(cubit.persist);
                 }
-                break;
               case OfflinePersistanceError(:final failure):
                 showFailureSnackbar(failure);
-                break;
+
               case _:
             }
           },
@@ -120,17 +142,17 @@ class EventBridge extends StatelessWidget {
               case CloudPersistanceSaved(:final item):
                 context
                     .read<OfflinePersistanceCubit>()
-                    .persist(item, synced: true);
-                break;
-              case CloudPersistanceDeleted(:final item):
-                context.read<OfflinePersistanceCubit>().delete(item);
-                break;
+                    .persist([item], synced: true);
+
+              case CloudPersistanceDeleted(:final items):
+                context.read<OfflinePersistanceCubit>().delete(items);
+
               case CloudPersistanceError(:final failure):
                 {
                   // TODO: improve retry strategy
                   showFailureSnackbar(failure);
                 }
-                break;
+
               case _:
             }
           },

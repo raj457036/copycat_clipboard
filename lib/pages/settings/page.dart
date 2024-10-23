@@ -1,7 +1,7 @@
 import 'package:clipboard/pages/settings/sections/customization_settings.dart';
-import 'package:clipboard/pages/settings/sections/encryption_settings.dart';
 import 'package:clipboard/pages/settings/sections/experimental_settings.dart';
 import 'package:clipboard/pages/settings/sections/general_settings.dart';
+import 'package:clipboard/pages/settings/sections/security_settings.dart';
 import 'package:clipboard/pages/settings/sections/syncing_settings.dart';
 import 'package:clipboard/widgets/account_detail_button.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
@@ -23,7 +23,7 @@ class SettingsPage extends StatelessWidget {
     return DefaultTabController(
       length: 5,
       child: CustomScaffold(
-        activeIndex: 3,
+        activeIndex: 2,
         appBar: AppBar(
           backgroundColor: colors.surface,
           scrolledUnderElevation: 0,
@@ -41,45 +41,48 @@ class SettingsPage extends StatelessWidget {
           margin: const EdgeInsets.only(
             right: padding12,
           ),
-          child: Column(
-            children: [
-              TabBar(
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                tabs: [
-                  Tab(text: context.locale.general),
-                  Tab(text: context.locale.customization),
-                  Tab(text: context.locale.syncingLabel),
-                  Tab(text: context.locale.encryption),
-                  Tab(text: context.locale.experimentalLabel),
-                ],
-              ),
-              const Expanded(
-                child: TabBarView(children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: GeneralSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomizationSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: SyncingSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: EncryptionSettings(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: ExperimentalSettings(),
-                  ),
-                ]),
-              ),
-            ],
-          ),
+          child: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth < 300) return const SizedBox.shrink();
+            return Column(
+              children: [
+                TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  tabs: [
+                    Tab(text: context.locale.general),
+                    Tab(text: context.locale.customization),
+                    Tab(text: context.locale.syncingLabel),
+                    Tab(text: context.locale.security),
+                    Tab(text: context.locale.experimentalLabel),
+                  ],
+                ),
+                const Expanded(
+                  child: TabBarView(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: GeneralSettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomizationSettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SyncingSettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SecuritySettings(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ExperimentalSettings(),
+                    ),
+                  ]),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );

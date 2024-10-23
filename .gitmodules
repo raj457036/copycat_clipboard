@@ -2,8 +2,11 @@
 	path = packages/copycat_pro
 	url = ssh://git@github.com:raj457036/copycat_pro.git
 	update = merge
+	branch = .
+	
 [submodule "packages/copycat_base"]
 	path = packages/copycat_base
 	url = ssh://git@github.com:raj457036/copycat_base.git
 	update = merge
+	branch = .
 	

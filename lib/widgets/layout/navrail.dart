@@ -25,88 +25,87 @@ class NavLayoutNavrail extends StatelessWidget {
       skipTraversal: true,
       descendantsAreFocusable: false,
       descendantsAreTraversable: false,
-      child: SizedBox(
-        width: 80,
-        child: NavigationRailTheme(
-          data: NavigationRailThemeData(
-            selectedLabelTextStyle: labelStyle,
-            unselectedLabelTextStyle: labelStyle,
-            elevation: 0,
-          ),
-          child: NavigationRail(
-            destinations: [
-              NavigationRailDestination(
-                padding: EdgeInsets.zero,
-                icon: Tooltip(
-                  message: "$metaKey + D",
-                  child: const Icon(Icons.paste_outlined),
-                ),
-                selectedIcon: Tooltip(
-                  message: "$metaKey + D",
-                  child: const Icon(Icons.paste_rounded),
-                ),
-                label: Text(
-                  context.locale.clipboard,
-                  overflow: TextOverflow.ellipsis,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+                maxWidth: 80,
+              ),
+              child: IntrinsicHeight(
+                child: NavigationRailTheme(
+                  data: NavigationRailThemeData(
+                    selectedLabelTextStyle: labelStyle,
+                    unselectedLabelTextStyle: labelStyle,
+                    elevation: 0,
+                  ),
+                  child: NavigationRail(
+                    destinations: [
+                      NavigationRailDestination(
+                        padding: EdgeInsets.zero,
+                        icon: Tooltip(
+                          message: "$metaKey + D",
+                          child: const Icon(Icons.paste_outlined),
+                        ),
+                        selectedIcon: Tooltip(
+                          message: "$metaKey + D",
+                          child: const Icon(Icons.paste_rounded),
+                        ),
+                        label: Text(
+                          context.locale.clipboard,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      NavigationRailDestination(
+                        padding: EdgeInsets.zero,
+                        icon: Tooltip(
+                          message: "$metaKey + C",
+                          child:
+                              const Icon(Icons.collections_bookmark_outlined),
+                        ),
+                        selectedIcon: Tooltip(
+                          message: "$metaKey + C",
+                          child: const Icon(Icons.collections_bookmark_rounded),
+                        ),
+                        label: Text(
+                          context.locale.collection,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      NavigationRailDestination(
+                        padding: EdgeInsets.zero,
+                        icon: Tooltip(
+                          message: "$metaKey + X",
+                          child: const Icon(Icons.settings_outlined),
+                        ),
+                        selectedIcon: Tooltip(
+                          message: "$metaKey + X",
+                          child: const Icon(Icons.settings),
+                        ),
+                        label: Text(
+                          context.locale.settings,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                    trailing: const AttentionButton(),
+                    leading: SizedBox(
+                      height: 155,
+                      child: floatingActionButton,
+                    ),
+                    labelType: NavigationRailLabelType.all,
+                    groupAlignment: -.5,
+                    selectedIndex: navbarActiveIndex,
+                    onDestinationSelected: (idx) =>
+                        onNavItemTapped(context, idx),
+                  ),
                 ),
               ),
-              NavigationRailDestination(
-                padding: EdgeInsets.zero,
-                icon: Tooltip(
-                  message: "$metaKey + F",
-                  child: const Icon(Icons.content_paste_search_outlined),
-                ),
-                selectedIcon: Tooltip(
-                  message: "$metaKey + F",
-                  child: const Icon(Icons.content_paste_search_rounded),
-                ),
-                label: Text(
-                  context.locale.search,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              NavigationRailDestination(
-                padding: EdgeInsets.zero,
-                icon: Tooltip(
-                  message: "$metaKey + C",
-                  child: const Icon(Icons.collections_bookmark_outlined),
-                ),
-                selectedIcon: Tooltip(
-                  message: "$metaKey + C",
-                  child: const Icon(Icons.collections_bookmark_rounded),
-                ),
-                label: Text(
-                  context.locale.collection,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              NavigationRailDestination(
-                padding: EdgeInsets.zero,
-                icon: Tooltip(
-                  message: "$metaKey + X",
-                  child: const Icon(Icons.settings_outlined),
-                ),
-                selectedIcon: Tooltip(
-                  message: "$metaKey + X",
-                  child: const Icon(Icons.settings),
-                ),
-                label: Text(
-                  context.locale.settings,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-            trailing: const AttentionButton(),
-            leading: SizedBox(
-              height: 155,
-              child: floatingActionButton,
             ),
-            labelType: NavigationRailLabelType.all,
-            groupAlignment: -.5,
-            selectedIndex: navbarActiveIndex,
-            onDestinationSelected: (idx) => onNavItemTapped(context, idx),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

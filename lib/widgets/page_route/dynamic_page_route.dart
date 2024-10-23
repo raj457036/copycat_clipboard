@@ -1,4 +1,5 @@
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,7 +31,7 @@ class DynamicPage<T> extends CustomTransitionPage<T> {
 
   @override
   Route<T> createRoute(BuildContext context) {
-    final mq = MediaQuery.of(context);
+    final mq = context.mq;
     final width = mq.size.width;
 
     if (Breakpoints.isMobile(width)) {

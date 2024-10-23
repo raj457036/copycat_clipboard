@@ -34,9 +34,10 @@ class AttentionButton extends StatelessWidget {
             label: Text(context.locale.learn),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: padding10),
-            backgroundColor: colors.tertiaryContainer,
+            backgroundColor: colors.primaryContainer,
             labelStyle: textTheme.bodySmall?.copyWith(
-              color: colors.onTertiaryContainer,
+              color: colors.primary,
+              fontWeight: FontWeight.bold,
             ),
             labelPadding: const EdgeInsets.fromLTRB(2, -6, 2, -6),
           ),

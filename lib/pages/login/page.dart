@@ -1,13 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:clipboard/pages/login/widgets/login_form.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/attention.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
 import 'package:copycat_base/constants/strings/asset_constants.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
+    final mq = context.mq;
     final isMobile = Breakpoints.isMobile(mq.size.width) ||
         mq.orientation == Orientation.portrait;
     return BlocListener<AuthCubit, AuthState>(
@@ -35,12 +36,10 @@ class LoginPage extends StatelessWidget {
               const Duration(seconds: 2),
               showIntoDialog,
             );
-            break;
           case UnauthenticatedAuthState(:final failure):
             if (failure != null) {
               showFailureSnackbar(failure);
             }
-            break;
           default:
         }
       },

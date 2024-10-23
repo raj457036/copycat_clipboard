@@ -1,17 +1,16 @@
-import 'package:clipboard/utils/utility.dart';
+import 'package:clipboard/pages/collections/pages/details/clipboard_listener.dart';
+import 'package:clipboard/pages/collections/pages/details/clips_provider.dart';
 import 'package:clipboard/widgets/can_paste_builder.dart';
-import 'package:clipboard/widgets/clip_card.dart';
-import 'package:clipboard/widgets/empty.dart';
-import 'package:clipboard/widgets/load_more_card.dart';
+import 'package:clipboard/widgets/clip_view_builders/grid/builder.dart';
+import 'package:clipboard/widgets/clip_view_builders/grid/view.dart';
+import 'package:clipboard/widgets/clip_view_builders/list/builder.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
-import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:clipboard/widgets/selection_appbar.dart';
 import 'package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart';
-import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clip_collection/clipcollection.dart';
-import 'package:copycat_base/l10n/l10n.dart';
-import 'package:copycat_base/utils/snackbar.dart';
-import 'package:copycat_base/widgets/clipcard_loading.dart';
+import 'package:copycat_base/widgets/app_layout_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,103 +28,55 @@ class CollectionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = "${collection.emoji} • ${collection.title}";
-
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
-          listenWhen: (previous, current) {
-            switch (current) {
-              case OfflinePersistanceDeleted() || OfflinePersistanceSaved():
-                return true;
-              case _:
-                return false;
-            }
-          },
-          listener: (context, state) {
-            switch (state) {
-              case OfflinePersistanceDeleted(:final item):
-                context.read<CollectionClipsCubit>().deleteItem(item);
-                break;
-              case OfflinePersistanceSaved(:final item):
-                context.read<CollectionClipsCubit>().put(item);
-                break;
-              case _:
-            }
-          },
-        ),
-        BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
-            listener: (context, state) {
-          switch (state) {
-            case CloudPersistanceUploadingFile(:final item) ||
-                  CloudPersistanceDownloadingFile(:final item):
-              context.read<CollectionClipsCubit>().put(item);
-              break;
-            case CloudPersistanceError(:final failure, :final item):
-              showFailureSnackbar(failure);
-              context.read<CollectionClipsCubit>().put(item);
-              break;
-          }
-        }),
-      ],
+    return CollectionClipboardListener(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(title),
+        appBar: SelectionAppbar(
+          defaultChild: AppBar(
+            title: Text(title),
+            centerTitle: false,
+          ),
         ),
         body: ScaffoldBody(
           margin: const EdgeInsets.only(
             right: padding12,
             left: padding12,
           ),
-          child: BlocBuilder<CollectionClipsCubit, CollectionClipsState>(
-            builder: (context, state) {
-              switch (state) {
-                case InitialCollectionClipsState() ||
-                      SearchingCollectionClipsState():
-                  return const ClipcardLoading();
-                case CollectionClipsErrorState(:final failure):
-                  return Center(
-                    child: Text(failure.message),
-                  );
-                case CollectionClipsResultsState(
-                    :final results,
-                    :final hasMore
-                  ):
-                  {
-                    if (results.isEmpty) {
-                      return EmptyNote(note: context.locale.noResultsWereFound);
-                    }
-
-                    final hasMoreResult = hasMore ? 1 : 0;
-
-                    return CanPasteBuilder(builder: (context, canPaste) {
-                      return GridView.builder(
-                        primary: true,
-                        padding: inset12,
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 250,
-                          childAspectRatio: 1,
-                          mainAxisSpacing: padding8,
-                          crossAxisSpacing: padding8,
-                        ),
-                        itemCount: results.length + hasMoreResult,
-                        itemBuilder: (context, index) {
-                          if (index == results.length) {
-                            return LoadMoreCard(loadMore: loadMore);
-                          }
-
-                          final item = results[index];
-                          return ClipCard(
-                            key: ValueKey("clipboard-item-//${item.id}"),
-                            item: item,
-                            autoFocus: index == 0 && isDesktopPlatform,
+          child: AppLayoutBuilder(
+            builder: (context, layout, _) {
+              return switch (layout) {
+                AppLayout.grid => ClipGrid(
+                    builder: (delegate, scrollDirection, canPaste) {
+                      return CollectionClipsProvider(
+                        builder: (context, clips, hasMore, loading, loadMore) {
+                          return ClipGridBuilder(
+                            items: clips,
+                            hasMore: hasMore,
+                            loading: loading,
+                            loadMore: loadMore,
+                            delegate: delegate,
+                            scrollDirection: scrollDirection,
                             canPaste: canPaste,
                           );
                         },
                       );
-                    });
-                  }
-              }
+                    },
+                  ),
+                AppLayout.list => CanPasteBuilder(
+                    builder: (context, canPaste) {
+                      return CollectionClipsProvider(
+                        builder: (context, clips, hasMore, loading, loadMore) {
+                          return ClipListBuilder(
+                            items: clips,
+                            hasMore: hasMore,
+                            loading: loading,
+                            loadMore: loadMore,
+                            canPaste: canPaste,
+                          );
+                        },
+                      );
+                    },
+                  ),
+              };
             },
           ),
         ),

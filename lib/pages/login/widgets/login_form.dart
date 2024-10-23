@@ -38,7 +38,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
-    final mq = MediaQuery.of(context);
+    final mq = context.mq;
     final isMobile = Breakpoints.isMobile(mq.size.width);
     return Stack(
       clipBehavior: Clip.none,

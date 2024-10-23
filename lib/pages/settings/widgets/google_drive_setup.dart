@@ -15,11 +15,10 @@ class GoogleDriveSetup extends StatelessWidget {
       {bool alreadyConnected = false}) async {
     final cubit = context.read<DriveSetupCubit>();
     if (alreadyConnected) {
-      final confirm = await const ConfirmDialog(
-        title: "⚠️ Re-Connect Google Drive?",
-        message:
-            "Your drive is already connected! Would you like to reconnect?\n\nTo avoid any data loss, please ensure you use the same account as before.",
-      ).open(context);
+      final confirm = await ConfirmDialog(
+              title: context.locale.reconnectGoogleDrive,
+              message: context.locale.reconnectGoogleDriveDesc)
+          .open(context);
 
       if (!confirm) return;
     }
@@ -45,12 +44,10 @@ class GoogleDriveSetup extends StatelessWidget {
             text = context.locale.connected;
             noClick = false;
             alreadyConnected = true;
-            break;
           case DriveSetupError():
             text = context.locale.connectNow;
             noClick = false;
             hasError = true;
-            break;
         }
         return Column(
           mainAxisSize: MainAxisSize.min,

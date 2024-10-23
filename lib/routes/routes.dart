@@ -4,6 +4,7 @@ import "package:clipboard/di/di.dart";
 import "package:clipboard/pages/account/page.dart";
 import "package:clipboard/pages/collections/page.dart";
 import "package:clipboard/pages/collections/pages/create_edit/page.dart";
+import "package:clipboard/pages/collections/pages/details/clip_collection_provider.dart";
 import "package:clipboard/pages/collections/pages/details/page.dart";
 import "package:clipboard/pages/drive_setup/page.dart";
 import "package:clipboard/pages/home/page.dart";
@@ -12,18 +13,18 @@ import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/reset_password/page.dart";
-import "package:clipboard/pages/search/page.dart";
 import "package:clipboard/pages/settings/page.dart";
+import "package:clipboard/pages/settings/pages/custom_exclusion_rule/custom_exclusion_rule.dart";
+import "package:clipboard/pages/settings/pages/exclusion_rules.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
 import "package:clipboard/widgets/page_route/dynamic_page_route.dart";
 import "package:clipboard/widgets/share_listener.dart";
 import "package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart";
 import "package:copycat_base/bloc/clipboard_cubit/clipboard_cubit.dart";
-import "package:copycat_base/bloc/collection_clips_cubit/collection_clips_cubit.dart";
 import "package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart";
 import "package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart";
-import "package:copycat_base/bloc/search_cubit/search_cubit.dart";
+import "package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart";
 import "package:copycat_base/constants/key.dart";
 import "package:copycat_base/constants/strings/route_constants.dart";
 import "package:flutter/material.dart";
@@ -117,9 +118,8 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
             final depth = state.uri.pathSegments.length;
             final activeIndex = switch (firstSegment) {
               "home" => 0,
-              "search" => 1,
-              "collections" => 2,
-              "settings" => 3,
+              "collections" => 1,
+              "settings" => 2,
               _ => 0,
             };
 
@@ -146,23 +146,18 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               pageBuilder: (context, state) {
                 return NoTransitionPage(
                   key: state.pageKey,
-                  child: BlocProvider<ClipboardCubit>(
-                    create: (context) => sl()..fetch(),
+                  child: MultiBlocProvider(
+                    providers: [
+                      BlocProvider<ClipboardCubit>(
+                        create: (context) => sl()..fetch(),
+                      ),
+                      BlocProvider<SelectedClipsCubit>(
+                          create: (context) => sl()),
+                    ],
                     child: const HomePage(),
                   ),
                 );
               },
-            ),
-            GoRoute(
-              name: RouteConstants.search,
-              path: '/search',
-              pageBuilder: (context, state) => NoTransitionPage(
-                key: state.pageKey,
-                child: BlocProvider<SearchCubit>(
-                  create: (context) => sl(),
-                  child: const SearchPage(),
-                ),
-              ),
             ),
             GoRoute(
               name: RouteConstants.collections,
@@ -173,37 +168,20 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: RouteConstants.collectionDetail,
-                  path: ":id",
-                  redirect: idPresentOrRedirect,
-                  pageBuilder: (context, state) {
-                    final id = int.parse(state.pathParameters["id"]!);
+                    name: RouteConstants.collectionDetail,
+                    path: ":id",
+                    redirect: idPresentOrRedirect,
+                    builder: (context, state) {
+                      final id = int.parse(state.pathParameters["id"]!);
 
-                    final collection =
-                        context.read<ClipCollectionCubit>().get(id);
-
-                    return NoTransitionPage(
-                      key: state.pageKey,
-                      child: FutureBuilder(
-                          future: collection,
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            return BlocProvider<CollectionClipsCubit>(
-                              create: (context) =>
-                                  sl(param1: snapshot.data)..search(),
-                              child: CollectionDetailPage(
-                                collection: snapshot.data,
-                              ),
-                            );
-                          }),
-                    );
-                  },
-                ),
+                      return ClipCollectionProvider(
+                        collectionId: id,
+                        builder: (context, collection) => CollectionDetailPage(
+                          key: state.pageKey,
+                          collection: collection,
+                        ),
+                      );
+                    }),
                 GoRoute(
                   name: RouteConstants.createEditCollection,
                   path: 'write/:id',
@@ -250,9 +228,26 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                 key: state.pageKey,
                 child: const SettingsPage(),
               ),
+              routes: [
+                GoRoute(
+                    name: RouteConstants.exclusionRules,
+                    path: "exclusion-rules",
+                    builder: (context, state) => ExclusionRulesPage(
+                          key: state.pageKey,
+                        ),
+                    routes: [
+                      GoRoute(
+                        name: RouteConstants.customExclusionRules,
+                        path: "custom",
+                        builder: (context, state) => CustomExclusionRulePage(
+                          key: state.pageKey,
+                        ),
+                      ),
+                    ]),
+              ],
             ),
           ],
-        )
+        ),
       ],
     );
 

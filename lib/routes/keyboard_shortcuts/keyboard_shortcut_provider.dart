@@ -1,13 +1,16 @@
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/keyboard_shortcuts.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/events.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 
@@ -104,88 +107,95 @@ class KeyboardShortcutProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardShortcuts(
-      shortcuts: <ShortcutActivator, Intent>{
-        searchKeySet: const SearchPageIntent(),
-        homeKeySet: const HomePageIntent(),
-        collectionKeySet: const CollectionPageIntent(),
-        settingsKeySet: const SettingsPageIntent(),
-        // editClipItemKeySet: const EditClipboardItemIntent(),
-        if (isDesktopPlatform) closeWindowKeySet: const HideWindowIntent(),
-        if (activePageIndex == 0) pasteKeySet: const PasteIntent(),
-        if (activePageIndex != 3) syncKeySet: const RefreshIntent(),
-      },
-      actions: {
-        HomePageIntent: CallbackAction<HomePageIntent>(
-          onInvoke: (intent) {
-            final isHomePage = activePageIndex == 0;
-            if (!isHomePage) {
-              context.goNamed(RouteConstants.home);
-            }
-            return null;
-          },
-        ),
-        SearchPageIntent: CallbackAction<SearchPageIntent>(
-          onInvoke: (intent) {
-            final isSearchPage = activePageIndex == 1;
-            if (isSearchPage) {
-              EventBus.emit(searchFocusEvent.createPayload(null));
-            } else {
-              context.goNamed(RouteConstants.search);
-            }
-            return null;
-          },
-        ),
-        CollectionPageIntent: CallbackAction<CollectionPageIntent>(
-          onInvoke: (intent) {
-            final isCollectionPage = activePageIndex == 2;
-            if (!isCollectionPage) {
-              context.goNamed(RouteConstants.collections);
-            }
-            return null;
-          },
-        ),
-        SettingsPageIntent: CallbackAction<SettingsPageIntent>(
-          onInvoke: (intent) {
-            final isSettingsPage = activePageIndex == 3;
-            if (!isSettingsPage) {
-              context.goNamed(RouteConstants.settings);
-            }
-            return null;
-          },
-        ),
-        PasteIntent: CallbackAction<PasteIntent>(
-          onInvoke: (intent) {
-            final isHomePage = activePageIndex == 0;
-            if (isHomePage) {
-              pasteContent(context);
-            }
-            return null;
-          },
-        ),
-        RefreshIntent: CallbackAction<RefreshIntent>(
-          onInvoke: (intent) async {
-            await syncChanges(context);
+    return BlocSelector<WindowActionCubit, WindowActionState, AppView>(
+        selector: (state) => state.view,
+        builder: (context, view) {
+          return KeyboardShortcuts(
+            shortcuts: <ShortcutActivator, Intent>{
+              searchKeySet: const SearchPageIntent(),
+              homeKeySet: const HomePageIntent(),
+              if (view != AppView.bottomDocked && view != AppView.topDocked)
+                collectionKeySet: const CollectionPageIntent(),
+              if (view == AppView.windowed)
+                settingsKeySet: const SettingsPageIntent(),
+              // editClipItemKeySet: const EditClipboardItemIntent(),
+              if (isDesktopPlatform)
+                closeWindowKeySet: const HideWindowIntent(),
+              if (activePageIndex == 0) pasteKeySet: const PasteIntent(),
+              if (activePageIndex != 3) syncKeySet: const RefreshIntent(),
+            },
+            actions: {
+              HomePageIntent: CallbackAction<HomePageIntent>(
+                onInvoke: (intent) {
+                  final isHomePage = activePageIndex == 0;
+                  if (!isHomePage) {
+                    context.goNamed(RouteConstants.home);
+                  }
+                  return null;
+                },
+              ),
+              SearchPageIntent: CallbackAction<SearchPageIntent>(
+                onInvoke: (intent) {
+                  final hasSearchField = activePageIndex == 0;
+                  if (hasSearchField) {
+                    EventBus.emit(searchFocusEvent.createPayload(null));
+                  } else {
+                    context.goNamed(RouteConstants.home);
+                  }
+                  return null;
+                },
+              ),
+              CollectionPageIntent: CallbackAction<CollectionPageIntent>(
+                onInvoke: (intent) {
+                  final isCollectionPage = activePageIndex == 1;
+                  if (!isCollectionPage) {
+                    context.goNamed(RouteConstants.collections);
+                  }
+                  return null;
+                },
+              ),
+              SettingsPageIntent: CallbackAction<SettingsPageIntent>(
+                onInvoke: (intent) {
+                  final isSettingsPage = activePageIndex == 2;
+                  if (!isSettingsPage) {
+                    context.goNamed(RouteConstants.settings);
+                  }
+                  return null;
+                },
+              ),
+              PasteIntent: CallbackAction<PasteIntent>(
+                onInvoke: (intent) {
+                  final isHomePage = activePageIndex == 0;
+                  if (isHomePage) {
+                    pasteContent(context);
+                  }
+                  return null;
+                },
+              ),
+              RefreshIntent: CallbackAction<RefreshIntent>(
+                onInvoke: (intent) async {
+                  await syncChanges(context);
 
-            return null;
-          },
-        ),
-        HideWindowIntent: CallbackAction<HideWindowIntent>(
-          onInvoke: (intent) async {
-            final router = GoRouter.maybeOf(context);
-            if (router == null) return null;
-            final canPop = router.canPop();
-            if (!canPop) {
-              WindowFocusManager.of(context)?.restore();
-            } else {
-              router.pop();
-            }
+                  return null;
+                },
+              ),
+              HideWindowIntent: CallbackAction<HideWindowIntent>(
+                onInvoke: (intent) async {
+                  final router = GoRouter.maybeOf(context);
+                  if (router == null) return null;
+                  final canPop = router.canPop();
+                  if (!canPop) {
+                    WindowFocusManager.of(context)?.restore();
+                  } else {
+                    router.pop();
+                  }
 
-            return null;
-          },
-        ),
-      },
-      child: child,
-    );
+                  return null;
+                },
+              ),
+            },
+            child: child,
+          );
+        });
   }
 }

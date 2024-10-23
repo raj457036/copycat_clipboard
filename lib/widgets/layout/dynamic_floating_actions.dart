@@ -31,7 +31,7 @@ class DynamicFloatingActions extends StatelessWidget {
         children: reversed ? actions.reversed.toList() : actions,
       );
     }
-    if (activeIndex == 2) {
+    if (activeIndex == 1) {
       final actions = [
         if (showCopyCatLogo) const CopyCatLogo(),
         const DisableForLocalUser(

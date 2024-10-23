@@ -1,6 +1,5 @@
 import 'dart:convert' show jsonEncode, jsonDecode, utf8;
 
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/export_e2ee.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/generate_e2ee.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/import_e2ee.dart';
@@ -10,14 +9,15 @@ import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_
 import 'package:copycat_base/data/services/encryption.dart';
 import 'package:copycat_base/domain/model/auth_user/auth_user.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
-import 'package:window_manager/window_manager.dart';
 
 class E2EESettingDialog extends StatefulWidget {
   const E2EESettingDialog({super.key});
@@ -50,15 +50,14 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
   Future<void> importEnc2Key(String keyId) async {
     try {
+      final windowAction = context.windowAction;
       final pickedFile = await FilePicker.platform.pickFiles(
         type: isDesktopPlatform ? FileType.custom : FileType.any,
         allowedExtensions: isDesktopPlatform ? ['enc2'] : null,
         withData: true,
       );
 
-      if (isDesktopPlatform) {
-        await windowManager.show();
-      }
+      await windowAction?.show();
 
       if (pickedFile == null) return;
       if (pickedFile.files.first.bytes == null) return;
@@ -88,7 +87,11 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
   }
 
   Future<void> exportEnc2Key(
-      BuildContext context, String keyId, String enc2Key) async {
+    BuildContext context,
+    String keyId,
+    String enc2Key,
+  ) async {
+    final windowAction = context.windowAction;
     final json = {
       "enc2Id": keyId,
       "enc2": enc2Key,
@@ -100,9 +103,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
         type: FileType.custom,
         allowedExtensions: ['enc2'],
         bytes: utf8.encode(content));
-    if (isDesktopPlatform) {
-      windowManager.show();
-    }
+    await windowAction?.show();
     if (path != null) {
       if (isDesktopPlatform) {
         await File(path).writeAsString(content);
