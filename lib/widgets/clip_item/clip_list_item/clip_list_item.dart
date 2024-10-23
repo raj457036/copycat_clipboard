@@ -2,6 +2,7 @@ import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/widgets/clip_item/clip_list_item/options_header.dart';
 import 'package:clipboard/widgets/clip_item/clip_preview.dart';
 import 'package:clipboard/widgets/clip_item/clip_sync_status_footer.dart';
+import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/menu.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -185,10 +186,12 @@ class _ClipListItemState extends State<ClipListItem> {
                   ),
                 ),
                 if (!widget.selected)
-                  ClipSyncStatusFooter(
-                    item: widget.item,
-                    radius: const BorderRadius.vertical(
-                      bottom: Radius.circular(8),
+                  DisableForLocalUser(
+                    child: ClipSyncStatusFooter(
+                      item: widget.item,
+                      radius: const BorderRadius.vertical(
+                        bottom: Radius.circular(8),
+                      ),
                     ),
                   ),
               ],

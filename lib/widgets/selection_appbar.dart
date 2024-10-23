@@ -42,7 +42,6 @@ class SelectionAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             centerTitle: false,
             title: Text("${items.length}"),
-            backgroundColor: Colors.transparent,
             scrolledUnderElevation: 0,
             titleSpacing: 0,
             titleTextStyle: textTheme.titleLarge?.copyWith(

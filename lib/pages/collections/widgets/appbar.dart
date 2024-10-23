@@ -10,7 +10,6 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.transparent,
       scrolledUnderElevation: 0,
       title: Text(context.locale.collections),
       actions: const [
