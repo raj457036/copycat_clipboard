@@ -74,7 +74,6 @@ class ClipCardOptionsHeader extends StatelessWidget {
                 created: item.created,
                 hovered: hovered || selectionActive,
                 selected: selected,
-                layout: AppLayout.grid,
               ),
             ),
           ),

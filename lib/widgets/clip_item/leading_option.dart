@@ -1,6 +1,5 @@
 import 'package:clipboard/widgets/clip_item/clip_create_time.dart';
 import 'package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart';
-import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,6 @@ class LeadingClipboardOption extends StatelessWidget {
   final EdgeInsets? createdPadding;
   final EdgeInsets? padding;
   final bool selected;
-  final AppLayout layout;
 
   const LeadingClipboardOption({
     super.key,
@@ -21,7 +19,6 @@ class LeadingClipboardOption extends StatelessWidget {
     this.createdPadding,
     this.padding,
     this.selected = false,
-    required this.layout,
     required this.created,
   });
 
@@ -36,8 +33,7 @@ class LeadingClipboardOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isGrid = layout == AppLayout.grid;
-    final iconSize = isGrid ? 24.0 : 18.0;
+    const iconSize = 24.0;
     if (hovered || selected) {
       return SizedBox.square(
         dimension: iconSize * 1.44,

@@ -53,17 +53,15 @@ class ClipCardBodyContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (item.displayTitle != null)
+              if (item.displayTitle == null)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: padding8,
                     vertical: padding2,
                   ),
                   child: Text(
-                    item.displayTitle!,
-                    style: textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    item.id.toString(),
+                    style: textTheme.labelLarge,
                     maxLines: 2,
                   ),
                 ),
@@ -156,8 +154,6 @@ class _ClipCardBodyState extends State<ClipCardBody> {
         duration: Durations.medium1,
       );
       focus();
-      // final cubit = context.read<FocusedClipitemCubit>();
-      // cubit.focused(item);
     } else {
       unfocus();
     }
