@@ -78,18 +78,18 @@ class ExclusionRulesPage extends StatelessWidget {
                             }
                           : null,
                     ),
-                    SwitchListTile(
-                      title: Text(context.locale.commonPasswordPatterns),
-                      value: state.passwords,
-                      onChanged: enable
-                          ? (value) {
-                              updateExclusionRules(
-                                context,
-                                state.copyWith(passwords: value),
-                              );
-                            }
-                          : null,
-                    ),
+                    // SwitchListTile(
+                    //   title: Text(context.locale.commonPasswordPatterns),
+                    //   value: state.passwords,
+                    //   onChanged: enable
+                    //       ? (value) {
+                    //           updateExclusionRules(
+                    //             context,
+                    //             state.copyWith(passwords: value),
+                    //           );
+                    //         }
+                    //       : null,
+                    // ),
                     SwitchListTile(
                       title: Text(context.locale.creditCardNumber),
                       value: state.creditCard,
@@ -126,31 +126,31 @@ class ExclusionRulesPage extends StatelessWidget {
                             }
                           : null,
                     ),
-                    SwitchListTile(
-                      title: Text(context.locale.bankAccountNumber),
-                      value: state.bankAccount,
-                      onChanged: enable
-                          ? (value) {
-                              updateExclusionRules(
-                                context,
-                                state.copyWith(bankAccount: value),
-                              );
-                            }
-                          : null,
-                    ),
-                    SwitchListTile(
-                      title: Text(context.locale.passportNumber),
-                      value: state
-                          .personalInfo, // TODO: Support more personal info
-                      onChanged: enable
-                          ? (value) {
-                              updateExclusionRules(
-                                context,
-                                state.copyWith(personalInfo: value),
-                              );
-                            }
-                          : null,
-                    ),
+                    // SwitchListTile(
+                    //   title: Text(context.locale.bankAccountNumber),
+                    //   value: state.bankAccount,
+                    //   onChanged: enable
+                    //       ? (value) {
+                    //           updateExclusionRules(
+                    //             context,
+                    //             state.copyWith(bankAccount: value),
+                    //           );
+                    //         }
+                    //       : null,
+                    // ),
+                    // SwitchListTile(
+                    //   title: Text(context.locale.passportNumber),
+                    //   value: state
+                    //       .personalInfo, // TODO: Support more personal info
+                    //   onChanged: enable
+                    //       ? (value) {
+                    //           updateExclusionRules(
+                    //             context,
+                    //             state.copyWith(personalInfo: value),
+                    //           );
+                    //         }
+                    //       : null,
+                    // ),
                     SwitchListTile(
                       title: Text(context.locale.sensitiveUrls),
                       value: state.sensitiveUrls,
