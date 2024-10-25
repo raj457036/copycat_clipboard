@@ -14,6 +14,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
 
+class ResizeHandleForDockView extends StatelessWidget {
+  final AppView view;
+  final Widget child;
+  const ResizeHandleForDockView(
+      {super.key, required this.view, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    if (view == AppView.windowed) return child;
+    ResizeEdge? edge = switch (view) {
+      AppView.leftDocked => ResizeEdge.right,
+      AppView.topDocked => ResizeEdge.bottom,
+      AppView.rightDocked => ResizeEdge.left,
+      AppView.bottomDocked => ResizeEdge.top,
+      _ => null,
+    };
+    return DragToResizeArea(
+      // resizeEdgeColor: Colors.red,
+      enableResizeEdges: edge != null ? [edge] : null,
+      child: child,
+    );
+  }
+}
+
 class AppTitle extends StatelessWidget {
   const AppTitle({super.key});
 
@@ -48,7 +72,8 @@ class TitlebarView extends StatelessWidget {
       },
       builder: (context, view) {
         final isWindowMode = view == AppView.windowed;
-        final dragToMove = DragToMoveArea2(
+
+        final dragToMoveHandler = DragToMoveArea2(
           enabled: isWindowMode,
           child: DecoratedBox(
             decoration: BoxDecoration(color: colors.surface),
@@ -64,7 +89,7 @@ class TitlebarView extends StatelessWidget {
                   const AppLayoutToggleButton(),
                   width2,
                   const AppViewButton(),
-                  if (Platform.isWindows)
+                  if (Platform.isWindows && isWindowMode)
                     WindowCaptionButton.close(
                       brightness: colors.brightness,
                       onPressed: context.windowAction?.hide,
@@ -75,14 +100,25 @@ class TitlebarView extends StatelessWidget {
           ),
         );
         if (view == AppView.topDocked) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [Expanded(child: child), dragToMove],
+          return ResizeHandleForDockView(
+            view: view,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [Expanded(child: child), dragToMoveHandler],
+            ),
           );
         }
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [dragToMove, Expanded(child: child)],
+        return ResizeHandleForDockView(
+          view: view,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              dragToMoveHandler,
+              Expanded(
+                child: child,
+              )
+            ],
+          ),
         );
       },
     );
