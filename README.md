@@ -50,3 +50,6 @@ Copycat Clipboard effortlessly helps you keep track of your copied content, maki
 Download Copycat Clipboard today for free on Windows, Linux, Mac, Android, iPhone or iPad and experience a better way to manage your clipboard.
 
 [Privacy Policy](https://www.entilitystudio.com/privacy-policy) • [Terms of Service](https://www.entilitystudio.com/terms-conditions)
+
+### Localization Contributors
+- [*Mabisi - Simplified Chinese*](https://github.com/Mabisi)
