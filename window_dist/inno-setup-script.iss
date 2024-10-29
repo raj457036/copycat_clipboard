@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CopyCat Clipboard"
-#define MyAppVersion "0.1.25+56"
+#define MyAppVersion "0.1.26+57"
 #define MyAppPublisher "Entility Studio"
 #define MyAppExeName "Clipboard.exe"
 #define MyAppAssocName MyAppName + ""
