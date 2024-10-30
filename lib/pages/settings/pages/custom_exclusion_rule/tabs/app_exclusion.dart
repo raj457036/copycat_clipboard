@@ -33,10 +33,12 @@ class AppExclusionTab extends StatelessWidget {
 
   Future<Iterable<AppInfo>> selectApp() async {
     final List<String> ext;
+    String? initialDirectory;
     if (Platform.isMacOS) {
       ext = ["app"];
     } else if (Platform.isWindows) {
       ext = ["exe"];
+      initialDirectory = r"C:\Program Files";
     } else {
       ext = ["bin"];
     }
@@ -44,6 +46,7 @@ class AppExclusionTab extends StatelessWidget {
       type: FileType.custom,
       allowedExtensions: ext,
       allowMultiple: true,
+      initialDirectory: initialDirectory,
     );
 
     windowManager.focus();
