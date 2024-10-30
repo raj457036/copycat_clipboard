@@ -8,6 +8,7 @@ import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universal_io/io.dart';
 
 class ExclusionRulesPage extends StatelessWidget {
   const ExclusionRulesPage({super.key});
@@ -151,18 +152,19 @@ class ExclusionRulesPage extends StatelessWidget {
                     //         }
                     //       : null,
                     // ),
-                    SwitchListTile(
-                      title: Text(context.locale.sensitiveUrls),
-                      value: state.sensitiveUrls,
-                      onChanged: enable
-                          ? (value) {
-                              updateExclusionRules(
-                                context,
-                                state.copyWith(sensitiveUrls: value),
-                              );
-                            }
-                          : null,
-                    ),
+                    if (Platform.isMacOS)
+                      SwitchListTile(
+                        title: Text(context.locale.sensitiveUrls),
+                        value: state.sensitiveUrls,
+                        onChanged: enable
+                            ? (value) {
+                                updateExclusionRules(
+                                  context,
+                                  state.copyWith(sensitiveUrls: value),
+                                );
+                              }
+                            : null,
+                      ),
                   ],
                 ),
               ),

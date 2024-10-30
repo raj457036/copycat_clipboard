@@ -5,6 +5,7 @@ import 'package:copycat_base/db/exclusion_rules/exclusion_rules.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universal_io/io.dart';
 
 class UrlTextExclusionTab extends StatefulWidget {
   const UrlTextExclusionTab({super.key});
@@ -69,8 +70,11 @@ class _UrlTextExclusionTabState extends State<UrlTextExclusionTab> {
             controller: controller,
             decoration: InputDecoration(
               border: const UnderlineInputBorder(),
-              hintText: context.locale.excludeUrlInputHint,
+              hintText: !Platform.isMacOS
+                  ? context.locale.featureNotSupported
+                  : context.locale.excludeUrlInputHint,
             ),
+            enabled: Platform.isMacOS,
             onSubmitted: (value) => addEntry(context, value),
           ),
         ),
