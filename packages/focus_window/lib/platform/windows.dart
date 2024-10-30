@@ -43,16 +43,17 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
       );
     }
     if (!_cache.containsKey('GetUrl')) {
-      futures.add(
-        rootBundle
-            .loadString('packages/focus_window/window_utils/GetUrl.ps1')
-            .then((value) async {
-          final tempDir = await getTemporaryDirectory();
-          final file = File(p.join(tempDir.path, '._gu.ps1'));
-          await file.writeAsString(value);
-          _cache['GetUrl'] = file.path;
-        }),
-      );
+      //! BUG: Causing keyboard keys to be pressed automatically
+      // futures.add(
+      //   rootBundle
+      //       .loadString('packages/focus_window/window_utils/GetUrl.ps1')
+      //       .then((value) async {
+      //     final tempDir = await getTemporaryDirectory();
+      //     final file = File(p.join(tempDir.path, '._gu.ps1'));
+      //     await file.writeAsString(value);
+      //     _cache['GetUrl'] = file.path;
+      //   }),
+      // );
     }
 
     await Future.wait(futures);
@@ -92,10 +93,11 @@ class WindowsActivityObserver implements PlatformActivityObserverInterface {
 
     var activity = ActivityInfo.fromJson(result);
 
-    if (activity.title != _lastActivity?.title) {
-      final url = await getUrl(activity.appFileName, activity.title);
-      activity = activity.copyWith(url: url);
-    }
+    // TODO: Work on getting the url in windows
+    // if (activity.title != _lastActivity?.title) {
+    //   final url = await getUrl(activity.appFileName, activity.title);
+    //   activity = activity.copyWith(url: url);
+    // }
 
     _lastActivity = activity;
 
