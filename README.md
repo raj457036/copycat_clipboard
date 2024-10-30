@@ -2,7 +2,7 @@
 
 # CopyCat Clipboard : The clipboard experience you always wanted
 
-[Download v0.1.23 Here](https://www.entilitystudio.com/copycat-clipboard)
+[Download v0.1.24 Here](https://www.entilitystudio.com/copycat-clipboard)
 
 or Download from [EntiltyStudio Public Repos](https://github.com/raj457036/entility_studio_public)
 
