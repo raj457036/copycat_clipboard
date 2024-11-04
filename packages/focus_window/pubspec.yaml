@@ -1,7 +1,7 @@
 name: focus_window
-description: "A new Flutter plugin project."
+description: "Help in getting the focused activity"
 version: 0.0.1
-homepage: "https://example.com"
+publish_to: none
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
