@@ -2,14 +2,15 @@ import 'package:clipboard/widgets/badges.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/numbers/duration.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AutoSyncInterval extends StatelessWidget {
-  const AutoSyncInterval({super.key});
+class SyncSpeedDropdown extends StatelessWidget {
+  const SyncSpeedDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +18,20 @@ class AutoSyncInterval extends StatelessWidget {
     final colors = context.colors;
     return SubscriptionBuilder(
       builder: (context, subscription) {
-        return BlocSelector<AppConfigCubit, AppConfigState, (int, bool)>(
+        return BlocSelector<AppConfigCubit, AppConfigState, (SyncSpeed, bool)>(
           selector: (state) {
             switch (state) {
               case AppConfigLoaded(:final config):
-                final val = config.autoSyncInterval.isNegative
-                    ? $45S
-                    : config.autoSyncInterval;
                 return (
-                  val,
+                  config.syncSpeed,
                   config.enableSync,
                 );
               default:
-                return ($45S, false);
+                return (SyncSpeed.balanced, false);
             }
           },
           builder: (context, state) {
-            final (duration, enabled) = state;
+            final (speed, enabled) = state;
             return ListTile(
               enabled: enabled,
               title: Text(context.locale.autoSyncInterval),
@@ -44,54 +42,26 @@ class AutoSyncInterval extends StatelessWidget {
                 ),
               ),
               trailing: DropdownButtonHideUnderline(
-                child: DropdownButton<int>(
-                  value: duration,
+                child: DropdownButton<SyncSpeed>(
+                  value: speed,
                   padding: const EdgeInsets.symmetric(horizontal: padding10),
                   borderRadius: radius12,
                   items: [
                     if (subscription != null)
                       DropdownMenuItem(
-                        enabled: subscription.syncInterval <= $5S,
-                        value: $5S,
-                        child: Row(
+                        enabled: subscription.syncInterval == $0S,
+                        value: SyncSpeed.realtime,
+                        child: const Row(
                           children: [
-                            Text(context.locale.$5Sec),
+                            Text("⚡ Realtime"),
                             width8,
-                            const ProBadge(),
-                          ],
-                        ),
-                      ),
-                    if (subscription != null)
-                      DropdownMenuItem(
-                        enabled: subscription.syncInterval <= $5S,
-                        value: $10S,
-                        child: Row(
-                          children: [
-                            Text(context.locale.$10Sec),
-                            width8,
-                            const ProBadge(),
-                          ],
-                        ),
-                      ),
-                    if (subscription != null)
-                      DropdownMenuItem(
-                        enabled: subscription.syncInterval <= $5S,
-                        value: $20S,
-                        child: Row(
-                          children: [
-                            Text(context.locale.$20Sec),
-                            width8,
-                            const ProBadge(),
+                            ProBadge(),
                           ],
                         ),
                       ),
                     DropdownMenuItem(
-                      value: $45S,
+                      value: SyncSpeed.balanced,
                       child: Text(context.locale.$45Sec),
-                    ),
-                    DropdownMenuItem(
-                      value: $60S,
-                      child: Text(context.locale.$60Sec),
                     ),
                   ],
                   onChanged: enabled

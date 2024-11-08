@@ -18,6 +18,7 @@ import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.da
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
@@ -32,6 +33,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -63,6 +65,11 @@ Future<void> initializeServices() async {
     unawaited(MobileAds.instance.initialize());
   }
 
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+
   await initializeFirebase();
   await configureDependencies();
   timeago.setLocaleMessages('fr', timeago.FrMessages());
@@ -85,8 +92,8 @@ Future<void> initializeDesktopServices() async {
   );
 
   WindowOptions windowOptions = const WindowOptions(
-    size: minimumWindowSize,
-    minimumSize: minimumWindowSize,
+    // size:  minimumWindowSize,
+    // minimumSize: minimumWindowSize,
     // make sure to change it in main.cpp ( windows ) &
     // my_application.cc ( linux ) and other places too if changing the title.
     title: "CopyCat Clipboard",
@@ -95,7 +102,7 @@ Future<void> initializeDesktopServices() async {
     backgroundColor: Colors.transparent,
     titleBarStyle: TitleBarStyle.hidden,
   );
-  windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
+  unawaited(windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
     // if (Platform.isMacOS) {
     //   await windowManager.setVisibleOnAllWorkspaces(
     //     true,
@@ -103,7 +110,7 @@ Future<void> initializeDesktopServices() async {
     //   );
     // }
     windowManager.hide();
-  });
+  }));
 }
 
 Future<void> initializeFirebase() async {
@@ -134,10 +141,11 @@ class AppContent extends StatelessWidget {
           case MonetizationActive(:final subscription):
             {
               final syncCubit = context.read<SyncManagerCubit>();
+              final appConfigCubit = context.read<AppConfigCubit>();
+              appConfigCubit.load(subscription);
               syncCubit.syncHours = subscription.syncHours;
               syncCubit.loadSub(subscription);
               syncCubit.syncChanges(force: true);
-              context.read<AppConfigCubit>().load(subscription);
             }
         }
       },
@@ -231,6 +239,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
         BlocProvider<DriveSetupCubit>(create: (context) => sl()),
         BlocProvider<WindowActionCubit>(create: (context) => sl()),
+        BlocProvider<RealtimeClipSyncCubit>(create: (context) => sl()),
       ],
       child: isMobilePlatform
           ? GestureDetector(

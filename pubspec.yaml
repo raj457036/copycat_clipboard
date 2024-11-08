@@ -101,6 +101,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/icons/
+    - google_fonts/
 
 flutter_launcher_icons:
   android: true

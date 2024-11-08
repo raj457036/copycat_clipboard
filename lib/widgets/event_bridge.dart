@@ -6,6 +6,7 @@ import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/constants/key.dart';
@@ -60,8 +61,7 @@ class EventBridge extends StatelessWidget {
           ),
         BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) =>
-              (previous.config.autoSyncInterval !=
-                  current.config.autoSyncInterval) ||
+              (previous.config.syncSpeed != current.config.syncSpeed) ||
               (previous.config.enc2 != current.config.enc2) ||
               (previous.config.autoEncrypt != current.config.autoEncrypt) ||
               (previous.config.clockUnSynced != current.config.clockUnSynced),
@@ -73,11 +73,16 @@ class EventBridge extends StatelessWidget {
                     const InconsistentTiming().open();
                   }
                   if (config.enableSync) {
-                    context.read<SyncManagerCubit>().setupAutoSync(
-                          Duration(seconds: config.autoSyncInterval),
-                        );
-                  } else {
-                    context.read<SyncManagerCubit>().stopAutoSync();
+                    final realtimeSync = context.read<RealtimeClipSyncCubit>();
+
+                    switch (config.syncSpeed) {
+                      case SyncSpeed.realtime:
+                        realtimeSync.subscribe();
+                      // TODO: stop poll syncing
+                      case SyncSpeed.balanced:
+                        realtimeSync.unsubscribe();
+                      // TODO: start poll syncing
+                    }
                   }
 
                   EncrypterWorker.instance.setEncryption(config.autoEncrypt);
