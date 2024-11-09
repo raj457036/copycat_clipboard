@@ -24,7 +24,12 @@ class ScaffoldBody extends StatelessWidget {
     final width = context.mq.size.width;
     final isMobile = Breakpoints.isMobile(width);
     if (isMobile) {
-      return child;
+      return Card(
+        margin: EdgeInsets.zero,
+        color: background,
+        shape: const RoundedRectangleBorder(),
+        child: child,
+      );
     }
 
     return BlocSelector<WindowActionCubit, WindowActionState,

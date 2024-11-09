@@ -28,11 +28,7 @@ class ProTipTile extends StatelessWidget {
     );
     if (isMobile) {
       return Padding(
-        padding: const EdgeInsets.only(
-          right: padding8,
-          left: padding8,
-          bottom: padding8,
-        ),
+        padding: const EdgeInsets.all(padding8),
         child: tile,
       );
     }
