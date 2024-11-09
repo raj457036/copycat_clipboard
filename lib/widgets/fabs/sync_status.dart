@@ -32,10 +32,10 @@ class SyncStatusFAB extends StatelessWidget {
                 isSyncing = false;
                 icon = Icons.sync_lock_rounded;
                 message = context.locale.syncNotAvailable;
-              case ClipSyncSyncingUnknown():
+              case ClipSyncingUnknown():
                 disabled = true;
                 isSyncing = true;
-              case ClipSyncSyncing():
+              case ClipSyncing():
                 disabled = true;
                 isSyncing = true;
               case ClipSyncComplete():

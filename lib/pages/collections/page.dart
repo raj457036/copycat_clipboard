@@ -45,16 +45,20 @@ class CollectionsPage extends StatelessWidget {
                 child: BlocBuilder<ClipCollectionCubit, ClipCollectionState>(
                   builder: (context, state) {
                     switch (state) {
-                      case ClipCollectionInitial():
+                      case ClipCollectionLoaded(loading: true):
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      case ClipCollectionError(:final failure):
-                        return Center(
-                          child: Text(failure.message),
-                        );
-                      case ClipCollectionLoaded(:final collections):
+                      case ClipCollectionLoaded(
+                          :final failure,
+                          :final collections
+                        ):
                         {
+                          if (failure != null) {
+                            return Center(
+                              child: Text(failure.message),
+                            );
+                          }
                           if (collections.isEmpty) {
                             return const Center(
                               child: NoCollectionAvailable(),

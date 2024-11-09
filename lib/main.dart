@@ -17,9 +17,11 @@ import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:copycat_base/bloc/collection_sync_manager_cubit/collection_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
+import 'package:copycat_base/bloc/realtime_collection_sync_cubit/realtime_collection_sync_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
 import 'package:copycat_base/common/logging.dart';
@@ -155,14 +157,21 @@ class AppContent extends StatelessWidget {
         switch (state) {
           case MonetizationActive(:final subscription):
             {
-              final syncCubit = context.read<ClipSyncManagerCubit>();
+              final clipSyncCubit = context.read<ClipSyncManagerCubit>();
+              final collectionSyncCubit =
+                  context.read<CollectionSyncManagerCubit>();
               final appConfigCubit = context.read<AppConfigCubit>();
               appConfigCubit.load(subscription);
-              syncCubit.changeConfig(
+              clipSyncCubit.changeConfig(
                 syncHours: subscription.syncHours,
                 manualDelay: subscription.syncInterval,
               );
-              syncCubit.syncClips();
+              collectionSyncCubit.changeConfig(
+                syncHours: subscription.syncHours,
+                manualDelay: subscription.syncInterval,
+              );
+              clipSyncCubit.syncClips();
+              collectionSyncCubit.syncCollections();
             }
         }
       },
@@ -252,12 +261,14 @@ class MainApp extends StatelessWidget {
         BlocProvider<MonetizationCubit>(create: (context) => sl()),
         // BlocProvider<SyncManagerCubit>(create: (context) => sl()),
         BlocProvider<ClipSyncManagerCubit>(create: (context) => sl()),
+        BlocProvider<CollectionSyncManagerCubit>(create: (context) => sl()),
         BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
         BlocProvider<CloudPersistanceCubit>(create: (context) => sl()),
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
         BlocProvider<DriveSetupCubit>(create: (context) => sl()),
         BlocProvider<WindowActionCubit>(create: (context) => sl()),
         BlocProvider<RealtimeClipSyncCubit>(create: (context) => sl()),
+        BlocProvider<RealtimeCollectionSyncCubit>(create: (context) => sl()),
       ],
       child: isMobilePlatform
           ? GestureDetector(
