@@ -1,5 +1,4 @@
 import 'package:clipboard/pages/home/widgets/appbar.dart';
-import 'package:clipboard/pages/home/widgets/clipboard_listener.dart';
 import 'package:clipboard/pages/home/widgets/home_body.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
@@ -50,9 +49,7 @@ class HomePage extends StatelessWidget {
       dialogStyle: isApplePlatform
           ? UpgradeDialogStyle.cupertino
           : UpgradeDialogStyle.material,
-      child: ClipboardChangeListener(
-        child: scaffold,
-      ),
+      child: scaffold,
     );
   }
 }

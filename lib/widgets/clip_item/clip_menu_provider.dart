@@ -71,7 +71,7 @@ class ClipMenuProvider extends StatelessWidget {
         MenuItem(
           icon: Icons.collections_bookmark_outlined,
           text: context.locale.changeCollection,
-          onPressed: () => changeCollection(context, item),
+          onPressed: () => changeCollection(context, [item]),
         ),
         const MenuItem(type: MenuItemType.divider),
         MenuItem(

@@ -35,10 +35,10 @@ class DynamicFloatingActions extends StatelessWidget {
       final actions = [
         if (showCopyCatLogo) const CopyCatLogo(),
         const DisableForLocalUser(
-          ifLocal: CreateCollectionFAB(
+          ifLocal: CreateCollectionButton(
             localMode: true,
           ),
-          child: CreateCollectionFAB(),
+          child: CreateCollectionButton(),
         ),
         height8,
         const SyncStatusFAB()

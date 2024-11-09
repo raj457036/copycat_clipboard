@@ -1,20 +1,23 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
-import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
-import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
+import 'package:copycat_base/common/events.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/data/services/encryption.dart';
 import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/domain/services/cross_sync_listener.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +42,25 @@ class EventBridge extends StatelessWidget {
     return false;
   }
 
+  void broadcastEvent(CrossSyncEventType eventType, ClipboardItem item) {
+    final eventPayload = clipboardEvent.createPayload((eventType, item));
+    EventBus.emit(eventPayload);
+  }
+
+  void broadcastBatchEvent(
+    CrossSyncEventType eventType,
+    List<ClipboardItem> items,
+  ) {
+    if (items.isEmpty) return;
+    if (items.length == 1) {
+      broadcastEvent(eventType, items.first);
+      return;
+    }
+    final payload = items.map((item) => (eventType, item)).toList();
+    final eventPayload = clipboardBatchEvent.createPayload(payload);
+    EventBus.emit(eventPayload);
+  }
+
   @override
   Widget build(BuildContext context) {
     // bool firstTime = true;
@@ -60,8 +82,49 @@ class EventBridge extends StatelessWidget {
             },
           ),
         BlocListener<AppConfigCubit, AppConfigState>(
+          listenWhen: (previous, current) {
+            return previous.config.enableSync != current.config.enableSync;
+          },
+          listener: (context, state) async {
+            final config = state.config;
+            final clipSync = context.read<ClipSyncManagerCubit>();
+            final realtime = context.read<RealtimeClipSyncCubit>();
+
+            if (config.enableSync) {
+              clipSync.changeConfig(disabled: false);
+              await clipSync.syncClips();
+            } else {
+              clipSync.changeConfig(disabled: true);
+              realtime.unsubscribe();
+              clipSync.stopPolling();
+            }
+          },
+        ),
+        BlocListener<ClipSyncManagerCubit, ClipSyncManagerState>(
+          listener: (context, state) {
+            final config = context.read<AppConfigCubit>().state.config;
+            final realtime = context.read<RealtimeClipSyncCubit>();
+            final clipSync = context.read<ClipSyncManagerCubit>();
+            switch (state) {
+              case ClipSyncComplete():
+                {
+                  if (!config.enableSync) return;
+                  switch (config.syncSpeed) {
+                    case SyncSpeed.realtime:
+                      realtime.subscribe();
+                      clipSync.stopPolling();
+                    case SyncSpeed.balanced:
+                      realtime.unsubscribe();
+                      clipSync.startPolling();
+                  }
+                }
+              case ClipSyncFailed(:final failure):
+                showFailureSnackbar(failure);
+            }
+          },
+        ),
+        BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) =>
-              (previous.config.syncSpeed != current.config.syncSpeed) ||
               (previous.config.enc2 != current.config.enc2) ||
               (previous.config.autoEncrypt != current.config.autoEncrypt) ||
               (previous.config.clockUnSynced != current.config.clockUnSynced),
@@ -72,21 +135,9 @@ class EventBridge extends StatelessWidget {
                   if (config.clockUnSynced) {
                     const InconsistentTiming().open();
                   }
-                  if (config.enableSync) {
-                    final realtimeSync = context.read<RealtimeClipSyncCubit>();
-
-                    switch (config.syncSpeed) {
-                      case SyncSpeed.realtime:
-                        realtimeSync.subscribe();
-                      // TODO: stop poll syncing
-                      case SyncSpeed.balanced:
-                        realtimeSync.unsubscribe();
-                      // TODO: start poll syncing
-                    }
-                  }
 
                   EncrypterWorker.instance.setEncryption(config.autoEncrypt);
-
+                  final offline = context.read<OfflinePersistanceCubit>();
                   if (!EncrypterWorker.instance.isRunning) {
                     if (config.enc2Key == null) return;
                     final authState = context.read<AuthCubit>().state;
@@ -100,64 +151,100 @@ class EventBridge extends StatelessWidget {
                     }
                   }
 
-                  if (context.mounted) {
-                    await context
-                        .read<OfflinePersistanceCubit>()
-                        .decryptAllClipboardItems();
-                  }
+                  await offline.decryptAllClipboardItems();
                 }
               case _:
             }
           },
         ),
-        BlocListener<SyncManagerCubit, SyncManagerState>(
-          listener: (context, state) async {
-            switch (state) {
-              case PartlySyncedSyncState(collections: true):
-                context.read<ClipCollectionCubit>().fetch(fromTop: true);
-              case SyncCheckFailedState(:final failure):
-                showFailureSnackbar(failure);
-            }
-          },
-        ),
+
+        // BlocListener<SyncManagerCubit, SyncManagerState>(
+        //   listener: (context, state) async {
+        //     switch (state) {
+        //       case PartlySyncedSyncState(collections: true):
+        //         context.read<ClipCollectionCubit>().fetch(fromTop: true);
+        //       case SyncedState(refreshLocalCache: true):
+        //         logger.w("Synced State");
+        //       case ClipboardSyncedSyncState(
+        //           :final added,
+        //           :final updated,
+        //           :final deleted,
+        //           silent: true
+        //         ):
+        //         logger.w(
+        //             "ClipboardSyncedSyncState -> Added: $added | Updated: $updated | Deleted: $deleted");
+        //       case SyncCheckFailedState(:final failure):
+        //         showFailureSnackbar(failure);
+        //     }
+        //   },
+        // ),
         BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
           listener: (context, state) async {
+            final locales = rootNavKey.currentContext!.locale;
             switch (state) {
+              case OfflinePersistanceSaved(:final items, synced: true):
+                showDebugSnackbar("Offline Saved ( Synced ) ${items.length}");
+                broadcastBatchEvent(CrossSyncEventType.update, items);
               case OfflinePersistanceSaved(
                   :final items,
+                  :final updatedFields,
+                  :final created,
                   synced: false,
-                  :final updatedFields
                 ):
                 {
+                  final eventType = created
+                      ? CrossSyncEventType.create
+                      : CrossSyncEventType.update;
+                  broadcastBatchEvent(eventType, items);
+
+                  showDebugSnackbar(
+                      "Offline Saved ( Not Synced ) ${items.length}");
                   final forSync =
                       items.where((item) => shouldSync(updatedFields, item));
                   final cubit = context.read<CloudPersistanceCubit>();
-                  forSync.forEach(cubit.persist);
+                  for (var item in forSync) {
+                    cubit.persist(item);
+                  }
                 }
               case OfflinePersistanceError(:final failure):
                 showFailureSnackbar(failure);
-
+              case OfflinePersistanceDeleted(:final items):
+                showTextSnackbar(
+                  locales.itemDeleted,
+                  closePrevious: true,
+                );
+                broadcastBatchEvent(CrossSyncEventType.delete, items);
               case _:
             }
           },
         ),
         BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
           listener: (context, state) async {
+            final locales = rootNavKey.currentContext!.locale;
+            final offlineCubit = context.read<OfflinePersistanceCubit>();
             switch (state) {
               case CloudPersistanceSaved(:final item):
-                context
-                    .read<OfflinePersistanceCubit>()
-                    .persist([item], synced: true);
-
+                showDebugSnackbar("Cloud Saved ${item.serverId}");
+                offlineCubit.persist([item], synced: true);
               case CloudPersistanceDeleted(:final items):
-                context.read<OfflinePersistanceCubit>().delete(items);
-
+                offlineCubit.delete(items);
+              case CloudPersistanceDeleting():
+                showTextSnackbar(
+                  locales.deletingFromCloud,
+                  isLoading: true,
+                  closePrevious: true,
+                );
               case CloudPersistanceError(:final failure):
-                {
-                  // TODO: improve retry strategy
-                  showFailureSnackbar(failure);
-                }
-
+                showFailureSnackbar(failure);
+              case CloudPersistanceCreating(:final item) ||
+                    CloudPersistanceUpdating(:final item):
+                showDebugSnackbar("Creating/Updating ${item.serverId}");
+                broadcastEvent(CrossSyncEventType.update, item);
+              case CloudPersistanceUploadingFile(:final item) ||
+                    CloudPersistanceDownloadingFile(:final item):
+                showDebugSnackbar(
+                    "Downloading ${item.downloadProgress} | Uploading ${item.uploadProgress}");
+                broadcastEvent(CrossSyncEventType.update, item);
               case _:
             }
           },

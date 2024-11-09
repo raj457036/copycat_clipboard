@@ -15,13 +15,14 @@ import 'package:clipboard/widgets/window_focus_manager.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
-import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
+import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
@@ -119,7 +120,15 @@ Future<void> initializeFirebase() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    FlutterError.onError = (errorDetail) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetail);
+      logger.e(
+        errorDetail.summary,
+        error: errorDetail.exception,
+        stackTrace: errorDetail.stack,
+        time: now(),
+      );
+    };
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
@@ -136,16 +145,24 @@ class AppContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = GoogleFonts.poppinsTextTheme();
     return BlocListener<MonetizationCubit, MonetizationState>(
+      listenWhen: (prev, current) {
+        if (current is MonetizationActive && prev is MonetizationActive) {
+          return !current.subscription.isSameAs(prev.subscription);
+        }
+        return true;
+      },
       listener: (context, state) async {
         switch (state) {
           case MonetizationActive(:final subscription):
             {
-              final syncCubit = context.read<SyncManagerCubit>();
+              final syncCubit = context.read<ClipSyncManagerCubit>();
               final appConfigCubit = context.read<AppConfigCubit>();
               appConfigCubit.load(subscription);
-              syncCubit.syncHours = subscription.syncHours;
-              syncCubit.loadSub(subscription);
-              syncCubit.syncChanges(force: true);
+              syncCubit.changeConfig(
+                syncHours: subscription.syncHours,
+                manualDelay: subscription.syncInterval,
+              );
+              syncCubit.syncClips();
             }
         }
       },
@@ -233,7 +250,8 @@ class MainApp extends StatelessWidget {
         BlocProvider<AuthCubit>(create: (context) => sl()),
         BlocProvider<AppConfigCubit>(create: (context) => sl()..load()),
         BlocProvider<MonetizationCubit>(create: (context) => sl()),
-        BlocProvider<SyncManagerCubit>(create: (context) => sl()),
+        // BlocProvider<SyncManagerCubit>(create: (context) => sl()),
+        BlocProvider<ClipSyncManagerCubit>(create: (context) => sl()),
         BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
         BlocProvider<CloudPersistanceCubit>(create: (context) => sl()),
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),

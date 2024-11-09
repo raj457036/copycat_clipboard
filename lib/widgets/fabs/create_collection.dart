@@ -12,10 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class CreateCollectionFAB extends StatelessWidget {
+class CreateCollectionButton extends StatelessWidget {
   final bool isFab;
   final bool localMode;
-  const CreateCollectionFAB({
+  const CreateCollectionButton({
     super.key,
     this.isFab = true,
     this.localMode = false,

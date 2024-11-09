@@ -1,7 +1,7 @@
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/syncing.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
-import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class SyncStatusFAB extends StatelessWidget {
       },
       builder: (context, isLocal) {
         if (isLocal) return const SizedBox.shrink();
-        return BlocBuilder<SyncManagerCubit, SyncManagerState>(
+        return BlocBuilder<ClipSyncManagerCubit, ClipSyncManagerState>(
           builder: (context, state) {
             bool disabled = false;
             IconData icon = Icons.sync_rounded;
@@ -27,36 +27,33 @@ class SyncStatusFAB extends StatelessWidget {
             String message = context.locale.syncNow;
 
             switch (state) {
-              case UnknownSyncState():
-                disabled = false;
+              case ClipSyncUnknown() || ClipSyncDisabled():
+                disabled = true;
                 isSyncing = false;
                 icon = Icons.sync_lock_rounded;
                 message = context.locale.syncNotAvailable;
-
-              case SyncCheckFailedState(:final failure):
+              case ClipSyncSyncingUnknown():
+                disabled = true;
+                isSyncing = true;
+              case ClipSyncSyncing():
+                disabled = true;
+                isSyncing = true;
+              case ClipSyncComplete():
+                disabled = false;
+                isSyncing = false;
+                message = context.locale.synced;
+              case ClipSyncFailed(:final failure):
                 disabled = false;
                 isSyncing = false;
                 icon = Icons.sync_problem_rounded;
                 message = context.locale.syncingCheckFailed(failure.message);
-
-              case SyncedState():
-                disabled = false;
-                isSyncing = false;
-                icon = Icons.sync_rounded;
-                message = context.locale.synced;
-
-              case CheckingSyncState(needDbRebuilding: true):
-                disabled = true;
-                isSyncing = true;
-                message = context.locale.rebuildingDB;
-
-              default:
-                disabled = true;
-                isSyncing = true;
-                message = context.locale.checkingForRecord;
             }
             return FloatingActionButton.small(
-              onPressed: disabled ? null : () => syncChanges(context),
+              onPressed: disabled
+                  ? null
+                  : () => context
+                      .read<ClipSyncManagerCubit>()
+                      .syncClips(manual: true),
               tooltip: "$message • $metaKey + R",
               heroTag: "sync-fab",
               backgroundColor: colors.secondary,

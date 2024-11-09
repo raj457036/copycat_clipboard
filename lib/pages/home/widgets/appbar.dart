@@ -1,5 +1,5 @@
 import 'package:clipboard/pages/home/widgets/search_bar.dart';
-import 'package:clipboard/widgets/selection_appbar.dart';
+import 'package:clipboard/widgets/app_bar/selection_appbar.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 

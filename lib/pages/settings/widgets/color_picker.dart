@@ -9,7 +9,6 @@ import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:go_router/go_router.dart';
 
 class ColorPickerDialog extends StatefulWidget {
   final Color selectedColor;
@@ -90,13 +89,13 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            context.pop();
+            Navigator.pop(context);
           },
           child: Text(context.locale.cancel),
         ),
         TextButton(
           onPressed: () {
-            context.pop(color_);
+            Navigator.pop(context, color_);
           },
           child: Text(context.locale.done),
         ),

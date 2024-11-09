@@ -2,6 +2,7 @@ import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
+import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,12 +51,23 @@ class SelectionAppbar extends StatelessWidget implements PreferredSizeWidget {
             actions: [
               IconButton(
                 onPressed: () async {
+                  await changeCollection(context, items.toList());
+                  if (context.mounted) {
+                    clearSelection(context);
+                  }
+                },
+                tooltip: context.locale.changeCollection,
+                icon: const Icon(Icons.collections_bookmark),
+              ),
+              IconButton(
+                onPressed: () async {
                   final done =
                       await deleteClipboardItem(context, items.toList());
                   if (done && context.mounted) {
                     clearSelection(context);
                   }
                 },
+                tooltip: context.locale.delete,
                 icon: const Icon(Icons.delete),
               ),
               width12,

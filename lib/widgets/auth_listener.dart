@@ -3,7 +3,6 @@ import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
-import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
@@ -51,7 +50,7 @@ class AuthListener extends StatelessWidget {
                 context.read<AppConfigCubit>().load(),
                 context.read<MonetizationCubit>().login(user.userId),
                 context.read<ClipCollectionCubit>().fetch(),
-                context.read<SyncManagerCubit>().syncChanges(),
+                // context.read<SyncManagerCubit>().syncChanges(),
                 context.read<OfflinePersistanceCubit>().startListners(),
                 context.read<DriveSetupCubit>().fetch(),
               ]);

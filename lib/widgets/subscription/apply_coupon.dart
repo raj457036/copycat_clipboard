@@ -5,7 +5,6 @@ import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ApplyCouponDialog extends StatefulWidget {
@@ -62,7 +61,7 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
         showTextSnackbar(context.locale.subscriptionUpdated);
       }
       if (mounted) {
-        context.pop();
+        Navigator.pop(context);
       }
     }
   }
@@ -117,7 +116,7 @@ class _ApplyCouponDialogState extends State<ApplyCouponDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: loading ? null : () => context.pop(),
+          onPressed: loading ? null : () => Navigator.pop(context),
           child: Text(context.locale.cancel),
         ),
         TextButton(

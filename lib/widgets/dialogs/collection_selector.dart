@@ -8,7 +8,6 @@ import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ClipCollectionSelectionDialog extends StatelessWidget {
   final int? selectedCollectionId;
@@ -28,11 +27,11 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
             title: Text(context.locale.selectCollection),
             subtitle: Text(context.locale.selectCollectionSub),
             trailing: const DisableForLocalUser(
-              ifLocal: CreateCollectionFAB(
+              ifLocal: CreateCollectionButton(
                 localMode: true,
                 isFab: false,
               ),
-              child: CreateCollectionFAB(isFab: false),
+              child: CreateCollectionButton(isFab: false),
             ),
             contentPadding: isDense ? const EdgeInsets.all(padding10) : null,
           ),
@@ -90,7 +89,7 @@ class ClipCollectionSelectionDialog extends StatelessWidget {
                     subtitle: !isVeryDense && collection.description != null
                         ? Text(collection.description!)
                         : null,
-                    onTap: () => context.pop(collection),
+                    onTap: () => Navigator.pop(context, collection),
                   );
                 },
               );

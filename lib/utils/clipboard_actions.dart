@@ -152,21 +152,25 @@ Future<void> pasteContent(BuildContext context) async {
   showTextSnackbar("Paste success", closePrevious: true);
 }
 
-Future<void> changeCollection(BuildContext context, ClipboardItem item) async {
+Future<void> changeCollection(
+    BuildContext context, List<ClipboardItem> items) async {
   final ctx = context.mounted ? context : rootNavKey.currentContext!;
   final cubit = ctx.read<OfflinePersistanceCubit>();
-  final router = GoRouter.of(context);
+
+  final selectedCollectionId =
+      items.isNotEmpty ? null : items.firstOrNull?.collectionId;
 
   final collection = await ClipCollectionSelectionDialog(
-    selectedCollectionId: item.collectionId,
+    selectedCollectionId: selectedCollectionId,
   ).open(ctx);
 
   if (collection != null) {
-    final updatedItem = item.copyWith(
-      collectionId: collection.id,
-      serverCollectionId: collection.serverId,
-    )..applyId(item);
-    cubit.persist([updatedItem]);
-    router.pop();
+    final updatedItems = items
+        .map((item) => item.copyWith(
+              collectionId: collection.id,
+              serverCollectionId: collection.serverId,
+            )..applyId(item))
+        .toList();
+    cubit.persist(updatedItems);
   }
 }

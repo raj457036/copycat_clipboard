@@ -2,7 +2,7 @@ import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/widgets/keyboard_shortcuts.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
-import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/events.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
@@ -174,8 +174,8 @@ class KeyboardShortcutProvider extends StatelessWidget {
               ),
               RefreshIntent: CallbackAction<RefreshIntent>(
                 onInvoke: (intent) async {
-                  await syncChanges(context);
-
+                  final cubit = context.read<ClipSyncManagerCubit>();
+                  cubit.syncClips(manual: true);
                   return null;
                 },
               ),

@@ -8,7 +8,6 @@ import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/datetime_extension.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 const _allClipCatergories = {
   ClipItemType.text,
@@ -375,7 +374,7 @@ class _FilterDialogState extends State<FilterDialog> {
           ? null
           : typeIncludes,
     );
-    context.pop(searchState);
+    Navigator.pop(context, searchState);
   }
 
   void setSortOrder(Set<SortOrder> order) {
