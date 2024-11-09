@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
+import 'package:copycat_base/bloc/collection_sync_manager_cubit/collection_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/snackbar.dart';
@@ -28,6 +29,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
   late MonetizationCubit monetizationCubit;
   late DriveSetupCubit driveSetupCubit;
   late AppConfigCubit appConfigCubit;
+  late CollectionSyncManagerCubit collectionSyncManagerCubit;
 
   Stream<bool>? networkObserver;
 
@@ -52,6 +54,8 @@ class _NetworkObserverState extends State<NetworkObserver> {
     monetizationCubit = BlocProvider.of<MonetizationCubit>(context);
     driveSetupCubit = BlocProvider.of<DriveSetupCubit>(context);
     appConfigCubit = BlocProvider.of<AppConfigCubit>(context);
+    collectionSyncManagerCubit =
+        BlocProvider.of<CollectionSyncManagerCubit>(context);
     appConfigCubit.syncClocks();
   }
 
@@ -63,6 +67,7 @@ class _NetworkObserverState extends State<NetworkObserver> {
       driveSetupCubit.fetch(),
       appConfigCubit.syncClocks(),
     ]);
+    collectionSyncManagerCubit.syncCollections();
   }
 
   void onConnectionChanged(bool isConnected) {

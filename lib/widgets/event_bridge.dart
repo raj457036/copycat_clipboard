@@ -6,8 +6,10 @@ import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
+import 'package:copycat_base/bloc/collection_sync_manager_cubit/collection_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
+import 'package:copycat_base/bloc/realtime_collection_sync_cubit/realtime_collection_sync_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/events.dart';
 import 'package:copycat_base/constants/key.dart';
@@ -91,34 +93,69 @@ class EventBridge extends StatelessWidget {
           listener: (context, state) async {
             final config = state.config;
             final clipSync = context.read<ClipSyncManagerCubit>();
-            final realtime = context.read<RealtimeClipSyncCubit>();
+            final realtimeClip = context.read<RealtimeClipSyncCubit>();
+            final collectionSync = context.read<CollectionSyncManagerCubit>();
+            final realtimeCollection =
+                context.read<RealtimeCollectionSyncCubit>();
 
             if (config.enableSync) {
               clipSync.changeConfig(disabled: false);
-              await clipSync.syncClips();
+              collectionSync.changeConfig(disabled: false);
+              await collectionSync.syncCollections();
             } else {
               clipSync.changeConfig(disabled: true);
-              realtime.unsubscribe();
+              collectionSync.changeConfig(disabled: true);
+              realtimeClip.unsubscribe();
+              realtimeCollection.unsubscribe();
               clipSync.stopPolling();
+              collectionSync.stopPolling();
+            }
+          },
+        ),
+        BlocListener<CollectionSyncManagerCubit, CollectionSyncManagerState>(
+          listener: (context, state) async {
+            final config = context.read<AppConfigCubit>().state.config;
+            final clipSync = context.read<ClipSyncManagerCubit>();
+            final collectionSync = context.read<CollectionSyncManagerCubit>();
+            final realtimeCollection =
+                context.read<RealtimeCollectionSyncCubit>();
+            switch (state) {
+              case CollectionSyncComplete(:final manual):
+                {
+                  if (!config.enableSync) return;
+                  await clipSync.syncClips(manual: manual);
+                  switch (config.syncSpeed) {
+                    case SyncSpeed.realtime:
+                      realtimeCollection.subscribe();
+                      collectionSync.stopPolling();
+                    case SyncSpeed.balanced:
+                      realtimeCollection.unsubscribe();
+                      collectionSync.startPolling();
+                  }
+                }
+              case CollectionSyncFailed(:final failure):
+                showFailureSnackbar(failure);
             }
           },
         ),
         BlocListener<ClipSyncManagerCubit, ClipSyncManagerState>(
           listener: (context, state) {
             final config = context.read<AppConfigCubit>().state.config;
-            final realtime = context.read<RealtimeClipSyncCubit>();
-            final clipSync = context.read<ClipSyncManagerCubit>();
+            final realtimeClip = context.read<RealtimeClipSyncCubit>();
+            // final clipSync = context.read<ClipSyncManagerCubit>();
+
             switch (state) {
               case ClipSyncComplete():
                 {
                   if (!config.enableSync) return;
                   switch (config.syncSpeed) {
                     case SyncSpeed.realtime:
-                      realtime.subscribe();
-                      clipSync.stopPolling();
+                      realtimeClip.subscribe();
+                    // clipSync.stopPolling();
+
                     case SyncSpeed.balanced:
-                      realtime.unsubscribe();
-                      clipSync.startPolling();
+                      realtimeClip.unsubscribe();
+                    // clipSync.startPolling();
                   }
                 }
               case ClipSyncFailed(:final failure):
