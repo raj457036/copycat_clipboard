@@ -83,7 +83,10 @@ class EventBridge extends StatelessWidget {
           ),
         BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) {
-            return previous.config.enableSync != current.config.enableSync;
+            final prev = previous.config;
+            final curr = current.config;
+            return prev.enableSync != curr.enableSync ||
+                prev.syncSpeed != curr.syncSpeed;
           },
           listener: (context, state) async {
             final config = state.config;

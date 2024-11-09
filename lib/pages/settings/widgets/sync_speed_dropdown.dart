@@ -49,7 +49,7 @@ class SyncSpeedDropdown extends StatelessWidget {
                   items: [
                     if (subscription != null)
                       DropdownMenuItem(
-                        enabled: subscription.syncInterval == $0S,
+                        enabled: subscription.syncInterval < $10S,
                         value: SyncSpeed.realtime,
                         child: const Row(
                           children: [

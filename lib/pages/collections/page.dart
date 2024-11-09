@@ -1,5 +1,5 @@
 import 'package:clipboard/pages/collections/widgets/appbar.dart';
-import 'package:clipboard/pages/collections/widgets/collection_list_item.dart';
+import 'package:clipboard/pages/collections/widgets/clip_collection_grid_item.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:clipboard/widgets/local_user.dart';
 import 'package:clipboard/widgets/no_collection.dart';
@@ -25,13 +25,8 @@ class CollectionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = context.mq.size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final crossAxisCount = Breakpoints.on<int>(
-      width,
-      default_: 1,
-      tablet: 2,
-      desktop: 3,
-    );
-    final isDense = width < dockedLRMaxWidth;
+    final crossAxisCount =
+        Breakpoints.on<int>(width, default_: 1, tablet: 2, desktop: 3);
     return CustomScaffold(
       activeIndex: 1,
       appBar: isMobilePlatform ? const CollectionAppBar() : null,
@@ -65,8 +60,7 @@ class CollectionsPage extends StatelessWidget {
                               child: NoCollectionAvailable(),
                             );
                           }
-
-                          final aspectRatio = width / (56 * crossAxisCount);
+                          const aspectRatio = 16 / 7;
                           final builder = GridView.builder(
                             padding: isMobile
                                 ? const EdgeInsets.only(bottom: padding12)
@@ -76,18 +70,13 @@ class CollectionsPage extends StatelessWidget {
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: crossAxisCount,
                               childAspectRatio: aspectRatio,
+                              mainAxisExtent: 100,
                             ),
                             itemBuilder: (BuildContext context, int index) {
                               final collection = collections[index];
-                              return ClipCollectionListItem(
+                              return ClipCollectionGridItem(
                                 autoFocus: isDesktopPlatform && index == 0,
                                 collection: collection,
-                                shape: !isMobile
-                                    ? const RoundedRectangleBorder(
-                                        borderRadius: radius8,
-                                      )
-                                    : null,
-                                isDense: isDense,
                               );
                             },
                           );
