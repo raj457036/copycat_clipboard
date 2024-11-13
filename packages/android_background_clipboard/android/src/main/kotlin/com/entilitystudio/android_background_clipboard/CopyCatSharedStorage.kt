@@ -4,6 +4,12 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.util.Log
 
+enum class ClipType {
+    text,
+    url,
+    fileUrl
+}
+
 class CopyCatSharedStorage(private val applicationContext: Context) {
     private val sp = applicationContext.getSharedPreferences("CopyCatPrefs", MODE_PRIVATE)
     private lateinit var sharedAccessKey: String
@@ -32,20 +38,21 @@ class CopyCatSharedStorage(private val applicationContext: Context) {
         return "Clip-${endId + 1}"
     }
 
-    fun writeTextClip(text: String) {
+    fun writeTextClip(text: String, type: ClipType) {
         synchronized(this) {
             val nextId = getNextId()
             endId += 1  // Update endId for next usage
             val editor = sp.edit()
             editor.putString(nextId, text)
+            editor.putString("$nextId-meta", "$type :: ")
             editor.putInt("endId", endId) // Persist updated endId in SharedPreferences
             editor.apply()
         }
 
-        writeTextClipToServer(text)
+        writeTextClipToServer(text, type)
     }
 
-    private fun writeTextClipToServer(text: String) {
+    private fun writeTextClipToServer(text: String, type: ClipType) {
         Log.d("CopyCatSharedStorage", "Writing text clip to server")
     }
 }

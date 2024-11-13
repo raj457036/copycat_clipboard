@@ -17,9 +17,17 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.InputStream
+import kotlin.concurrent.thread
 
 
 class CopyCatClipboardService: Service() {
@@ -47,7 +55,6 @@ class CopyCatClipboardService: Service() {
     }
 
     private fun readUriClip(uri: Uri) {
-        Log.d("ClipboardService", "Clipboard URI: $uri")
         if (uri.scheme == "content") {
             // Media or File!
             var inputStream: InputStream? = null
@@ -56,28 +63,46 @@ class CopyCatClipboardService: Service() {
             } finally {
                 inputStream?.close()
             }
+        } else {
+            copycatStorage.writeTextClip(uri.toString(), ClipType.url)
         }
-
-        Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun readClipboard() {
         val clipData = clipboardManager.primaryClip
-        if (clipData != null && clipData.itemCount > 0) {
-            val clipText = clipData.getItemAt(0).text
-            if (clipText != null) {
-                Log.d("ClipboardService", "Clipboard Text: $clipText")
-                Toast.makeText(this, clipText, Toast.LENGTH_SHORT).show()
-                copycatStorage.writeTextClip(clipText.toString())
-                return
+
+        GlobalScope.launch(Dispatchers.IO) {
+            var success: Boolean = false;
+            if (clipData != null && clipData.itemCount > 0) {
+
+                val item = clipData.getItemAt(0)
+
+                item.text?.let {
+                    Log.d("ClipboardService", "Clipboard Text: $it")
+                    success = true
+                    copycatStorage.writeTextClip(it.toString(), ClipType.text)
+                }
+                item.uri?.let {
+                    Log.d("ClipboardService", "Clipboard URI: $it")
+                    if (!success) {
+                        readUriClip(item.uri)
+                        success = true
+                    }
+                }
             }
 
-            val clipUri = clipData.getItemAt(0).uri
-            if (clipUri != null) {
-                readUriClip(clipUri)
+            if (success) {
+                withContext(Dispatchers.Main) {
+                    showAck()
+                }
             }
-
         }
+
+    }
+
+    private fun showAck() {
+        Toast.makeText(this, "CopyCat Captured Clipboard", Toast.LENGTH_SHORT).show()
     }
 
     private fun removeFocusOnOverlay() {
@@ -91,25 +116,17 @@ class CopyCatClipboardService: Service() {
         // Create the overlay layout
         overlayLayout = LinearLayout(this)
 
-        overlayLayout?.setBackgroundColor(0x80FFFF00.toInt()) // Yellowish tint (with alpha)
+        val color = ContextCompat.getColor(this, android.R.color.transparent)
+        overlayLayout?.setBackgroundColor(color)
         overlayLayout?.orientation = LinearLayout.VERTICAL
         overlayLayout?.layoutParams = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,  // For Android O and above
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-            android.graphics.PixelFormat.TRANSLUCENT
+            android.graphics.PixelFormat.TRANSPARENT
         )
-
-
-        // Optionally, add a TextView to display some status or message on the overlay
-        val textView = TextView(this).apply {
-            text = "Clipboard Service Active"
-            setTextColor(0xFF000000.toInt()) // Black text
-        }
-
-        overlayLayout?.addView(textView)
 
         // Add overlay to the window
         windowManager.addView(overlayLayout, overlayLayout?.layoutParams)

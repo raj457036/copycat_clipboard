@@ -11,10 +11,10 @@
 
         <service
             android:name="com.entilitystudio.android_background_clipboard.CopyCatClipboardService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:foregroundServiceType="mediaPlayback"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.SYSTEM_ALERT_WINDOW">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>

@@ -10,13 +10,13 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import kotlinx.coroutines.Job
-
 
 class CopyCatAccessibilityService: AccessibilityService() {
     private val logTag = "CopyCatAccService"
-    private var selection: Boolean = false
-    private var clicked: Boolean = false
+    private var selectionChanged: Boolean = false
+    private var contentChanged: Boolean = false
+    private var textChanged: Boolean = false
+    private var clickDetected: Boolean = false
     private var notification: Boolean = false
     private lateinit var clipboardService: CopyCatClipboardService
 
@@ -66,44 +66,47 @@ class CopyCatAccessibilityService: AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         Log.d(logTag, "Event : $event")
 
-//  Possible Clip operation ( context menu -> click )
-//  - TYPE_VIEW_TEXT_SELECTION_CHANGED
-//  - TYPE_NOTIFICATION_STATE_CHANGED
-//  When copied from js action or programmatically.
-//  TYPE_VIEW_CLICKED
-//  TYPE_NOTIFICATION_STATE_CHANGED
 
-        if (event?.packageName == "com.entilitystudio.CopyCat") {
+        if (event?.packageName?.startsWith("com.entilitystudio") == true) {
             Log.d(logTag,"Ignoring CopyCat Clipboard Events")
             return
         }
 
         when (event?.eventType) {
             AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED -> {
-                selection = true
+                // Step 1: Detect text selection
+                selectionChanged = true
+            }
+            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
+                // Step 2: Detect text change after selection
+                if (selectionChanged) {
+                    contentChanged = true
+                }
             }
             AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED -> {
-                if (event.text.contains("Copied") && (selection || clicked)) {
-                    notification = true
-                } else {
-                    selection = false;
-                    clicked = false;
-                    notification = false;
+                val copiedToast = event.text.contains("Copied")
+
+                if (copiedToast) {
+                    onCopyEvent();
+                    resetFlags()
+                }
+                else if (selectionChanged && contentChanged) {
+                    onCopyEvent();
+                    resetFlags()
                 }
             }
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
-                clicked = true
+                clickDetected = true
             }
             else -> {}
         }
 
-        if ((selection || clicked) && notification) {
-            onCopyEvent()
-            selection = false
-            notification = false
-            clicked = false
-        }
+    }
 
+    private fun resetFlags() {
+        selectionChanged = false
+        textChanged = false
+        contentChanged = false
     }
 
     override fun onInterrupt() {
