@@ -11,13 +11,6 @@ class MethodChannelAndroidBackgroundClipboard
   final methodChannel = const MethodChannel('android_background_clipboard');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
-
-  @override
   Future<bool> isAccessibilityPermissionGranted() async {
     final isGranted = await methodChannel
             .invokeMethod<bool>('isAccessibilityPermissionGranted') ??
@@ -28,5 +21,51 @@ class MethodChannelAndroidBackgroundClipboard
   @override
   Future<void> openAccessibilityService() async {
     await methodChannel.invokeMethod<bool>('openAccessibilityService');
+  }
+
+  @override
+  Future<bool> isBatteryOptimizationEnabled() async {
+    final isEnabled = await methodChannel
+            .invokeMethod<bool>('isBatteryOptimizationEnabled') ??
+        false;
+    return isEnabled;
+  }
+
+  @override
+  Future<bool> isNotificationPermissionGranted() async {
+    final isGranted = await methodChannel
+            .invokeMethod<bool>('isNotificationPermissionGranted') ??
+        false;
+    return isGranted;
+  }
+
+  @override
+  Future<bool> isOverlayPermissionGranted() async {
+    final isGranted =
+        await methodChannel.invokeMethod<bool>('isOverlayPermissionGranted') ??
+            false;
+    return isGranted;
+  }
+
+  @override
+  Future<bool> isServiceRunning() async {
+    final isRunning =
+        await methodChannel.invokeMethod<bool>('isServiceRunning') ?? false;
+    return isRunning;
+  }
+
+  @override
+  Future<void> requestNotificationPermission() async {
+    await methodChannel.invokeMethod<bool>('requestNotificationPermission');
+  }
+
+  @override
+  Future<void> requestOverlayPermission() async {
+    await methodChannel.invokeMethod<bool>('requestOverlayPermission');
+  }
+
+  @override
+  Future<void> requestUnrestrictedBatteryAccess() async {
+    await methodChannel.invokeMethod<bool>('requestUnrestrictedBatteryAccess');
   }
 }

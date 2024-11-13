@@ -3,7 +3,6 @@ package com.entilitystudio.android_background_clipboard
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
@@ -15,19 +14,17 @@ import android.os.IBinder
 import android.util.Log
 import android.view.WindowManager
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
-import kotlin.concurrent.thread
 
 
 class CopyCatClipboardService: Service() {
@@ -35,6 +32,8 @@ class CopyCatClipboardService: Service() {
     private lateinit var notificationManager: NotificationManager
     private lateinit var windowManager: WindowManager
     private lateinit var copycatStorage: CopyCatSharedStorage
+    private val notificationId: Int = 1
+    private lateinit var notificationBuilder: NotificationCompat.Builder
 
     private var overlayLayout: LinearLayout? = null
 
@@ -64,7 +63,9 @@ class CopyCatClipboardService: Service() {
                 inputStream?.close()
             }
         } else {
-            copycatStorage.writeTextClip(uri.toString(), ClipType.url)
+            CoroutineScope(Dispatchers.IO).launch {
+                copycatStorage.writeTextClip(uri.toString(), ClipType.url)
+            }
         }
     }
 
@@ -85,10 +86,8 @@ class CopyCatClipboardService: Service() {
                 }
                 item.uri?.let {
                     Log.d("ClipboardService", "Clipboard URI: $it")
-                    if (!success) {
-                        readUriClip(item.uri)
-                        success = true
-                    }
+                    readUriClip(it)
+                    success = true
                 }
             }
 
@@ -133,7 +132,7 @@ class CopyCatClipboardService: Service() {
     }
 
     companion object {
-        private const val ACTION_STOP_SERVICE = "ACTION_STOP_SERVICE"
+        var isRunning: Boolean = false
     }
 
     private fun createNotificationChannel() {
@@ -143,21 +142,19 @@ class CopyCatClipboardService: Service() {
         }
     }
 
-    private fun createServiceNotification(): Notification {
+    private fun prepareNotification() {
         // Intent to stop the service
-        val stopIntent = Intent(this, CopyCatAccessibilityService::class.java).apply {
-            action = ACTION_STOP_SERVICE
-        }
-        val stopPendingIntent = PendingIntent.getService(
-            this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
 
-        return NotificationCompat.Builder(this, nChannelId)
-            .setContentTitle("CopyCat Service Running")
-            .setContentText("The service is currently active.")
+
+        notificationBuilder = NotificationCompat.Builder(this, nChannelId)
             .setSmallIcon(android.R.mipmap.sym_def_app_icon)
             .setOngoing(true) // Makes the notification non-dismissible
-            .addAction(android.R.drawable.ic_delete, "Stop", stopPendingIntent) // Stop action button
+    }
+
+    private fun showNotification(): Notification {
+        return notificationBuilder
+            .setContentTitle("CopyCat Service Running")
+            .setContentText("The service is currently active.")
             .build()
     }
 
@@ -167,14 +164,14 @@ class CopyCatClipboardService: Service() {
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         copycatStorage = CopyCatSharedStorage(this)
         createNotificationChannel()
-        startForeground(1, createServiceNotification())
+        prepareNotification()
+        startForeground(notificationId, showNotification())
+        isRunning=true
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Handle the stop action
-        if (intent?.action == ACTION_STOP_SERVICE) {
-            stopSelf()
-        }
+
         return START_STICKY
     }
 
@@ -184,9 +181,12 @@ class CopyCatClipboardService: Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             stopForeground(STOP_FOREGROUND_REMOVE)
         } else {
+            @Suppress("DEPRECATION")
             stopForeground(true)
         }
+        Log.d("CopyCatClipboardService", "CopyCatClipboardService Destroyed")
         super.onDestroy()
+        isRunning=false
     }
 
 }

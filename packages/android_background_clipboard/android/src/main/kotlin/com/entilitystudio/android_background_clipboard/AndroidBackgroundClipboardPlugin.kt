@@ -28,9 +28,6 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
-      "getPlatformVersion" -> {
-        result.success("Android ${android.os.Build.VERSION.RELEASE}")
-      }
       "isAccessibilityPermissionGranted" -> {
         val granted = Utils.isAccessibilityServiceEnabled(
           applicationContext,
@@ -67,6 +64,10 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
       "requestNotificationPermission" -> {
         Utils.requestNotificationPermission(applicationContext)
         result.success(null)
+      }
+      "isServiceRunning" -> {
+        val isRunning = CopyCatClipboardService.isRunning
+        result.success(isRunning)
       }
       else ->  result.notImplemented()
     }

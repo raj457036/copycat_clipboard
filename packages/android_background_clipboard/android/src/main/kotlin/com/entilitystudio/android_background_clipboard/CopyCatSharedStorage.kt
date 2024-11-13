@@ -11,7 +11,7 @@ enum class ClipType {
 }
 
 class CopyCatSharedStorage(private val applicationContext: Context) {
-    private val sp = applicationContext.getSharedPreferences("CopyCatPrefs", MODE_PRIVATE)
+    private val sp = applicationContext.getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
     private lateinit var sharedAccessKey: String
     private var syncEnabled: Boolean = false
     private lateinit var deviceId: String
@@ -39,16 +39,13 @@ class CopyCatSharedStorage(private val applicationContext: Context) {
     }
 
     fun writeTextClip(text: String, type: ClipType) {
-        synchronized(this) {
-            val nextId = getNextId()
-            endId += 1  // Update endId for next usage
-            val editor = sp.edit()
-            editor.putString(nextId, text)
-            editor.putString("$nextId-meta", "$type :: ")
-            editor.putInt("endId", endId) // Persist updated endId in SharedPreferences
-            editor.apply()
-        }
-
+        val nextId = getNextId()
+        endId += 1  // Update endId for next usage
+        val editor = sp.edit()
+        editor.putString(nextId, text)
+        editor.putString("$nextId-meta", "$type :: ")
+        editor.putInt("endId", endId) // Persist updated endId in SharedPreferences
+        editor.apply()
         writeTextClipToServer(text, type)
     }
 

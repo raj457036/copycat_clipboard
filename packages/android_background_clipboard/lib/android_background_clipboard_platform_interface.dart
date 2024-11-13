@@ -24,11 +24,21 @@ abstract class AndroidBackgroundClipboardPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
-
   Future<bool> isAccessibilityPermissionGranted();
 
   Future<void> openAccessibilityService();
+
+  Future<bool> isOverlayPermissionGranted();
+
+  Future<void> requestOverlayPermission();
+
+  Future<bool> isBatteryOptimizationEnabled();
+
+  Future<void> requestUnrestrictedBatteryAccess();
+
+  Future<bool> isNotificationPermissionGranted();
+
+  Future<void> requestNotificationPermission();
+
+  Future<bool> isServiceRunning();
 }

@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
@@ -44,20 +45,25 @@ class Utils {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)  return;
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + context?.getPackageName())
-            )
+                Uri.parse("package:" + context?.packageName)
+            ).apply {
+                flags = FLAG_ACTIVITY_NEW_TASK
+            }
             context?.startActivity(intent)
         }
 
         fun isBatteryOptimizationEnabled(context: Context): Boolean {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)  return false
             val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-            return !powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            val ignoring = powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            return !ignoring
         }
 
         fun requestUnrestrictedBatteryAccess(context: Context) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)  return
-            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                flags = FLAG_ACTIVITY_NEW_TASK
+            }
             context.startActivity(intent)
         }
 
@@ -74,7 +80,9 @@ class Utils {
 
         fun requestNotificationPermission(context: Context) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O)  return
-            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                flags = FLAG_ACTIVITY_NEW_TASK
+            }
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
             context.startActivity(intent)
         }

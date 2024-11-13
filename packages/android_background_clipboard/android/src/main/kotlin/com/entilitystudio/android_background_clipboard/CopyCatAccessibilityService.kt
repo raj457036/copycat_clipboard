@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import android.widget.Toast
 
 class CopyCatAccessibilityService: AccessibilityService() {
     private val logTag = "CopyCatAccService"
@@ -18,6 +19,17 @@ class CopyCatAccessibilityService: AccessibilityService() {
     private var textChanged: Boolean = false
     private var clickDetected: Boolean = false
     private var notification: Boolean = false
+
+
+    private var ignore_content_change = true;
+    private val TEXT_SELECTED = 1;
+    private val TEXT_UNSELECTED = 2;
+    private val CONTEXT_MENU_SHOWN = 3;
+    private val VIEW_CLICKED = 4;
+    private val CONTENT_CHANGED = 5;
+
+//    1 -> 3 -> 2
+
     private lateinit var clipboardService: CopyCatClipboardService
 
     private val connection = object : ServiceConnection {
@@ -37,7 +49,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
         clipboardService.performClipboardRead("some data")
     }
 
-    private fun shorServiceNotification() {
+    private fun startClipboardService() {
         val showIntent = Intent(this, CopyCatClipboardService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(showIntent)
@@ -47,6 +59,12 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
         val bindIntent = Intent(this, CopyCatClipboardService::class.java)
         bindService(bindIntent, connection, Context.BIND_AUTO_CREATE)
+        Toast.makeText(this, "CopyCat Service Started", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun stopClipboardService() {
+        val stopIntent = Intent(this, CopyCatClipboardService::class.java)
+        stopService(stopIntent)
     }
 
 
@@ -61,7 +79,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
         serviceInfo = info
         Log.i(logTag, "CopyCat Accessibility Service Connected")
-        shorServiceNotification()
+        startClipboardService()
     }
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         Log.d(logTag, "Event : $event")
@@ -74,8 +92,18 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
         when (event?.eventType) {
             AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED -> {
+                if (event.fromIndex == -1 && event.toIndex == -1) return
                 // Step 1: Detect text selection
                 selectionChanged = true
+                if (event.fromIndex == event.toIndex) {
+                    if (event.fromIndex == 0 && event.toIndex == 0) {
+//                        select all
+                    } else {
+//                        unselect
+                    }
+                } else {
+//                    select
+                }
             }
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
                 // Step 2: Detect text change after selection
@@ -83,17 +111,19 @@ class CopyCatAccessibilityService: AccessibilityService() {
                     contentChanged = true
                 }
             }
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+                if (event.className != "android.widget.FrameLayout") {
+                    return
+                }
+            }
             AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED -> {
                 val copiedToast = event.text.contains("Copied")
 
-                if (copiedToast) {
-                    onCopyEvent();
+                if (event.className != "android.widget.Toast") {
                     resetFlags()
+                    return
                 }
-                else if (selectionChanged && contentChanged) {
-                    onCopyEvent();
-                    resetFlags()
-                }
+                notification = true
             }
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 clickDetected = true
@@ -107,6 +137,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
         selectionChanged = false
         textChanged = false
         contentChanged = false
+        clickDetected = false
     }
 
     override fun onInterrupt() {
@@ -115,6 +146,9 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         Log.i(logTag, "CopyCat Accessibility Service Disconnected")
+        unbindService(connection)
+        stopClipboardService()
+        Toast.makeText(this, "CopyCat Service Stopped", Toast.LENGTH_SHORT).show()
         return super.onUnbind(intent)
     }
 }
