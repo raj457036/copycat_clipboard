@@ -14,12 +14,13 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.WindowManager
+import android.view.textclassifier.TextClassifier
+import android.view.textclassifier.TextLinks
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,6 +28,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 
+enum class ClipAction {
+    Pending,
+    PartialSuccess,
+    Success,
+    Duplicate,
+    Failed,
+}
 
 class CopyCatClipboardService: Service() {
     private lateinit var clipboardManager: ClipboardManager
@@ -50,7 +58,13 @@ class CopyCatClipboardService: Service() {
         fun getService(): CopyCatClipboardService = this@CopyCatClipboardService
     }
 
-    fun performClipboardRead(data: String) {
+    fun performClipboardRead(appPackageName: String) {
+
+        if (copycatStorage.excludedPackages.contains(appPackageName)) {
+            Log.d(logTag,"$appPackageName is excluded by exclusion rules.")
+            showAck("Clip not synced due to exclusion rules")
+            return
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getFocusOnOverlay()
@@ -68,30 +82,66 @@ class CopyCatClipboardService: Service() {
         }
     }
 
-    private fun readUriClip(uri: Uri) {
-        if (uri.scheme == "content") {
-            // Media or File!
-            var inputStream: InputStream? = null
-            try {
-                inputStream = contentResolver.openInputStream(uri)
-            } finally {
-                inputStream?.close()
+    private fun readUriClip(uri: Uri): ClipAction {
+        return when (uri.scheme) {
+            "content" -> {
+                // Media or File!
+                var inputStream: InputStream? = null
+                try {
+                    inputStream = contentResolver.openInputStream(uri)
+                    ClipAction.Success
+                } finally {
+                    inputStream?.close()
+                }
             }
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                copycatStorage.writeTextClip(uri.toString(), ClipType.url)
+
+            else -> {
+                writeTextToCopyCatClipboard(uri.toString(), ClipType.Url)
             }
         }
     }
 
-    private fun writeTextToCopyCatClipboard(text: String, type: ClipType, desc: String? = null): Boolean {
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun readTextLinks(tls: TextLinks): ClipAction {
+
+        val text = tls.text
+        for (link in tls.links) {
+            if (link.getConfidenceScore(TextClassifier.TYPE_URL) == 1.0f) {
+                val url = text.substring(link.start, link.end)
+                if (url.startsWith("http://") || url.startsWith("https://"))
+                {
+                    Log.d(logTag, "Clipboard Link: $url")
+                    return writeTextToCopyCatClipboard(url, ClipType.Url)
+                }
+            }
+            if (link.getConfidenceScore(TextClassifier.TYPE_EMAIL) == 1.0f) {
+                val email = text.substring(link.start, link.end)
+                Log.d(logTag, "Clipboard Email: $email")
+                return writeTextToCopyCatClipboard(email, ClipType.Email)
+            }
+            if (link.getConfidenceScore(TextClassifier.TYPE_PHONE) == 1.0f) {
+                val phone = text.substring(link.start, link.end)
+                Log.d(logTag, "Clipboard Phone: $phone")
+                return writeTextToCopyCatClipboard(phone, ClipType.Phone)
+            }
+            if (link.getConfidenceScore(TextClassifier.TYPE_PHONE) == 1.0f) {
+                val phone = text.substring(link.start, link.end)
+                Log.d(logTag, "Clipboard Phone: $phone")
+                return writeTextToCopyCatClipboard(phone, ClipType.Phone)
+            }
+        }
+        return ClipAction.Pending
+    }
+
+
+    private fun writeTextToCopyCatClipboard(text: String, type: ClipType, desc: String? = null): ClipAction {
         if (lastCopiedText == text) {
             Log.d(logTag, "Detected duplicate item")
-            return false
+            return ClipAction.Duplicate
         }
         lastCopiedText = text
-        copycatStorage.writeTextClip(text, type)
-        return true
+        copycatStorage.writeTextClip(text, type, desc)
+        return ClipAction.Success
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -99,35 +149,42 @@ class CopyCatClipboardService: Service() {
         val clipData = clipboardManager.primaryClip
 
         GlobalScope.launch(Dispatchers.IO) {
-            var success = false;
+            var actionStatus: ClipAction = ClipAction.Pending
+
             if (clipData != null && clipData.itemCount > 0) {
 
                 val item = clipData.getItemAt(0)
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     item.textLinks?.let {
-                        Log.d(logTag, "Clipboard Link: $it")
-                        success = writeTextToCopyCatClipboard(it.text.toString(), ClipType.url)
+                        val result = readTextLinks(it)
+                        actionStatus = if (result == ClipAction.Success && it.text.length ==  lastCopiedText?.length) {
+                            result
+                        } else {
+                            ClipAction.PartialSuccess
+                        }
                     }
                 }
 
-                item.text?.let {
-                    Log.d(logTag, "Clipboard Text: $it")
-                    success = writeTextToCopyCatClipboard(it.toString(), ClipType.text)
-                }
+                if (actionStatus != ClipAction.Success)
+                    item.text?.let {
+                        Log.d(logTag, "Clipboard Text: $it")
+                        actionStatus = writeTextToCopyCatClipboard(it.toString(), ClipType.Text)
+                    }
 
-                item.uri?.let {
-                    Log.d(logTag, "Clipboard URI: $it")
-                    readUriClip(it)
-                    success = true
-                }
+                if (actionStatus != ClipAction.Success)
+                    item.uri?.let {
+                        Log.d(logTag, "Clipboard URI: $it")
+                        actionStatus = readUriClip(it)
+                    }
             }
 
             withContext(Dispatchers.Main) {
-                if (success) {
-                    showAck("CopyCat Captured Clipboard")
-                } else {
-                    showAck("Detected duplicate item")
+                when (actionStatus) {
+                    ClipAction.Success -> showAck("CopyCat captured clipboard")
+                    ClipAction.Duplicate -> showAck("Detected duplicate item")
+                    ClipAction.Failed -> showAck("CopyCat failed to capture clipboard")
+                    else -> {}
                 }
             }
         }
@@ -194,15 +251,12 @@ class CopyCatClipboardService: Service() {
     }
 
     private val onClipChangeListener = ClipboardManager.OnPrimaryClipChangedListener {
-        Log.d(logTag, "CLIP CHANGED!!!!")
+        readClipboard()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setupClipboardManager() {
         clipboardManager.addPrimaryClipChangedListener(onClipChangeListener)
-        if (clipboardManager.hasPrimaryClip()) {
-            Log.d(logTag,"HAS PRIMARY CLIP")
-        }
     }
 
     override fun onCreate() {
@@ -221,14 +275,13 @@ class CopyCatClipboardService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Handle the stop action
-
         return START_STICKY
     }
 
     override fun onBind(p0: Intent?): IBinder = binder
 
     override fun onDestroy() {
+        clipboardManager.removePrimaryClipChangedListener(onClipChangeListener)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             stopForeground(STOP_FOREGROUND_REMOVE)
         } else {
