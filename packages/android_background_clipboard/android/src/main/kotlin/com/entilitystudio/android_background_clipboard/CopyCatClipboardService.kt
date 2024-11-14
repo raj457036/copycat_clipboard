@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -31,14 +32,19 @@ class CopyCatClipboardService: Service() {
     private lateinit var clipboardManager: ClipboardManager
     private lateinit var notificationManager: NotificationManager
     private lateinit var windowManager: WindowManager
-    private lateinit var copycatStorage: CopyCatSharedStorage
+    lateinit var copycatStorage: CopyCatSharedStorage
     private val notificationId: Int = 1
     private lateinit var notificationBuilder: NotificationCompat.Builder
+    private var lastCopiedText: String? = null
 
     private var overlayLayout: LinearLayout? = null
 
     private val nChannelId = "copycat-notification-channel"
+    private val logTag = "CopyCatClipboardService"
     private val binder = LocalBinder()
+
+    private val ackToastEnable: Boolean
+        get() = copycatStorage.showAckToast
 
     inner class LocalBinder : Binder() {
         fun getService(): CopyCatClipboardService = this@CopyCatClipboardService
@@ -49,6 +55,15 @@ class CopyCatClipboardService: Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getFocusOnOverlay()
             readClipboard()
+            removeFocusOnOverlay()
+        }
+    }
+
+    fun writeToClipboard(data: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getFocusOnOverlay()
+            val clip = ClipData.newPlainText("CopyCat", data)
+            clipboardManager.setPrimaryClip(clip)
             removeFocusOnOverlay()
         }
     }
@@ -69,39 +84,59 @@ class CopyCatClipboardService: Service() {
         }
     }
 
+    private fun writeTextToCopyCatClipboard(text: String, type: ClipType, desc: String? = null): Boolean {
+        if (lastCopiedText == text) {
+            Log.d(logTag, "Detected duplicate item")
+            return false
+        }
+        lastCopiedText = text
+        copycatStorage.writeTextClip(text, type)
+        return true
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     private fun readClipboard() {
         val clipData = clipboardManager.primaryClip
 
         GlobalScope.launch(Dispatchers.IO) {
-            var success: Boolean = false;
+            var success = false;
             if (clipData != null && clipData.itemCount > 0) {
 
                 val item = clipData.getItemAt(0)
 
-                item.text?.let {
-                    Log.d("ClipboardService", "Clipboard Text: $it")
-                    success = true
-                    copycatStorage.writeTextClip(it.toString(), ClipType.text)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    item.textLinks?.let {
+                        Log.d(logTag, "Clipboard Link: $it")
+                        success = writeTextToCopyCatClipboard(it.text.toString(), ClipType.url)
+                    }
                 }
+
+                item.text?.let {
+                    Log.d(logTag, "Clipboard Text: $it")
+                    success = writeTextToCopyCatClipboard(it.toString(), ClipType.text)
+                }
+
                 item.uri?.let {
-                    Log.d("ClipboardService", "Clipboard URI: $it")
+                    Log.d(logTag, "Clipboard URI: $it")
                     readUriClip(it)
                     success = true
                 }
             }
 
-            if (success) {
-                withContext(Dispatchers.Main) {
-                    showAck()
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    showAck("CopyCat Captured Clipboard")
+                } else {
+                    showAck("Detected duplicate item")
                 }
             }
         }
 
     }
 
-    private fun showAck() {
-        Toast.makeText(this, "CopyCat Captured Clipboard", Toast.LENGTH_SHORT).show()
+    private fun showAck(text: String) {
+        if (!ackToastEnable) return
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     private fun removeFocusOnOverlay() {
@@ -158,15 +193,31 @@ class CopyCatClipboardService: Service() {
             .build()
     }
 
+    private val onClipChangeListener = ClipboardManager.OnPrimaryClipChangedListener {
+        Log.d(logTag, "CLIP CHANGED!!!!")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setupClipboardManager() {
+        clipboardManager.addPrimaryClipChangedListener(onClipChangeListener)
+        if (clipboardManager.hasPrimaryClip()) {
+            Log.d(logTag,"HAS PRIMARY CLIP")
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         copycatStorage = CopyCatSharedStorage(this)
+        copycatStorage.start()
         createNotificationChannel()
         prepareNotification()
         startForeground(notificationId, showNotification())
         isRunning=true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setupClipboardManager()
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -184,9 +235,10 @@ class CopyCatClipboardService: Service() {
             @Suppress("DEPRECATION")
             stopForeground(true)
         }
-        Log.d("CopyCatClipboardService", "CopyCatClipboardService Destroyed")
+        Log.d(logTag, "CopyCatClipboardService Destroyed")
         super.onDestroy()
         isRunning=false
+        copycatStorage.clean()
     }
 
 }

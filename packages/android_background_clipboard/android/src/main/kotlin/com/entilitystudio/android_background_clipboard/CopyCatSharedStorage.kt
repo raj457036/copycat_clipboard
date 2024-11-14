@@ -2,7 +2,9 @@ package com.entilitystudio.android_background_clipboard
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.util.Log
+
 
 enum class ClipType {
     text,
@@ -16,9 +18,26 @@ class CopyCatSharedStorage(private val applicationContext: Context) {
     private var syncEnabled: Boolean = false
     private lateinit var deviceId: String
     private var endId: Int = -1
+    private var _strictCheck = false
+    private var _showAckToast = true
+    val strictCheck: Boolean
+        get() = _strictCheck
 
-    init {
+    val showAckToast: Boolean
+        get() = _showAckToast
+
+    private val listener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
+        if (key == "strictCheck") {
+            _strictCheck = sharedPreferences.getBoolean(key, false)
+        }
+        if (key == "showAckToast") {
+            _showAckToast = sharedPreferences.getBoolean(key, true)
+        }
+    }
+
+    fun start() {
         readConfig()
+        sp.registerOnSharedPreferenceChangeListener(listener);
     }
 
     private fun readConfig() {
@@ -32,6 +51,9 @@ class CopyCatSharedStorage(private val applicationContext: Context) {
         deviceId = sp.getString("deviceId", "").toString()
 
         endId = sp.getInt("endId", -1)
+
+        _strictCheck = sp.getBoolean("strictCheck", false)
+        _showAckToast = sp.getBoolean("showAckToast", true)
     }
 
     private fun getNextId(): String {
@@ -51,5 +73,9 @@ class CopyCatSharedStorage(private val applicationContext: Context) {
 
     private fun writeTextClipToServer(text: String, type: ClipType) {
         Log.d("CopyCatSharedStorage", "Writing text clip to server")
+    }
+
+    fun clean() {
+        sp.unregisterOnSharedPreferenceChangeListener(listener);
     }
 }

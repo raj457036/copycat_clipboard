@@ -2,6 +2,7 @@ package com.entilitystudio.android_background_clipboard
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -9,8 +10,11 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.view.KeyEventDispatcher.dispatchKeyEvent
 
 class CopyCatAccessibilityService: AccessibilityService() {
     private val logTag = "CopyCatAccService"
@@ -19,7 +23,8 @@ class CopyCatAccessibilityService: AccessibilityService() {
     private var textChanged: Boolean = false
     private var clickDetected: Boolean = false
     private var notification: Boolean = false
-
+    private var detectingCopyAck: Boolean = false;
+    private var notificationAckText: String = "[Copied]"
 
     private var ignore_content_change = true;
     private val TEXT_SELECTED = 1;
@@ -30,13 +35,16 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
 //    1 -> 3 -> 2
 
+    private val strictCheck: Boolean
+        get() = clipboardService.copycatStorage.strictCheck
+
     private lateinit var clipboardService: CopyCatClipboardService
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
             Log.d(logTag, "OnServiceConnected $name")
             clipboardService = (binder as CopyCatClipboardService.LocalBinder).getService()
-            // Now you can call methods on targetService to communicate
+            detectCopyAck()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -67,6 +75,11 @@ class CopyCatAccessibilityService: AccessibilityService() {
         stopService(stopIntent)
     }
 
+    private fun detectCopyAck() {
+        val text = "COPYCAT-CLIPBOARD"
+        detectingCopyAck = true
+        clipboardService.writeToClipboard(text)
+    }
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -81,6 +94,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
         Log.i(logTag, "CopyCat Accessibility Service Connected")
         startClipboardService()
     }
+
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         Log.d(logTag, "Event : $event")
 
@@ -117,13 +131,21 @@ class CopyCatAccessibilityService: AccessibilityService() {
                 }
             }
             AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED -> {
-                val copiedToast = event.text.contains("Copied")
-
                 if (event.className != "android.widget.Toast") {
-                    resetFlags()
                     return
                 }
-                notification = true
+
+                val ackText = event.text.toString()
+                if (detectingCopyAck && ackText.isNotEmpty()) {
+                    notificationAckText = ackText
+                    detectingCopyAck = false
+                    return
+                }
+
+                val copyDetected = ackText == notificationAckText
+                if (copyDetected && (!strictCheck || event.packageName == "android")) {
+                    onCopyEvent()
+                }
             }
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 clickDetected = true
