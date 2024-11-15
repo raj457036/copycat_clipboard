@@ -4,9 +4,10 @@ import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
-class ProTipTile extends StatelessWidget {
+class TipTile extends StatelessWidget {
+  final String? title;
   final String tip;
-  const ProTipTile({super.key, required this.tip});
+  const TipTile({super.key, this.title, required this.tip});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ProTipTile extends StatelessWidget {
         Icons.lightbulb,
         color: Colors.amber,
       ),
-      title: Text(context.locale.proTip),
+      title: Text(title ?? context.locale.proTip),
       subtitle: Text(tip),
       tileColor: colors.secondaryContainer,
     );

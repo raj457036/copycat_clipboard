@@ -5,8 +5,12 @@ import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
+import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/collection_sync_manager_cubit/collection_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
+import 'package:copycat_base/bloc/realtime_collection_sync_cubit/realtime_collection_sync_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/data/services/encryption.dart';
 import 'package:copycat_base/l10n/l10n.dart';
@@ -38,14 +42,18 @@ class LogoutButton extends StatelessWidget {
       );
 
       EncrypterWorker.instance.dispose();
-      context.read<OfflinePersistanceCubit>().stopListners();
+      context.read<OfflinePersistanceCubit>().stopListeners();
       context.read<DriveSetupCubit>().reset();
-
+      context.read<ClipSyncManagerCubit>().stopPolling();
+      context.read<CollectionSyncManagerCubit>().stopPolling();
+      context.read<RealtimeClipSyncCubit>().unsubscribe();
+      context.read<RealtimeCollectionSyncCubit>().unsubscribe();
       await Future.wait([
         context.read<MonetizationCubit>().logout(),
         context.read<ClipCollectionCubit>().reset(),
         // context.read<SyncManagerCubit>().reset(),
-        context.read<WindowActionCubit>().setWindowdView(),
+        if (isDesktopPlatform)
+          context.read<WindowActionCubit>().setWindowdView(),
         context.read<AppConfigCubit>().reset(),
         clearPersistedRootDir(),
         db.writeTxn(() => db.clear()),

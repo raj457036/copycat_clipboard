@@ -34,7 +34,7 @@ class CollectionsPage extends StatelessWidget {
         children: [
           if (width > 200)
             DisableForLocalUser(
-              child: ProTipTile(
+              child: TipTile(
                 tip: context.locale.useCollectionProTip,
               ),
             ),

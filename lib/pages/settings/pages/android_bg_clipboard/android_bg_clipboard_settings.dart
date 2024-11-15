@@ -1,5 +1,8 @@
 import 'package:android_background_clipboard/android_background_clipboard.dart';
+import 'package:clipboard/pages/settings/widgets/setting_header.dart';
+import 'package:clipboard/widgets/pro_tip_banner.dart';
 import 'package:copycat_base/common/logging.dart';
+import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -59,7 +62,8 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
 
     notification = await widget.bgService.isNotificationPermissionGranted();
     overlay = await widget.bgService.isOverlayPermissionGranted();
-    batteryOptimization = await widget.bgService.isBatteryOptimizationEnabled();
+    batteryOptimization =
+        !await widget.bgService.isBatteryOptimizationEnabled();
     accessibility = await widget.bgService.isAccessibilityPermissionGranted();
     isRunning = await widget.bgService.isServiceRunning();
 
@@ -68,8 +72,20 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
     });
   }
 
-  Future<void> grantNotification() async {
+  Future<void> openNotificationSetting() async {
     await widget.bgService.requestNotificationPermission();
+  }
+
+  Future<void> openOverlaySetting() async {
+    await widget.bgService.requestOverlayPermission();
+  }
+
+  Future<void> openBatteryOptimizationSetting() async {
+    await widget.bgService.requestUnrestrictedBatteryAccess();
+  }
+
+  Future<void> openAccessibilitySetting() async {
+    await widget.bgService.openAccessibilityService();
   }
 
   @override
@@ -78,40 +94,55 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
       child: CircularProgressIndicator(),
     );
 
-    final grantedIcon = CircleAvatar(
-      backgroundColor: context.colors.outlineVariant,
-      child: Icon(Icons.check_circle, color: Colors.green),
-    );
+    final checked = Icon(Icons.check).msp;
+    final unchecked = Icon(Icons.close).msp;
 
     if (!loading) {
       child = ListView(
         children: [
-          ListTile(
-            leading: Icon(Icons.circle_notifications),
-            title: Text("Notification"),
-            subtitle: Text(
-              "Required to display acknowledgement for the running service.",
-            ),
-            trailing: notification
-                ? grantedIcon
-                : ElevatedButton(
-                    onPressed: grantNotification,
-                    child: Text("Grant"),
-                  ),
+          TipTile(
+            title: "Clipboard Monitoring",
+            tip:
+                "Enable permissions to ensure CopyCat works seamlessly with your clipboard.",
           ),
-          ListTile(
-            leading: Icon(Icons.circle_notifications),
-            title: Text("Overlay"),
+          height5,
+          SettingHeader(name: "Essential Permissions"),
+          SwitchListTile(
+            title: Text("Notification Access"),
             subtitle: Text(
-              "Required to detect if something is copied",
+              "Allows CopyCat to show an active notification for the running service.",
             ),
-            trailing: notification
-                ? grantedIcon
-                : ElevatedButton(
-                    onPressed: grantNotification,
-                    child: Text("Grant"),
-                  ),
-          )
+            value: notification,
+            thumbIcon: notification ? checked : unchecked,
+            onChanged: (_) => openNotificationSetting(),
+          ),
+          SwitchListTile(
+            title: Text("Overlay Permission"),
+            subtitle: Text(
+              "Required to detect if something is copied.",
+            ),
+            value: overlay,
+            thumbIcon: overlay ? checked : unchecked,
+            onChanged: (_) => openOverlaySetting(),
+          ),
+          SwitchListTile(
+            title: Text("Unrestricted Battery Optimization"),
+            subtitle: Text(
+              "To prevent system from closing the CopyCat service",
+            ),
+            thumbIcon: batteryOptimization ? checked : unchecked,
+            value: batteryOptimization,
+            onChanged: (_) => openBatteryOptimizationSetting(),
+          ),
+          SwitchListTile(
+            title: Text("CopyCat Accessibility Service"),
+            subtitle: Text(
+              "Start the CopyCat background service",
+            ),
+            thumbIcon: accessibility ? checked : unchecked,
+            value: accessibility,
+            onChanged: (_) => openAccessibilitySetting(),
+          ),
         ],
       );
     }
