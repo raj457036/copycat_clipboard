@@ -1,5 +1,5 @@
 name: android_background_clipboard
-description: "A new Flutter plugin project."
+description: "A CopyCat clipboard listener for android"
 version: 0.0.1
 homepage: none
 
