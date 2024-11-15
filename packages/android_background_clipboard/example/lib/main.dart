@@ -36,7 +36,6 @@ class _MyAppState extends State<MyApp> {
   Future<void> setup() async {
     SharedPreferences.setPrefix("");
     pref = await SharedPreferences.getInstance();
-
     runChecks();
   }
 
@@ -46,7 +45,6 @@ class _MyAppState extends State<MyApp> {
     });
     await pref.reload();
     final keys = pref.getKeys();
-    print("KEYS: $keys");
     for (var key in keys) {
       final value = pref.get(key);
       items.add((key, value.toString()));

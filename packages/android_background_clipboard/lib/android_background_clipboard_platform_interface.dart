@@ -24,6 +24,12 @@ abstract class AndroidBackgroundClipboardPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  Future<void> initStorage();
+
+  Future<T?> readShared<T>(String key, {bool secure = false});
+
+  Future<void> writeShared<T>(String key, T value, {bool secure = false});
+
   Future<bool> isAccessibilityPermissionGranted();
 
   Future<void> openAccessibilityService();

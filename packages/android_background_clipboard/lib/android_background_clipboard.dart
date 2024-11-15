@@ -1,6 +1,20 @@
 import 'android_background_clipboard_platform_interface.dart';
 
 class AndroidBackgroundClipboard {
+  Future<void> initStorage() {
+    return AndroidBackgroundClipboardPlatform.instance.initStorage();
+  }
+
+  Future<T?> readShared<T>(String key, {bool secure = false}) {
+    return AndroidBackgroundClipboardPlatform.instance
+        .readShared<T>(key, secure: secure);
+  }
+
+  Future<void> writeShared<T>(String key, T value, {bool secure = false}) {
+    return AndroidBackgroundClipboardPlatform.instance
+        .writeShared(key, value, secure: secure);
+  }
+
   Future<bool> isAccessibilityPermissionGranted() {
     return AndroidBackgroundClipboardPlatform.instance
         .isAccessibilityPermissionGranted();

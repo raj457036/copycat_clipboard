@@ -2,7 +2,7 @@ package com.entilitystudio.android_background_clipboard
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -19,15 +19,63 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var applicationContext: Context
+  private lateinit var storage: CopyCatSharedStorage
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "android_background_clipboard")
     channel.setMethodCallHandler(this)
     applicationContext = flutterPluginBinding.applicationContext
+    storage = CopyCatSharedStorage.getInstance(applicationContext)
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
+      "initStorage" -> {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+          storage.keystore.generateKey()
+        }
+      }
+      "readShared" -> {
+        val key = call.argument<String>("key")
+        val type = call.argument<String>("type")
+        val secure = call.argument<Boolean?>("secure") ?: false
+        if (key == null) {
+          result.success(null)
+          return
+        }
+        if (secure) {
+          val value = storage.readSecure(key)
+          result.success(value)
+        } else {
+          val value = storage.read(key, type ?: "string")
+          result.success(value)
+        }
+        result.success(true)
+      }
+      "writeShared" -> {
+          val key = call.argument<String>("key")
+          val value = call.argument<Any>("value")
+          val secure = call.argument<Boolean?>("secure") ?: false
+          if (key == null || value == null) {
+            result.success(false)
+            return
+          }
+          if (secure) {
+            if (value !is String) {
+              result.error(
+                "invalid-value",
+                "Secure value must be a String.",
+                null
+              )
+              return
+            }
+            storage.writeSecure(key, value)
+          } else {
+            storage.write(key, value)
+          }
+          result.success(true)
+      }
+
       "isAccessibilityPermissionGranted" -> {
         val granted = Utils.isAccessibilityServiceEnabled(
           applicationContext,

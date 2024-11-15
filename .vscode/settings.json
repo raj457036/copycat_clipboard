@@ -5,5 +5,10 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "deno.enable": true
+  "deno.enable": true,
+  "cSpell.words": [
+    "cers",
+    "datetime",
+    "Ndrop"
+  ]
 }

@@ -263,7 +263,7 @@ class CopyCatClipboardService: Service() {
         super.onCreate()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        copycatStorage = CopyCatSharedStorage(this)
+        copycatStorage = CopyCatSharedStorage.getInstance(this)
         copycatStorage.start()
         createNotificationChannel()
         prepareNotification()

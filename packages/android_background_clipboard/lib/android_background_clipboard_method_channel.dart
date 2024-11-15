@@ -68,4 +68,36 @@ class MethodChannelAndroidBackgroundClipboard
   Future<void> requestUnrestrictedBatteryAccess() async {
     await methodChannel.invokeMethod<bool>('requestUnrestrictedBatteryAccess');
   }
+
+  @override
+  Future<void> initStorage() async {
+    await methodChannel.invokeMethod<void>('initStorage');
+  }
+
+  @override
+  Future<T?> readShared<T>(
+    String key, {
+    bool secure = false,
+  }) async {
+    final result = await methodChannel.invokeMethod<T?>('readShared', {
+      "key": key,
+      "type": T.toString().toLowerCase(),
+      "secure": secure,
+    });
+    return result;
+  }
+
+  @override
+  Future<void> writeShared<T>(
+    String key,
+    T value, {
+    bool secure = false,
+  }) async {
+    assert(secure && value is String, "Secure value must be a String.");
+    await methodChannel.invokeMethod<T?>('writeShared', {
+      "key": key,
+      "value": value,
+      "secure": secure,
+    });
+  }
 }
