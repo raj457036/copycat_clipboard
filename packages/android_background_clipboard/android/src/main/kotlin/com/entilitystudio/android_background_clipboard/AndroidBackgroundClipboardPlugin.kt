@@ -75,7 +75,12 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
           }
           result.success(true)
       }
-
+      "deleteShared" -> {
+        val keys = call.argument<List<String>>("keys")
+        if (keys != null)
+          storage.delete(keys)
+        result.success(null)
+      }
       "isAccessibilityPermissionGranted" -> {
         val granted = Utils.isAccessibilityServiceEnabled(
           applicationContext,

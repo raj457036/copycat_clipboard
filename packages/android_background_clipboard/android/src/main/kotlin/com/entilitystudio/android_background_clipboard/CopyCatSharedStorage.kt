@@ -124,6 +124,15 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
 
     }
 
+    fun delete(keys: Iterable<String>) {
+        val editor = sp.edit()
+        for (key in keys) {
+            editor.remove(key)
+        }
+        editor.apply()
+
+    }
+
     fun writeTextClip(text: String, type: ClipType, desc: String? = null) {
         val nextId = getNextId()
         endId += 1  // Update endId for next usage
