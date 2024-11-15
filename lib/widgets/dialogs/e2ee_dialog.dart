@@ -118,20 +118,19 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
   Future<void> generateEnc2Key() async {
     final enc2 = EncryptionSecret.generate();
     final keyId = const Uuid().v4();
-    final encryptor = EncryptionManager(enc2);
+    final encryption = EncryptionManager(enc2);
+    final authCubit = context.read<AuthCubit>();
 
     final enc1Decrypt = EncryptionSecret.generate();
-    final enc1 = encryptor.encrypt(enc1Decrypt.serialized);
+    final enc1 = encryption.encrypt(enc1Decrypt.serialized);
 
     setState(() => loading = true);
 
-    await context.read<AuthCubit>().setupEncryption(keyId, enc1);
-
+    await appConfigCubit.setE2EEKey(enc2.serialized);
+    await authCubit.setupEncryption(keyId, enc1);
     setState(() {
       loading = false;
     });
-
-    appConfigCubit.setE2EEKey(enc2.serialized);
   }
 
   @override

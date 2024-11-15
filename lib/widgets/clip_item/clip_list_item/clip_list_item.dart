@@ -117,7 +117,7 @@ class _ClipListItemState extends State<ClipListItem> {
               width: 2.5,
               strokeAlign: BorderSide.strokeAlignOutside,
             ),
-            borderRadius: radius8,
+            borderRadius: radius16,
           )
         : RoundedRectangleBorder(
             side: BorderSide(
@@ -125,7 +125,7 @@ class _ClipListItemState extends State<ClipListItem> {
               width: 1,
               strokeAlign: BorderSide.strokeAlignOutside,
             ),
-            borderRadius: radius8,
+            borderRadius: radius16,
           );
 
     final child = Padding(
@@ -135,7 +135,7 @@ class _ClipListItemState extends State<ClipListItem> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 60, maxHeight: 220),
           child: InkWell(
-            borderRadius: radius8,
+            borderRadius: radius16,
             autofocus: widget.autofocus,
             onTap: !widget.selectionActive
                 ? () => performPrimaryAction(context)

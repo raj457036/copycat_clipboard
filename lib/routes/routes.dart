@@ -14,6 +14,7 @@ import "package:clipboard/pages/not_found_page.dart";
 import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/reset_password/page.dart";
 import "package:clipboard/pages/settings/page.dart";
+import "package:clipboard/pages/settings/pages/android_bg_clipboard/android_bg_clipboard_settings.dart";
 import "package:clipboard/pages/settings/pages/custom_exclusion_rule/custom_exclusion_rule.dart";
 import "package:clipboard/pages/settings/pages/exclusion_rules.dart";
 import "package:clipboard/pages/splash_page.dart";
@@ -230,20 +231,29 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               ),
               routes: [
                 GoRoute(
-                    name: RouteConstants.exclusionRules,
-                    path: "exclusion-rules",
-                    builder: (context, state) => ExclusionRulesPage(
-                          key: state.pageKey,
-                        ),
-                    routes: [
-                      GoRoute(
-                        name: RouteConstants.customExclusionRules,
-                        path: "custom",
-                        builder: (context, state) => CustomExclusionRulePage(
-                          key: state.pageKey,
-                        ),
+                  name: RouteConstants.androidBgClipboardSettings,
+                  path: "android-bg-clipboard",
+                  builder: (context, state) => AndroidBgClipboardSettings(
+                    key: state.pageKey,
+                    bgService: sl(),
+                  ),
+                ),
+                GoRoute(
+                  name: RouteConstants.exclusionRules,
+                  path: "exclusion-rules",
+                  builder: (context, state) => ExclusionRulesPage(
+                    key: state.pageKey,
+                  ),
+                  routes: [
+                    GoRoute(
+                      name: RouteConstants.customExclusionRules,
+                      path: "custom",
+                      builder: (context, state) => CustomExclusionRulePage(
+                        key: state.pageKey,
                       ),
-                    ]),
+                    ),
+                  ],
+                ),
               ],
             ),
           ],

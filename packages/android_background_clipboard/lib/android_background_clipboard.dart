@@ -1,6 +1,8 @@
 import 'android_background_clipboard_platform_interface.dart';
 
 class AndroidBackgroundClipboard {
+  const AndroidBackgroundClipboard();
+
   Future<void> initStorage() {
     return AndroidBackgroundClipboardPlatform.instance.initStorage();
   }
