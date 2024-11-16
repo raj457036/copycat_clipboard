@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '892296995692',
     projectId: 'clipboard-419514',
     authDomain: 'clipboard-419514.firebaseapp.com',
-    storageBucket: 'clipboard-419514.appspot.com',
+    storageBucket: 'clipboard-419514.firebasestorage.app',
     measurementId: 'G-8LF9RP87DF',
   );
 
@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
     appId: '1:892296995692:android:64012302abe55897490949',
     messagingSenderId: '892296995692',
     projectId: 'clipboard-419514',
-    storageBucket: 'clipboard-419514.appspot.com',
+    storageBucket: 'clipboard-419514.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:892296995692:ios:4bf415b9b852d3af490949',
     messagingSenderId: '892296995692',
     projectId: 'clipboard-419514',
-    storageBucket: 'clipboard-419514.appspot.com',
+    storageBucket: 'clipboard-419514.firebasestorage.app',
     iosBundleId: 'com.entilitystudio.CopyCat',
   );
 
@@ -67,7 +67,7 @@ class DefaultFirebaseOptions {
     appId: '1:892296995692:ios:4bf415b9b852d3af490949',
     messagingSenderId: '892296995692',
     projectId: 'clipboard-419514',
-    storageBucket: 'clipboard-419514.appspot.com',
+    storageBucket: 'clipboard-419514.firebasestorage.app',
     iosBundleId: 'com.entilitystudio.CopyCat',
   );
 
@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '892296995692',
     projectId: 'clipboard-419514',
     authDomain: 'clipboard-419514.firebaseapp.com',
-    storageBucket: 'clipboard-419514.appspot.com',
+    storageBucket: 'clipboard-419514.firebasestorage.app',
     measurementId: 'G-TBGBJVH2GS',
   );
 

@@ -13,7 +13,7 @@
 	<key>PROJECT_ID</key>
 	<string>clipboard-419514</string>
 	<key>STORAGE_BUCKET</key>
-	<string>clipboard-419514.appspot.com</string>
+	<string>clipboard-419514.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
