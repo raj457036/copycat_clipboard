@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert' show jsonEncode, jsonDecode, utf8;
 
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/export_e2ee.dart';
@@ -39,6 +40,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
   bool invalidImportedKey = false;
   String? secret;
   bool rebuilding = false;
+  Timer? canContinueTimer;
+  int allowedIn = 0;
 
   late AppConfigCubit appConfigCubit;
 
@@ -46,6 +49,26 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
   void initState() {
     super.initState();
     appConfigCubit = context.read<AppConfigCubit>();
+    allowedIn = 9;
+    startTimer();
+  }
+
+  void updateCanContinueTimer(Timer? timer) {
+    setState(() {
+      allowedIn -= 1;
+    });
+    if (allowedIn <= 0) {
+      timer?.cancel();
+      canContinueTimer = null;
+    }
+  }
+
+  void startTimer() {
+    setState(() {
+      allowedIn = 5;
+    });
+    canContinueTimer =
+        Timer.periodic(const Duration(seconds: 1), updateCanContinueTimer);
   }
 
   Future<void> importEnc2Key(String keyId) async {
@@ -185,6 +208,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
                 return GenerateE2eeDialog(
                   loading: loading,
                   generateEnc2Key: generateEnc2Key,
+                  allowedIn: allowedIn,
                 );
               }
 

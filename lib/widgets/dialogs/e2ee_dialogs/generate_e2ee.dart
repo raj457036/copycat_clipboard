@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class GenerateE2eeDialog extends StatelessWidget {
   final bool loading;
   final VoidCallback generateEnc2Key;
+  final int allowedIn;
 
   const GenerateE2eeDialog({
     super.key,
     required this.loading,
     required this.generateEnc2Key,
+    this.allowedIn = 0,
   });
 
   @override
@@ -62,11 +64,13 @@ class GenerateE2eeDialog extends StatelessWidget {
             ),
             height10,
             ElevatedButton.icon(
-              onPressed: loading ? null : generateEnc2Key,
+              onPressed: loading || allowedIn > 0 ? null : generateEnc2Key,
               icon: const Icon(Icons.key),
               label: loading
                   ? Text(context.locale.generating)
-                  : Text(context.locale.generateKey),
+                  : allowedIn > 0
+                      ? Text("${context.locale.generateKey} ($allowedIn s )")
+                      : Text(context.locale.generateKey),
             ),
           ],
         ),
