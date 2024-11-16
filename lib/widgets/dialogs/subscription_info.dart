@@ -12,7 +12,6 @@ import 'package:copycat_pro/widgets/subscription/paywall/paywall.dart';
 import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universal_io/io.dart';
 
 class FeatureTabs extends StatelessWidget {
   const FeatureTabs({super.key});
@@ -257,23 +256,23 @@ class SubscriptionInfoDialog extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (Platform.isAndroid ||
-                          Platform.isWindows ||
-                          Platform.isLinux) ...[
-                        ListTile(
-                          title: Text(
-                            context.locale.beta,
-                            style: const TextStyle(
-                              color: Colors.deepOrange,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Text(
-                            context.locale.featureListDetail,
-                          ),
-                        ),
-                        const Divider(),
-                      ],
+                      // if (Platform.isAndroid ||
+                      //     Platform.isWindows ||
+                      //     Platform.isLinux) ...[
+                      //   ListTile(
+                      //     title: Text(
+                      //       context.locale.beta,
+                      //       style: const TextStyle(
+                      //         color: Colors.deepOrange,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //     subtitle: Text(
+                      //       context.locale.featureListDetail,
+                      //     ),
+                      //   ),
+                      //   const Divider(),
+                      // ],
                       ListTile(
                         title: Text(
                           expired

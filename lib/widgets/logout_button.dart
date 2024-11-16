@@ -46,7 +46,8 @@ class LogoutButton extends StatelessWidget {
         context.read<MonetizationCubit>().logout(),
         context.read<ClipCollectionCubit>().reset(),
         context.read<SyncManagerCubit>().reset(),
-        context.read<WindowActionCubit>().setWindowdView(),
+        if (isDesktopPlatform)
+          context.read<WindowActionCubit>().setWindowdView(),
         context.read<AppConfigCubit>().reset(),
         clearPersistedRootDir(),
         db.writeTxn(() => db.clear()),

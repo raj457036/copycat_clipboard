@@ -21,6 +21,7 @@ import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_
 import 'package:copycat_base/bloc/sync_manager_cubit/sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
+import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
@@ -46,10 +47,15 @@ import 'package:window_manager/window_manager.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeServices();
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await initializeServices();
 
-  runApp(const MainApp());
+    runApp(const MainApp());
+  }, (error, stack) async {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    debugPrint('Uncaught Error: $error');
+  });
 }
 
 Future<void> initializeServices() async {
@@ -96,27 +102,36 @@ Future<void> initializeDesktopServices() async {
     titleBarStyle: TitleBarStyle.hidden,
   );
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    // if (Platform.isMacOS) {
-    //   await windowManager.setVisibleOnAllWorkspaces(
-    //     true,
-    //     visibleOnFullScreen: true,
-    //   );
-    // }
-    windowManager.hide();
+    await windowManager.hide();
   });
 }
 
 Future<void> initializeFirebase() async {
-  if (isAnalyticsSupported) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  try {
+    if (isAnalyticsSupported) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
+      FlutterError.onError = (errorDetail) {
+        try {
+          FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetail);
+        } catch (e) {
+          logger.e(e);
+        }
+      };
+      PlatformDispatcher.instance.onError = (error, stack) {
+        try {
+          FirebaseCrashlytics.instance
+              .recordError(error, stack, printDetails: true, fatal: false);
+        } catch (e) {
+          logger.e(e);
+        }
+        return true;
+      };
+    }
+  } catch (e) {
+    logger.e(e);
   }
 }
 
