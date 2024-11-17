@@ -40,7 +40,6 @@ echo "Processing main repository..."
 commit_changes
 
 # Ask if the i wants to push these changes
-# Ask if the user wants to push changes
 read -p "Do you want to push all changes? (y/n): " PUSH_CHOICE
 
 if [[ $PUSH_CHOICE == "y" || $PUSH_CHOICE == "Y" ]]; then
