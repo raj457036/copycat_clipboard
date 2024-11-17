@@ -35,10 +35,6 @@ commit_changes
 
 echo "All changes have been committed."
 
-# Commit changes in the main repository
-echo "Processing main repository..."
-commit_changes
-
 # Ask if the i want to push these changes
 read -p "Do you want to push all changes? (y/n): " PUSH_CHOICE
 
