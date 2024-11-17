@@ -10,5 +10,8 @@
     "cers",
     "datetime",
     "Ndrop"
+  ],
+  "cSpell.enableFiletypes": [
+    "!dart"
   ]
 }

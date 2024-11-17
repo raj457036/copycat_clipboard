@@ -2,21 +2,9 @@ import 'package:clipboard/pages/home/widgets/appbar.dart';
 import 'package:clipboard/pages/home/widgets/home_body.dart';
 import 'package:clipboard/widgets/layout/custom_scaffold.dart';
 import 'package:clipboard/widgets/scaffold_body.dart';
-import 'package:copycat_base/constants/key.dart';
-import 'package:copycat_base/constants/strings/strings.dart';
-import 'package:copycat_base/utils/utility.dart';
 import 'package:copycat_pro/widgets/drag_drop/drop_region.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
-import 'package:upgrader/upgrader.dart';
-
-final upgrader = Upgrader(
-  storeController: UpgraderStoreController(
-    onMacOS: () => UpgraderAppcastStore(appcastURL: macAppcastUrl),
-    onWindows: () => UpgraderAppcastStore(appcastURL: windowsAppcastUrl),
-    onLinux: () => UpgraderAppcastStore(appcastURL: linuxAppcastUrl),
-  ),
-);
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -41,15 +29,6 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    return UpgradeAlert(
-      navigatorKey: rootNavKey,
-      upgrader: upgrader,
-      showIgnore: false,
-      shouldPopScope: () => true,
-      dialogStyle: isApplePlatform
-          ? UpgradeDialogStyle.cupertino
-          : UpgradeDialogStyle.material,
-      child: scaffold,
-    );
+    return scaffold;
   }
 }

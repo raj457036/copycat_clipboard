@@ -1,7 +1,7 @@
 name: clipboard
 description: "CopyCat Clipboard: One Clipboard, Limitless Productivity"
 publish_to: 'none'
-version: 2.0.0+59
+version: 1.0.0+61
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -60,10 +60,6 @@ dependencies:
   encrypt: ^5.0.3
   upgrader: ^10.3.0
   retry: ^3.1.2
-  firebase_analytics: ^11.1.0
-  firebase_core: ^3.1.1
-  firebase_core_desktop: ^1.0.2
-  firebase_crashlytics: ^4.0.2
   launch_at_startup: ^0.3.1
   copycat_pro:
     path: packages/copycat_pro
@@ -77,6 +73,7 @@ dependencies:
       url: https://github.com/raj457036/flutter_svg_provider.git
   android_background_clipboard:
     path: packages/android_background_clipboard
+  sentry_flutter: ^8.10.1
   
   
 dev_dependencies:
@@ -89,12 +86,12 @@ dev_dependencies:
   freezed: 2.5.7
   json_serializable: ^6.8.0
   flutter_launcher_icons: "^0.13.1"
+  sentry_dart_plugin: ^2.0.0
 
 dependency_overrides:
   device_info_plus: ^9.0.2
   intl: ^0.19.0
   analyzer: ^6.4.1
-  firebase_core_platform_interface: ^5.1.0
   screen_retriever: ^0.2.0
 
 flutter:
@@ -115,3 +112,6 @@ flutter_launcher_icons:
   image_path: "assets/images/icons/icon.png"
   min_sdk_android: 24
   remove_alpha_ios: true
+
+sentry:
+  upload_debug_symbols: true

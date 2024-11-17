@@ -8,7 +8,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   clipboard_watcher
   connectivity_plus
   emoji_picker_flutter
-  firebase_core
   flutter_platform_alert
   focus_window
   hotkey_manager_windows
@@ -16,6 +15,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   isar_flutter_libs
   platform_device_id_windows
   screen_retriever_windows
+  sentry_flutter
   share_plus
   super_native_extensions
   tray_manager

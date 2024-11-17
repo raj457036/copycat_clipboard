@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/routes/routes.dart';
-import 'package:clipboard/utils/analytics.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
 import 'package:clipboard/widgets/auth_listener.dart';
@@ -24,16 +22,14 @@ import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cu
 import 'package:copycat_base/bloc/realtime_collection_sync_cubit/realtime_collection_sync_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/bloc_config.dart';
-import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
+import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:copycat_base/utils/windows/update_registry.dart';
 import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,18 +39,31 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:universal_io/io.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'firebase_options.dart';
-
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeServices();
-
-  runApp(const MainApp());
+  if (sentryDSN != "") {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = sentryDSN;
+        options.tracesSampleRate = kDebugMode ? 0.005 : 0.05;
+        options.profilesSampleRate = kDebugMode ? 0.01 : 0.5;
+      },
+      appRunner: () async {
+        WidgetsFlutterBinding.ensureInitialized();
+        await initializeServices();
+        runApp(const MainApp());
+      },
+    );
+  } else {
+    WidgetsFlutterBinding.ensureInitialized();
+    await initializeServices();
+    runApp(const MainApp());
+  }
 }
 
 Future<void> initializeServices() async {
@@ -73,7 +82,6 @@ Future<void> initializeServices() async {
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
 
-  await initializeFirebase();
   await configureDependencies();
   timeago.setLocaleMessages('fr', timeago.FrMessages());
   timeago.setLocaleMessages('de', timeago.DeMessages());
@@ -116,29 +124,7 @@ Future<void> initializeDesktopServices() async {
   }));
 }
 
-Future<void> initializeFirebase() async {
-  if (isAnalyticsSupported) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    FlutterError.onError = (errorDetail) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetail);
-      logger.e(
-        errorDetail.summary,
-        error: errorDetail.exception,
-        stackTrace: errorDetail.stack,
-        time: now(),
-      );
-    };
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-  }
-}
-
-final router_ = router(analyticNavigationObservers);
+final router_ = router();
 
 class AppContent extends StatelessWidget {
   const AppContent({super.key});

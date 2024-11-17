@@ -28,9 +28,20 @@ import "package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_
 import "package:copycat_base/bloc/selected_clips_cubit/selected_clips_cubit.dart";
 import "package:copycat_base/constants/key.dart";
 import "package:copycat_base/constants/strings/route_constants.dart";
+import "package:copycat_base/constants/strings/strings.dart";
+import "package:copycat_base/utils/utility.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
+import 'package:upgrader/upgrader.dart';
+
+final upgrader = Upgrader(
+  storeController: UpgraderStoreController(
+    onMacOS: () => UpgraderAppcastStore(appcastURL: macAppcastUrl),
+    onWindows: () => UpgraderAppcastStore(appcastURL: windowsAppcastUrl),
+    onLinux: () => UpgraderAppcastStore(appcastURL: linuxAppcastUrl),
+  ),
+);
 
 const rootLocation = "/";
 GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
@@ -132,11 +143,20 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
               ),
             );
 
-            return FocusScope(
-              autofocus: true,
-              child: KeyboardShortcutProvider(
-                activePageIndex: activeIndex,
-                child: navPage,
+            return UpgradeAlert(
+              navigatorKey: rootNavKey,
+              upgrader: upgrader,
+              showIgnore: false,
+              shouldPopScope: () => true,
+              dialogStyle: isApplePlatform
+                  ? UpgradeDialogStyle.cupertino
+                  : UpgradeDialogStyle.material,
+              child: FocusScope(
+                autofocus: true,
+                child: KeyboardShortcutProvider(
+                  activePageIndex: activeIndex,
+                  child: navPage,
+                ),
               ),
             );
           },

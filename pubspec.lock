@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "72.0.0"
-  _flutterfire_internals:
-    dependency: transitive
-    description:
-      name: _flutterfire_internals
-      sha256: "9371d13b8ee442e3bfc08a24e3a1b3742c839abbfaf5eef11b79c4b862c89bf7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.41"
   _macros:
     dependency: transitive
     description: dart
@@ -45,6 +37,14 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  ansicolor:
+    dependency: transitive
+    description:
+      name: ansicolor
+      sha256: "50e982d500bc863e1d703448afdbf9e5a72eb48840a4f766fa361ffd6877055f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   app_links:
     dependency: "direct main"
     description:
@@ -499,86 +499,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.0.7"
-  firebase_analytics:
-    dependency: "direct main"
-    description:
-      name: firebase_analytics
-      sha256: "7e032ade38dec2a92f543ba02c5f72f54ffaa095c60d2132b867eab56de3bc73"
-      url: "https://pub.dev"
-    source: hosted
-    version: "11.3.0"
-  firebase_analytics_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_analytics_platform_interface
-      sha256: b62a2444767d95067a7e36b1d6e335e0b877968574bbbfb656168c46f2e95a13
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.2"
-  firebase_analytics_web:
-    dependency: transitive
-    description:
-      name: firebase_analytics_web
-      sha256: bad44f71f96cfca6c16c9dd4f70b85f123ddca7d5dd698977449fadf298b1782
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.9+2"
-  firebase_core:
-    dependency: "direct main"
-    description:
-      name: firebase_core
-      sha256: "06537da27db981947fa535bb91ca120b4e9cb59cb87278dbdde718558cafc9ff"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.4.0"
-  firebase_core_dart:
-    dependency: transitive
-    description:
-      name: firebase_core_dart
-      sha256: ccb96c29ae686f43ad80f8f0893717361b7959a88b276c5e2c3627d12a9f1de8
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
-  firebase_core_desktop:
-    dependency: "direct main"
-    description:
-      name: firebase_core_desktop
-      sha256: "5bb8ba325739c82efe0535f758afb0613a104c50e3ac5c6ecb6de2657cebb4ed"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
-  firebase_core_platform_interface:
-    dependency: "direct overridden"
-    description:
-      name: firebase_core_platform_interface
-      sha256: e30da58198a6d4b49d5bce4e852f985c32cb10db329ebef9473db2b9f09ce810
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.3.0"
-  firebase_core_web:
-    dependency: transitive
-    description:
-      name: firebase_core_web
-      sha256: "362e52457ed2b7b180964769c1e04d1e0ea0259fdf7025fdfedd019d4ae2bd88"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.17.5"
-  firebase_crashlytics:
-    dependency: "direct main"
-    description:
-      name: firebase_crashlytics
-      sha256: "4c9872020c0d97a161362ee6af7000cfdb8666234ddc290a15252ad379bb235a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
-  firebase_crashlytics_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_crashlytics_platform_interface
-      sha256: ede8a199ff03378857d3c8cbb7fa58d37c27bb5a6b75faf8415ff6925dcaae2a
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.6.41"
   fixnum:
     dependency: transitive
     description:
@@ -743,6 +663,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  globbing:
+    dependency: transitive
+    description:
+      name: globbing
+      sha256: "4f89cfaf6fa74c9c1740a96259da06bd45411ede56744e28017cc534a12b6e2d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   go_router:
     dependency: "direct main"
     description:
@@ -943,6 +871,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.2"
+  injector:
+    dependency: transitive
+    description:
+      name: injector
+      sha256: ed389bed5b48a699d5b9561c985023d0d5cc88dd5ff2237aadcce5a5ab433e4e
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   internet_connection_checker_plus:
     dependency: "direct main"
     description:
@@ -1384,6 +1320,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  process:
+    dependency: transitive
+    description:
+      name: process
+      sha256: "107d8be718f120bbba9dcd1e95e3bd325b1b4a4f07db64154635ba03f2567a0d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.3"
+  properties:
+    dependency: transitive
+    description:
+      name: properties
+      sha256: "333f427dd4ed07bdbe8c75b9ff864a1e70b5d7a8426a2e8bdd457b65ae5ac598"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   provider:
     dependency: transitive
     description:
@@ -1496,6 +1448,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
+  sentry:
+    dependency: transitive
+    description:
+      name: sentry
+      sha256: "2440763ae96fa8fd1bcdfc224f5232e1b7a09af76a72f4e626ee313a261faf6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.10.1"
+  sentry_dart_plugin:
+    dependency: "direct dev"
+    description:
+      name: sentry_dart_plugin
+      sha256: "699990cfee67174bcdf3bc2de7af9b75045f0e523fed1317c9e077a287aaeec4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  sentry_flutter:
+    dependency: "direct main"
+    description:
+      name: sentry_flutter
+      sha256: "3b30038b3b9303540a8b2c8b1c8f0bb93a207f8e4b25691c59d969ddeb4734fd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.10.1"
   share_handler:
     dependency: "direct main"
     description:
@@ -1774,6 +1750,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.19"
+  system_info2:
+    dependency: transitive
+    description:
+      name: system_info2
+      sha256: "65206bbef475217008b5827374767550a5420ce70a04d2d7e94d1d2253f3efc9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   term_glyph:
     dependency: transitive
     description:
