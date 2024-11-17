@@ -11,7 +11,6 @@ import java.lang.Exception
 class CopyCatSharedStorage private constructor(applicationContext: Context) {
     private val logTag = "CopyCatSharedStorage"
     private val sp = applicationContext.getSharedPreferences("CopyCatSharedPreferences", MODE_PRIVATE)
-    private var sharedAccessKey: String? = null
     private var syncEnabled: Boolean = false
     private lateinit var deviceId: String
     private var endId: Int = -1
@@ -31,11 +30,6 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
         }
         if (key == "showAckToast") {
             showAckToast = sharedPreferences.getBoolean(key, true)
-        }
-        if (key == "sharedAccessKey") {
-            readSecure(key)?.let {
-                sharedAccessKey = it
-            }
         }
         if (key == "serviceEnabled") {
             serviceEnabled = sharedPreferences.getBoolean(key, false)
@@ -102,10 +96,6 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
 
     private fun readConfig() {
         Log.d(logTag, "Reading initial setup configs")
-        readSecure("sharedAccessKey")?.let {
-            sharedAccessKey = it
-        }
-
         syncEnabled = sp.getBoolean("syncEnabled", false)
         deviceId = sp.getString("deviceId", "").toString()
         endId = sp.getInt("endId", -1)
@@ -173,17 +163,18 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
         val editor = sp.edit()
         editor.putString(nextId, text)
         // type::description::serverId
-        editor.putString("$nextId-meta", "$type::$desc::")
+        editor.putString("$nextId-meta", "$type::$desc::::")
         editor.putInt("endId", endId)
         editor.apply()
         writeTextClipToServer(text, type, "$nextId-meta")
     }
 
-    private fun updateClipId(key: String, id: Long) {
+    private fun updateClipId(key: String, id: Long, userId: String) {
         var meta = sp.getString(key, "")!!
         if (meta.isBlank()) return
-        val parts = meta.split("::", limit = 3).toMutableList()
+        val parts = meta.split("::", limit = 4).toMutableList()
         parts[2] = id.toString()
+        parts[3] = userId
         meta = parts.joinToString("::")
         sp.edit().putString(key, meta).apply()
     }
@@ -203,7 +194,7 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
         try {
             val id = syncManager.writeClipboardItem(text, type)
             if (id != (-1).toLong()) {
-                updateClipId(metaKey, id)
+                updateClipId(metaKey, id, syncManager.currentUserId!!)
             }
         } catch (e: Exception) {
             Log.e(logTag, "Error while syncing clip $e")

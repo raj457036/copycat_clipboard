@@ -1,4 +1,5 @@
 import 'package:android_background_clipboard/android_background_clipboard.dart';
+import 'package:clipboard/di/di.dart';
 import 'package:clipboard/pages/settings/widgets/setting_header.dart';
 import 'package:clipboard/widgets/pro_tip_banner.dart';
 import 'package:copycat_base/common/logging.dart';
@@ -112,6 +113,16 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
       await widget.bgService.writeShared("deviceId", widget.deviceId);
       await widget.bgService.writeShared("showAckToast", true);
       await widget.bgService.writeShared("serviceEnabled", true);
+      await widget.bgService.writeShared(
+        "projectKey",
+        sl<String>(instanceName: "supabase_project_key"),
+        secure: true,
+      );
+      await widget.bgService.writeShared(
+        "projectApiKey",
+        sl<String>(instanceName: "supabase_key"),
+        secure: true,
+      );
       await wait(1000);
       showTextSnackbar("Setup ready to be configured.",
           success: true, closePrevious: true);

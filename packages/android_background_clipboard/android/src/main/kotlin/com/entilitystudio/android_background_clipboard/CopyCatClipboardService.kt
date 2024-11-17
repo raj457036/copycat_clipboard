@@ -59,7 +59,10 @@ class CopyCatClipboardService: Service() {
     }
 
     fun performClipboardRead(appPackageName: String) {
-
+        if (!copycatStorage.serviceEnabled) {
+            Log.d(logTag,"Service not configured")
+            return
+        }
         if (copycatStorage.excludedPackages.contains(appPackageName)) {
             Log.d(logTag,"$appPackageName is excluded by exclusion rules.")
             showAck("Clip not synced due to exclusion rules")
@@ -146,7 +149,6 @@ class CopyCatClipboardService: Service() {
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun readClipboard() {
-        if (!copycatStorage.serviceEnabled) return;
         val clipData = clipboardManager.primaryClip
 
         GlobalScope.launch(Dispatchers.IO) {

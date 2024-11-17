@@ -13,9 +13,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import android.util.Log
 
 
 class CopyCatSyncManager(applicationContext: Context) {
+    private val logTag = "CopyCatSyncManager"
     private var listening = false
     private val regex = "\\d+".toRegex()
     private val contentType = "application/json"
@@ -38,17 +40,11 @@ class CopyCatSyncManager(applicationContext: Context) {
 
     private val listener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-
             if (key == tokenKey) {
                 token = sharedPreferences.getString(key, "{}")!!
                 load()
             }
         }
-
-    init {
-        token = sp.getString(tokenKey, "{}")!!
-        load()
-    }
 
     private val isExpired: Boolean
         get() {
@@ -57,11 +53,15 @@ class CopyCatSyncManager(applicationContext: Context) {
             return currentTime > expireAt!!
         }
 
+    val currentUserId: String?
+        get() = userId
+
     private val isReady: Boolean
         get() = projectKey.isNotBlank() && projectApiKey.isNotBlank() && deviceId.isNotBlank()
 
     private val url
         get() = "https://$projectKey.supabase.co"
+
     private val tokenKey
         get() = "flutter.sb-$projectKey-auth-token"
 
@@ -69,16 +69,22 @@ class CopyCatSyncManager(applicationContext: Context) {
         if (listening) return
         sp.registerOnSharedPreferenceChangeListener(listener)
         listening = true
+        Log.d(logTag, "Started")
+        Log.d(logTag, "tokenKey = $tokenKey")
+        token = sp.getString(tokenKey, "{}")!!
+        load()
     }
 
     fun stop() {
         if (!listening) return
         sp.unregisterOnSharedPreferenceChangeListener(listener)
         listening = false
+        Log.d(logTag, "Stopped")
     }
 
     private fun load() {
         if (token == "{}") {
+            Log.d(logTag, "Load failed, token = {}")
             isStopped = true
             return
         }
@@ -159,8 +165,6 @@ class CopyCatSyncManager(applicationContext: Context) {
                 payload["type"] = "text"
             }
         }
-
-
 
         val jsonPayload = (payload as Map<String, String?>?)?.let { JSONObject(it).toString() }
         val requestBody = jsonPayload?.toRequestBody(contentType.toMediaTypeOrNull()) ?: return -1

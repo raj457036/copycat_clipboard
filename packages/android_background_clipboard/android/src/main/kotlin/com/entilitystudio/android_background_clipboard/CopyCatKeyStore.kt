@@ -77,6 +77,11 @@ class CopyCatKeyStore private constructor() {
 
     // Decrypt data
     fun decryptData(encryptedData: ByteArray): String {
+
+        if (encryptedData.size <= IV_LENGTH) {
+            throw IllegalArgumentException("Invalid encrypted data format.")
+        }
+        
         // Split IV and encrypted data
         val iv = encryptedData.copyOfRange(0, IV_LENGTH)
         val encryptedBytes = encryptedData.copyOfRange(IV_LENGTH, encryptedData.size)

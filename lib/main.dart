@@ -53,8 +53,8 @@ Future<void> main() async {
       (options) {
         options.dsn = sentryDSN;
         options.environment = kDebugMode ? "Dev" : "Prod";
-        options.tracesSampleRate = kDebugMode ? 0.005 : 0.05;
-        options.profilesSampleRate = kDebugMode ? 0.01 : 0.5;
+        options.tracesSampleRate = kDebugMode ? 0 : 0.05;
+        options.profilesSampleRate = kDebugMode ? 0 : 0.5;
       },
       appRunner: () async {
         WidgetsFlutterBinding.ensureInitialized();
