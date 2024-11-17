@@ -140,12 +140,13 @@ class CopyCatClipboardService: Service() {
             return ClipAction.Duplicate
         }
         lastCopiedText = text
-        copycatStorage.writeTextClip(text, type, desc)
+        copycatStorage.writeTextClip(text, type, desc ?: "")
         return ClipAction.Success
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun readClipboard() {
+        if (!copycatStorage.serviceEnabled) return;
         val clipData = clipboardManager.primaryClip
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -239,14 +240,13 @@ class CopyCatClipboardService: Service() {
 
 
         notificationBuilder = NotificationCompat.Builder(this, nChannelId)
-            .setSmallIcon(android.R.mipmap.sym_def_app_icon)
+            .setSmallIcon(R.drawable.tray_icon)
             .setOngoing(true) // Makes the notification non-dismissible
     }
 
     private fun showNotification(): Notification {
         return notificationBuilder
-            .setContentTitle("CopyCat Service Running")
-            .setContentText("The service is currently active.")
+            .setContentTitle("CopyCat Clipboard Service")
             .build()
     }
 

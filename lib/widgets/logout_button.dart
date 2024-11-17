@@ -2,6 +2,7 @@
 
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
+import 'package:copycat_base/bloc/android_bg_clipboard_cubit/android_bg_clipboard_cubit.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
@@ -42,12 +43,14 @@ class LogoutButton extends StatelessWidget {
       );
 
       EncrypterWorker.instance.dispose();
+
       context.read<OfflinePersistanceCubit>().stopListeners();
       context.read<DriveSetupCubit>().reset();
       context.read<ClipSyncManagerCubit>().stopPolling();
       context.read<CollectionSyncManagerCubit>().stopPolling();
       context.read<RealtimeClipSyncCubit>().unsubscribe();
       context.read<RealtimeCollectionSyncCubit>().unsubscribe();
+      await context.read<AndroidBgClipboardCubit?>()?.reset();
       await Future.wait([
         context.read<MonetizationCubit>().logout(),
         context.read<ClipCollectionCubit>().reset(),

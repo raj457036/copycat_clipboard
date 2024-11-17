@@ -8,8 +8,6 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:android_background_clipboard/android_background_clipboard.dart'
-    as _i565;
 import 'package:clipboard/di/modules.dart' as _i234;
 import 'package:copycat_base/di/di.module.dart' as _i511;
 import 'package:copycat_pro/di/di.module.dart' as _i32;
@@ -37,8 +35,6 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i291.FocusWindow>(() => registerModule.focusWindow);
-    gh.lazySingleton<_i565.AndroidBackgroundClipboard>(
-        () => registerModule.bgService);
     return this;
   }
 }

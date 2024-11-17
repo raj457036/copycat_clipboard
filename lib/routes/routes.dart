@@ -256,6 +256,7 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                   builder: (context, state) => AndroidBgClipboardSettings(
                     key: state.pageKey,
                     bgService: sl(),
+                    deviceId: sl(instanceName: "device_id"),
                   ),
                 ),
                 GoRoute(

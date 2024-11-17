@@ -35,6 +35,10 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
           storage.keystore.generateKey()
         }
       }
+      "clearStorage" -> {
+        storage.clear()
+        result.success(null);
+      }
       "readShared" -> {
         val key = call.argument<String>("key")
         val type = call.argument<String>("type")
@@ -50,7 +54,6 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
           val value = storage.read(key, type ?: "string")
           result.success(value)
         }
-        result.success(true)
       }
       "writeShared" -> {
           val key = call.argument<String>("key")

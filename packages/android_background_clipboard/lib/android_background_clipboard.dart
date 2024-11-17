@@ -12,9 +12,13 @@ class AndroidBackgroundClipboard {
         .readShared<T>(key, secure: secure);
   }
 
-  Future<void> writeShared<T>(String key, T value, {bool secure = false}) {
+  Future<bool> writeShared<T>(String key, T value, {bool secure = false}) {
     return AndroidBackgroundClipboardPlatform.instance
         .writeShared(key, value, secure: secure);
+  }
+
+  Future<void> deleteShared(List<String> keys) {
+    return AndroidBackgroundClipboardPlatform.instance.deleteShared(keys);
   }
 
   Future<bool> isAccessibilityPermissionGranted() {
@@ -59,5 +63,9 @@ class AndroidBackgroundClipboard {
 
   Future<bool> isServiceRunning() async {
     return AndroidBackgroundClipboardPlatform.instance.isServiceRunning();
+  }
+
+  Future<void> clearStorage() async {
+    return AndroidBackgroundClipboardPlatform.instance.clearStorage();
   }
 }

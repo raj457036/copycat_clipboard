@@ -1,32 +1,26 @@
 package com.entilitystudio.android_background_clipboard
 
-import CopyCatKeyStore
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Build
 import android.util.Base64
 import android.util.Log
-
-
-enum class ClipType {
-    Text,
-    Url,
-    Email,
-    Phone,
-    FileUrl
-}
+import java.lang.Exception
 
 class CopyCatSharedStorage private constructor(applicationContext: Context) {
-    private var sp = applicationContext.getSharedPreferences("CopyCatSharedPreferences", MODE_PRIVATE)
+    private val logTag = "CopyCatSharedStorage"
+    private val sp = applicationContext.getSharedPreferences("CopyCatSharedPreferences", MODE_PRIVATE)
     private var sharedAccessKey: String? = null
     private var syncEnabled: Boolean = false
     private lateinit var deviceId: String
     private var endId: Int = -1
+    private var syncManager: CopyCatSyncManager = CopyCatSyncManager(applicationContext)
 
     var excludedPackages: Set<String> = emptySet()
     var strictCheck = false
     var showAckToast = true
+    var serviceEnabled: Boolean = false
 
     val keystore: CopyCatKeyStore
         get() = CopyCatKeyStore.getInstance()
@@ -43,6 +37,23 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
                 sharedAccessKey = it
             }
         }
+        if (key == "serviceEnabled") {
+            serviceEnabled = sharedPreferences.getBoolean(key, false)
+        }
+        if (key == "projectKey") {
+            readSecure(key)?.let {
+                syncManager.projectKey = it
+            }
+        }
+        if (key == "projectApiKey") {
+            readSecure(key)?.let {
+                syncManager.projectApiKey = it
+            }
+        }
+        if (key == "deviceId") {
+            deviceId = sharedPreferences.getString("deviceId", "").toString()
+            syncManager.deviceId = deviceId
+        }
     }
 
     companion object {
@@ -57,21 +68,30 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
 
     fun start() {
         readConfig()
+        syncManager.start()
         sp.registerOnSharedPreferenceChangeListener(listener)
     }
 
     fun readSecure(key: String): String? {
+        Log.d(logTag, "Reading $key from secure storage")
         val encrypted = sp.getString(key, "").toString()
         if (encrypted.isNotBlank())
         {
             val decoded = Base64.decode(encrypted, Base64.DEFAULT)
             return keystore.decryptData(decoded)
         }
+        Log.d(logTag, "$key not found in secure storage")
         return null
+    }
+
+    fun clear() {
+        Log.d(logTag, "Clearing storage")
+        sp.edit().clear().apply()
     }
 
     fun writeSecure(key: String, value: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.d(logTag, "Writing $key to secure storage")
             val encrypted = keystore.encryptData(value)
             val encoded = Base64.encodeToString(encrypted, Base64.DEFAULT)
             val editor = sp.edit()
@@ -81,6 +101,7 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
     }
 
     private fun readConfig() {
+        Log.d(logTag, "Reading initial setup configs")
         readSecure("sharedAccessKey")?.let {
             sharedAccessKey = it
         }
@@ -92,6 +113,16 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
         excludedPackages = sp.getStringSet("excludedPackages", emptySet())!!
         strictCheck = sp.getBoolean("strictCheck", false)
         showAckToast = sp.getBoolean("showAckToast", true)
+        serviceEnabled = sp.getBoolean("serviceEnabled", false)
+
+        readSecure("projectKey")?.let {
+            syncManager.projectKey = it
+        }
+        readSecure("projectApiKey")?.let {
+            syncManager.projectApiKey = it
+        }
+
+        syncManager.deviceId = deviceId
     }
 
     private fun getNextId(): String {
@@ -99,6 +130,7 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
     }
 
     fun write(key: String, value: Any) {
+        Log.d(logTag, "Writing $key = $value to storage")
         val editor = sp.edit()
         when (value) {
             is String -> {
@@ -115,6 +147,7 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
     }
 
     fun read(key: String, type: String): Any? {
+        Log.d(logTag, "Reading $key of type $type from storage")
         return when (type) {
             "string" -> sp.getString(key, "")
             "int" ->  sp.getInt(key, 0)
@@ -133,22 +166,52 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
 
     }
 
-    fun writeTextClip(text: String, type: ClipType, desc: String? = null) {
+    fun writeTextClip(text: String, type: ClipType, desc: String = "") {
+        if (!serviceEnabled) return
         val nextId = getNextId()
         endId += 1  // Update endId for next usage
         val editor = sp.edit()
         editor.putString(nextId, text)
-        editor.putString("$nextId-meta", "$type :: $desc :: ")
-        editor.putInt("endId", endId) // Persist updated endId in SharedPreferences
+        // type::description::serverId
+        editor.putString("$nextId-meta", "$type::$desc::")
+        editor.putInt("endId", endId)
         editor.apply()
-        writeTextClipToServer(text, type)
+        writeTextClipToServer(text, type, "$nextId-meta")
     }
 
-    private fun writeTextClipToServer(text: String, type: ClipType) {
-        Log.d("CopyCatSharedStorage", "Writing text clip to server")
+    private fun updateClipId(key: String, id: Long) {
+        var meta = sp.getString(key, "")!!
+        if (meta.isBlank()) return
+        val parts = meta.split("::", limit = 3).toMutableList()
+        parts[2] = id.toString()
+        meta = parts.joinToString("::")
+        sp.edit().putString(key, meta).apply()
+    }
+
+    private fun writeTextClipToServer(text: String, type: ClipType, metaKey: String) {
+        Log.d(logTag, "Writing text clip to server")
+        if (!syncEnabled || !serviceEnabled) {
+            Log.d(logTag, "Sync Disabled or Service is not enabled.")
+            return
+        }
+
+        if (syncManager.isStopped) {
+            Log.d(logTag, "Sync service stopped")
+            return
+        }
+
+        try {
+            val id = syncManager.writeClipboardItem(text, type)
+            if (id != (-1).toLong()) {
+                updateClipId(metaKey, id)
+            }
+        } catch (e: Exception) {
+            Log.e(logTag, "Error while syncing clip $e")
+        }
     }
 
     fun clean() {
+        syncManager.stop()
         sp.unregisterOnSharedPreferenceChangeListener(listener)
     }
 }

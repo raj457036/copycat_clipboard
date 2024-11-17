@@ -88,16 +88,28 @@ class MethodChannelAndroidBackgroundClipboard
   }
 
   @override
-  Future<void> writeShared<T>(
+  Future<bool> writeShared<T>(
     String key,
     T value, {
     bool secure = false,
   }) async {
-    assert(secure && value is String, "Secure value must be a String.");
-    await methodChannel.invokeMethod<T?>('writeShared', {
-      "key": key,
-      "value": value,
-      "secure": secure,
-    });
+    assert(
+        !secure || secure && value is String, "Secure value must be a String.");
+    return await methodChannel.invokeMethod<bool>('writeShared', {
+          "key": key,
+          "value": value,
+          "secure": secure,
+        }) ??
+        false;
+  }
+
+  @override
+  Future<void> deleteShared(List<String> keys) async {
+    await methodChannel.invokeMethod("deleteShared", {"keys": keys});
+  }
+
+  @override
+  Future<void> clearStorage() async {
+    await methodChannel.invokeMethod("clearStorage");
   }
 }

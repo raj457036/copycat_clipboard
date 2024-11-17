@@ -18,7 +18,8 @@ class ClipSyncStatusFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (item.lastSynced != null || item.driveFileId != null) {
+    if ((item.lastSynced != null && item.serverId != null) ||
+        item.driveFileId != null) {
       return const SizedBox.shrink();
     }
     final colors = context.colors;

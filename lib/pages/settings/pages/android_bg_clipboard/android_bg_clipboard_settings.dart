@@ -4,14 +4,20 @@ import 'package:clipboard/widgets/pro_tip_banner.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/utils/common_extension.dart';
+import 'package:copycat_base/utils/snackbar.dart';
+import 'package:copycat_base/utils/utility.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AndroidBgClipboardSettings extends StatefulWidget {
   final AndroidBackgroundClipboard bgService;
+  final String deviceId;
 
   const AndroidBgClipboardSettings({
     super.key,
     required this.bgService,
+    required this.deviceId,
   });
 
   @override
@@ -21,6 +27,8 @@ class AndroidBgClipboardSettings extends StatefulWidget {
 
 class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
     with WidgetsBindingObserver {
+  late final MonetizationCubit monetizationCubit;
+
   bool loading = true;
   // service status
   bool isRunning = false;
@@ -29,12 +37,16 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
   bool overlay = false;
   bool batteryOptimization = false;
   bool accessibility = false;
+  bool enable = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     checkStatus();
+    widget.bgService.initStorage();
+    monetizationCubit = context.read();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setupConfiguration());
   }
 
   @override
@@ -86,6 +98,27 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
 
   Future<void> openAccessibilitySetting() async {
     await widget.bgService.openAccessibilityService();
+  }
+
+  Future<void> setupConfiguration() async {
+    showTextSnackbar("Preparing setup, please wait", isLoading: true);
+    try {
+      final tkn = monetizationCubit.active?.tkn;
+      if (tkn != null) {
+        await widget.bgService
+            .writeShared("sharedAccessKey", tkn, secure: true);
+      }
+      await widget.bgService.writeShared("syncEnabled", true);
+      await widget.bgService.writeShared("deviceId", widget.deviceId);
+      await widget.bgService.writeShared("showAckToast", true);
+      await widget.bgService.writeShared("serviceEnabled", true);
+      await wait(1000);
+      showTextSnackbar("Setup ready to be configured.",
+          success: true, closePrevious: true);
+    } catch (e) {
+      logger.e(e);
+      closeSnackbar();
+    }
   }
 
   @override

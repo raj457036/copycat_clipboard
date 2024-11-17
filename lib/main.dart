@@ -10,6 +10,7 @@ import 'package:clipboard/widgets/state_initializer.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
 import 'package:clipboard/widgets/tray_manager.dart';
 import 'package:clipboard/widgets/window_focus_manager.dart';
+import 'package:copycat_base/bloc/android_bg_clipboard_cubit/android_bg_clipboard_cubit.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
@@ -28,6 +29,7 @@ import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/generated/app_localizations.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:copycat_base/utils/windows/update_registry.dart';
+import 'package:copycat_base/widgets/android_bg_clipboard_state_listener.dart';
 import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:flutter/foundation.dart';
@@ -50,6 +52,7 @@ Future<void> main() async {
     await SentryFlutter.init(
       (options) {
         options.dsn = sentryDSN;
+        options.environment = kDebugMode ? "Dev" : "Prod";
         options.tracesSampleRate = kDebugMode ? 0.005 : 0.05;
         options.profilesSampleRate = kDebugMode ? 0.01 : 0.5;
       },
@@ -228,10 +231,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = AuthListener(
+    Widget content = AuthListener(
       child: EventBridge(
-        child: WindowFocusManager.fromPlatform(
-          child: TrayManager.fromPlatform(
+        child: WindowFocusManager.forPlatform(
+          child: TrayManager.forPlatform(
             child: const SystemShortcutListener(
               child: AppLinkListener(
                 child: AppContent(),
@@ -241,6 +244,9 @@ class MainApp extends StatelessWidget {
         ),
       ),
     );
+    if (Platform.isAndroid) {
+      content = AndroidBgClipboardStateListener(child: content);
+    }
     final child = MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => sl()),
@@ -256,6 +262,13 @@ class MainApp extends StatelessWidget {
         BlocProvider<WindowActionCubit>(create: (context) => sl()),
         BlocProvider<RealtimeClipSyncCubit>(create: (context) => sl()),
         BlocProvider<RealtimeCollectionSyncCubit>(create: (context) => sl()),
+        if (Platform.isAndroid)
+          BlocProvider<AndroidBgClipboardCubit>(
+            lazy: false,
+            create: (context) {
+              return sl()..syncStates();
+            },
+          ),
       ],
       child: isMobilePlatform
           ? GestureDetector(

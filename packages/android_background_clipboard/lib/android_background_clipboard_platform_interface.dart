@@ -24,27 +24,59 @@ abstract class AndroidBackgroundClipboardPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> initStorage();
+  Future<void> initStorage() {
+    throw UnimplementedError();
+  }
 
-  Future<T?> readShared<T>(String key, {bool secure = false});
+  Future<T?> readShared<T>(String key, {bool secure = false}) {
+    throw UnimplementedError();
+  }
 
-  Future<void> writeShared<T>(String key, T value, {bool secure = false});
+  Future<bool> writeShared<T>(String key, T value, {bool secure = false}) {
+    throw UnimplementedError();
+  }
 
-  Future<bool> isAccessibilityPermissionGranted();
+  Future<void> deleteShared(List<String> keys) {
+    throw UnimplementedError();
+  }
 
-  Future<void> openAccessibilityService();
+  Future<bool> isAccessibilityPermissionGranted() async {
+    throw UnimplementedError();
+  }
 
-  Future<bool> isOverlayPermissionGranted();
+  Future<void> openAccessibilityService() async {
+    throw UnimplementedError();
+  }
 
-  Future<void> requestOverlayPermission();
+  Future<bool> isOverlayPermissionGranted() async {
+    throw UnimplementedError();
+  }
 
-  Future<bool> isBatteryOptimizationEnabled();
+  Future<void> requestOverlayPermission() async {
+    throw UnimplementedError();
+  }
 
-  Future<void> requestUnrestrictedBatteryAccess();
+  Future<bool> isBatteryOptimizationEnabled() async {
+    throw UnimplementedError();
+  }
 
-  Future<bool> isNotificationPermissionGranted();
+  Future<void> requestUnrestrictedBatteryAccess() async {
+    throw UnimplementedError();
+  }
 
-  Future<void> requestNotificationPermission();
+  Future<bool> isNotificationPermissionGranted() async {
+    throw UnimplementedError();
+  }
 
-  Future<bool> isServiceRunning();
+  Future<void> requestNotificationPermission() async {
+    throw UnimplementedError();
+  }
+
+  Future<bool> isServiceRunning() async {
+    throw UnimplementedError();
+  }
+
+  Future<void> clearStorage() async {
+    throw UnimplementedError();
+  }
 }

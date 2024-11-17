@@ -24,7 +24,7 @@ class WindowFocusManager extends StatefulWidget {
     required this.child,
   });
 
-  static Widget fromPlatform({required Widget child}) {
+  static Widget forPlatform({required Widget child}) {
     if (isMobilePlatform) {
       return child;
     }

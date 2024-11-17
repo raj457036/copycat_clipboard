@@ -18,7 +18,7 @@ class UrlClipCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final child = Text(
-      item.url!,
+      item.url ?? "https://example.com",
       overflow: TextOverflow.fade,
       style: textTheme.bodySmall,
     );

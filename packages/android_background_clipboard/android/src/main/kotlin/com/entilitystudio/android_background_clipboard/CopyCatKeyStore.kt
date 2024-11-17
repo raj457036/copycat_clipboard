@@ -1,3 +1,5 @@
+package com.entilitystudio.android_background_clipboard
+
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
