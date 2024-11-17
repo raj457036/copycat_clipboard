@@ -12,6 +12,8 @@
         android:label="CopyCat Clipboard" 
         android:name="${applicationName}" 
         android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
     >
         <service
             android:name="com.entilitystudio.android_background_clipboard.CopyCatClipboardService"
