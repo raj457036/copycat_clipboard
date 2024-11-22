@@ -96,7 +96,6 @@ class Utils {
                     if (context is Activity) {
                         ActivityCompat.requestPermissions(context, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101) // random request code
                     } else {
-                        // Handle if context is not an Activity
                         Log.e("PermissionRequest", "Context is not an instance of Activity.")
                     }
                 }
