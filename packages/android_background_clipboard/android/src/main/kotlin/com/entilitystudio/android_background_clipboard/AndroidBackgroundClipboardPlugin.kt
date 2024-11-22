@@ -1,10 +1,13 @@
 package com.entilitystudio.android_background_clipboard
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -12,13 +15,14 @@ import io.flutter.plugin.common.MethodChannel.Result
 
 
 /** AndroidBackgroundClipboardPlugin */
-class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
+class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var applicationContext: Context
+  private var applicationActivity: Activity? = null
   private lateinit var storage: CopyCatSharedStorage
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -34,10 +38,11 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
           storage.keystore.generateKey()
         }
+        result.success(null)
       }
       "clearStorage" -> {
         storage.clear()
-        result.success(null);
+        result.success(null)
       }
       "readShared" -> {
         val key = call.argument<String>("key")
@@ -92,9 +97,7 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
         result.success(granted)
       }
       "openAccessibilityService" -> {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        applicationContext.startActivity(intent)
+        Utils.requestAccessibilityPermission(applicationContext, applicationActivity)
         result.success(null)
       }
       "isOverlayPermissionGranted" -> {
@@ -102,7 +105,7 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
         result.success(granted)
       }
       "requestOverlayPermission" -> {
-        Utils.requestOverlayPermission(applicationContext)
+        Utils.requestOverlayPermission(applicationContext, applicationActivity)
         result.success(null)
       }
       "isBatteryOptimizationEnabled" -> {
@@ -110,7 +113,7 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
         result.success(enabled)
       }
       "requestUnrestrictedBatteryAccess" -> {
-        Utils.requestUnrestrictedBatteryAccess(applicationContext)
+        Utils.requestUnrestrictedBatteryAccess(applicationContext, applicationActivity)
         result.success(null)
       }
       "isNotificationPermissionGranted" -> {
@@ -118,7 +121,7 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
         result.success(granted)
       }
       "requestNotificationPermission" -> {
-        Utils.requestNotificationPermission(applicationContext)
+        Utils.requestNotificationPermission(applicationContext, applicationActivity)
         result.success(null)
       }
       "isServiceRunning" -> {
@@ -131,5 +134,21 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
+  }
+
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    applicationActivity = binding.activity
+  }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+    applicationActivity = null
+  }
+
+  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    applicationActivity = binding.activity
+  }
+
+  override fun onDetachedFromActivity() {
+    TODO("Not yet implemented")
   }
 }

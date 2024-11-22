@@ -31,6 +31,7 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
   late final MonetizationCubit monetizationCubit;
 
   bool loading = true;
+  bool writingConfig = false;
   // service status
   bool isRunning = false;
   // required permissions
@@ -44,10 +45,12 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    checkStatus();
-    widget.bgService.initStorage();
     monetizationCubit = context.read();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setupConfiguration());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await widget.bgService.initStorage();
+      await checkStatus();
+      await setupConfiguration();
+    });
   }
 
   @override
@@ -103,6 +106,9 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
 
   Future<void> setupConfiguration() async {
     showTextSnackbar("Preparing setup, please wait", isLoading: true);
+    setState(() {
+      writingConfig = true;
+    });
     try {
       final tkn = monetizationCubit.active?.tkn;
       if (tkn != null) {
@@ -130,6 +136,9 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
       logger.e(e);
       closeSnackbar();
     }
+    setState(() {
+      writingConfig = false;
+    });
   }
 
   @override
@@ -138,10 +147,10 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
       child: CircularProgressIndicator(),
     );
 
-    final checked = Icon(Icons.check).msp;
-    final unchecked = Icon(Icons.close).msp;
-
     if (!loading) {
+      final checked = Icon(Icons.check).msp;
+      final unchecked = Icon(Icons.close).msp;
+
       child = ListView(
         children: [
           TipTile(
@@ -158,7 +167,7 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
             ),
             value: notification,
             thumbIcon: notification ? checked : unchecked,
-            onChanged: (_) => openNotificationSetting(),
+            onChanged: writingConfig ? null : (_) => openNotificationSetting(),
           ),
           SwitchListTile(
             title: Text("Overlay Permission"),
@@ -167,7 +176,7 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
             ),
             value: overlay,
             thumbIcon: overlay ? checked : unchecked,
-            onChanged: (_) => openOverlaySetting(),
+            onChanged: writingConfig ? null : (_) => openOverlaySetting(),
           ),
           SwitchListTile(
             title: Text("Unrestricted Battery Optimization"),
@@ -176,7 +185,8 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
             ),
             thumbIcon: batteryOptimization ? checked : unchecked,
             value: batteryOptimization,
-            onChanged: (_) => openBatteryOptimizationSetting(),
+            onChanged:
+                writingConfig ? null : (_) => openBatteryOptimizationSetting(),
           ),
           SwitchListTile(
             title: Text("CopyCat Accessibility Service"),
@@ -185,7 +195,7 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
             ),
             thumbIcon: accessibility ? checked : unchecked,
             value: accessibility,
-            onChanged: (_) => openAccessibilitySetting(),
+            onChanged: writingConfig ? null : (_) => openAccessibilitySetting(),
           ),
         ],
       );
