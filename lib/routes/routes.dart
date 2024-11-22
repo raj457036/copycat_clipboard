@@ -52,7 +52,7 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
       errorBuilder: (context, state) => const NotFoundPage(),
       routes: [
         GoRoute(
-          name: RouteConstants.spalsh,
+          name: RouteConstants.splash,
           path: rootLocation,
           builder: (context, state) => SplashPage(
             key: state.pageKey,
@@ -66,45 +66,13 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
           ),
         ),
         GoRoute(
-          name: RouteConstants.driveConnect,
-          path: '/drive-connect/:code',
-          builder: (context, state) {
-            final code = state.pathParameters["code"]!;
-            final scopes = state.uri.queryParameters["scopes"]!.split(" ");
-            context
-                .read<DriveSetupCubit>()
-                .verifyAuthCodeAndSetup(code, scopes);
-            return DriveSetupPage(
-              key: state.pageKey,
-            );
-          },
-        ),
-        GoRoute(
-          name: RouteConstants.resetPassword,
-          path: '/reset-password',
-          builder: (context, state) {
-            return ResetPasswordPage(
-              key: state.pageKey,
-            );
-          },
-        ),
-        GoRoute(
-          name: RouteConstants.accountDetails,
-          path: '/account-details',
-          builder: (context, state) {
-            return AccountPage(
-              key: state.pageKey,
-            );
-          },
-        ),
-        GoRoute(
           name: RouteConstants.preview,
           path: "/preview/:id",
           redirect: idPresentOrRedirect,
           pageBuilder: (context, state) {
             final id = int.parse(state.pathParameters["id"]!);
             final item =
-                context.read<OfflinePersistanceCubit>().getItem(id: id);
+                context.read<OfflinePersistenceCubit>().getItem(id: id);
             return DynamicPage(
               key: state.pageKey,
               fullScreenDialog: true,
@@ -274,6 +242,39 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                       ),
                     ),
                   ],
+                ),
+                GoRoute(
+                  name: RouteConstants.driveConnect,
+                  path: 'drive-connect/:code',
+                  builder: (context, state) {
+                    final code = state.pathParameters["code"]!;
+                    final scopes =
+                        state.uri.queryParameters["scopes"]!.split(" ");
+                    context
+                        .read<DriveSetupCubit>()
+                        .verifyAuthCodeAndSetup(code, scopes);
+                    return DriveSetupPage(
+                      key: state.pageKey,
+                    );
+                  },
+                ),
+                GoRoute(
+                  name: RouteConstants.resetPassword,
+                  path: 'reset-password',
+                  builder: (context, state) {
+                    return ResetPasswordPage(
+                      key: state.pageKey,
+                    );
+                  },
+                ),
+                GoRoute(
+                  name: RouteConstants.accountDetails,
+                  path: 'account-details',
+                  builder: (context, state) {
+                    return AccountPage(
+                      key: state.pageKey,
+                    );
+                  },
                 ),
               ],
             ),

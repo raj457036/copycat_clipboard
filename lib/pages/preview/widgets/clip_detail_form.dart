@@ -26,7 +26,7 @@ class ClipDetailForm extends StatefulWidget {
 }
 
 class _ClipDetailFormState extends State<ClipDetailForm> {
-  late final OfflinePersistanceCubit cubit;
+  late final OfflinePersistenceCubit cubit;
   late final GlobalKey<FormState> formKey;
   (int?, int?)? collectionId;
 
@@ -35,7 +35,7 @@ class _ClipDetailFormState extends State<ClipDetailForm> {
   @override
   void initState() {
     super.initState();
-    cubit = context.read<OfflinePersistanceCubit>();
+    cubit = context.read<OfflinePersistenceCubit>();
     formKey = GlobalKey<FormState>();
     collectionId = (widget.item.collectionId, widget.item.serverCollectionId);
     titleController = TextEditingController(

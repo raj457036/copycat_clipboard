@@ -61,10 +61,15 @@ class Utils {
 
         fun requestUnrestrictedBatteryAccess(context: Context) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)  return
-            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
-                flags = FLAG_ACTIVITY_NEW_TASK
+            val packageName = context.packageName
+            val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                val intent = Intent()
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
+                intent.setData(Uri.parse("package:$packageName"))
+                context.startActivity(intent)
             }
-            context.startActivity(intent)
         }
 
         fun isNotificationPermissionGranted(context: Context): Boolean {

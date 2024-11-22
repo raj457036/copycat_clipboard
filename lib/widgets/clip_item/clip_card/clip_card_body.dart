@@ -115,7 +115,7 @@ class _ClipCardBodyState extends State<ClipCardBody> {
   }
 
   Future<void> decryptItem(BuildContext context) async {
-    final persitCubit = context.read<OfflinePersistanceCubit>();
+    final persitCubit = context.read<OfflinePersistenceCubit>();
     final appConfig = context.read<AppConfigCubit>();
     if (!appConfig.isE2EESetupDone) {
       showFailureSnackbar(

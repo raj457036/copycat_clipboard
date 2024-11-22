@@ -23,7 +23,7 @@ Future<void> copyToClipboard(
 }) async {
   try {
     final ctx = context.mounted ? context : rootNavKey.currentContext!;
-    final cubit = ctx.read<OfflinePersistanceCubit>();
+    final cubit = ctx.read<OfflinePersistenceCubit>();
     final result = await cubit.copyToClipboard(item, saveFile: saveFile);
     if (!ctx.mounted) return;
     if (noAck) return;
@@ -57,7 +57,7 @@ Future<void> shareClipboardItem(
 ) async {
   final ctx = context.mounted ? context : rootNavKey.currentContext!;
   ctx
-      .read<OfflinePersistanceCubit>()
+      .read<OfflinePersistenceCubit>()
       .shareClipboardItem(ctx, item)
       .catchError((_) {
     showTextSnackbar(ctx.locale.failed);
@@ -148,14 +148,14 @@ Future<void> pasteContent(BuildContext context) async {
     closePrevious: true,
   );
   final ctx = context.mounted ? context : rootNavKey.currentContext!;
-  await ctx.read<OfflinePersistanceCubit>().paste();
+  await ctx.read<OfflinePersistenceCubit>().paste();
   showTextSnackbar("Paste success", closePrevious: true);
 }
 
 Future<void> changeCollection(
     BuildContext context, List<ClipboardItem> items) async {
   final ctx = context.mounted ? context : rootNavKey.currentContext!;
-  final cubit = ctx.read<OfflinePersistanceCubit>();
+  final cubit = ctx.read<OfflinePersistenceCubit>();
 
   final selectedCollectionId =
       items.isNotEmpty ? null : items.firstOrNull?.collectionId;

@@ -255,7 +255,7 @@ class MainApp extends StatelessWidget {
         // BlocProvider<SyncManagerCubit>(create: (context) => sl()),
         BlocProvider<ClipSyncManagerCubit>(create: (context) => sl()),
         BlocProvider<CollectionSyncManagerCubit>(create: (context) => sl()),
-        BlocProvider<OfflinePersistanceCubit>(create: (context) => sl()),
+        BlocProvider<OfflinePersistenceCubit>(create: (context) => sl()),
         BlocProvider<CloudPersistanceCubit>(create: (context) => sl()),
         BlocProvider<ClipCollectionCubit>(create: (context) => sl()),
         BlocProvider<DriveSetupCubit>(create: (context) => sl()),

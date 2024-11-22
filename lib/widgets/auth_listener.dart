@@ -39,7 +39,7 @@ class AuthListener extends StatelessWidget {
               await Future.wait([
                 context.read<AppConfigCubit>().load(),
                 context.read<ClipCollectionCubit>().fetch(),
-                context.read<OfflinePersistanceCubit>().startListners(),
+                context.read<OfflinePersistenceCubit>().startListners(),
               ]);
             }
 
@@ -51,7 +51,7 @@ class AuthListener extends StatelessWidget {
                 context.read<MonetizationCubit>().login(user.userId),
                 context.read<ClipCollectionCubit>().fetch(),
                 // context.read<SyncManagerCubit>().syncChanges(),
-                context.read<OfflinePersistanceCubit>().startListners(),
+                context.read<OfflinePersistenceCubit>().startListners(),
                 context.read<DriveSetupCubit>().fetch(),
               ]);
             }

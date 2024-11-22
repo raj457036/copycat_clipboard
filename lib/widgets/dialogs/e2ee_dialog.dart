@@ -135,7 +135,7 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
+    return BlocListener<OfflinePersistenceCubit, OfflinePersistanceState>(
       listener: (context, state) {
         switch (state) {
           case OfflinePersistanceDecryptingState():

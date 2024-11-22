@@ -177,7 +177,7 @@ class EventBridge extends StatelessWidget {
                   }
 
                   EncrypterWorker.instance.setEncryption(config.autoEncrypt);
-                  final offline = context.read<OfflinePersistanceCubit>();
+                  final offline = context.read<OfflinePersistenceCubit>();
                   if (!EncrypterWorker.instance.isRunning) {
                     if (config.enc2Key == null) return;
                     final authState = context.read<AuthCubit>().state;
@@ -218,7 +218,7 @@ class EventBridge extends StatelessWidget {
         //     }
         //   },
         // ),
-        BlocListener<OfflinePersistanceCubit, OfflinePersistanceState>(
+        BlocListener<OfflinePersistenceCubit, OfflinePersistanceState>(
           listener: (context, state) async {
             final locales = rootNavKey.currentContext!.locale;
             switch (state) {
@@ -261,7 +261,7 @@ class EventBridge extends StatelessWidget {
         BlocListener<CloudPersistanceCubit, CloudPersistanceState>(
           listener: (context, state) async {
             final locales = rootNavKey.currentContext!.locale;
-            final offlineCubit = context.read<OfflinePersistanceCubit>();
+            final offlineCubit = context.read<OfflinePersistenceCubit>();
             switch (state) {
               case CloudPersistanceSaved(:final item):
                 showDebugSnackbar("Cloud Saved ${item.serverId}");

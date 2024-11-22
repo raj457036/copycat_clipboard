@@ -184,7 +184,7 @@ class _ShareListenerState extends State<ShareListener> {
 
     if (mounted) {
       await context
-          .read<OfflinePersistanceCubit>()
+          .read<OfflinePersistenceCubit>()
           .onClips(clips, manualPaste: true);
     }
   }
