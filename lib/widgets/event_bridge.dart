@@ -63,6 +63,25 @@ class EventBridge extends StatelessWidget {
     EventBus.emit(eventPayload);
   }
 
+  Future<void> setupEncryption(BuildContext context) async {
+    final offline = context.read<OfflinePersistenceCubit>();
+    final config = context.read<AppConfigCubit>().state.config;
+    if (!EncrypterWorker.instance.isRunning) {
+      if (config.enc2Key == null) return;
+      final authState = context.read<AuthCubit>().state;
+
+      if (authState is AuthenticatedAuthState) {
+        final enc1 = authState.user.enc1;
+        if (enc1 == null) return;
+        final encMngr = EncryptionManager(config.enc2Key!);
+        final enc1Decrypt = encMngr.decrypt(enc1);
+        await EncrypterWorker.instance.start(enc1Decrypt);
+      }
+    }
+
+    await offline.decryptAllClipboardItems();
+  }
+
   @override
   Widget build(BuildContext context) {
     // bool firstTime = true;
@@ -163,6 +182,12 @@ class EventBridge extends StatelessWidget {
             }
           },
         ),
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (prev, current) => current is AuthenticatedAuthState,
+          listener: (context, state) async {
+            setupEncryption(context);
+          },
+        ),
         BlocListener<AppConfigCubit, AppConfigState>(
           listenWhen: (previous, current) =>
               (previous.config.enc2 != current.config.enc2) ||
@@ -177,21 +202,7 @@ class EventBridge extends StatelessWidget {
                   }
 
                   EncrypterWorker.instance.setEncryption(config.autoEncrypt);
-                  final offline = context.read<OfflinePersistenceCubit>();
-                  if (!EncrypterWorker.instance.isRunning) {
-                    if (config.enc2Key == null) return;
-                    final authState = context.read<AuthCubit>().state;
-
-                    if (authState is AuthenticatedAuthState) {
-                      final enc1 = authState.user.enc1;
-                      if (enc1 == null) return;
-                      final encMngr = EncryptionManager(config.enc2Key!);
-                      final enc1Decrypt = encMngr.decrypt(enc1);
-                      await EncrypterWorker.instance.start(enc1Decrypt);
-                    }
-                  }
-
-                  await offline.decryptAllClipboardItems();
+                  setupEncryption(context);
                 }
               case _:
             }
