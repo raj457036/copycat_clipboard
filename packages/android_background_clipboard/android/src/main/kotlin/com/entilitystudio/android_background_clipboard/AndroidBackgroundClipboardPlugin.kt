@@ -149,6 +149,6 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler, Activi
   }
 
   override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
+    applicationActivity = null
   }
 }

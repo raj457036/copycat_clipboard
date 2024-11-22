@@ -86,7 +86,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
 
         if (event?.packageName?.startsWith("com.entilitystudio") == true) {
-            Log.d(logTag,"Ignoring CopyCat Clipboard Events")
+//            Log.d(logTag,"Ignoring CopyCat Clipboard Events")
             return
         }
 

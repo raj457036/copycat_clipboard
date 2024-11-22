@@ -113,11 +113,12 @@ class CopyCatSyncManager(applicationContext: Context) {
             .post(requestBody)
             .build()
 
-        val response = client.newCall(request).execute()
-        if (response.code == 200 && response.body != null) {
-            val token = response.body.toString()
-            writeToSp(tokenKey, token)
-            load()
+        val response = client.newCall(request).execute().use { response ->
+            if (response.code == 200 && response.body != null) {
+                val token = response.body?.string() ?: return false
+                writeToSp(tokenKey, token)
+                load()
+            }
         }
         return true
     }
@@ -128,7 +129,7 @@ class CopyCatSyncManager(applicationContext: Context) {
         return dateFormat.format(Date())
     }
 
-    fun writeClipboardItem(clip:String, type: ClipType): Long {
+    fun writeClipboardItem(clip: String, type: ClipType): Long {
         if (userId == null || !isReady) return -1
         if (isExpired) {
             doRefreshToken()
@@ -166,8 +167,8 @@ class CopyCatSyncManager(applicationContext: Context) {
             }
         }
 
-        val jsonPayload = (payload as Map<String, String?>?)?.let { JSONObject(it).toString() }
-        val requestBody = jsonPayload?.toRequestBody(contentType.toMediaTypeOrNull()) ?: return -1
+        val jsonPayload = JSONObject(payload as Map<String, String?>).toString()
+        val requestBody = jsonPayload.toRequestBody(contentType.toMediaTypeOrNull()) ?: return -1
 
         val request = Request.Builder()
             .url(url)
@@ -178,11 +179,13 @@ class CopyCatSyncManager(applicationContext: Context) {
             .post(requestBody)
             .build()
 
-        val response = client.newCall(request).execute()
-        if (response.code == 201) {
-            val location = response.header("location") ?: return -1
-            val match = regex.find(location) ?: return -1
-            return match.value.toLong()
+        // Use the 'use' block to automatically close the response after usage
+        val response = client.newCall(request).execute().use { response ->
+            if (response.code == 201) {
+                val location = response.header("location") ?: return -1
+                val match = regex.find(location) ?: return -1
+                return match.value.toLong()
+            }
         }
         return -1
     }
