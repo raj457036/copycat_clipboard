@@ -238,9 +238,6 @@ class CopyCatClipboardService: Service() {
     }
 
     private fun prepareNotification() {
-        // Intent to stop the service
-
-
         notificationBuilder = NotificationCompat.Builder(this, nChannelId)
             .setSmallIcon(R.drawable.tray_icon)
             .setOngoing(true) // Makes the notification non-dismissible

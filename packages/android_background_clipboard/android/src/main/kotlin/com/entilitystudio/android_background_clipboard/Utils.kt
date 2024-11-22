@@ -17,8 +17,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.accessibility.AccessibilityManager
 import androidx.core.app.ActivityCompat
-import java.security.Permission
-import java.security.Permissions
 
 
 class Utils {
@@ -49,7 +47,7 @@ class Utils {
         }
 
         fun requestOverlayPermission(context: Context?) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)  return;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)  return
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:" + context?.packageName)
