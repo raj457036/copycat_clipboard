@@ -1,9 +1,7 @@
 buildscript {
     ext.kotlin_version='1.9.23';
 
-    dependencies {
-        classpath 'com.google.gms:google-services:4.4.1'
-    }
+    dependencies {}
 
     repositories {
         google()
@@ -22,9 +20,17 @@ allprojects {
 
 rootProject.buildDir = '../build'
 subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.application") ||
+                project.plugins.hasPlugin("com.android.library")) {
+            project.android {
+                compileSdkVersion 34                
+            }
+        }
+    }
 }
 subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
     project.evaluationDependsOn(':app')
 }
 

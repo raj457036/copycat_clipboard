@@ -42,7 +42,6 @@ class _EmojiSelectorSheetState extends State<EmojiSelectorSheet>
           ),
           searchViewConfig: SearchViewConfig(
             backgroundColor: colorScheme.surface,
-            buttonColor: colorScheme.surface,
             buttonIconColor: colorScheme.onSurface,
           ),
           categoryViewConfig: CategoryViewConfig(
