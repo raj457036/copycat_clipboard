@@ -1,17 +1,24 @@
 package com.entilitystudio.android_background_clipboard
 
+import android.Manifest
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
+import android.util.Log
 import android.view.accessibility.AccessibilityManager
+import androidx.core.app.ActivityCompat
+import java.security.Permission
+import java.security.Permissions
 
 
 class Utils {
@@ -74,22 +81,32 @@ class Utils {
 
         fun isNotificationPermissionGranted(context: Context): Boolean {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                val notificationManager = context.getSystemService(
-                    NotificationManager::class.java
-                )
-                return notificationManager != null && notificationManager.areNotificationsEnabled()
+                val notificationManager = context.getSystemService(NotificationManager::class.java)
+                return notificationManager?.areNotificationsEnabled() == true
             }
-
+            // For older Android versions, notifications are enabled by default
             return true
         }
 
         fun requestNotificationPermission(context: Context) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O)  return
-            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                flags = FLAG_ACTIVITY_NEW_TASK
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    if (context is Activity) {
+                        ActivityCompat.requestPermissions(context, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101) // random request code
+                    } else {
+                        // Handle if context is not an Activity
+                        Log.e("PermissionRequest", "Context is not an instance of Activity.")
+                    }
+                }
+            } else {
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    flags = FLAG_ACTIVITY_NEW_TASK
+                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                }
+                context.startActivity(intent)
             }
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            context.startActivity(intent)
         }
     }
 }
