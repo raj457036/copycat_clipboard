@@ -101,7 +101,7 @@ class Utils {
             if (activity != null) {
                 activity.startActivityForResult(intent, 1001)
             } else {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             }
         }

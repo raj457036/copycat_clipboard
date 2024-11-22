@@ -82,7 +82,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        Log.d(logTag, "Event : $event")
+//        Log.d(logTag, "Event : $event")
 
 
         if (event?.packageName?.startsWith("com.entilitystudio") == true) {
