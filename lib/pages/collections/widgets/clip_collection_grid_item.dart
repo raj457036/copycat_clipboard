@@ -44,6 +44,16 @@ class ClipCollectionGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+    final colors = context.colors;
+    var selected = false;
+    final selectedShape = RoundedRectangleBorder(
+      side: BorderSide(
+        color: colors.primary,
+        width: 2.5,
+        strokeAlign: BorderSide.strokeAlignOutside,
+      ),
+      borderRadius: radius12,
+    );
     return Menu(
       items: [
         MenuItem(
@@ -58,14 +68,19 @@ class ClipCollectionGridItem extends StatelessWidget {
           onPressed: () => delete(context),
         ),
       ],
-      child: Builder(builder: (context) {
+      child: StatefulBuilder(builder: (context, setState) {
         return Card.outlined(
-          shape: const RoundedRectangleBorder(borderRadius: radius12),
+          shape: selected
+              ? selectedShape
+              : const RoundedRectangleBorder(borderRadius: radius12),
           child: InkWell(
             borderRadius: radius12,
             onSecondaryTapDown: (detail) {
               final position = detail.globalPosition;
               Menu.of(context).openPopupMenu(context, position);
+            },
+            onFocusChange: (isFocused) {
+              setState(() => selected = isFocused);
             },
             autofocus: autoFocus,
             onLongPress: () => Menu.of(context).openOptionDialog(context),
