@@ -60,11 +60,11 @@ class CopyCatClipboardService: Service() {
 
     fun performClipboardRead(appPackageName: String) {
         if (!copycatStorage.serviceEnabled) {
-            Log.d(logTag,"Service not configured")
+            Log.w(logTag,"Service not configured")
             return
         }
         if (copycatStorage.excludedPackages.contains(appPackageName)) {
-            Log.d(logTag,"$appPackageName is excluded by exclusion rules.")
+            Log.i(logTag,"$appPackageName is excluded by exclusion rules.")
             showAck("Clip not synced due to exclusion rules")
             return
         }

@@ -180,14 +180,14 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
     }
 
     private fun writeTextClipToServer(text: String, type: ClipType, metaKey: String) {
-        Log.d(logTag, "Writing text clip to server")
+        Log.i(logTag, "Writing text clip to server")
         if (!syncEnabled || !serviceEnabled) {
-            Log.d(logTag, "Sync Disabled or Service is not enabled.")
+            Log.i(logTag, "Sync Disabled or Service is not enabled.")
             return
         }
 
         if (syncManager.isStopped) {
-            Log.d(logTag, "Sync service stopped")
+            Log.w(logTag, "Sync service stopped")
             return
         }
 
@@ -195,7 +195,9 @@ class CopyCatSharedStorage private constructor(applicationContext: Context) {
             val id = syncManager.writeClipboardItem(text, type)
             if (id != (-1).toLong()) {
                 updateClipId(metaKey, id, syncManager.currentUserId!!)
+                return
             }
+            Log.w(logTag, "Syncing failed")
         } catch (e: Exception) {
             Log.e(logTag, "Error while syncing clip $e")
         }

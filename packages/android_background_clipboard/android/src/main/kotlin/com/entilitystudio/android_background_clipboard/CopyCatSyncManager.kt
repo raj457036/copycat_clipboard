@@ -14,6 +14,11 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import android.util.Log
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
+import okio.IOException
 
 
 class CopyCatSyncManager(applicationContext: Context) {
@@ -21,7 +26,9 @@ class CopyCatSyncManager(applicationContext: Context) {
     private var listening = false
     private val regex = "\\d+".toRegex()
     private val contentType = "application/json"
-    private val client = OkHttpClient()
+    private val loggingInterceptor = HttpLoggingInterceptor()
+
+    private val client = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
     private val sp = applicationContext.getSharedPreferences(
         "FlutterSharedPreferences",
         Context.MODE_PRIVATE
@@ -37,6 +44,8 @@ class CopyCatSyncManager(applicationContext: Context) {
     private var expireAt: Long? = null
     private var userId: String? = null
     var isStopped = false
+
+
 
     private val listener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
@@ -65,6 +74,8 @@ class CopyCatSyncManager(applicationContext: Context) {
     private val tokenKey
         get() = "flutter.sb-$projectKey-auth-token"
 
+
+
     fun start() {
         if (listening) return
         sp.registerOnSharedPreferenceChangeListener(listener)
@@ -73,6 +84,7 @@ class CopyCatSyncManager(applicationContext: Context) {
         Log.d(logTag, "tokenKey = $tokenKey")
         token = sp.getString(tokenKey, "{}")!!
         load()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
     }
 
     fun stop() {
@@ -113,7 +125,7 @@ class CopyCatSyncManager(applicationContext: Context) {
             .post(requestBody)
             .build()
 
-        val response = client.newCall(request).execute().use { response ->
+        client.newCall(request).execute().use { response ->
             if (response.code == 200 && response.body != null) {
                 val token = response.body?.string() ?: return false
                 writeToSp(tokenKey, token)
@@ -130,9 +142,19 @@ class CopyCatSyncManager(applicationContext: Context) {
     }
 
     fun writeClipboardItem(clip: String, type: ClipType): Long {
-        if (userId == null || !isReady) return -1
+        Log.i(logTag, "Writing to remote clipboard")
+        if (userId == null || !isReady) {
+            Log.w(logTag, "Failed to write to remote clipboard, service not ready or user not found.")
+            return -1
+        }
         if (isExpired) {
-            doRefreshToken()
+            Log.w(logTag, "Token expired, trying to refresh the token.")
+            val refreshed = doRefreshToken()
+            if (!refreshed) {
+                Log.w(logTag, "Couldn't refresh token.")
+                return -1
+            }
+            Log.i(logTag, "Successfully refreshed the token")
         }
         val url = "$url/rest/v1/clipboard_items"
         val payload = mutableMapOf<String, String>(
@@ -180,7 +202,7 @@ class CopyCatSyncManager(applicationContext: Context) {
             .build()
 
         // Use the 'use' block to automatically close the response after usage
-        val response = client.newCall(request).execute().use { response ->
+        client.newCall(request).execute().use { response ->
             if (response.code == 201) {
                 val location = response.header("location") ?: return -1
                 val match = regex.find(location) ?: return -1
