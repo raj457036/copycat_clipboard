@@ -285,8 +285,11 @@ class EventBridge extends StatelessWidget {
                   isLoading: true,
                   closePrevious: true,
                 );
-              case CloudPersistanceError(:final failure):
+              case CloudPersistanceError(:final failure, :final item):
                 showFailureSnackbar(failure);
+                if (item != null) {
+                  broadcastEvent(CrossSyncEventType.update, item);
+                }
               case CloudPersistanceCreating(:final item) ||
                     CloudPersistanceUpdating(:final item):
                 showDebugSnackbar("Creating/Updating ${item.serverId}");
