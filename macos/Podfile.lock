@@ -195,7 +195,7 @@ SPEC CHECKSUMS:
   awesome_notifications: 428f5c15a700b117418aed09e29c21c5806fcf69
   clipboard_watcher: a71da520051c24c1b969a411b3e152d4dcc93ca5
   connectivity_plus: 4c41c08fc6d7c91f63bc7aec70ffe3730b04f563
-  device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
+  device_info_plus: 1b14eed9bf95428983aed283a8d51cce3d8c4215
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
   flutter_platform_alert: b21b2b7d801e71c12ce9ffab618ff114ca9fc903
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
@@ -218,7 +218,7 @@ SPEC CHECKSUMS:
   screen_retriever_macos: 776e0fa5d42c6163d2bf772d22478df4b302b161
   Sentry: e9215d7b17f7902692b4f8700e061e4f853e3521
   sentry_flutter: 927eed60d66951d1b0f1db37fe94ff5cb7c80231
-  share_plus: 36537c04ce0c3e3f5bd297ce4318b6d5ee5fd6cf
+  share_plus: 1fa619de8392a4398bfaf176d441853922614e89
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sign_in_with_apple: a9e97e744e8edc36aefc2723111f652102a7a727
   super_native_extensions: 85efee3a7495b46b04befcfc86ed12069264ebf3
