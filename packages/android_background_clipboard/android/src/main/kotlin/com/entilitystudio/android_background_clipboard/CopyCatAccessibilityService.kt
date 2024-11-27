@@ -1,7 +1,6 @@
 package com.entilitystudio.android_background_clipboard
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -35,7 +34,14 @@ class CopyCatAccessibilityService: AccessibilityService() {
         override fun onServiceDisconnected(name: ComponentName?) {
             Log.d(logTag, "OnServiceDisconnected $name")
             isClipboardServiceConnected = false
+            restartClipboardService()
         }
+    }
+
+    // Method to restart the clipboard service if it's disconnected
+    private fun restartClipboardService() {
+        Log.d(logTag, "Attempting to restart the clipboard service")
+        startClipboardService() // Re-start the service
     }
 
     private fun onCopyEvent() {
@@ -56,39 +62,43 @@ class CopyCatAccessibilityService: AccessibilityService() {
         Toast.makeText(this, "CopyCat Service Started", Toast.LENGTH_SHORT).show()
     }
 
-    private fun stopClipboardService() {
+    private fun  stopClipboardService() {
         val stopIntent = Intent(this, CopyCatClipboardService::class.java)
         stopService(stopIntent)
     }
 
     private fun detectCopyAck() {
-        val text = "CopyCat clipboard for android"
+        Log.d(logTag, "CopyCat Service Ack starting...")
+        val text = "CopyCat"
         detectingCopyAck = true
         clipboardService.writeToClipboard(text)
     }
 
+    private fun detectCopyAckComplete() {
+        detectingCopyAck = false
+        Log.d(logTag, "CopyCat Service Ack completed")
+    }
+
     override fun onServiceConnected() {
         super.onServiceConnected()
-        val info = AccessibilityServiceInfo()
-        info.apply {
-            eventTypes = AccessibilityEvent.TYPES_ALL_MASK
-            notificationTimeout = 120
-            feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
-        }
-
-        serviceInfo = info
         Log.i(logTag, "CopyCat Accessibility Service Connected")
         startClipboardService()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-//        Log.d(logTag, "Event : $event")
+        if (Utils.isActivityOnTop) {
+            Log.d(logTag, "Ignoring events as current activity is CopyCat itself")
+            return
+        }
+
+        Log.d(logTag, "Event : $event")
 
 
         if (event?.packageName?.startsWith("com.entilitystudio") == true) {
-//            Log.d(logTag,"Ignoring CopyCat Clipboard Events")
+            Log.d(logTag,"Ignoring CopyCat Clipboard Events")
             return
         }
+
 
         when (event?.eventType) {
             AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED -> {
@@ -118,7 +128,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
 
                 if (detectingCopyAck && ackText.isNotEmpty()) {
                     notificationAckText = ackText
-                    detectingCopyAck = false
+                    detectCopyAckComplete()
                     return
                 }
 
@@ -135,7 +145,7 @@ class CopyCatAccessibilityService: AccessibilityService() {
                 val ackText = event.text.toString()
                 if (detectingCopyAck && ackText.isNotEmpty()) {
                     notificationAckText = ackText
-                    detectingCopyAck = false
+                    detectCopyAckComplete()
                     return
                 }
 

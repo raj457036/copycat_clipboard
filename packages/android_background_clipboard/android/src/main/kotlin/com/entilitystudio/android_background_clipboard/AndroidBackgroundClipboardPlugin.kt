@@ -138,17 +138,21 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler, Activi
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     applicationActivity = binding.activity
+    Utils.isActivityOnTop = true
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
     applicationActivity = null
+    Utils.isActivityOnTop = false
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     applicationActivity = binding.activity
+    Utils.isActivityOnTop = true
   }
 
   override fun onDetachedFromActivity() {
     applicationActivity = null
+    Utils.isActivityOnTop = false
   }
 }

@@ -2,23 +2,18 @@ package com.entilitystudio.android_background_clipboard
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
+import io.flutter.BuildConfig
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import android.util.Log
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
-import okio.IOException
 
 
 class CopyCatSyncManager(applicationContext: Context) {
@@ -84,7 +79,11 @@ class CopyCatSyncManager(applicationContext: Context) {
         Log.d(logTag, "tokenKey = $tokenKey")
         token = sp.getString(tokenKey, "{}")!!
         load()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        if (!BuildConfig.RELEASE) {
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        } else {
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
+        }
     }
 
     fun stop() {
@@ -157,7 +156,7 @@ class CopyCatSyncManager(applicationContext: Context) {
             Log.i(logTag, "Successfully refreshed the token")
         }
         val url = "$url/rest/v1/clipboard_items"
-        val payload = mutableMapOf<String, String>(
+        val payload = mutableMapOf(
             "userId" to userId!!,
             "modified" to currentTime(),
             "os" to "android",
@@ -190,7 +189,7 @@ class CopyCatSyncManager(applicationContext: Context) {
         }
 
         val jsonPayload = JSONObject(payload as Map<String, String?>).toString()
-        val requestBody = jsonPayload.toRequestBody(contentType.toMediaTypeOrNull()) ?: return -1
+        val requestBody = jsonPayload.toRequestBody(contentType.toMediaTypeOrNull())
 
         val request = Request.Builder()
             .url(url)

@@ -22,6 +22,8 @@ import androidx.core.app.ActivityCompat
 class Utils {
 
     companion object {
+
+        var isActivityOnTop: Boolean = false
         fun isAccessibilityServiceEnabled(
             context: Context,
             service: Class<out AccessibilityService?>

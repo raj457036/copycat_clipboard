@@ -3,6 +3,7 @@ package com.entilitystudio.android_background_clipboard
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -184,7 +185,6 @@ class CopyCatClipboardService: Service() {
 
             withContext(Dispatchers.Main) {
                 when (actionStatus) {
-                    ClipAction.Success -> showAck("CopyCat captured clipboard")
                     ClipAction.Duplicate -> showAck("Detected duplicate item")
                     ClipAction.Failed -> showAck("CopyCat failed to capture clipboard")
                     else -> {}
@@ -244,12 +244,26 @@ class CopyCatClipboardService: Service() {
     }
 
     private fun showNotification(): Notification {
+        val deleteIntent = Intent(this, NotificationDeleteReceiver::class.java)
+        val pendingDeleteIntent = PendingIntent.getBroadcast(
+            this,
+            788,
+            deleteIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         return notificationBuilder
-            .setContentTitle("CopyCat Clipboard Service")
+            .setDeleteIntent(pendingDeleteIntent)
+            .setContentTitle("CopyCat Clipboard")
+            .setContentText("Monitoring clipboard activity")
             .build()
     }
 
     private val onClipChangeListener = ClipboardManager.OnPrimaryClipChangedListener {
+        if (Utils.isActivityOnTop) {
+            Log.d(logTag, "Primary Clipboard disabled! Because top activity is CopyCat itself.")
+            return@OnPrimaryClipChangedListener
+        }
+        Log.d(logTag, "Reading Primary Clipboard")
         readClipboard()
     }
 
@@ -258,15 +272,19 @@ class CopyCatClipboardService: Service() {
         clipboardManager.addPrimaryClipChangedListener(onClipChangeListener)
     }
 
+    private fun prepareAndShowNotification() {
+        createNotificationChannel()
+        prepareNotification()
+        startForeground(notificationId, showNotification())
+    }
+
     override fun onCreate() {
         super.onCreate()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         copycatStorage = CopyCatSharedStorage.getInstance(this)
         copycatStorage.start()
-        createNotificationChannel()
-        prepareNotification()
-        startForeground(notificationId, showNotification())
+        prepareAndShowNotification()
         isRunning=true
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setupClipboardManager()
@@ -274,6 +292,9 @@ class CopyCatClipboardService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == "RESTART_NOTIFICATION") {
+            prepareAndShowNotification()
+        }
         return START_STICKY
     }
 
@@ -288,9 +309,10 @@ class CopyCatClipboardService: Service() {
             stopForeground(true)
         }
         Log.d(logTag, "CopyCatClipboardService Destroyed")
-        super.onDestroy()
+        showAck("CopyCat Clipboard Stopped")
         isRunning=false
         copycatStorage.clean()
+        super.onDestroy()
     }
 
 }
