@@ -74,6 +74,7 @@ dependencies:
   android_background_clipboard:
     path: packages/android_background_clipboard
   sentry_flutter: ^8.10.1
+  animate_do: ^3.3.4
   
   
 dev_dependencies:

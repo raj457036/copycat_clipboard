@@ -23,10 +23,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 
 class LogoutButton extends StatelessWidget {
+  final bool enabled;
   final bool iconMode;
   const LogoutButton({
     super.key,
     this.iconMode = true,
+    this.enabled = true,
   });
 
   Future<void> logout(BuildContext context, Isar db) async {
@@ -76,14 +78,14 @@ class LogoutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (iconMode) {
       return IconButton(
-        onPressed: () => logout(context, sl()),
+        onPressed: enabled ? () => logout(context, sl()) : null,
         icon: const Icon(Icons.logout),
         tooltip: context.locale.logout,
       );
     }
 
     return ElevatedButton.icon(
-      onPressed: () => logout(context, sl()),
+      onPressed: enabled ? () => logout(context, sl()) : null,
       label: Text(context.locale.logout),
       icon: const Icon(Icons.logout),
     );

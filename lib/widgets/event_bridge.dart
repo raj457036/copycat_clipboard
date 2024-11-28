@@ -139,7 +139,7 @@ class EventBridge extends StatelessWidget {
             final realtimeCollection =
                 context.read<RealtimeCollectionSyncCubit>();
             switch (state) {
-              case CollectionSyncComplete(:final manual):
+              case CollectionSyncComplete(:final manual, triggerReaction: true):
                 {
                   if (!config.enableSync) return;
                   await clipSync.syncClips(manual: manual);
@@ -179,6 +179,7 @@ class EventBridge extends StatelessWidget {
                 }
               case ClipSyncFailed(:final failure):
                 showFailureSnackbar(failure);
+              case _:
             }
           },
         ),

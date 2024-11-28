@@ -11,6 +11,7 @@ import "package:clipboard/pages/home/page.dart";
 import "package:clipboard/pages/layout/navbar_layout.dart";
 import "package:clipboard/pages/login/page.dart";
 import "package:clipboard/pages/not_found_page.dart";
+import "package:clipboard/pages/onboard/page.dart";
 import "package:clipboard/pages/preview/page.dart";
 import "package:clipboard/pages/reset_password/page.dart";
 import "package:clipboard/pages/settings/page.dart";
@@ -62,6 +63,13 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
           name: RouteConstants.login,
           path: '/login',
           builder: (context, state) => LoginPage(
+            key: state.pageKey,
+          ),
+        ),
+        GoRoute(
+          name: RouteConstants.onboard,
+          path: '/onboard',
+          builder: (context, state) => OnBoardPage(
             key: state.pageKey,
           ),
         ),

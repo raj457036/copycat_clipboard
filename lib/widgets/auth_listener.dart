@@ -1,7 +1,6 @@
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
-import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
@@ -45,15 +44,15 @@ class AuthListener extends StatelessWidget {
 
           case AuthenticatedAuthState(:final user):
             {
-              rootNavKey.currentContext?.goNamed(RouteConstants.home);
               await Future.wait([
                 context.read<AppConfigCubit>().load(),
                 context.read<MonetizationCubit>().login(user.userId),
                 context.read<ClipCollectionCubit>().fetch(),
-                // context.read<SyncManagerCubit>().syncChanges(),
-                context.read<OfflinePersistenceCubit>().startListners(),
-                context.read<DriveSetupCubit>().fetch(),
+                // TODO: move into onboard handler
+                // context.read<DriveSetupCubit>().fetch(),
+                // context.read<OfflinePersistenceCubit>().startListners(),
               ]);
+              rootNavKey.currentContext?.goNamed(RouteConstants.onboard);
             }
 
             logger.i("Auth State Authenticated");
