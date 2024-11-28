@@ -17,7 +17,6 @@ class DownloadDesktopClientTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final textTheme = context.textTheme;
     String title = context.locale.downloadDesktop;
     IconData icon = Icons.desktop_mac_rounded;
 
@@ -27,13 +26,13 @@ class DownloadDesktopClientTile extends StatelessWidget {
     }
 
     return ListTile(
-      title: Text(title, style: textTheme.titleSmall),
+      title: Text(title),
       subtitle: Text(context.locale.downloadClientDesc),
       leading: Icon(icon),
       trailing: const Icon(Icons.open_in_new),
-      tileColor: colors.primaryContainer,
-      textColor: colors.primary,
-      iconColor: colors.secondary,
+      tileColor: colors.primary,
+      textColor: colors.onPrimary,
+      iconColor: colors.onPrimary,
       onTap: openDownloadPage,
     );
   }

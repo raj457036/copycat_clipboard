@@ -55,7 +55,7 @@ class PauseTill extends StatelessWidget {
                   ? dateTimeFormatter(context.locale.localeName).format(state)
                   : '',
             ),
-            style: textTheme.bodySmall?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: colors.outline,
             ),
           ),

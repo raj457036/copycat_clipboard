@@ -2,6 +2,7 @@ import 'package:clipboard/widgets/badges.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_pro/widgets/subscription/subscription_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,8 @@ class DragAndDropSwitchTile extends StatelessWidget {
     // final isTablet = side > Breakpoints.sm;
     bool isDNDSupported = true;
     if (Platform.isAndroid) isDNDSupported = false;
-
+    final textTheme = context.textTheme;
+    final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, bool>(
       selector: (state) {
         switch (state) {
@@ -49,8 +51,18 @@ class DragAndDropSwitchTile extends StatelessWidget {
                   ],
                 ),
                 subtitle: isDNDSupported
-                    ? Text(context.locale.dragNdropDesc)
-                    : Text(context.locale.featureNotSupported));
+                    ? Text(
+                        context.locale.dragNdropDesc,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colors.outline,
+                        ),
+                      )
+                    : Text(
+                        context.locale.featureNotSupported,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colors.outline,
+                        ),
+                      ));
           },
         );
       },

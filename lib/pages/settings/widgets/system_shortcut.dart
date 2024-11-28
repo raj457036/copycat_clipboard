@@ -30,7 +30,7 @@ class SetupToggleHotKey extends StatelessWidget {
               height4,
               Text(
                 context.locale.clipboardShortcutDesc,
-                style: textTheme.bodySmall?.copyWith(
+                style: textTheme.bodyMedium?.copyWith(
                   color: colors.outline,
                 ),
               ),

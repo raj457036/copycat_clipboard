@@ -37,7 +37,7 @@ class SyncSpeedDropdown extends StatelessWidget {
               title: Text(context.locale.autoSyncInterval),
               subtitle: Text(
                 context.locale.autoSyncIntervalDesc,
-                style: textTheme.bodySmall?.copyWith(
+                style: textTheme.bodyMedium?.copyWith(
                   color: colors.outline,
                 ),
               ),

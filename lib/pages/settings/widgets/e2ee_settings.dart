@@ -1,6 +1,7 @@
 import 'package:clipboard/widgets/dialogs/e2ee_dialog.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,8 @@ class E2EESettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, (bool, bool)>(
       selector: (state) {
         switch (state) {
@@ -32,6 +35,9 @@ class E2EESettings extends StatelessWidget {
               subtitle: Text(
                 context.locale.accessE2eeVault,
               ),
+              subtitleTextStyle: textTheme.bodyMedium?.copyWith(
+                color: colors.outline,
+              ),
               // enabled: subscription.encrypt,
               trailing: const Icon(Icons.chevron_right_rounded),
               onTap: () => const E2EESettingDialog().show(context),
@@ -43,6 +49,9 @@ class E2EESettings extends StatelessWidget {
               title: Text(context.locale.encryptClipboard),
               subtitle: Text(
                 context.locale.encryptClipboardDesc,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colors.outline,
+                ),
               ),
             ),
           ],

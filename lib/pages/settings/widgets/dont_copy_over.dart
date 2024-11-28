@@ -34,7 +34,7 @@ class DontAutoCopyOver extends StatelessWidget {
                 precise: false,
               ),
             ),
-            style: textTheme.bodySmall?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: colors.outline,
             ),
           ),

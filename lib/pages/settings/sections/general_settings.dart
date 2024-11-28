@@ -20,9 +20,12 @@ class GeneralSettings extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: padding12),
         children: const [
           DownloadDesktopClientTile(),
+          height16,
           LocaleDropdownTile(),
+          height16,
           SmartPasteSwitch(),
           SetupToggleHotKey(),
+          height16,
           DontAutoCopyOver(),
           PauseTill(),
           StartUpLaunchSwitch(),

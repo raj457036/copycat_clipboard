@@ -1,5 +1,6 @@
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +9,8 @@ class EnableSyncSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, bool>(
       selector: (state) {
         switch (state) {
@@ -24,7 +27,12 @@ class EnableSyncSwitch extends StatelessWidget {
             context.read<AppConfigCubit>().changeSync(value);
           },
           title: Text(context.locale.enableSync),
-          subtitle: Text(context.locale.enableSyncDesc),
+          subtitle: Text(
+            context.locale.enableSyncDesc,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colors.outline,
+            ),
+          ),
         );
       },
     );

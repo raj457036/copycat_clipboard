@@ -57,28 +57,31 @@ class SettingsPage extends StatelessWidget {
                   ],
                 ),
                 const Expanded(
-                  child: TabBarView(children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: GeneralSettings(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomizationSettings(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: SyncingSettings(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: SecuritySettings(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: ExperimentalSettings(),
-                    ),
-                  ]),
+                  child: Material(
+                    //? prevents color bleading from list tile on scoll
+                    child: TabBarView(children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GeneralSettings(),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: CustomizationSettings(),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SyncingSettings(),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SecuritySettings(),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: ExperimentalSettings(),
+                      ),
+                    ]),
+                  ),
                 ),
               ],
             );

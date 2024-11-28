@@ -28,7 +28,7 @@ class ThemeVariantDropdown extends StatelessWidget {
         ),
         subtitle: Text(
           context.locale.colorModeDesc,
-          style: textTheme.bodySmall?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             color: colors.outline,
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:clipboard/pages/settings/widgets/dont_upload_over.dart';
 import 'package:clipboard/pages/settings/widgets/google_drive_setup.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +11,8 @@ class EnableFileSyncSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final colors = context.colors;
     return BlocSelector<AppConfigCubit, AppConfigState, (bool, bool)>(
       selector: (state) {
         switch (state) {
@@ -32,7 +35,12 @@ class EnableFileSyncSwitch extends StatelessWidget {
                     }
                   : null,
               title: Text(context.locale.syncFiles),
-              subtitle: Text(context.locale.syncFilesDesc),
+              subtitle: Text(
+                context.locale.syncFilesDesc,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colors.outline,
+                ),
+              ),
             ),
             if (enableFileSync && enableSync) const GoogleDriveSetup(),
             if (enableFileSync && enableSync) const DontAutoUploadOver(),

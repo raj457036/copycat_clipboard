@@ -149,7 +149,7 @@ class ColorPickerTile extends StatelessWidget {
         ),
         subtitle: Text(
           context.locale.themeColorDesc,
-          style: textTheme.bodySmall?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             color: colors.outline,
           ),
         ),
