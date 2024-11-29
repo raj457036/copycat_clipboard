@@ -116,7 +116,7 @@ class _GenerateEncryptionKeyStepState extends State<GenerateEncryptionKeyStep> {
             ),
             height10,
             Text(
-              "Clipboard Encryption",
+              "Setup Clipboard Encryption",
               style: textTheme.headlineMedium,
             ),
             height10,
@@ -127,6 +127,7 @@ class _GenerateEncryptionKeyStepState extends State<GenerateEncryptionKeyStep> {
                 children: [
                   Text(
                     "🎉 Key ${generatedKeys?.$2.sub(end: 6)}*** Generated 🎉",
+                    style: textTheme.titleMedium,
                   ),
                   height16,
                   OverflowBar(
@@ -156,6 +157,7 @@ class _GenerateEncryptionKeyStepState extends State<GenerateEncryptionKeyStep> {
                 children: [
                   Text(
                     "Your account doesn't have any encreyption key",
+                    style: textTheme.titleMedium,
                   ),
                   height10,
                   OverflowBar(

@@ -3,8 +3,13 @@ import 'package:clipboard/pages/onboard/widgets/encryption.dart';
 import 'package:clipboard/pages/onboard/widgets/syncing/syncing_clips.dart';
 import 'package:clipboard/pages/onboard/widgets/syncing/syncing_collection.dart';
 import 'package:clipboard/pages/onboard/widgets/welcome.dart';
+import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
+import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
+import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class OnBoardPage extends StatefulWidget {
   const OnBoardPage({super.key});
@@ -20,6 +25,12 @@ class _OnBoardPageState extends State<OnBoardPage> {
     setState(() {
       this.page = page;
     });
+  }
+
+  void goHome() {
+    context.read<DriveSetupCubit>().fetch();
+    context.read<OfflinePersistenceCubit>().startListners();
+    context.goNamed(RouteConstants.home);
   }
 
   @override
@@ -39,7 +50,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
               collectionRepository: sl(),
             ),
           3 => SyncingClipsStep(
-              onContinue: () => gotToPage(4),
+              onContinue: goHome,
               clipboardRepository: sl(
                 instanceName: "cloud",
               ),

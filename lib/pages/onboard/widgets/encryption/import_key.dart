@@ -74,11 +74,10 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
       if (importedKeyId == null ||
           importedKeyId != widget.importableKeyId ||
           importedKey == null) {
+        importedKey = null;
         showFailureSnackbar(Failure.fromMessage(locale.importE2eeInvalidKey));
         return;
       }
-
-      setState(() {});
     } catch (e) {
       showFailureSnackbar(Failure.fromException(e));
     } finally {
@@ -86,6 +85,7 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
       setState(() {
         importing = false;
       });
+      saveAndContinue();
     }
   }
 
@@ -176,7 +176,7 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
                 ),
                 height10,
                 Text(
-                  "Clipboard Encryption",
+                  "Import Clipboard Encryption Key",
                   style: textTheme.headlineMedium,
                 ),
                 height16,
@@ -188,6 +188,7 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
                       children: [
                         Text(
                           "🥳 Great news! Your account already has encryption enabled.",
+                          style: textTheme.titleMedium,
                         ),
                         height16,
                         OverflowBar(

@@ -123,6 +123,7 @@ class _ExportEncryptionKeyStepState extends State<ExportEncryptionKeyStep> {
                   children: [
                     Text(
                       "🥳 Great news! Local encryption is already setup on your clipboard.",
+                      style: textTheme.titleMedium,
                     ),
                     height16,
                     OverflowBar(

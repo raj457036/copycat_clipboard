@@ -1,12 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:atom_event_bus/atom_event_bus.dart';
+import 'package:clipboard/di/di.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
+import 'package:copycat_base/bloc/android_bg_clipboard_cubit/android_bg_clipboard_cubit.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
+import 'package:copycat_base/bloc/clip_collection_cubit/clip_collection_cubit.dart';
 import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/cloud_persistance_cubit/cloud_persistance_cubit.dart';
 import 'package:copycat_base/bloc/collection_sync_manager_cubit/collection_sync_manager_cubit.dart';
+import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cubit.dart';
 import 'package:copycat_base/bloc/realtime_collection_sync_cubit/realtime_collection_sync_cubit.dart';
@@ -22,9 +26,11 @@ import 'package:copycat_base/domain/services/cross_sync_listener.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_base/utils/utility.dart';
+import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar/isar.dart';
 
 class EventBridge extends StatelessWidget {
   final Widget child;
@@ -80,6 +86,37 @@ class EventBridge extends StatelessWidget {
     }
 
     await offline.decryptAllClipboardItems();
+  }
+
+  Future<void> resetAll(BuildContext context) async {
+    EncrypterWorker.instance.dispose();
+    final Isar db = sl();
+    context.read<OfflinePersistenceCubit>().stopListeners();
+    context.read<DriveSetupCubit>().reset();
+    context.read<ClipSyncManagerCubit>().stopPolling();
+    context.read<CollectionSyncManagerCubit>().stopPolling();
+    context.read<RealtimeClipSyncCubit>().unsubscribe();
+    context.read<RealtimeCollectionSyncCubit>().unsubscribe();
+    context.read<RealtimeCollectionSyncCubit>().unsubscribe();
+    context.read<ClipSyncManagerCubit>().reset();
+    context.read<CollectionSyncManagerCubit>().reset();
+    await context.read<AndroidBgClipboardCubit?>()?.reset();
+    await Future.wait([
+      context.read<MonetizationCubit>().logout(),
+      context.read<ClipCollectionCubit>().reset(),
+      // context.read<SyncManagerCubit>().reset(),
+      if (isDesktopPlatform) context.read<WindowActionCubit>().setWindowdView(),
+      context.read<AppConfigCubit>().reset(),
+      clearPersistedRootDir(),
+      db.writeTxn(() => db.clear()),
+    ]);
+
+    if (context.mounted) {
+      showTextSnackbar(
+        rootNavKey.currentContext?.locale.logoutSuccess ?? "Logout Success",
+        closePrevious: true,
+      );
+    }
   }
 
   @override
@@ -184,9 +221,13 @@ class EventBridge extends StatelessWidget {
           },
         ),
         BlocListener<AuthCubit, AuthState>(
-          listenWhen: (prev, current) => current is AuthenticatedAuthState,
           listener: (context, state) async {
-            setupEncryption(context);
+            switch (state) {
+              case AuthenticatedAuthState():
+                setupEncryption(context);
+              case UnauthenticatedAuthState(:final failure):
+                if (failure == null) resetAll(context);
+            }
           },
         ),
         BlocListener<AppConfigCubit, AppConfigState>(
