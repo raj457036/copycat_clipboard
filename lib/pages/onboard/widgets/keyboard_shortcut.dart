@@ -1,15 +1,16 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
+import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/widgets/loop_video_player.dart';
 import 'package:copycat_base/constants/strings/strings.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_io/io.dart';
 
-class SmartPasteStep extends StatelessWidget {
+class KeyboardShortcutStep extends StatelessWidget {
   final VoidCallback onContinue;
-  const SmartPasteStep({super.key, required this.onContinue});
+  const KeyboardShortcutStep({super.key, required this.onContinue});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +23,14 @@ class SmartPasteStep extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                Icons.switch_access_shortcut_add_rounded,
+                Platform.isMacOS
+                    ? Icons.keyboard_command_key_rounded
+                    : Icons.window,
                 size: 32,
               ),
               height10,
               Text(
-                "Smart Paste",
+                "Clipboard Shortcut",
                 textAlign: TextAlign.center,
                 style: textTheme.headlineMedium,
               ),
@@ -35,10 +38,10 @@ class SmartPasteStep extends StatelessWidget {
               LoopVideoPlayer(
                 width: 620,
                 borderRadius: radius16,
-                url: smartPasteDemoVideo,
+                url: keyboardShortcutDemoVideo,
               ),
               height10,
-              SizedBox(width: 620, child: SmartPasteSwitch()),
+              SizedBox(width: 620, child: ClipboardHotKeySwitch()),
               height10,
               FilledButton(
                 onPressed: onContinue,

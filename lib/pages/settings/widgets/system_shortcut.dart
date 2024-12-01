@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 
-class SetupToggleHotKey extends StatelessWidget {
-  const SetupToggleHotKey({super.key});
+class ClipboardHotKeySwitch extends StatelessWidget {
+  const ClipboardHotKeySwitch({super.key});
 
   @override
   Widget build(BuildContext context) {

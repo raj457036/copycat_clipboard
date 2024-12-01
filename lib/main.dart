@@ -4,7 +4,6 @@ import 'package:clipboard/di/di.dart';
 import 'package:clipboard/routes/routes.dart';
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/app_link_listener.dart';
-import 'package:clipboard/widgets/auth_listener.dart';
 import 'package:clipboard/widgets/event_bridge.dart';
 import 'package:clipboard/widgets/state_initializer.dart';
 import 'package:clipboard/widgets/system_shortcut_listeners.dart';
@@ -233,14 +232,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = AuthListener(
-      child: EventBridge(
-        child: WindowFocusManager.forPlatform(
-          child: TrayManager.forPlatform(
-            child: const SystemShortcutListener(
-              child: AppLinkListener(
-                child: AppContent(),
-              ),
+    Widget content = EventBridge(
+      child: WindowFocusManager.forPlatform(
+        child: TrayManager.forPlatform(
+          child: const SystemShortcutListener(
+            child: AppLinkListener(
+              child: AppContent(),
             ),
           ),
         ),

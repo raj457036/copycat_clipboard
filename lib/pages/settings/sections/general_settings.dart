@@ -2,9 +2,7 @@ import 'package:clipboard/pages/settings/widgets/copycat_about_tile.dart';
 import 'package:clipboard/pages/settings/widgets/dont_copy_over.dart';
 import 'package:clipboard/pages/settings/widgets/download_desktop_client.dart';
 import 'package:clipboard/pages/settings/widgets/pause_till.dart';
-import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
 import 'package:clipboard/pages/settings/widgets/startup_launch_switch.dart';
-import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/widgets/locale_dropdown.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +20,7 @@ class GeneralSettings extends StatelessWidget {
           DownloadDesktopClientTile(),
           height16,
           LocaleDropdownTile(),
-          height16,
-          SmartPasteSwitch(),
-          SetupToggleHotKey(),
-          height16,
+          height10,
           DontAutoCopyOver(),
           PauseTill(),
           StartUpLaunchSwitch(),

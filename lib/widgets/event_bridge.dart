@@ -16,6 +16,7 @@ import 'package:copycat_base/bloc/realtime_clip_sync_cubit/realtime_clip_sync_cu
 import 'package:copycat_base/bloc/realtime_collection_sync_cubit/realtime_collection_sync_cubit.dart';
 import 'package:copycat_base/bloc/window_action_cubit/window_action_cubit.dart';
 import 'package:copycat_base/common/events.dart';
+import 'package:copycat_base/common/logging.dart';
 import 'package:copycat_base/constants/key.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
@@ -24,6 +25,7 @@ import 'package:copycat_base/db/app_config/appconfig.dart';
 import 'package:copycat_base/db/clipboard_item/clipboard_item.dart';
 import 'package:copycat_base/domain/services/cross_sync_listener.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:copycat_base/utils/common_extension.dart';
 import 'package:copycat_base/utils/snackbar.dart';
 import 'package:copycat_base/utils/utility.dart';
 import 'package:copycat_pro/bloc/monetization_cubit/monetization_cubit.dart';
@@ -70,7 +72,6 @@ class EventBridge extends StatelessWidget {
   }
 
   Future<void> setupEncryption(BuildContext context) async {
-    final offline = context.read<OfflinePersistenceCubit>();
     final config = context.read<AppConfigCubit>().state.config;
     if (!EncrypterWorker.instance.isRunning) {
       if (config.enc2Key == null) return;
@@ -221,10 +222,46 @@ class EventBridge extends StatelessWidget {
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) async {
             switch (state) {
-              case AuthenticatedAuthState():
-                setupEncryption(context);
+              case AuthenticatedAuthState(:final user):
+                {
+                  await context.read<MonetizationCubit>().login(user.userId);
+                  final configCubit = context.read<AppConfigCubit>();
+                  await configCubit.load();
+                  await context.read<ClipCollectionCubit>().fetch();
+                  setupEncryption(context);
+                  final config = configCubit.state.config;
+                  if (config.onBoardComplete) {
+                    context.read<DriveSetupCubit>().fetch();
+                    context.read<OfflinePersistenceCubit>().startListners();
+                    // starts
+                    context
+                        .read<CollectionSyncManagerCubit>()
+                        .syncChanges(null, manual: false, restoration: false);
+
+                    rootNavKey.currentContext?.goNamed(RouteConstants.home);
+                  } else {
+                    rootNavKey.currentContext?.goNamed(RouteConstants.onboard);
+                  }
+                }
               case UnauthenticatedAuthState(:final failure):
                 if (failure == null) resetAll(context);
+              case UnknownAuthState() ||
+                    AuthenticatingAuthState() ||
+                    UnauthenticatedAuthState():
+                logger.i(
+                    "Auth State Unknown or Authenticating or Unauthenticated");
+                rootNavKey.currentContext?.goNamed(RouteConstants.login);
+                closeSnackbar();
+                await context.windowAction?.show();
+              case LocalAuthenticatedAuthState():
+                {
+                  rootNavKey.currentContext?.goNamed(RouteConstants.home);
+                  await Future.wait([
+                    context.read<AppConfigCubit>().load(),
+                    context.read<ClipCollectionCubit>().fetch(),
+                    context.read<OfflinePersistenceCubit>().startListners(),
+                  ]);
+                }
             }
           },
         ),
@@ -248,27 +285,6 @@ class EventBridge extends StatelessWidget {
             }
           },
         ),
-
-        // BlocListener<SyncManagerCubit, SyncManagerState>(
-        //   listener: (context, state) async {
-        //     switch (state) {
-        //       case PartlySyncedSyncState(collections: true):
-        //         context.read<ClipCollectionCubit>().fetch(fromTop: true);
-        //       case SyncedState(refreshLocalCache: true):
-        //         logger.w("Synced State");
-        //       case ClipboardSyncedSyncState(
-        //           :final added,
-        //           :final updated,
-        //           :final deleted,
-        //           silent: true
-        //         ):
-        //         logger.w(
-        //             "ClipboardSyncedSyncState -> Added: $added | Updated: $updated | Deleted: $deleted");
-        //       case SyncCheckFailedState(:final failure):
-        //         showFailureSnackbar(failure);
-        //     }
-        //   },
-        // ),
         BlocListener<OfflinePersistenceCubit, OfflinePersistanceState>(
           listener: (context, state) async {
             final locales = rootNavKey.currentContext!.locale;

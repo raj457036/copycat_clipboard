@@ -1,4 +1,6 @@
 import 'package:clipboard/pages/settings/widgets/color_picker.dart';
+import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
+import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
 import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
 import 'package:clipboard/pages/settings/widgets/theme_variant_dropdown.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
@@ -17,6 +19,9 @@ class CustomizationSettings extends StatelessWidget {
           ThemeDropdownTile(),
           ColorPickerTile(),
           ThemeVariantDropdown(),
+          height16,
+          SmartPasteSwitch(),
+          ClipboardHotKeySwitch(),
         ],
       ),
     );
