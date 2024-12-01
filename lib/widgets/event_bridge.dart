@@ -105,7 +105,6 @@ class EventBridge extends StatelessWidget {
       context.read<ClipCollectionCubit>().reset(),
       // context.read<SyncManagerCubit>().reset(),
       if (isDesktopPlatform) context.read<WindowActionCubit>().setWindowdView(),
-      context.read<AppConfigCubit>().reset(),
       clearPersistedRootDir(),
       db.writeTxn(() => db.clear()),
     ]);
@@ -244,10 +243,10 @@ class EventBridge extends StatelessWidget {
                   }
                 }
               case UnauthenticatedAuthState(:final failure):
-                if (failure == null) resetAll(context);
-              case UnknownAuthState() ||
-                    AuthenticatingAuthState() ||
-                    UnauthenticatedAuthState():
+                if (failure == null) await resetAll(context);
+                context.read<AppConfigCubit>().reset();
+                rootNavKey.currentContext?.goNamed(RouteConstants.login);
+              case UnknownAuthState() || AuthenticatingAuthState():
                 logger.i(
                     "Auth State Unknown or Authenticating or Unauthenticated");
                 rootNavKey.currentContext?.goNamed(RouteConstants.login);
