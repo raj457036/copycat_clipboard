@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 
 class ExportE2eeDialog extends StatelessWidget {
   final bool loading;
+  final Widget? bottom;
   final VoidCallback exportEnc2Key;
 
   const ExportE2eeDialog({
     super.key,
     required this.loading,
     required this.exportEnc2Key,
+    this.bottom,
   });
 
   @override
@@ -64,7 +66,11 @@ class ExportE2eeDialog extends StatelessWidget {
               icon: const Icon(Icons.key),
               label: Text(context.locale.exportKey),
               onPressed: loading ? null : exportEnc2Key,
-            )
+            ),
+            if (bottom != null) ...[
+              Divider(height: 30),
+              bottom!,
+            ]
           ],
         ),
       ),

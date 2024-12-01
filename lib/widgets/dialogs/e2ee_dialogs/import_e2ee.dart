@@ -7,11 +7,13 @@ class ImportE2eeDialog extends StatelessWidget {
   final bool loading;
   final VoidCallback importEnc2Key;
   final bool invalidImportedKey;
+  final Widget? bottom;
 
   const ImportE2eeDialog({
     super.key,
     required this.loading,
     required this.importEnc2Key,
+    this.bottom,
     this.invalidImportedKey = false,
   });
 
@@ -71,6 +73,10 @@ class ImportE2eeDialog extends StatelessWidget {
                   ? Text(context.locale.importing)
                   : Text(context.locale.importKey),
             ),
+            if (bottom != null) ...[
+              Divider(height: 30),
+              bottom!,
+            ]
           ],
         ),
       ),

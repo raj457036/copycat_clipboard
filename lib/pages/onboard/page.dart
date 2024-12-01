@@ -1,7 +1,8 @@
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/pages/onboard/widgets/encryption.dart';
-import 'package:clipboard/pages/onboard/widgets/syncing/syncing_clips.dart';
-import 'package:clipboard/pages/onboard/widgets/syncing/syncing_collection.dart';
+import 'package:clipboard/pages/onboard/widgets/smart_paste.dart';
+import 'package:clipboard/pages/onboard/widgets/syncing/restore_clips.dart';
+import 'package:clipboard/pages/onboard/widgets/syncing/restore_collections.dart';
 import 'package:clipboard/pages/onboard/widgets/welcome.dart';
 import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
@@ -12,18 +13,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class OnBoardPage extends StatefulWidget {
-  const OnBoardPage({super.key});
+  final int startingStep;
+
+  const OnBoardPage({
+    super.key,
+    required this.startingStep,
+  });
 
   @override
   State<OnBoardPage> createState() => _OnBoardPageState();
 }
 
 class _OnBoardPageState extends State<OnBoardPage> {
-  int page = 0;
+  late int currentStep;
 
-  void gotToPage(int page) {
+  @override
+  void initState() {
+    super.initState();
+    currentStep = widget.startingStep;
+  }
+
+  void gotToPage(int step) {
     setState(() {
-      this.page = page;
+      currentStep = step;
     });
   }
 
@@ -38,22 +50,26 @@ class _OnBoardPageState extends State<OnBoardPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(padding16),
-        child: switch (page) {
+        child: switch (currentStep) {
           0 => WelcomeStep(
               onContinue: () => gotToPage(1),
             ),
           1 => EncryptionStep(
               onContinue: () => gotToPage(2),
             ),
-          2 => SyncingCollectionStep(
+          2 => SmartPasteStep(
               onContinue: () => gotToPage(3),
+            ),
+          3 => RestoreCollectionStep(
+              onContinue: () => gotToPage(4),
               collectionRepository: sl(),
             ),
-          3 => SyncingClipsStep(
+          4 => RestoreClipsStep(
               onContinue: goHome,
               clipboardRepository: sl(
                 instanceName: "cloud",
               ),
+              restorationStatusRepository: sl(),
             ),
           _ => SizedBox.shrink(),
         },

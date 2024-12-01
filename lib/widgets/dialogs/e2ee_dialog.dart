@@ -1,11 +1,12 @@
 import 'dart:convert' show jsonEncode, jsonDecode, utf8;
 
+import 'package:clipboard/di/di.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/export_e2ee.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/generate_e2ee.dart';
 import 'package:clipboard/widgets/dialogs/e2ee_dialogs/import_e2ee.dart';
+import 'package:clipboard/widgets/encrypted_clip_stat.dart';
 import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
-import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/data/services/encryption.dart';
 import 'package:copycat_base/domain/model/auth_user/auth_user.dart';
 import 'package:copycat_base/l10n/l10n.dart';
@@ -77,7 +78,8 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
       }
 
       if (importedKeyId == keyId && key != null) {
-        appConfigCubit.setE2EEKey(key);
+        await appConfigCubit.setE2EEKey(key);
+        await appConfigCubit.toggleAutoEncrypt(true);
       } else {
         setState(() => invalidImportedKey = true);
       }
@@ -135,68 +137,63 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<OfflinePersistenceCubit, OfflinePersistanceState>(
-      listener: (context, state) {
-        switch (state) {
-          case OfflinePersistanceDecryptingState():
-            setState(() {
-              rebuilding = true;
-            });
-          case OfflinePersistanceDecryptedState():
-            setState(() {
-              rebuilding = false;
-            });
-        }
+    return BlocSelector<AppConfigCubit, AppConfigState, String?>(
+      selector: (state) {
+        return state.config.enc2;
       },
-      child: BlocSelector<AppConfigCubit, AppConfigState, String?>(
-        selector: (state) {
-          return state.config.enc2;
-        },
-        builder: (context, enc2Key) {
-          return BlocSelector<AuthCubit, AuthState, AuthUser?>(
-            selector: (state) {
-              return state.whenOrNull(authenticated: (user, _) => user);
-            },
-            builder: (context, user) {
-              if (rebuilding) {
-                return Dialog(
-                  child: SizedBox.square(
-                    dimension: 250,
-                    child: Center(
-                      child: Text(
-                        context.locale.rebuildingDB,
-                        textAlign: TextAlign.center,
-                      ),
+      builder: (context, enc2Key) {
+        return BlocSelector<AuthCubit, AuthState, AuthUser?>(
+          selector: (state) {
+            return state.whenOrNull(authenticated: (user, _) => user);
+          },
+          builder: (context, user) {
+            if (rebuilding) {
+              return Dialog(
+                child: SizedBox.square(
+                  dimension: 250,
+                  child: Center(
+                    child: Text(
+                      context.locale.rebuildingDB,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                );
-              }
-              if (user == null) return const SizedBox.shrink();
-              final keyId = user.enc2KeyId;
-              final enc1 = user.enc1;
-
-              if (keyId == null || enc1 == null) {
-                return GenerateE2eeDialog(
-                  loading: loading,
-                  generateEnc2Key: generateEnc2Key,
-                );
-              }
-
-              if (enc2Key == null) {
-                return ImportE2eeDialog(
-                  importEnc2Key: () => importEnc2Key(keyId),
-                  loading: loading,
-                  invalidImportedKey: invalidImportedKey,
-                );
-              }
-              return ExportE2eeDialog(
-                exportEnc2Key: () => exportEnc2Key(context, keyId, enc2Key),
-                loading: loading,
+                ),
               );
-            },
-          );
-        },
-      ),
+            }
+            if (user == null) return const SizedBox.shrink();
+            final keyId = user.enc2KeyId;
+            final enc1 = user.enc1;
+
+            if (keyId == null || enc1 == null) {
+              return GenerateE2eeDialog(
+                loading: loading,
+                generateEnc2Key: generateEnc2Key,
+              );
+            }
+
+            if (enc2Key == null) {
+              return ImportE2eeDialog(
+                importEnc2Key: () => importEnc2Key(keyId),
+                loading: loading,
+                invalidImportedKey: invalidImportedKey,
+                bottom: EncryptedClipsStat(
+                  repository: sl(instanceName: "local"),
+                  onNavigate: context.pop,
+                ),
+              );
+            }
+            return ExportE2eeDialog(
+              exportEnc2Key: () => exportEnc2Key(context, keyId, enc2Key),
+              loading: loading,
+              bottom: EncryptedClipsStat(
+                repository: sl(instanceName: "local"),
+                withDecryptButton: true,
+                onNavigate: context.pop,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

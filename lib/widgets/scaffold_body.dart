@@ -60,6 +60,7 @@ class ScaffoldBody extends StatelessWidget {
         return Card(
           margin: margin_,
           color: background,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: radius_,
           ),

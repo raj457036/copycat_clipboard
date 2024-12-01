@@ -80,6 +80,7 @@ class ExclusionRulesSwitchTile extends StatelessWidget {
                 ),
               ),
             ),
+            width14,
           ],
         );
       },

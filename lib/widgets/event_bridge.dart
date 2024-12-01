@@ -84,8 +84,6 @@ class EventBridge extends StatelessWidget {
         await EncrypterWorker.instance.start(enc1Decrypt);
       }
     }
-
-    await offline.decryptAllClipboardItems();
   }
 
   Future<void> resetAll(BuildContext context) async {
@@ -176,7 +174,7 @@ class EventBridge extends StatelessWidget {
             final realtimeCollection =
                 context.read<RealtimeCollectionSyncCubit>();
             switch (state) {
-              case CollectionSyncComplete(:final manual, triggerReaction: true):
+              case CollectionSyncComplete(:final manual, restoration: false):
                 {
                   if (!config.enableSync) return;
                   await clipSync.syncClips(manual: manual);

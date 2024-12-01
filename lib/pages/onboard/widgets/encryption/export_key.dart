@@ -77,7 +77,7 @@ class _ExportEncryptionKeyStepState extends State<ExportEncryptionKeyStep> {
       title: "✋ Backup Your Encryption Key",
       message:
           "You haven’t exported your encryption key yet. Without a backup, you won’t be able to access your encrypted clips if the key is lost or you switch devices.\n\n"
-          "If you already have a secure backup of your key, you can safely continue. Otherwise, we strongly recommend exporting the key now to avoid data loss. Do you still want to continue?",
+          "👉 If you already have a secure backup of your key, you can safely continue. Otherwise, we strongly recommend exporting the key now to avoid data loss. Do you still want to continue?",
       yes: context.locale.yes,
       no: context.locale.no,
       confirmationDelay: 5,
@@ -123,6 +123,7 @@ class _ExportEncryptionKeyStepState extends State<ExportEncryptionKeyStep> {
                   children: [
                     Text(
                       "🥳 Great news! Local encryption is already setup on your clipboard.",
+                      textAlign: TextAlign.center,
                       style: textTheme.titleMedium,
                     ),
                     height16,

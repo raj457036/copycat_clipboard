@@ -29,7 +29,7 @@ dependencies:
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1
   uuid: ^4.4.2
-  rxdart: ^0.27.5
+  rxdart: ^0.28.0
   internet_connection_checker_plus: ^2.3.0 
   url_launcher: ^6.3.0
   googleapis: ^13.1.0
@@ -75,7 +75,8 @@ dependencies:
     path: packages/android_background_clipboard
   sentry_flutter: ^8.10.1
   animate_do: ^3.3.4
-  
+  last_flutter_flex_player: ^0.0.3
+
   
 dev_dependencies:
   flutter_test:

@@ -17,6 +17,7 @@ import "package:clipboard/pages/reset_password/page.dart";
 import "package:clipboard/pages/settings/page.dart";
 import "package:clipboard/pages/settings/pages/android_bg_clipboard/android_bg_clipboard_settings.dart";
 import "package:clipboard/pages/settings/pages/custom_exclusion_rule/custom_exclusion_rule.dart";
+import "package:clipboard/pages/settings/pages/decrypt_clips.dart";
 import "package:clipboard/pages/settings/pages/exclusion_rules.dart";
 import "package:clipboard/pages/splash_page.dart";
 import "package:clipboard/routes/keyboard_shortcuts/keyboard_shortcut_provider.dart";
@@ -71,6 +72,7 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
           path: '/onboard',
           builder: (context, state) => OnBoardPage(
             key: state.pageKey,
+            startingStep: 0,
           ),
         ),
         GoRoute(
@@ -281,6 +283,16 @@ GoRouter router([List<NavigatorObserver>? observers]) => GoRouter(
                   builder: (context, state) {
                     return AccountPage(
                       key: state.pageKey,
+                    );
+                  },
+                ),
+                GoRoute(
+                  name: RouteConstants.rebuildDatabase,
+                  path: 'rebuild-database',
+                  builder: (context, state) {
+                    return DecryptClipsPage(
+                      key: state.pageKey,
+                      clipboardRepository: sl(instanceName: "local"),
                     );
                   },
                 ),

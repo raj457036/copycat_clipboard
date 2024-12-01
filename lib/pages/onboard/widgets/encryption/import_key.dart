@@ -96,7 +96,8 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
       saving = true;
     });
     try {
-      appConfigCubit.setE2EEKey(importedKey);
+      await appConfigCubit.setE2EEKey(importedKey);
+      await appConfigCubit.toggleAutoEncrypt(true);
     } catch (e) {
       showFailureSnackbar(Failure.fromException(e));
     } finally {
@@ -188,6 +189,7 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
                       children: [
                         Text(
                           "🥳 Great news! Your account already has encryption enabled.",
+                          textAlign: TextAlign.center,
                           style: textTheme.titleMedium,
                         ),
                         height16,
