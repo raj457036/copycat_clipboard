@@ -1,33 +1,14 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
+import 'package:clipboard/widgets/loop_video_player.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:copycat_base/l10n/l10n.dart';
 import 'package:copycat_base/utils/common_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:last_flutter_flex_player/flutter_flex_player.dart';
-import 'package:last_flutter_flex_player/flutter_flex_player_controller.dart';
 
-class SmartPasteStep extends StatefulWidget {
+class SmartPasteStep extends StatelessWidget {
   final VoidCallback onContinue;
   const SmartPasteStep({super.key, required this.onContinue});
-
-  @override
-  State<SmartPasteStep> createState() => _SmartPasteStepState();
-}
-
-class _SmartPasteStepState extends State<SmartPasteStep> {
-  late final FlutterFlexPlayerController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = FlutterFlexPlayerController();
-    controller.load(
-      NetworkFlexPlayerSource("https://www.youtube.com/watch?v=V2iW3djm6WA"),
-      autoPlay: true,
-      loop: true,
-      mute: true,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +29,18 @@ class _SmartPasteStepState extends State<SmartPasteStep> {
               textAlign: TextAlign.center,
               style: textTheme.headlineMedium,
             ),
-            FlutterFlexPlayer(
-              controller,
+            height10,
+            LoopVideoPlayer(
+              width: 500,
+              borderRadius: radius16,
+              url:
+                  "https://github.com/raj457036/entility_studio_public/raw/refs/heads/main/Apps/CopyCat%20Clipboard/Demos/Smart%20Paste.mov",
             ),
-            height8,
+            height10,
+            SizedBox(width: 500, child: SmartPasteSwitch()),
+            height10,
             ElevatedButton(
-              onPressed: widget.onContinue,
+              onPressed: onContinue,
               child: Text(
                 context.locale.continue_,
               ),

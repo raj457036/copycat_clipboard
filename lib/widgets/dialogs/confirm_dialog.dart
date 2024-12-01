@@ -1,5 +1,6 @@
 import 'package:clipboard/widgets/timer_builder.dart';
 import 'package:copycat_base/l10n/l10n.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import "package:universal_io/io.dart";
 
@@ -30,7 +31,8 @@ class ConfirmDialog extends StatelessWidget {
         autofocus: focusFor == false,
         child: Text(no ?? context.locale.cancel),
       ),
-      if (confirmationDelay > 0)
+      if (confirmationDelay > 0 &&
+          kReleaseMode) // To prevent this in development
         TimerBuilder(
           maxTicks: confirmationDelay,
           builder: (context, remaining, seconds) => TextButton(

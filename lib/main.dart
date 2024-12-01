@@ -40,6 +40,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -58,6 +59,7 @@ Future<void> main() async {
       },
       appRunner: () async {
         WidgetsFlutterBinding.ensureInitialized();
+        MediaKit.ensureInitialized();
         await initializeServices();
         runApp(const MainApp());
       },
