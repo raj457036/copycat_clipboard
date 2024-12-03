@@ -1,13 +1,12 @@
 package com.entilitystudio.android_background_clipboard
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.provider.Settings
+import android.os.Bundle
+import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -15,7 +14,8 @@ import io.flutter.plugin.common.MethodChannel.Result
 
 
 /** AndroidBackgroundClipboardPlugin */
-class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
+class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler,
+  Application.ActivityLifecycleCallbacks {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -24,12 +24,20 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler, Activi
   private lateinit var applicationContext: Context
   private var applicationActivity: Activity? = null
   private lateinit var storage: CopyCatSharedStorage
+  private var application: Application? = null
+
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    Log.d("CopyCat Service", "onAttachedToEngine")
+    Utils.isActivityOnTop = true
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "android_background_clipboard")
     channel.setMethodCallHandler(this)
     applicationContext = flutterPluginBinding.applicationContext
     storage = CopyCatSharedStorage.getInstance(applicationContext)
+
+    // Register lifecycle callbacks
+    application = flutterPluginBinding.applicationContext as Application
+    application?.registerActivityLifecycleCallbacks(this)
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
@@ -133,26 +141,50 @@ class AndroidBackgroundClipboardPlugin: FlutterPlugin, MethodCallHandler, Activi
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+    Log.d("CopyCat Service", "onDetachedFromEngine")
     channel.setMethodCallHandler(null)
-  }
-
-  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    applicationActivity = binding.activity
-    Utils.isActivityOnTop = true
-  }
-
-  override fun onDetachedFromActivityForConfigChanges() {
-    applicationActivity = null
     Utils.isActivityOnTop = false
+    application?.unregisterActivityLifecycleCallbacks(this)
   }
 
-  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    applicationActivity = binding.activity
+  // Life Cycle events
+  override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
     Utils.isActivityOnTop = true
+    applicationActivity = activity
+    Log.d("ActivityLifecycle", "onActivityCreated: ${activity.localClassName}, isActivityOnTop set to true")
   }
 
-  override fun onDetachedFromActivity() {
-    applicationActivity = null
+  override fun onActivityStarted(activity: Activity) {
+    Utils.isActivityOnTop = true
+    applicationActivity = activity
+    Log.d("ActivityLifecycle", "onActivityStarted: ${activity.localClassName}, isActivityOnTop set to true")
+  }
+
+  override fun onActivityResumed(activity: Activity) {
+    Utils.isActivityOnTop = true
+    applicationActivity = activity
+    Log.d("ActivityLifecycle", "onActivityResumed: ${activity.localClassName}, isActivityOnTop set to true")
+  }
+
+  override fun onActivityPaused(activity: Activity) {
     Utils.isActivityOnTop = false
+    applicationActivity = activity
+    Log.d("ActivityLifecycle", "onActivityPaused: ${activity.localClassName}, isActivityOnTop set to false")
+  }
+
+  override fun onActivityStopped(activity: Activity) {
+    Utils.isActivityOnTop = false
+    applicationActivity = null
+    Log.d("ActivityLifecycle", "onActivityStopped: ${activity.localClassName}, isActivityOnTop set to false")
+  }
+
+  override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+    Log.d("ActivityLifecycle", "onActivitySaveInstanceState: ${activity.localClassName}, no change to isActivityOnTop")
+  }
+
+  override fun onActivityDestroyed(activity: Activity) {
+    Utils.isActivityOnTop = false
+    applicationActivity = null
+    Log.d("ActivityLifecycle", "onActivityDestroyed: ${activity.localClassName}, isActivityOnTop set to false")
   }
 }

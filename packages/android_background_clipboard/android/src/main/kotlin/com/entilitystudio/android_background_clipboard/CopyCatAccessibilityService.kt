@@ -11,6 +11,9 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 
+
+const val DetectionText = "CopyCat"
+
 class CopyCatAccessibilityService: AccessibilityService() {
     private val logTag = "CopyCatAccService"
     private var detectingCopyAck: Boolean = false
@@ -68,15 +71,14 @@ class CopyCatAccessibilityService: AccessibilityService() {
     }
 
     private fun detectCopyAck() {
-        Log.d(logTag, "CopyCat Service Ack starting...")
-        val text = "CopyCat"
+        Log.d(logTag, "CopyCat Service is detecting ack event...")
         detectingCopyAck = true
-        clipboardService.writeToClipboard(text)
+        clipboardService.writeToClipboard(DetectionText)
     }
 
     private fun detectCopyAckComplete() {
         detectingCopyAck = false
-        Log.d(logTag, "CopyCat Service Ack completed")
+        Log.d(logTag, "CopyCat Service successfully detected ($notificationAckText) ack event.")
     }
 
     override fun onServiceConnected() {
@@ -86,13 +88,12 @@ class CopyCatAccessibilityService: AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        Log.d(logTag, "Event : $event")
+
         if (Utils.isActivityOnTop) {
             Log.d(logTag, "Ignoring events as current activity is CopyCat itself")
             return
         }
-
-        Log.d(logTag, "Event : $event")
-
 
         if (event?.packageName?.startsWith("com.entilitystudio") == true) {
             Log.d(logTag,"Ignoring CopyCat Clipboard Events")
@@ -118,6 +119,30 @@ class CopyCatAccessibilityService: AccessibilityService() {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 event.packageName?.let {
                     currentlyActiveApp = it.toString()
+                }
+
+                // Special case for announcement type copy acknowledgement
+                if (event.packageName != "com.android.systemui" || event.className.toString() != "android.widget.FrameLayout" || event.text.isEmpty()) {
+                    return
+                }
+
+                val ackTextSplit = event.text.toString().split(",")
+                Log.d(logTag, "Ack TEXT: ${event.text} | $ackTextSplit")
+
+                if (ackTextSplit.size > 1) {
+                    val detectionText = ackTextSplit.first()
+                    val ackText = ackTextSplit.last()
+                    if (detectingCopyAck) {
+                        if (!detectionText.contains(DetectionText)) return
+                        notificationAckText = ackText
+                        detectCopyAckComplete()
+                        return
+                    }
+
+                    val copyDetected = ackText == notificationAckText
+                    if (copyDetected) {
+                        onCopyEvent()
+                    }
                 }
             }
             AccessibilityEvent.TYPE_ANNOUNCEMENT -> {

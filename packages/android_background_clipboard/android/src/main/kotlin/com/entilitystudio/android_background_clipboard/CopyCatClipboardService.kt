@@ -209,7 +209,7 @@ class CopyCatClipboardService: Service() {
 
         // Create the overlay layout
         overlayLayout = LinearLayout(this)
-
+        overlayLayout?.alpha = 0.8f;
         val color = ContextCompat.getColor(this, android.R.color.transparent)
         overlayLayout?.setBackgroundColor(color)
         overlayLayout?.orientation = LinearLayout.VERTICAL
