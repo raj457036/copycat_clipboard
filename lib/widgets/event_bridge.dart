@@ -162,6 +162,16 @@ class EventBridge extends StatelessWidget {
             }
           },
         ),
+        BlocListener<RealtimeCollectionSyncCubit, RealtimeCollectionSyncState>(
+          listenWhen: (previous, current) {
+            return previous is RealtimeCollectionSyncConnecting &&
+                current is RealtimeCollectionSyncConnected;
+          },
+          listener: (context, state) {
+            final collectionSync = context.read<CollectionSyncManagerCubit>();
+            collectionSync.syncCollections();
+          },
+        ),
         BlocListener<CollectionSyncManagerCubit, CollectionSyncManagerState>(
           listener: (context, state) async {
             final config = context.read<AppConfigCubit>().state.config;
