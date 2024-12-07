@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:atom_event_bus/atom_event_bus.dart';
 import 'package:clipboard/di/di.dart';
 import 'package:clipboard/widgets/dialogs/inconsistent_timing.dart';
@@ -33,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar/isar.dart';
+import 'package:universal_io/io.dart';
 
 class EventBridge extends StatelessWidget {
   final Widget child;
@@ -99,15 +98,12 @@ class EventBridge extends StatelessWidget {
     context.read<RealtimeCollectionSyncCubit>().unsubscribe();
     context.read<ClipSyncManagerCubit>().reset();
     context.read<CollectionSyncManagerCubit>().reset();
-    await context.read<AndroidBgClipboardCubit?>()?.reset();
-    await Future.wait([
-      context.read<MonetizationCubit>().logout(),
-      context.read<ClipCollectionCubit>().reset(),
-      // context.read<SyncManagerCubit>().reset(),
-      if (isDesktopPlatform) context.read<WindowActionCubit>().setWindowdView(),
-      clearPersistedRootDir(),
-      db.writeTxn(() => db.clear()),
-    ]);
+    if (Platform.isAndroid) context.read<AndroidBgClipboardCubit?>()?.reset();
+    context.read<MonetizationCubit>().logout();
+    context.read<ClipCollectionCubit>().reset();
+    if (isDesktopPlatform) context.read<WindowActionCubit>().setWindowdView();
+    clearPersistedRootDir();
+    db.writeTxn(() => db.clear());
 
     if (context.mounted) {
       showTextSnackbar(
@@ -223,27 +219,32 @@ class EventBridge extends StatelessWidget {
             switch (state) {
               case AuthenticatedAuthState(:final user):
                 {
-                  await context.read<MonetizationCubit>().login(user.userId);
+                  final mc = context.read<MonetizationCubit>();
                   final configCubit = context.read<AppConfigCubit>();
+                  final cc = context.read<ClipCollectionCubit>();
+                  await mc.login(user.userId);
                   await configCubit.load();
-                  await context.read<ClipCollectionCubit>().fetch();
-                  setupEncryption(context);
-                  final config = configCubit.state.config;
-                  if (config.onBoardComplete) {
-                    context.read<DriveSetupCubit>().fetch();
-                    context.read<OfflinePersistenceCubit>().startListners();
-                    // starts
-                    context
-                        .read<CollectionSyncManagerCubit>()
-                        .syncChanges(null, manual: false, restoration: false);
+                  await cc.fetch();
+                  if (context.mounted) {
+                    setupEncryption(context);
+                    final config = configCubit.state.config;
+                    if (config.onBoardComplete) {
+                      context.read<DriveSetupCubit>().fetch();
+                      context.read<OfflinePersistenceCubit>().startListeners();
+                      // starts
+                      context
+                          .read<CollectionSyncManagerCubit>()
+                          .syncChanges(null, manual: false, restoration: false);
 
-                    rootNavKey.currentContext?.goNamed(RouteConstants.home);
-                  } else {
-                    rootNavKey.currentContext?.goNamed(RouteConstants.onboard);
+                      rootNavKey.currentContext?.goNamed(RouteConstants.home);
+                    } else {
+                      rootNavKey.currentContext
+                          ?.goNamed(RouteConstants.onboard);
+                    }
                   }
                 }
               case UnauthenticatedAuthState(:final failure):
-                if (failure == null) await resetAll(context);
+                if (failure == null) resetAll(context);
                 context.read<AppConfigCubit>().reset();
                 rootNavKey.currentContext?.goNamed(RouteConstants.login);
               case UnknownAuthState() || AuthenticatingAuthState():
@@ -258,7 +259,7 @@ class EventBridge extends StatelessWidget {
                   await Future.wait([
                     context.read<AppConfigCubit>().load(),
                     context.read<ClipCollectionCubit>().fetch(),
-                    context.read<OfflinePersistenceCubit>().startListners(),
+                    context.read<OfflinePersistenceCubit>().startListeners(),
                   ]);
                 }
             }

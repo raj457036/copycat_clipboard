@@ -264,7 +264,11 @@ class CopyCatClipboardService: Service() {
             return@OnPrimaryClipChangedListener
         }
         Log.d(logTag, "Reading Primary Clipboard")
-        readClipboard()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getFocusOnOverlay()
+            readClipboard()
+            removeFocusOnOverlay()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

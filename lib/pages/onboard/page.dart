@@ -44,7 +44,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
 
   void goHome() {
     context.read<DriveSetupCubit>().fetch();
-    context.read<OfflinePersistenceCubit>().startListners();
+    context.read<OfflinePersistenceCubit>().startListeners();
     // starts
     context
         .read<CollectionSyncManagerCubit>()
