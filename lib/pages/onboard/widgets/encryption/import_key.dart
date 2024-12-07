@@ -179,6 +179,7 @@ class _ImportEncryptionKeyStepState extends State<ImportEncryptionKeyStep> {
                 Text(
                   "Import Clipboard Encryption Key",
                   style: textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
                 ),
                 height16,
                 if (importing || saving)

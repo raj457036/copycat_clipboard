@@ -11,6 +11,7 @@ import 'package:copycat_base/bloc/drive_setup_cubit/drive_setup_cubit.dart';
 import 'package:copycat_base/bloc/offline_persistance_cubit/offline_persistance_cubit.dart';
 import 'package:copycat_base/constants/strings/route_constants.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
+import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +37,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
     currentStep = widget.startingStep;
   }
 
-  void gotToPage(int step) {
+  void goToPage(int step) {
     setState(() {
       currentStep = step;
     });
@@ -60,19 +61,25 @@ class _OnBoardPageState extends State<OnBoardPage> {
         padding: const EdgeInsets.all(padding16),
         child: switch (currentStep) {
           0 => WelcomeStep(
-              onContinue: () => gotToPage(1),
+              onContinue: () => goToPage(1),
             ),
           1 => EncryptionStep(
-              onContinue: () => gotToPage(2),
+              onContinue: () {
+                if (isDesktopPlatform) {
+                  goToPage(2);
+                } else {
+                  goToPage(4);
+                }
+              },
             ),
           2 => SmartPasteStep(
-              onContinue: () => gotToPage(3),
+              onContinue: () => goToPage(3),
             ),
           3 => KeyboardShortcutStep(
-              onContinue: () => gotToPage(4),
+              onContinue: () => goToPage(4),
             ),
           4 => RestoreCollectionStep(
-              onContinue: () => gotToPage(5),
+              onContinue: () => goToPage(5),
               collectionRepository: sl(),
             ),
           5 => RestoreClipsStep(
