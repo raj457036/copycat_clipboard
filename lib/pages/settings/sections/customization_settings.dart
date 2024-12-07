@@ -1,8 +1,8 @@
 import 'package:clipboard/pages/settings/widgets/color_picker.dart';
-import 'package:clipboard/pages/settings/widgets/smart_paste_switch.dart';
-import 'package:clipboard/pages/settings/widgets/system_shortcut.dart';
-import 'package:clipboard/pages/settings/widgets/theme_dropdown.dart';
-import 'package:clipboard/pages/settings/widgets/theme_variant_dropdown.dart';
+import 'package:clipboard/pages/settings/widgets/dropdowns/theme_dropdown.dart';
+import 'package:clipboard/pages/settings/widgets/dropdowns/theme_variant_dropdown.dart';
+import 'package:clipboard/pages/settings/widgets/switches/smart_paste_switch.dart';
+import 'package:clipboard/pages/settings/widgets/switches/system_shortcut_switch.dart';
 import 'package:copycat_base/constants/widget_styles.dart';
 import 'package:flutter/material.dart';
 

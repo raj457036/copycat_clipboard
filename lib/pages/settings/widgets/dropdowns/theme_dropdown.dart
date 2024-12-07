@@ -9,6 +9,7 @@ class ThemeDropdownTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AppConfigCubit>();
     return ListTile(
       title: Text(context.locale.theme),
       contentPadding: const EdgeInsets.only(
@@ -67,11 +68,7 @@ class ThemeDropdownTile extends StatelessWidget {
                   ),
                 ),
               ],
-              onChanged: (themeMode) {
-                if (themeMode != null) {
-                  context.read<AppConfigCubit>().changeThemeMode(themeMode);
-                }
-              },
+              onChanged: cubit.changeThemeMode,
             ),
           );
         },

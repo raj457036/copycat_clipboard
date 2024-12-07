@@ -7,13 +7,14 @@ import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DontAutoUploadOver extends StatelessWidget {
-  const DontAutoUploadOver({super.key});
+class DontAutoUploadOverDropdown extends StatelessWidget {
+  const DontAutoUploadOverDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final cubit = context.read<AppConfigCubit>();
     return BlocSelector<AppConfigCubit, AppConfigState, int>(
       selector: (state) {
         switch (state) {
@@ -66,11 +67,7 @@ class DontAutoUploadOver extends StatelessWidget {
                   child: Text(context.locale.$100MB),
                 ),
               ],
-              onChanged: (size) {
-                if (size != null) {
-                  context.read<AppConfigCubit>().changeDontUploadOver(size);
-                }
-              },
+              onChanged: cubit.changeDontUploadOver,
             ),
           ),
         );

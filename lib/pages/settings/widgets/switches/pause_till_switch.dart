@@ -6,12 +6,13 @@ import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PauseTill extends StatelessWidget {
-  const PauseTill({super.key});
+class PauseTillSwitch extends StatelessWidget {
+  const PauseTillSwitch({super.key});
 
   Future<void> onPressed(BuildContext context, bool isActive) async {
+    final cubit = context.read<AppConfigCubit>();
     if (isActive) {
-      context.read<AppConfigCubit>().changePausedTill(null);
+      cubit.changePausedTill(null);
       return;
     }
     final time = await showTimePicker(
@@ -25,7 +26,7 @@ class PauseTill extends StatelessWidget {
 
       if (pauseTill.isAfter(now_)) {
         // ignore: use_build_context_synchronously
-        context.read<AppConfigCubit>().changePausedTill(pauseTill);
+        cubit.changePausedTill(pauseTill);
       }
     }
   }

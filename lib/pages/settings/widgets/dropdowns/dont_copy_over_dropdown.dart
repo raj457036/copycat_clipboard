@@ -7,14 +7,15 @@ import 'package:copycat_base/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DontAutoCopyOver extends StatelessWidget {
-  const DontAutoCopyOver({super.key});
+class DontAutoCopyOverDropdown extends StatelessWidget {
+  const DontAutoCopyOverDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {
     if (isMobilePlatform) return const SizedBox.shrink();
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final cubit = context.read<AppConfigCubit>();
     return BlocSelector<AppConfigCubit, AppConfigState, int>(
       selector: (state) {
         switch (state) {
@@ -124,11 +125,7 @@ class DontAutoCopyOver extends StatelessWidget {
                   ),
                 ),
               ],
-              onChanged: (size) {
-                if (size != null) {
-                  context.read<AppConfigCubit>().changeDontCopyOver(size);
-                }
-              },
+              onChanged: cubit.changeDontCopyOver,
             ),
           ),
         );

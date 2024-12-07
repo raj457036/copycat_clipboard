@@ -16,6 +16,7 @@ class SyncSpeedDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final cubit = context.read<AppConfigCubit>();
     return SubscriptionBuilder(
       builder: (context, subscription) {
         return BlocSelector<AppConfigCubit, AppConfigState, (SyncSpeed, bool)>(
@@ -64,15 +65,7 @@ class SyncSpeedDropdown extends StatelessWidget {
                       child: Text(context.locale.$45Sec),
                     ),
                   ],
-                  onChanged: enabled
-                      ? (duration) {
-                          if (duration != null) {
-                            context
-                                .read<AppConfigCubit>()
-                                .changeAutoSyncDuration(duration);
-                          }
-                        }
-                      : null,
+                  onChanged: enabled ? cubit.changeAutoSyncDuration : null,
                 ),
               ),
             );

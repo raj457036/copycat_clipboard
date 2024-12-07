@@ -14,6 +14,8 @@ class ThemeVariantDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colors = context.colors;
+    final cubit = context.read<AppConfigCubit>();
+
     return SubscriptionBuilder(builder: (context, subscription) {
       final hasAccess =
           subscription != null && subscription.isActive && subscription.theming;
@@ -81,14 +83,7 @@ class ThemeVariantDropdown extends StatelessWidget {
                     child: Text(context.locale.vibrant),
                   ),
                 ],
-                onChanged: hasAccess
-                    ? (variant) {
-                        if (variant != null) {
-                          final cubit = context.read<AppConfigCubit>();
-                          cubit.setThemeColorVariant(variant);
-                        }
-                      }
-                    : null,
+                onChanged: hasAccess ? cubit.setThemeColorVariant : null,
               ),
             );
           },
