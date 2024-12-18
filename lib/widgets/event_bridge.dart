@@ -72,22 +72,23 @@ class EventBridge extends StatelessWidget {
 
   Future<void> setupEncryption(BuildContext context) async {
     final config = context.read<AppConfigCubit>().state.config;
-    if (!EncrypterWorker.instance.isRunning) {
-      if (config.enc2Key == null) return;
-      final authState = context.read<AuthCubit>().state;
+    if (config.enc2Key == null) return;
 
+    final encryptionWorker = EncryptionWorker.instance;
+    if (!encryptionWorker.isRunning || !encryptionWorker.isStarting) {
+      final authState = context.read<AuthCubit>().state;
       if (authState is AuthenticatedAuthState) {
         final enc1 = authState.user.enc1;
         if (enc1 == null) return;
         final encMngr = EncryptionManager(config.enc2Key!);
         final enc1Decrypt = encMngr.decrypt(enc1);
-        await EncrypterWorker.instance.start(enc1Decrypt);
+        await encryptionWorker.start(enc1Decrypt);
       }
     }
   }
 
   Future<void> resetAll(BuildContext context) async {
-    EncrypterWorker.instance.dispose();
+    EncryptionWorker.instance.dispose();
     final Isar db = sl();
     context.read<OfflinePersistenceCubit>().stopListeners();
     context.read<DriveSetupCubit>().reset();
@@ -186,11 +187,11 @@ class EventBridge extends StatelessWidget {
                   await clipSync.syncClips(manual: manual);
                   switch (config.syncSpeed) {
                     case SyncSpeed.realtime:
-                      realtimeCollection.subscribe();
                       collectionSync.stopPolling();
+                      realtimeCollection.subscribe();
                     case SyncSpeed.balanced:
-                      realtimeCollection.unsubscribe();
                       collectionSync.startPolling();
+                      realtimeCollection.unsubscribe();
                   }
                 }
               case CollectionSyncFailed(:final failure):
@@ -288,7 +289,7 @@ class EventBridge extends StatelessWidget {
                     const InconsistentTiming().open();
                   }
 
-                  EncrypterWorker.instance.setEncryption(config.autoEncrypt);
+                  EncryptionWorker.instance.setEncryption(config.autoEncrypt);
                   setupEncryption(context);
                 }
               case _:

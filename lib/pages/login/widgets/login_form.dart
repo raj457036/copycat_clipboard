@@ -1,5 +1,6 @@
 import 'package:clipboard/pages/login/widgets/local_signin_button.dart';
 import 'package:clipboard/widgets/locale_dropdown_button.dart';
+import 'package:copycat_base/bloc/app_config_cubit/app_config_cubit.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/common/failure.dart';
 import 'package:copycat_base/constants/numbers/breakpoints.dart';
@@ -91,11 +92,12 @@ class LoginForm extends StatelessWidget {
                     width: 350,
                     // height: 390,
                     child: CopyCatClipboardLoginForm(
-                      onSignUpComplete: (user, accessToken) {
-                        final cubit = context.read<AuthCubit>();
-                        cubit.authenticated(user, accessToken);
-
-                        cubit.analyticsRepo.logSignup(
+                      onSignUpComplete: (user, accessToken) async {
+                        final appConfigCubit = context.read<AppConfigCubit>();
+                        final authCubit = context.read<AuthCubit>();
+                        await appConfigCubit.changeOnBoardStatus(false);
+                        authCubit.authenticated(user, accessToken);
+                        authCubit.analyticsRepo.logSignup(
                           signUpMethod: "Email",
                           parameters: {
                             "userId": user.userId,
@@ -103,10 +105,12 @@ class LoginForm extends StatelessWidget {
                           },
                         );
                       },
-                      onSignInComplete: (user, accessToken) {
-                        final cubit = context.read<AuthCubit>();
-                        cubit.authenticated(user, accessToken);
-                        cubit.analyticsRepo.logSignin(
+                      onSignInComplete: (user, accessToken) async {
+                        final appConfigCubit = context.read<AppConfigCubit>();
+                        final authCubit = context.read<AuthCubit>();
+                        await appConfigCubit.changeOnBoardStatus(false);
+                        authCubit.authenticated(user, accessToken);
+                        authCubit.analyticsRepo.logSignin(
                           loginMethod: "Email",
                           parameters: {
                             "userId": user.userId,

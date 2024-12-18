@@ -1,5 +1,6 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:clipboard/utils/utility.dart';
-import 'package:clipboard/widgets/syncing.dart';
+import 'package:clipboard/widgets/realtime_status.dart';
 import 'package:copycat_base/bloc/auth_cubit/auth_cubit.dart';
 import 'package:copycat_base/bloc/clip_sync_manager_cubit/clip_sync_manager_cubit.dart';
 import 'package:copycat_base/bloc/collection_sync_manager_cubit/collection_sync_manager_cubit.dart';
@@ -14,6 +15,7 @@ class SyncStatusFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final collectionSyncCubit = context.read<CollectionSyncManagerCubit>();
     return BlocSelector<AuthCubit, AuthState, bool>(
       selector: (state) {
         return state is LocalAuthenticatedAuthState;
@@ -91,17 +93,24 @@ class SyncStatusFAB extends StatelessWidget {
           ],
           child: StatefulBuilder(builder: (context, updateState) {
             setState = updateState;
-            return FloatingActionButton.small(
-              onPressed: disabled
-                  ? null
-                  : () => context
-                      .read<CollectionSyncManagerCubit>()
-                      .syncCollections(manual: true),
-              tooltip: "$message • $metaKey + R",
-              heroTag: "sync-fab",
-              backgroundColor: colors.secondary,
-              foregroundColor: colors.onSecondary,
-              child: isSyncing ? const AnimatedSyncingIcon() : Icon(icon),
+            return RealTimeConnectionStatus(
+              child: FloatingActionButton.small(
+                onPressed: disabled
+                    ? null
+                    : () => collectionSyncCubit.syncCollections(manual: true),
+                tooltip: "$message • $metaKey + R",
+                heroTag: "sync-fab",
+                backgroundColor: colors.secondary,
+                foregroundColor: colors.onSecondary,
+                child: isSyncing
+                    ? Spin(
+                        infinite: true,
+                        spins: -1,
+                        curve: Curves.linear,
+                        child: Icon(Icons.sync_rounded),
+                      )
+                    : Icon(icon),
+              ),
             );
           }),
         );
