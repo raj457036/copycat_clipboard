@@ -93,7 +93,6 @@ dev_dependencies:
   sentry_dart_plugin: ^2.0.0
 
 dependency_overrides:
-  device_info_plus: ^11.1.1
   intl: ^0.19.0
   analyzer: ^6.4.1
   screen_retriever: ^0.2.0

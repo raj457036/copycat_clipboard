@@ -14,7 +14,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   isar_flutter_libs
   media_kit_libs_linux
   media_kit_video
-  platform_device_id_linux
   screen_retriever_linux
   sentry_flutter
   super_native_extensions
