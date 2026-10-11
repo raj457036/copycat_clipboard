@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CopyCat Clipboard"
-#define MyAppVersion "2.0.17+114"
+#define MyAppVersion "2.0.21+125"
 #define MyAppPublisher "Entility Studio"
 #define MyAppExeName "Clipboard.exe"
 #define MyAppAssocName MyAppName + ""
@@ -73,6 +73,7 @@ Source: "..\build\windows\x64\runner\Release\quick_paste_popup_plugin.dll"; Dest
 Source: "..\build\windows\x64\runner\Release\vk_swiftshader.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\x64\runner\Release\vulkan-1.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\x64\runner\Release\zlib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\build\windows\x64\runner\Release\fc_native_video_thumbnail_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 //Source: "..\build\windows\x64\runner\Release\volume_controller_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "..\build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
