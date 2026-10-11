@@ -445,17 +445,17 @@ IsarAppConfig _isarAppConfigDeserialize(
   object.smartPaste = reader.readBool(offsets[34]);
   object.sortBy =
       _IsarAppConfigsortByValueEnumMap[reader.readStringOrNull(offsets[35])] ??
-      ClipboardSortKey.created;
+      ClipboardSortKey.modified;
   object.sortOrder =
       _IsarAppConfigsortOrderValueEnumMap[reader.readStringOrNull(
         offsets[36],
       )] ??
-      SortOrder.asc;
+      SortOrder.desc;
   object.syncSpeed =
       _IsarAppConfigsyncSpeedValueEnumMap[reader.readStringOrNull(
         offsets[37],
       )] ??
-      SyncSpeed.realtime;
+      SyncSpeed.balanced;
   object.themeColor = reader.readLong(offsets[38]);
   object.themeMode =
       _IsarAppConfigthemeModeValueEnumMap[reader.readStringOrNull(
@@ -574,19 +574,19 @@ P _isarAppConfigDeserializeProp<P>(
       return (_IsarAppConfigsortByValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
-              ClipboardSortKey.created)
+              ClipboardSortKey.modified)
           as P;
     case 36:
       return (_IsarAppConfigsortOrderValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
-              SortOrder.asc)
+              SortOrder.desc)
           as P;
     case 37:
       return (_IsarAppConfigsyncSpeedValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
-              SyncSpeed.realtime)
+              SyncSpeed.balanced)
           as P;
     case 38:
       return (reader.readLong(offset)) as P;
@@ -649,29 +649,29 @@ const _IsarAppConfiglayoutValueEnumMap = {
   r'list': AppLayout.list,
 };
 const _IsarAppConfigsortByEnumValueMap = {
-  r'created': r'created',
   r'modified': r'modified',
+  r'created': r'created',
   r'lastCopied': r'lastCopied',
   r'copyCount': r'copyCount',
 };
 const _IsarAppConfigsortByValueEnumMap = {
-  r'created': ClipboardSortKey.created,
   r'modified': ClipboardSortKey.modified,
+  r'created': ClipboardSortKey.created,
   r'lastCopied': ClipboardSortKey.lastCopied,
   r'copyCount': ClipboardSortKey.copyCount,
 };
-const _IsarAppConfigsortOrderEnumValueMap = {r'asc': r'asc', r'desc': r'desc'};
+const _IsarAppConfigsortOrderEnumValueMap = {r'desc': r'desc', r'asc': r'asc'};
 const _IsarAppConfigsortOrderValueEnumMap = {
-  r'asc': SortOrder.asc,
   r'desc': SortOrder.desc,
+  r'asc': SortOrder.asc,
 };
 const _IsarAppConfigsyncSpeedEnumValueMap = {
-  r'realtime': r'realtime',
   r'balanced': r'balanced',
+  r'realtime': r'realtime',
 };
 const _IsarAppConfigsyncSpeedValueEnumMap = {
-  r'realtime': SyncSpeed.realtime,
   r'balanced': SyncSpeed.balanced,
+  r'realtime': SyncSpeed.realtime,
 };
 const _IsarAppConfigthemeModeEnumValueMap = {
   r'system': r'system',

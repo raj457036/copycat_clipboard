@@ -157,17 +157,17 @@ const _$AppViewEnumMap = {
 };
 
 const _$ClipboardSortKeyEnumMap = {
-  ClipboardSortKey.created: 'created',
   ClipboardSortKey.modified: 'modified',
+  ClipboardSortKey.created: 'created',
   ClipboardSortKey.lastCopied: 'lastCopied',
   ClipboardSortKey.copyCount: 'copyCount',
 };
 
-const _$SortOrderEnumMap = {SortOrder.asc: 'asc', SortOrder.desc: 'desc'};
+const _$SortOrderEnumMap = {SortOrder.desc: 'desc', SortOrder.asc: 'asc'};
 
 const _$SyncSpeedEnumMap = {
-  SyncSpeed.realtime: 'realtime',
   SyncSpeed.balanced: 'balanced',
+  SyncSpeed.realtime: 'realtime',
 };
 
 const _$DynamicSchemeVariantEnumMap = {

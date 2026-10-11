@@ -20,6 +20,7 @@ class Favicon extends StatelessWidget {
           height: size,
           width: size,
           filterQuality: FilterQuality.low,
+          gaplessPlayback: true,
         );
 
         if (padding != null) {

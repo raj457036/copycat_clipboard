@@ -16,7 +16,7 @@ const int defaultThemeColor = 0xFF322C57;
 
 enum AppLayout { grid, list }
 
-enum SyncSpeed { realtime, balanced }
+enum SyncSpeed { balanced, realtime }
 
 enum AppView { topDocked, bottomDocked, leftDocked, rightDocked, windowed }
 

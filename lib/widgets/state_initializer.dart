@@ -278,9 +278,10 @@ class _StateInitializerState extends State<StateInitializer>
     }
 
     if (isBackgrounded) {
-      backgroundStateDebounce(
-        () => context.read<ClipboardCubit?>()?.setBackgrounded(isBackgrounded),
-      );
+      backgroundStateDebounce(() {
+        if (!mounted) return;
+        context.read<ClipboardCubit?>()?.setBackgrounded(isBackgrounded);
+      });
       context.read<OfflinePersistenceCubit?>()?.clearTransientState();
     } else {
       backgroundStateDebounce.cancel();

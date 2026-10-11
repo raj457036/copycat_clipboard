@@ -283,11 +283,11 @@ class MainApp extends StatelessWidget {
 
     if (kDebugMode) {
       return GizmoOverlay(
-        enabled: false,
+        enabled: true,
         fpsGizmo: false,
-        focusGizmo: true,
+        focusGizmo: false,
         child: DevicePreview(
-          enabled: false,
+          enabled: true,
           tools: const [
             ...DevicePreview.defaultTools,
             DevicePreviewScreenshot(onScreenshot: screenshotAsFile),

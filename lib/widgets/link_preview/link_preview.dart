@@ -55,12 +55,7 @@ class _LinkPreviewItem extends StatelessWidget {
             ),
           )
         else
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(top: padding44),
-              child: ImageNotFound(),
-            ),
-          ),
+          const Expanded(child: ImageNotFound()),
         height4,
         if (title != null && title!.isNotEmpty)
           Padding(

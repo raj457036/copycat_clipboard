@@ -3,7 +3,7 @@ import 'package:clipboard/base/enums/clip_type.dart';
 import 'package:clipboard/base/enums/sort.dart';
 import 'package:clipboard/common/paginated_results.dart';
 
-enum ClipboardSortKey { created, modified, lastCopied, copyCount }
+enum ClipboardSortKey { modified, created, lastCopied, copyCount }
 
 abstract class ClipboardSource {
   Future<ClipboardItem?> get({int? id, int? serverId});
