@@ -405,7 +405,7 @@ IsarAppConfig _isarAppConfigDeserialize(
       _IsarAppConfigclipboardFeedbackModeValueEnumMap[reader.readStringOrNull(
         offsets[4],
       )] ??
-      ClipboardFeedbackMode.disabled;
+      ClipboardFeedbackMode.copyAndSync;
   object.dontCopyOver = reader.readLong(offsets[5]);
   object.dontUploadOver = reader.readLong(offsets[6]);
   object.enableDragNDrop = reader.readBool(offsets[7]);
@@ -472,7 +472,7 @@ IsarAppConfig _isarAppConfigDeserialize(
   object.useEncryptionNonce = reader.readBool(offsets[43]);
   object.view =
       _IsarAppConfigviewValueEnumMap[reader.readStringOrNull(offsets[44])] ??
-      AppView.topDocked;
+      AppView.windowed;
   object.windowHeight = reader.readDouble(offsets[45]);
   object.windowWidth = reader.readDouble(offsets[46]);
   return object;
@@ -499,7 +499,7 @@ P _isarAppConfigDeserializeProp<P>(
     case 4:
       return (_IsarAppConfigclipboardFeedbackModeValueEnumMap[reader
                   .readStringOrNull(offset)] ??
-              ClipboardFeedbackMode.disabled)
+              ClipboardFeedbackMode.copyAndSync)
           as P;
     case 5:
       return (reader.readLong(offset)) as P;
@@ -610,7 +610,7 @@ P _isarAppConfigDeserializeProp<P>(
       return (reader.readBool(offset)) as P;
     case 44:
       return (_IsarAppConfigviewValueEnumMap[reader.readStringOrNull(offset)] ??
-              AppView.topDocked)
+              AppView.windowed)
           as P;
     case 45:
       return (reader.readDouble(offset)) as P;
@@ -630,17 +630,17 @@ const _IsarAppConfigactiveStorageProviderValueEnumMap = {
   r'webdav': ActiveCloudStorageProvider.webdav,
 };
 const _IsarAppConfigclipboardFeedbackModeEnumValueMap = {
+  r'copyAndSync': r'copyAndSync',
   r'disabled': r'disabled',
   r'copyOnly': r'copyOnly',
   r'syncOnly': r'syncOnly',
-  r'copyAndSync': r'copyAndSync',
   r'toast': r'toast',
 };
 const _IsarAppConfigclipboardFeedbackModeValueEnumMap = {
+  r'copyAndSync': ClipboardFeedbackMode.copyAndSync,
   r'disabled': ClipboardFeedbackMode.disabled,
   r'copyOnly': ClipboardFeedbackMode.copyOnly,
   r'syncOnly': ClipboardFeedbackMode.syncOnly,
-  r'copyAndSync': ClipboardFeedbackMode.copyAndSync,
   r'toast': ClipboardFeedbackMode.toast,
 };
 const _IsarAppConfiglayoutEnumValueMap = {r'grid': r'grid', r'list': r'list'};
@@ -706,18 +706,18 @@ const _IsarAppConfigthemeVariantValueEnumMap = {
   r'fruitSalad': DynamicSchemeVariant.fruitSalad,
 };
 const _IsarAppConfigviewEnumValueMap = {
+  r'windowed': r'windowed',
   r'topDocked': r'topDocked',
   r'bottomDocked': r'bottomDocked',
   r'leftDocked': r'leftDocked',
   r'rightDocked': r'rightDocked',
-  r'windowed': r'windowed',
 };
 const _IsarAppConfigviewValueEnumMap = {
+  r'windowed': AppView.windowed,
   r'topDocked': AppView.topDocked,
   r'bottomDocked': AppView.bottomDocked,
   r'leftDocked': AppView.leftDocked,
   r'rightDocked': AppView.rightDocked,
-  r'windowed': AppView.windowed,
 };
 
 Id _isarAppConfigGetId(IsarAppConfig object) {

@@ -149,11 +149,11 @@ const _$ActiveCloudStorageProviderEnumMap = {
 const _$AppLayoutEnumMap = {AppLayout.grid: 'grid', AppLayout.list: 'list'};
 
 const _$AppViewEnumMap = {
+  AppView.windowed: 'windowed',
   AppView.topDocked: 'topDocked',
   AppView.bottomDocked: 'bottomDocked',
   AppView.leftDocked: 'leftDocked',
   AppView.rightDocked: 'rightDocked',
-  AppView.windowed: 'windowed',
 };
 
 const _$ClipboardSortKeyEnumMap = {

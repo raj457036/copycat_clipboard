@@ -18,13 +18,13 @@ enum AppLayout { grid, list }
 
 enum SyncSpeed { balanced, realtime }
 
-enum AppView { topDocked, bottomDocked, leftDocked, rightDocked, windowed }
+enum AppView { windowed, topDocked, bottomDocked, leftDocked, rightDocked }
 
 enum ClipboardFeedbackMode {
+  copyAndSync,
   disabled,
   copyOnly,
   syncOnly,
-  copyAndSync,
   @Deprecated('Use copyAndSync instead')
   toast,
 }
@@ -104,10 +104,7 @@ abstract class AppConfig with _$AppConfig, Identifiable {
     @Default(false) bool transformAsNewClip,
 
     /// Controls the feedback shown when a clip is captured or received.
-    @JsonKey(
-      fromJson: _feedbackModeFromJson,
-      toJson: _feedbackModeToJson,
-    )
+    @JsonKey(fromJson: _feedbackModeFromJson, toJson: _feedbackModeToJson)
     @Default(ClipboardFeedbackMode.copyAndSync)
     ClipboardFeedbackMode clipboardFeedbackMode,
 
