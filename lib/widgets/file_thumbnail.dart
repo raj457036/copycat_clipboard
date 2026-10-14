@@ -6,12 +6,14 @@ class FileThumbnail extends StatelessWidget {
   final ClipboardItem item;
   final double widgetSize;
   final String? modifier;
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
 
   const FileThumbnail({
     super.key,
     required this.item,
     required this.widgetSize,
     this.modifier,
+    this.contextMenuBuilder,
   });
 
   bool get _canShowThumbnail {
@@ -35,6 +37,7 @@ class FileThumbnail extends StatelessWidget {
         fileSize: item.fileSize,
         modifier: modifier,
       ),
+      contextMenuBuilder: contextMenuBuilder,
       errorWidget: const Icon(Icons.insert_drive_file_rounded),
     );
   }

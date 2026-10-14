@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class TextThumbnailView extends StatefulWidget {
   final String filePath;
   final bool isFullView;
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
 
   const TextThumbnailView({
     super.key,
     required this.filePath,
     this.isFullView = false,
+    this.contextMenuBuilder,
   });
 
   @override
@@ -67,6 +69,7 @@ class _TextThumbnailViewState extends State<TextThumbnailView> {
       return SelectableText(
         text,
         style: Theme.of(context).textTheme.bodySmall,
+        contextMenuBuilder: widget.contextMenuBuilder,
       );
     }
 

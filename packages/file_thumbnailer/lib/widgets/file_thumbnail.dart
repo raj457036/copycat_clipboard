@@ -14,6 +14,7 @@ class FileThumbnail extends StatefulWidget {
   final BoxFit fit;
   final Alignment alignment;
   final bool showVideoBadge;
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
 
   const FileThumbnail({
     super.key,
@@ -23,6 +24,7 @@ class FileThumbnail extends StatefulWidget {
     this.fit = BoxFit.fitWidth,
     this.alignment = Alignment.topCenter,
     this.showVideoBadge = false,
+    this.contextMenuBuilder,
   });
 
   FileThumbnail.fromPath({
@@ -37,6 +39,7 @@ class FileThumbnail extends StatefulWidget {
     this.fit = BoxFit.fitWidth,
     this.alignment = Alignment.topCenter,
     this.showVideoBadge = false,
+    this.contextMenuBuilder,
   }) : request = ThumbnailRequest(
          filePath: filePath,
          widgetSize: widgetSize,
@@ -215,6 +218,7 @@ class _FileThumbnailState extends State<FileThumbnail> {
       return TextThumbnailView(
         filePath: widget.request.filePath,
         isFullView: isFullView,
+        contextMenuBuilder: widget.contextMenuBuilder,
       );
     }
 

@@ -43,6 +43,9 @@ class FileClipPreviewCard extends StatelessWidget {
                   item: item,
                   widgetSize: 350,
                   modifier: "full_view",
+                  contextMenuBuilder: isDesktopPlatform
+                      ? textSelectionToolbarButtonItems
+                      : null,
                 ),
               Text.rich(
                 TextSpan(
