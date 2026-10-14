@@ -508,13 +508,14 @@ Widget textSelectionToolbarButtonItems(
         },
         type: ContextMenuButtonType.copy,
       ),
-      ContextMenuButtonItem(
-        onPressed: () async {
-          await pasteOnLastWindow(context, tempClipItem);
-          ContextMenuController.removeAny();
-        },
-        type: ContextMenuButtonType.paste,
-      ),
+      if (isDesktopPlatform)
+        ContextMenuButtonItem(
+          onPressed: () async {
+            await pasteOnLastWindow(context, tempClipItem);
+            ContextMenuController.removeAny();
+          },
+          type: ContextMenuButtonType.paste,
+        ),
       ...editableTextState.contextMenuButtonItems.skipWhile(
         (t) => [
           ContextMenuButtonType.copy,

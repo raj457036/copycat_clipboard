@@ -74,9 +74,7 @@ class TextClipPreviewCard extends StatelessWidget {
           child: SelectableText(
             item.text ?? context.locale.preview__card__missing_text,
             style: style,
-            contextMenuBuilder: isDesktopPlatform
-                ? textSelectionToolbarButtonItems
-                : null,
+            contextMenuBuilder: textSelectionToolbarButtonItems,
           ),
         ),
       ),

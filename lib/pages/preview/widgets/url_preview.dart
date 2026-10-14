@@ -4,7 +4,6 @@ import 'package:clipboard/base/l10n/l10n.dart';
 import 'package:clipboard/pages/preview/view/clip_preview_config.dart';
 import 'package:clipboard/utils/clipboard_actions.dart';
 import 'package:clipboard/utils/common_extension.dart';
-import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/link_preview/link_preview.dart';
 import 'package:flutter/material.dart';
 
@@ -46,9 +45,7 @@ class URLClipPreviewCard extends StatelessWidget {
               item.url ?? context.locale.preview__card__missing_text,
               textAlign: TextAlign.center,
               style: context.textTheme.bodyLarge,
-              contextMenuBuilder: isDesktopPlatform
-                  ? textSelectionToolbarButtonItems
-                  : null,
+              contextMenuBuilder: textSelectionToolbarButtonItems,
             ),
           ],
         ),
