@@ -109,7 +109,6 @@ dependencies:
   file_thumbnailer:
     path: packages/file_thumbnailer
   image_size_getter: ^2.4.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

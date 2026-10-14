@@ -217,7 +217,10 @@ class CopyCatClipboardService : Service() {
             "content" -> {
                 // Skip URIs we wrote ourselves via the LAN binary receiver
                 // the clip is already persisted via onLanClipReceived().
-                if (uri.authority == "${applicationContext.packageName}.fileProvider") {
+                val isSelfAuthority = uri.authority?.equals(
+                    "${applicationContext.packageName}.fileProvider", ignoreCase = true
+                ) == true
+                if (isSelfAuthority) {
                     debugLog(logTag) { "Skipping self-written FileProvider URI" }
                     return ClipAction.Pending
                 }

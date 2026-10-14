@@ -243,6 +243,24 @@ abstract class AppLocalizations {
   /// **'Share'**
   String get app__share;
 
+  /// No description provided for @app__clip_actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Clip Actions'**
+  String get app__clip_actions;
+
+  /// No description provided for @app__copy_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Content'**
+  String get app__copy_content;
+
+  /// No description provided for @app__paste_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste Content'**
+  String get app__paste_content;
+
   /// No description provided for @app__loading.
   ///
   /// In en, this message translates to:

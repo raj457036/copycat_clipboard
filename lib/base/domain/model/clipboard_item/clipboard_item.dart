@@ -290,6 +290,9 @@ abstract class ClipboardItem with _$ClipboardItem, Identifiable, Syncable {
 
   bool get isTextType => type == ClipItemType.text || type == ClipItemType.url;
 
+  bool get isImage =>
+      fileMimeType?.trim().toLowerCase().startsWith('image/') ?? false;
+
   String? get contentHash {
     switch (type) {
       case ClipItemType.text:

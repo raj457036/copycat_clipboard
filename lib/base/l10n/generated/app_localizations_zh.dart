@@ -78,6 +78,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get app__share => '分享';
 
   @override
+  String get app__clip_actions => '剪贴项操作';
+
+  @override
+  String get app__copy_content => '复制内容';
+
+  @override
+  String get app__paste_content => '粘贴内容';
+
+  @override
   String get app__loading => '加载中...';
 
   @override

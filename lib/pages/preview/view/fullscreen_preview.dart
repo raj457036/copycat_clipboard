@@ -11,7 +11,7 @@ class ClipPreviewFullscreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final preview = item.fileMimeType?.startsWith("image/") == true
+    final preview = item.isImage
         ? Hero(
             tag: "Clip--${item.id}",
             child: ClipPreview(item: item),

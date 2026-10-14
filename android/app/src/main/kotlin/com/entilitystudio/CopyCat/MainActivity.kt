@@ -1,5 +1,9 @@
 package com.entilitystudio.CopyCat
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
@@ -18,6 +22,30 @@ class MainActivity : FlutterFragmentActivity() {
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, dragFileUriChannelName)
             .setMethodCallHandler { call, result ->
+                if (call.method == "writeFileClipboard") {
+                    runCatching {
+                        val uris = call.argument<List<String>>("uris")
+                        require(!uris.isNullOrEmpty()) { "Clipboard files are empty" }
+                        val contentUris = uris.map { value ->
+                            Uri.parse(value).also {
+                                require(it.scheme == "content") { "Expected a content URI" }
+                            }
+                        }
+                        val clipboardData = ClipData.newUri(
+                            contentResolver, "CopyCat", contentUris.first(),
+                        )
+                        contentUris.drop(1).forEach {
+                            clipboardData.addItem(contentResolver, ClipData.Item(it))
+                        }
+                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setPrimaryClip(clipboardData)
+                    }.onSuccess {
+                        result.success(null)
+                    }.onFailure { error ->
+                        result.error("clipboard_write_failed", error.message, null)
+                    }
+                    return@setMethodCallHandler
+                }
                 if (call.method != "getContentUriForPath") {
                     result.notImplemented()
                     return@setMethodCallHandler
@@ -37,8 +65,9 @@ class MainActivity : FlutterFragmentActivity() {
 
                     FileProvider.getUriForFile(
                         this,
-                        "${applicationContext.packageName}.fileProvider",
+                        "${applicationContext.packageName.lowercase()}.fileprovider",
                         file,
+                        call.argument<String>("name") ?: file.name,
                     ).toString()
                 }.onSuccess { uriString ->
                     result.success(uriString)

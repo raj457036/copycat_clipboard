@@ -28,16 +28,11 @@ class ClipItemPreviewVerticalView extends StatelessWidget {
         children: [
           Stack(
             children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(
-                  minHeight: 280,
-                  maxHeight: 360,
-                ),
+              LimitedBox(
+                maxHeight: 450,
                 child: ClipPreviewConfig(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: item.fileMimeType?.startsWith("image/") == true
+                  shape: const RoundedRectangleBorder(borderRadius: radius16),
+                  child: item.isImage
                       ? Hero(
                           tag: "Clip--${item.id}",
                           child: ClipPreview(item: item),

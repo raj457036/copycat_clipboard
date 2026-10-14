@@ -79,6 +79,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get app__share => 'Partager';
 
   @override
+  String get app__clip_actions => 'Actions du clip';
+
+  @override
+  String get app__copy_content => 'Copier le contenu';
+
+  @override
+  String get app__paste_content => 'Coller le contenu';
+
+  @override
   String get app__loading => 'Chargement...';
 
   @override

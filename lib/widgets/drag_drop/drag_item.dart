@@ -124,10 +124,7 @@ class DraggableItem extends StatelessWidget {
   Future<void> _addImageRepresentationIfPossible(DragItem dragItem) async {
     final path = item.localPath?.trim();
     final mime = item.fileMimeType?.toLowerCase().trim();
-    if (path == null ||
-        path.isEmpty ||
-        mime == null ||
-        !mime.startsWith('image/')) {
+    if (path == null || path.isEmpty || !item.isImage) {
       return;
     }
 

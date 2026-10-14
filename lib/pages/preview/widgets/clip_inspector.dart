@@ -578,8 +578,7 @@ class _ClipInspectorState extends State<ClipInspector> {
       );
     }
 
-    if (item.fileMimeType?.startsWith("image/") == true &&
-        item.localPath != null) {
+    if (item.isImage && item.localPath != null) {
       final resolution = getImageResolution(item.localPath!);
       if (resolution != null) {
         rows.add(

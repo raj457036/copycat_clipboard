@@ -719,7 +719,7 @@ class CopyCatLanSyncManager(
                 }
                 val uri = FileProvider.getUriForFile(
                     appContext,
-                    "${appContext.packageName}.fileProvider",
+                    "${appContext.packageName.lowercase()}.fileprovider",
                     tempFile,
                 )
                 val clipData = AndroidClipData.newUri(appContext.contentResolver, fileName, uri)

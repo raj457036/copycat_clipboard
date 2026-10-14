@@ -9,6 +9,8 @@ import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as p;
@@ -27,6 +29,9 @@ export 'package:clipboard/base/data/services/clipboard/read_strategy.dart';
 @singleton
 class ClipboardService with ClipboardListener {
   static const _logger = AppLogger.scoped('Clipboard Service');
+  static const _fileClipboardChannel = MethodChannel(
+    'com.entilitystudio.CopyCat/drag_file_uri',
+  );
   bool _writing = false;
   bool _started = false;
   int _captureSuppressionDepth = 0;
@@ -97,12 +102,25 @@ class ClipboardService with ClipboardListener {
     }
   }
 
-  Future<void> write(Iterable<DataWriterItem> items) async {
+  Future<void> write(
+    Iterable<DataWriterItem> items, {
+    List<Uri>? androidFileUris,
+  }) async {
     if (items.isEmpty) return;
     setWriting(true);
-    await SystemClipboard.instance?.write(items);
-    await wait(Durations.short1.inMilliseconds);
-    setWriting();
+    try {
+      if (androidFileUris != null) {
+        await _fileClipboardChannel.invokeMethod<void>(
+          'writeFileClipboard',
+          {'uris': androidFileUris.map((uri) => uri.toString()).toList()},
+        );
+      } else {
+        await SystemClipboard.instance?.write(items);
+      }
+      await wait(Durations.short1.inMilliseconds);
+    } finally {
+      setWriting();
+    }
   }
 
   Future<void> start([void Function()? onRead]) async {
@@ -225,9 +243,10 @@ class ClipboardService with ClipboardListener {
 }
 
 /// Accumulates clipboard write operations and commits them as a single
-/// [SystemClipboard.write] call, suppressing the re-capture listener.
+/// clipboard write, suppressing the re-capture listener.
 class CopyToClipboard {
   final List<DataWriterItem> _items;
+  final List<Uri> _androidFileUris = [];
 
   CopyToClipboard() : _items = <DataWriterItem>[];
 
@@ -235,7 +254,13 @@ class CopyToClipboard {
     if (_items.isEmpty) return false;
     try {
       await service.runWithCaptureSuppressed(() async {
-        await service.write(_items);
+        await service.write(
+          _items,
+          // Mixed batches keep all representations on the standard writer.
+          androidFileUris: _androidFileUris.length == _items.length
+              ? _androidFileUris
+              : null,
+        );
       });
       return true;
     } catch (e) {
@@ -294,19 +319,16 @@ class CopyToClipboard {
         mimeType ??
         mime.lookupMimeType(file.path) ??
         'application/octet-stream';
-    final Uri resolvedUri = await resolveFileUri(file.path);
     final String baseName = fileName?.trim().isNotEmpty == true
         ? fileName!.trim()
         : p.basename(file.path);
+    final Uri resolvedUri = await resolveFileUri(file.path, fileName: baseName);
 
     final DataWriterItem item = DataWriterItem(suggestedName: baseName);
 
     final String lowerMime = resolvedMime.toLowerCase();
 
-    if (lowerMime.startsWith('text/')) {
-      item.add(Formats.plainText.lazy(() => file.readAsString()));
-      if (!isMobilePlatform) item.add(Formats.fileUri(resolvedUri));
-    } else if (lowerMime.startsWith('image/')) {
+    if (lowerMime.startsWith('image/')) {
       SimpleFileFormat? imageFormat;
       for (final f in allSupportedClipFormats) {
         if (f is SimpleFileFormat &&
@@ -317,13 +339,16 @@ class CopyToClipboard {
       }
       imageFormat ??= Formats.png;
       item.add(imageFormat.lazy(() => file.readAsBytes()));
-      if (!isMobilePlatform) item.add(Formats.fileUri(resolvedUri));
+      item.add(Formats.fileUri(resolvedUri));
     } else {
       item.add(Formats.fileUri(resolvedUri));
-      if (!isMobilePlatform) item.add(Formats.plainText(file.path));
     }
 
     _items.add(item);
+    if (defaultTargetPlatform == TargetPlatform.android &&
+        resolvedUri.scheme == 'content') {
+      _androidFileUris.add(resolvedUri);
+    }
     return true;
   }
 

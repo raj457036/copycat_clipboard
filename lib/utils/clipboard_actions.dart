@@ -15,6 +15,7 @@ import 'package:clipboard/base/domain/model/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/base/domain/model/notification_message.dart'
     show NotificationMessage, NotificationContent;
 import 'package:clipboard/base/domain/model/route_payload.dart';
+import 'package:clipboard/base/enums/clip_type.dart';
 import 'package:clipboard/base/l10n/l10n.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:clipboard/di/di.dart';
@@ -163,16 +164,13 @@ Future<void> shareClipboardItem(
   if (!context.mounted) return;
 
   final ctx = context.mounted ? context : rootNavigationKey.currentContext!;
+  final errorMessage = ctx.locale.app__unknown_error;
   try {
-    unawaited(
-      ctx.read<OfflinePersistenceCubit>().shareClipboardItem(ctx, item),
-    );
+    await ctx.read<OfflinePersistenceCubit>().shareClipboardItem(ctx, item);
   } catch (e) {
+    logger.e(() => "Error sharing clipboard item: $e");
     InAppNotificationService.i.notify(
-      NotificationMessage(
-        id: "share_item_error",
-        body: ctx.locale.app__unknown_error,
-      ),
+      NotificationMessage(id: "share_item_error", body: errorMessage),
     );
   }
 }
@@ -187,16 +185,13 @@ Future<void> shareClipboardItems(
   if (!context.mounted) return;
 
   final ctx = context.mounted ? context : rootNavigationKey.currentContext!;
+  final errorMessage = ctx.locale.app__unknown_error;
   try {
-    unawaited(
-      ctx.read<OfflinePersistenceCubit>().shareClipboardItems(ctx, items),
-    );
+    await ctx.read<OfflinePersistenceCubit>().shareClipboardItems(ctx, items);
   } catch (e) {
+    logger.e(() => "Error sharing clipboard items: $e");
     InAppNotificationService.i.notify(
-      NotificationMessage(
-        id: "share_items_error",
-        body: ctx.locale.app__unknown_error,
-      ),
+      NotificationMessage(id: "share_items_error", body: errorMessage),
     );
   }
 }
@@ -483,6 +478,10 @@ Future<void> performPrimaryActionOnClip(
     await decryptItem(context, item);
   } else if (item.needDownload) {
     await downloadFile(context, item);
+  } else if (isMobilePlatform &&
+      (item.type == ClipItemType.file || item.type == ClipItemType.media) &&
+      !item.isImage) {
+    await shareClipboardItem(context, item);
   } else if (canPaste) {
     await pasteOnLastWindow(context, item);
   } else {

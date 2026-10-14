@@ -3,13 +3,13 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links_linux
   clipboard_watcher
   emoji_picker_flutter
   fc_native_video_thumbnail
   flutter_platform_alert
   flutter_secure_storage_linux
   focus_window
-  gtk
   hotkey_manager_linux
   irondash_engine_context
   isar_community_flutter_libs

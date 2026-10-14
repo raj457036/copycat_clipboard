@@ -6,6 +6,7 @@ import 'package:clipboard/base/enums/clip_type.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -292,15 +293,15 @@ const MethodChannel _fileUriChannel = MethodChannel(
   'com.entilitystudio.CopyCat/drag_file_uri',
 );
 
-Future<Uri> resolveFileUri(String path) async {
-  if (!Platform.isAndroid) {
+Future<Uri> resolveFileUri(String path, {String? fileName}) async {
+  if (defaultTargetPlatform != TargetPlatform.android) {
     return Uri.file(path, windows: Platform.isWindows);
   }
 
   try {
     final String? uriString = await _fileUriChannel.invokeMethod<String>(
       'getContentUriForPath',
-      <String, dynamic>{'path': path},
+      <String, dynamic>{'path': path, 'name': ?fileName},
     );
     if (uriString != null && uriString.trim().isNotEmpty) {
       return Uri.parse(uriString.trim());

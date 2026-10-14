@@ -123,9 +123,7 @@ class WebDavFileCloudService implements FileCloudService {
   }
 
   Future<String?> _getBlurHashIfNeeded(ClipboardItem item) async {
-    if (item.fileMimeType == null ||
-        !item.fileMimeType!.startsWith("image/") ||
-        item.localPath == null) {
+    if (!item.isImage || item.localPath == null) {
       return null;
     }
 
