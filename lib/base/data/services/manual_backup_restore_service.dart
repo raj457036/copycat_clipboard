@@ -152,7 +152,11 @@ class ManualBackupRestoreService {
 
         String? attachmentArchivePath;
 
-        if (encryptClipsInBackup && !clip.encrypted && clip.isTextType) {
+        if (encryptClipsInBackup &&
+            !clip.encrypted &&
+            (clip.isTextType ||
+                (clip.type == ClipItemType.file &&
+                    clip.text?.trim().isNotEmpty == true))) {
           clip = await clip.encrypt();
         }
 

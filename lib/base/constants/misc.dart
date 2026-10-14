@@ -23,3 +23,7 @@ const kRichClipboardDataMaxBytes = 256 * 1024;
 /// Maximum allowed length for text clips. Clips with text longer than this
 /// will be saved as file clips instead to prevent performance issues.
 const kMaxTextClipLength = 4096;
+
+/// Maximum characters stored as the in-DB text preview for [ClipItemType.file]
+/// clips whose content is a text/* file. The full content lives on disk.
+const kTextFilePreviewLength = 500;

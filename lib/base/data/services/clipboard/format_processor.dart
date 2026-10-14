@@ -282,7 +282,9 @@ class ClipboardFormatProcessor {
     return ClipItem.file(
       file: file,
       mimeType: mimeType ?? "application/octet-stream",
-      textPreview: text,
+      textPreview: text.length > kTextFilePreviewLength
+          ? text.substring(0, kTextFilePreviewLength)
+          : text,
       fileName: displayFileName,
       fileSize: size,
       originalPathUri: Uri.file(originalPath ?? file.path),

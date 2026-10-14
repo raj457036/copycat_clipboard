@@ -329,7 +329,9 @@ abstract class ClipboardItem with _$ClipboardItem, Identifiable, Syncable {
       return this;
     }
 
-    if (type == ClipItemType.text && text != null && text!.trim().isNotEmpty) {
+    if ((type == ClipItemType.text || type == ClipItemType.file) &&
+        text != null &&
+        text!.trim().isNotEmpty) {
       final String mode = encrypter.useNonce
           ? EncryptionMode.gcm
           : EncryptionMode.cfb;
@@ -380,7 +382,8 @@ abstract class ClipboardItem with _$ClipboardItem, Identifiable, Syncable {
       return this;
     }
 
-    if (type == ClipItemType.text && text != null) {
+    if ((type == ClipItemType.text || type == ClipItemType.file) &&
+        text != null) {
       final decText = await encrypter.decrypt(
         text!,
         customIV: iv,

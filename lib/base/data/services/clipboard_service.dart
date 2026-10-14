@@ -291,7 +291,9 @@ class CopyToClipboard {
     }
 
     final String resolvedMime =
-        mimeType ?? mime.lookupMimeType(file.path) ?? 'application/octet-stream';
+        mimeType ??
+        mime.lookupMimeType(file.path) ??
+        'application/octet-stream';
     final Uri resolvedUri = await resolveFileUri(file.path);
     final String baseName = fileName?.trim().isNotEmpty == true
         ? fileName!.trim()
@@ -299,7 +301,12 @@ class CopyToClipboard {
 
     final DataWriterItem item = DataWriterItem(suggestedName: baseName);
 
-    if (resolvedMime.toLowerCase().startsWith('image/')) {
+    final String lowerMime = resolvedMime.toLowerCase();
+
+    if (lowerMime.startsWith('text/')) {
+      item.add(Formats.plainText.lazy(() => file.readAsString()));
+      if (!isMobilePlatform) item.add(Formats.fileUri(resolvedUri));
+    } else if (lowerMime.startsWith('image/')) {
       SimpleFileFormat? imageFormat;
       for (final f in allSupportedClipFormats) {
         if (f is SimpleFileFormat &&
@@ -310,10 +317,11 @@ class CopyToClipboard {
       }
       imageFormat ??= Formats.png;
       item.add(imageFormat.lazy(() => file.readAsBytes()));
+      if (!isMobilePlatform) item.add(Formats.fileUri(resolvedUri));
+    } else {
+      item.add(Formats.fileUri(resolvedUri));
+      if (!isMobilePlatform) item.add(Formats.plainText(file.path));
     }
-
-    item.add(Formats.fileUri(resolvedUri));
-    item.add(Formats.plainText(file.path));
 
     _items.add(item);
     return true;
