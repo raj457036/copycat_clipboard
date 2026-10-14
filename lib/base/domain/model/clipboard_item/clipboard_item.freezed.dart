@@ -15,17 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClipboardItem {
 
-@JsonKey(includeToJson: false, includeFromJson: false) int? get id;@JsonKey(name: "id", includeToJson: false) int? get serverId;@JsonKey(includeFromJson: false, includeToJson: false) DateTime? get lastSynced;@JsonKey(includeFromJson: false, includeToJson: false) String? get localPath;@JsonKey(name: "created")@DateTimeConverter() DateTime get created;@JsonKey(name: "modified")@DateTimeConverter() DateTime get modified; String? get deviceId; ClipItemType get type; String get userId; String? get title; String? get description;@DateTimeConverter() DateTime? get deletedAt; bool get locked; bool get encrypted; String? get iv;@JsonKey(name: "enc_mode") String? get encMode;// Text related
- String? get text;@JsonKey(name: "p_data") String? get richData; String? get url; TextCategory? get textCategory;// Local-only link preview cache
-@JsonKey(includeFromJson: false, includeToJson: false) String? get linkPreviewTitle;@JsonKey(includeFromJson: false, includeToJson: false) String? get linkPreviewDescription;@JsonKey(includeFromJson: false, includeToJson: false) String? get linkPreviewImageUrl;// Files related
- String? get fileName; String? get fileMimeType; String? get fileExtension; String? get driveFileId; int? get fileSize;// in KB
- String? get imgBlurHash;// only for image
-// Source Information
- String? get sourceUrl; String? get sourceApp; String? get sourceId; PlatformOS get os;// Collection
-@JsonKey(name: "collectionId") int? get serverCollectionId;@JsonKey(includeFromJson: false, includeToJson: false) int? get collectionId;// local only
-@JsonKey(includeFromJson: false, includeToJson: false) bool get localOnly;// Stats
- int get copiedCount;@DateTimeConverter() DateTime? get lastCopied;// non persistant state
-@JsonKey(includeFromJson: false, includeToJson: false) bool get downloading;@JsonKey(includeFromJson: false, includeToJson: false) double? get downloadProgress;@JsonKey(includeFromJson: false, includeToJson: false) bool get uploading;@JsonKey(includeFromJson: false, includeToJson: false) double? get uploadProgress;@JsonKey(includeFromJson: false, includeToJson: false) Failure? get failure;/// This clip is manually triggered to upload, sync or persist.
+@JsonKey(includeToJson: false, includeFromJson: false) int? get id;@JsonKey(name: "id", includeToJson: false) int? get serverId;@JsonKey(includeFromJson: false, includeToJson: false) DateTime? get lastSynced;@JsonKey(includeFromJson: false, includeToJson: false) String? get localPath;@JsonKey(name: "created")@DateTimeConverter() DateTime get created;@JsonKey(name: "modified")@DateTimeConverter() DateTime get modified; String? get deviceId; ClipItemType get type; String get userId; String? get title; String? get description;@DateTimeConverter() DateTime? get deletedAt; bool get locked; bool get encrypted; String? get iv;@JsonKey(name: "enc_mode") String? get encMode; String? get text;@JsonKey(name: "p_data") String? get richData; String? get url; TextCategory? get textCategory;@JsonKey(includeFromJson: false, includeToJson: false) String? get linkPreviewTitle;@JsonKey(includeFromJson: false, includeToJson: false) String? get linkPreviewDescription;@JsonKey(includeFromJson: false, includeToJson: false) String? get linkPreviewImageUrl; String? get fileName; String? get fileMimeType; String? get fileExtension; String? get driveFileId; int? get fileSize; String? get imgBlurHash; String? get sourceUrl; String? get sourceApp; String? get sourceId; PlatformOS get os;@JsonKey(name: "collectionId") int? get serverCollectionId;@JsonKey(includeFromJson: false, includeToJson: false) int? get collectionId;@JsonKey(includeFromJson: false, includeToJson: false) bool get localOnly; int get copiedCount;@DateTimeConverter() DateTime? get lastCopied;@JsonKey(includeFromJson: false, includeToJson: false) bool get downloading;@JsonKey(includeFromJson: false, includeToJson: false) double? get downloadProgress;@JsonKey(includeFromJson: false, includeToJson: false) bool get uploading;@JsonKey(includeFromJson: false, includeToJson: false) double? get uploadProgress;@JsonKey(includeFromJson: false, includeToJson: false) Failure? get failure;/// This clip is manually triggered to upload, sync or persist.
 @JsonKey(includeFromJson: false, includeToJson: false) bool get userIntent;/// This clip was loaded as a lightweight preview: [text] may be truncated
 /// and [richData] is omitted. The full content must be fetched from DB
 /// before copying or pasting to avoid data loss.
@@ -293,38 +283,28 @@ class _ClipboardItem extends ClipboardItem {
 @override@JsonKey() final  bool encrypted;
 @override final  String? iv;
 @override@JsonKey(name: "enc_mode") final  String? encMode;
-// Text related
 @override final  String? text;
 @override@JsonKey(name: "p_data") final  String? richData;
 @override final  String? url;
 @override final  TextCategory? textCategory;
-// Local-only link preview cache
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? linkPreviewTitle;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? linkPreviewDescription;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? linkPreviewImageUrl;
-// Files related
 @override final  String? fileName;
 @override final  String? fileMimeType;
 @override final  String? fileExtension;
 @override final  String? driveFileId;
 @override final  int? fileSize;
-// in KB
 @override final  String? imgBlurHash;
-// only for image
-// Source Information
 @override final  String? sourceUrl;
 @override final  String? sourceApp;
 @override final  String? sourceId;
 @override final  PlatformOS os;
-// Collection
 @override@JsonKey(name: "collectionId") final  int? serverCollectionId;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  int? collectionId;
-// local only
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  bool localOnly;
-// Stats
 @override@JsonKey() final  int copiedCount;
 @override@DateTimeConverter() final  DateTime? lastCopied;
-// non persistant state
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  bool downloading;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  double? downloadProgress;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  bool uploading;

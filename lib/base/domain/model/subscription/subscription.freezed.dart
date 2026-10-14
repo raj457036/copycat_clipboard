@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Subscription {
 
-@JsonKey(includeToJson: false, includeFromJson: false) int? get id;@JsonKey(name: "id", includeToJson: false) int? get serverId;@JsonKey(name: "created")@DateTimeConverter() DateTime get created;@JsonKey(name: "modified")@DateTimeConverter() DateTime get modified; String get userId; String get planName; String get subId; String get source;@DateTimeConverter() DateTime? get trialStart;@DateTimeConverter() DateTime? get trialEnd; int get collections; int get itemsPerCollection;@JsonKey(name: "drag_n_drop") bool get dragNdrop; bool get theming;@JsonKey(name: "syncHr") int get syncHours; bool get ads;@JsonKey(name: "syncInt") int get syncInterval;@DateTimeConverter() DateTime? get activeTill;@JsonKey(name: "devices") int get maxSyncDevices;@JsonKey(name: "cers") bool get customExclusionRules;@JsonKey(name: "ps_limit") int get pasteStackLimit; int get grants; String? get tkn;// local state
-@JsonKey(includeFromJson: false, includeToJson: false) String? get managementUrl;
+@JsonKey(includeToJson: false, includeFromJson: false) int? get id;@JsonKey(name: "id", includeToJson: false) int? get serverId;@JsonKey(name: "created")@DateTimeConverter() DateTime get created;@JsonKey(name: "modified")@DateTimeConverter() DateTime get modified; String get userId; String get planName; String get subId; String get source;@DateTimeConverter() DateTime? get trialStart;@DateTimeConverter() DateTime? get trialEnd; int get collections; int get itemsPerCollection;@JsonKey(name: "drag_n_drop") bool get dragNdrop; bool get theming;@JsonKey(name: "syncHr") int get syncHours; bool get ads;@JsonKey(name: "syncInt") int get syncInterval;@DateTimeConverter() DateTime? get activeTill;@JsonKey(name: "devices") int get maxSyncDevices;@JsonKey(name: "cers") bool get customExclusionRules;@JsonKey(name: "ps_limit") int get pasteStackLimit; int get grants; String? get tkn;@JsonKey(includeFromJson: false, includeToJson: false) String? get managementUrl;
 /// Create a copy of Subscription
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -259,7 +258,6 @@ class _Subscription extends Subscription {
 @override@JsonKey(name: "ps_limit") final  int pasteStackLimit;
 @override@JsonKey() final  int grants;
 @override final  String? tkn;
-// local state
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? managementUrl;
 
 /// Create a copy of Subscription

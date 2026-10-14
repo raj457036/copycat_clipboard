@@ -15,15 +15,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppConfig {
 
-@JsonKey(includeToJson: false, includeFromJson: false) int? get id; ThemeMode get themeMode; bool get enableSync; bool get enableFileSync; ActiveCloudStorageProvider get activeStorageProvider; AppLayout get layout; AppView get view; bool get pinned; double get windowWidth; double get windowHeight;// Sorting settings
- ClipboardSortKey get sortBy; SortOrder get sortOrder;/// will prevent auto upload for files over 10 MB
+@JsonKey(includeToJson: false, includeFromJson: false) int? get id; ThemeMode get themeMode; bool get enableSync; bool get enableFileSync; ActiveCloudStorageProvider get activeStorageProvider; AppLayout get layout; AppView get view; bool get pinned; double get windowWidth; double get windowHeight; ClipboardSortKey get sortBy; SortOrder get sortOrder;/// will prevent auto upload for files over 10 MB
  int get dontUploadOver;/// will prevent auto copy for files over 10 MB
  int get dontCopyOver;/// Pause auto copy for till pausedTill is reached.
- DateTime? get pausedTill;// Auto Sync Interval
- SyncSpeed get syncSpeed;// System show/hide toggle hotkey
- String? get toggleHotkey;// Quick paste popup hotkey
- String? get quickPasteHotkey;// Paste stack toggle hotkey
- String? get pasteStackHotkey;/// If enabled, the primary action on clips will be smartly selected.
+ DateTime? get pausedTill; SyncSpeed get syncSpeed; String? get toggleHotkey; String? get quickPasteHotkey; String? get pasteStackHotkey;/// If enabled, the primary action on clips will be smartly selected.
 /// The primary action will be paste, which will directly paste the clip
 /// to the last focused cursor in the last window, and the clipboard will minimize.
  bool get smartPaste;/// If enabled, losing focus keeps the window open in the background
@@ -33,18 +28,7 @@ mixin _$AppConfig {
  bool get transformAsNewClip;/// Controls the feedback shown when a clip is captured or received.
 @JsonKey(fromJson: _feedbackModeFromJson, toJson: _feedbackModeToJson) ClipboardFeedbackMode get clipboardFeedbackMode;/// If enabled, search runs while the user types in the search box.
  bool get enableTypeToSearch;/// If enabled, the application will automatically start at startup.
- bool get launchAtStartup; String get locale;// Security
- String? get enc2; bool get autoEncrypt; bool get useEncryptionNonce; bool get hideFromScreenCapture;@JsonKey(includeFromJson: false, includeToJson: false) ExclusionRules? get exclusionRules;// App Lock
- bool get enableLocalAuth; int get localAuthTimeoutMinutes;// Customization
- int get themeColor; DynamicSchemeVariant get themeVariant;// Flags
- bool get showCollectionTip; bool get searchIndexReady;// Exprimental
- bool get enableDragNDrop; bool get enablePasteStack; bool get androidBgListener; bool get richDataCapture;// LAN Instant Sync
- bool get lanInstantSync; bool get autoWriteOnReceive;// Desktop UI
- bool get showTrayIcon;// on boarding
- bool get onBoardComplete;// On logout/unauth this will be set to true
-// In-App Review tracking
- int get reviewQualifyingEventCount; DateTime? get lastReviewPromptDate; bool get reviewNeverAsk;//? Local App States
-/// last focus window id
+ bool get launchAtStartup; String get locale; String? get enc2; bool get autoEncrypt; bool get useEncryptionNonce; bool get hideFromScreenCapture;@JsonKey(includeFromJson: false, includeToJson: false) ExclusionRules? get exclusionRules; bool get enableLocalAuth; int get localAuthTimeoutMinutes; int get themeColor; DynamicSchemeVariant get themeVariant; bool get showCollectionTip; bool get searchIndexReady; bool get enableDragNDrop; bool get enablePasteStack; bool get androidBgListener; bool get richDataCapture; bool get lanInstantSync; bool get autoWriteOnReceive; bool get showTrayIcon; bool get onBoardComplete; int get reviewQualifyingEventCount; DateTime? get lastReviewPromptDate; bool get reviewNeverAsk;/// last focus window id
 @JsonKey(includeFromJson: false, includeToJson: false) int? get lastFocusedWindowId;@JsonKey(includeFromJson: false, includeToJson: false) bool get clockUnSynced;
 /// Create a copy of AppConfig
 /// with the given fields replaced by the non-null parameter values.
@@ -313,7 +297,6 @@ class _AppConfig extends AppConfig {
 @override@JsonKey() final  bool pinned;
 @override@JsonKey() final  double windowWidth;
 @override@JsonKey() final  double windowHeight;
-// Sorting settings
 @override@JsonKey() final  ClipboardSortKey sortBy;
 @override@JsonKey() final  SortOrder sortOrder;
 /// will prevent auto upload for files over 10 MB
@@ -322,13 +305,9 @@ class _AppConfig extends AppConfig {
 @override@JsonKey() final  int dontCopyOver;
 /// Pause auto copy for till pausedTill is reached.
 @override final  DateTime? pausedTill;
-// Auto Sync Interval
 @override@JsonKey() final  SyncSpeed syncSpeed;
-// System show/hide toggle hotkey
 @override final  String? toggleHotkey;
-// Quick paste popup hotkey
 @override final  String? quickPasteHotkey;
-// Paste stack toggle hotkey
 @override final  String? pasteStackHotkey;
 /// If enabled, the primary action on clips will be smartly selected.
 /// The primary action will be paste, which will directly paste the clip
@@ -347,39 +326,28 @@ class _AppConfig extends AppConfig {
 /// If enabled, the application will automatically start at startup.
 @override@JsonKey() final  bool launchAtStartup;
 @override@JsonKey() final  String locale;
-// Security
 @override final  String? enc2;
 @override@JsonKey() final  bool autoEncrypt;
 @override@JsonKey() final  bool useEncryptionNonce;
 @override@JsonKey() final  bool hideFromScreenCapture;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  ExclusionRules? exclusionRules;
-// App Lock
 @override@JsonKey() final  bool enableLocalAuth;
 @override@JsonKey() final  int localAuthTimeoutMinutes;
-// Customization
 @override@JsonKey() final  int themeColor;
 @override@JsonKey() final  DynamicSchemeVariant themeVariant;
-// Flags
 @override@JsonKey() final  bool showCollectionTip;
 @override@JsonKey() final  bool searchIndexReady;
-// Exprimental
 @override@JsonKey() final  bool enableDragNDrop;
 @override@JsonKey() final  bool enablePasteStack;
 @override@JsonKey() final  bool androidBgListener;
 @override@JsonKey() final  bool richDataCapture;
-// LAN Instant Sync
 @override@JsonKey() final  bool lanInstantSync;
 @override@JsonKey() final  bool autoWriteOnReceive;
-// Desktop UI
 @override@JsonKey() final  bool showTrayIcon;
-// on boarding
 @override@JsonKey() final  bool onBoardComplete;
-// On logout/unauth this will be set to true
-// In-App Review tracking
 @override@JsonKey() final  int reviewQualifyingEventCount;
 @override final  DateTime? lastReviewPromptDate;
 @override@JsonKey() final  bool reviewNeverAsk;
-//? Local App States
 /// last focus window id
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  int? lastFocusedWindowId;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  bool clockUnSynced;

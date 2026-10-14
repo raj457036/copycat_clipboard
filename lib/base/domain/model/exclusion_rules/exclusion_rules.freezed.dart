@@ -278,12 +278,7 @@ as String?,
 mixin _$ExclusionRules {
 
 /// including password patterns and password managers
- bool get enable;// Exclude credit card
- bool get creditCard;// Exclude phone number
- bool get phone;// Exclude password managers
- bool get passwordManager;// Exclude emails
- bool get email;// Exclude sensitive urls
- bool get sensitiveUrls; List<String> get patterns; List<String> get titles; List<String> get urls; List<AppInfo> get apps;
+ bool get enable; bool get creditCard; bool get phone; bool get passwordManager; bool get email; bool get sensitiveUrls; List<String> get patterns; List<String> get titles; List<String> get urls; List<AppInfo> get apps;
 /// Create a copy of ExclusionRules
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -489,15 +484,10 @@ class _ExclusionRules extends ExclusionRules {
 
 /// including password patterns and password managers
 @override@JsonKey() final  bool enable;
-// Exclude credit card
 @override@JsonKey() final  bool creditCard;
-// Exclude phone number
 @override@JsonKey() final  bool phone;
-// Exclude password managers
 @override@JsonKey() final  bool passwordManager;
-// Exclude emails
 @override@JsonKey() final  bool email;
-// Exclude sensitive urls
 @override@JsonKey() final  bool sensitiveUrls;
  final  List<String> _patterns;
 @override@JsonKey() List<String> get patterns {

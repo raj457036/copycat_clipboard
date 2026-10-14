@@ -14,9 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClipCollectionState {
 
- List<ClipCollection> get collections; bool get hasMore; bool get isLoading; int get limit; int get offset; bool get loading; bool get syncing;// Number of collections the user's current plan allows to be active/editable.
-// Collections at index >= activeLimit are read-only.
- int get activeLimit; Failure? get failure;
+ List<ClipCollection> get collections; bool get hasMore; bool get isLoading; int get limit; int get offset; bool get loading; bool get syncing; int get activeLimit; Failure? get failure;
 /// Create a copy of ClipCollectionState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -226,8 +224,6 @@ class ClipCollectionLoaded implements ClipCollectionState {
 @override@JsonKey() final  int offset;
 @override@JsonKey() final  bool loading;
 @override@JsonKey() final  bool syncing;
-// Number of collections the user's current plan allows to be active/editable.
-// Collections at index >= activeLimit are read-only.
 @override@JsonKey() final  int activeLimit;
 @override final  Failure? failure;
 

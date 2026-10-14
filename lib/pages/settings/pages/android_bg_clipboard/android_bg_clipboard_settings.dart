@@ -131,10 +131,12 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
     });
 
     notification = await widget.bgService.isNotificationPermissionGranted();
-    batteryOptimization = !await widget.bgService
-        .isBatteryOptimizationEnabled();
     accessibility = await _readAccessibilityStatus();
     isRunning = await widget.bgService.isServiceRunning();
+
+    await wait(800);
+    batteryOptimization = !await widget.bgService
+        .isBatteryOptimizationEnabled();
 
     if (!accessibility) {
       // Accessibility is off — reset mode to inactive so user picks fresh when they enable it.
@@ -228,6 +230,9 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
     }
 
     await widget.bgService.requestNotificationPermission();
+
+    notification = await widget.bgService.isNotificationPermissionGranted();
+    setState(() {});
   }
 
   Future<void> openBatteryOptimizationSetting() async {
@@ -237,6 +242,10 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
     }
 
     await widget.bgService.requestUnrestrictedBatteryAccess();
+
+    batteryOptimization = !await widget.bgService
+        .isBatteryOptimizationEnabled();
+    setState(() {});
   }
 
   Future<void> openAccessibilitySetting() async {

@@ -14,9 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SyncStatus {
 
-@JsonKey(includeToJson: false, includeFromJson: false) int? get id; DateTime? get lastSyncPoint;// . . . ->* . . |<- it stores the last sync end point in time.
- DateTime? get lastSyncStartPoint;// . . . ->| . . *<- it stores the last sync start point in time.
- int? get lastKnownSyncCount; int? get lastKnownTotalCount; bool get restorationPending;
+@JsonKey(includeToJson: false, includeFromJson: false) int? get id; DateTime? get lastSyncPoint; DateTime? get lastSyncStartPoint; int? get lastKnownSyncCount; int? get lastKnownTotalCount; bool get restorationPending;
 /// Create a copy of SyncStatus
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -218,9 +216,7 @@ class _SyncStatus extends SyncStatus {
 
 @override@JsonKey(includeToJson: false, includeFromJson: false) final  int? id;
 @override final  DateTime? lastSyncPoint;
-// . . . ->* . . |<- it stores the last sync end point in time.
 @override final  DateTime? lastSyncStartPoint;
-// . . . ->| . . *<- it stores the last sync start point in time.
 @override final  int? lastKnownSyncCount;
 @override final  int? lastKnownTotalCount;
 @override@JsonKey() final  bool restorationPending;
