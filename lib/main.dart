@@ -282,12 +282,13 @@ class MainApp extends StatelessWidget {
     );
 
     if (kDebugMode) {
+      // May throw error when showing context window.
       return GizmoOverlay(
-        enabled: true,
+        enabled: false,
         fpsGizmo: false,
         focusGizmo: false,
         child: DevicePreview(
-          enabled: true,
+          enabled: false,
           tools: const [
             ...DevicePreview.defaultTools,
             DevicePreviewScreenshot(onScreenshot: screenshotAsFile),

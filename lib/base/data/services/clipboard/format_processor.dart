@@ -265,6 +265,7 @@ class ClipboardFormatProcessor {
     required String extension,
     String? storageFileName,
     String? displayFileName,
+    String? contentHash,
   }) async {
     final (
       file,
@@ -279,6 +280,9 @@ class ClipboardFormatProcessor {
     );
     if (file == null) return null;
 
+    final resolvedHash =
+        contentHash ?? sha256.convert(utf8.encode(text)).toString();
+
     return ClipItem.file(
       file: file,
       mimeType: mimeType ?? "application/octet-stream",
@@ -288,6 +292,7 @@ class ClipboardFormatProcessor {
       fileName: displayFileName,
       fileSize: size,
       originalPathUri: Uri.file(originalPath ?? file.path),
+      contentDigest: resolvedHash,
     );
   }
 
@@ -317,9 +322,15 @@ class ClipboardFormatProcessor {
     final text = cleanText(textValue);
     if (text.trim().isEmpty) return null;
 
+    final (textCategory, parsedText) = TextAnalysis.getTextCategory(text);
+    final hash = sha256.convert(utf8.encode(parsedText)).toString();
+    if (ClipHashRegistry.instance.isDuplicate(hash)) {
+      return ClipItem.duplicate(contentDigest: hash);
+    }
+
     if (text.length > kMaxTextClipLength) {
       logger.w(
-        "Text length \${text.length} exceeds max limit of \$kMaxTextClipLength, "
+        "Text length ${text.length} exceeds max limit of $kMaxTextClipLength, "
         "saving as file clip instead",
       );
       return _createTextFileClip(
@@ -327,13 +338,8 @@ class ClipboardFormatProcessor {
         extension: "txt",
         storageFileName: "clipboard_text",
         displayFileName: "clipboard_text.txt",
+        contentHash: hash,
       );
-    }
-
-    final (textCategory, parsedText) = TextAnalysis.getTextCategory(text);
-    final hash = sha256.convert(utf8.encode(parsedText)).toString();
-    if (ClipHashRegistry.instance.isDuplicate(hash)) {
-      return ClipItem.duplicate(contentDigest: hash);
     }
 
     return ClipItem.text(text: parsedText, textCategory: textCategory);
@@ -362,6 +368,7 @@ class ClipboardFormatProcessor {
       extension: "txt",
       storageFileName: fileName,
       displayFileName: fileName,
+      contentHash: fileData.contentHash,
     );
   }
 

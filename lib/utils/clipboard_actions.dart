@@ -8,6 +8,7 @@ import 'package:clipboard/base/bloc/offline_persistance_cubit/offline_persistanc
 import 'package:clipboard/base/bloc/review_prompt_cubit/review_prompt_cubit.dart';
 import 'package:clipboard/base/bloc/selected_clips_cubit/selected_clips_cubit.dart';
 import 'package:clipboard/base/constants/strings/route_constants.dart';
+import 'package:clipboard/base/data/services/clipboard_service.dart';
 import 'package:clipboard/base/data/services/notification_service.dart';
 import 'package:clipboard/base/domain/model/clip_collection/clipcollection.dart';
 import 'package:clipboard/base/domain/model/clipboard_item/clipboard_item.dart';
@@ -16,6 +17,7 @@ import 'package:clipboard/base/domain/model/notification_message.dart'
 import 'package:clipboard/base/domain/model/route_payload.dart';
 import 'package:clipboard/base/l10n/l10n.dart';
 import 'package:clipboard/common/logging.dart';
+import 'package:clipboard/di/di.dart';
 import 'package:clipboard/routes/routes.dart' show rootNavigationKey;
 import 'package:clipboard/utils/utility.dart';
 import 'package:clipboard/widgets/dialogs/confirm_dialog.dart';
@@ -291,8 +293,12 @@ Future<void> pasteOnLastWindow(BuildContext context, ClipboardItem item) async {
   if (!context.mounted) return;
 
   final focusManager = WindowFocusManager.of(context);
-  await copyToClipboard(context, item, noAck: true);
-  await focusManager?.toggleAndPaste(item);
+  final clipboard = sl<ClipboardService>();
+  await clipboard.runWithCaptureSuppressed(() async {
+    await copyToClipboard(context, item, noAck: true);
+    await focusManager?.toggleAndPaste(item);
+    await wait(Durations.medium1.inMilliseconds);
+  });
   if (!context.mounted) return;
   unawaited(_maybeShowReviewPrompt());
 }
