@@ -8,6 +8,7 @@ import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import "package:universal_io/io.dart";
@@ -168,6 +169,34 @@ Future<String> getPersistedRootDirPath([String? root]) async {
   final dirPath = p.join(docDir.path, "offline", root);
   await createDirectoryIfNotExists(dirPath);
   return dirPath;
+}
+
+String resolveFileName(String name, {String? extension, String? mimeType}) {
+  final baseName = p.basename(name);
+  final storedExtension = extension?.trim().replaceFirst(RegExp(r'^\.+'), '');
+  final ext = storedExtension?.isNotEmpty == true
+      ? storedExtension!
+      : p.extension(baseName).isNotEmpty
+      ? p.extension(baseName).substring(1)
+      : mime.extensionFromMime(mimeType ?? '') ?? '';
+  if (ext.isEmpty || baseName.toLowerCase().endsWith('.${ext.toLowerCase()}')) {
+    return baseName;
+  }
+  return '$baseName.$ext';
+}
+
+String? localPathWithMissingExtension(ClipboardItem item) {
+  final path = item.localPath;
+  if (path == null || p.extension(path).isNotEmpty) return null;
+
+  final ext = p.extension(
+    resolveFileName(
+      item.fileName ?? p.basename(path),
+      extension: item.fileExtension,
+      mimeType: item.fileMimeType,
+    ),
+  );
+  return ext.isEmpty ? null : '$path$ext';
 }
 
 Future<void> clearPersistedRootDirPath([String? root]) async {

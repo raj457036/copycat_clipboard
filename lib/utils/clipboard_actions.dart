@@ -15,6 +15,9 @@ import 'package:clipboard/base/domain/model/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/base/domain/model/notification_message.dart'
     show NotificationMessage, NotificationContent;
 import 'package:clipboard/base/domain/model/route_payload.dart';
+import 'package:clipboard/base/domain/services/cross_sync_listener.dart';
+import 'package:clipboard/base/domain/services/sync_event_bus.dart';
+import 'package:clipboard/base/domain/sources/clipboard.dart';
 import 'package:clipboard/base/enums/clip_type.dart';
 import 'package:clipboard/base/l10n/l10n.dart';
 import 'package:clipboard/common/logging.dart';
@@ -27,6 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:universal_io/io.dart' show File;
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<bool> isAuthorized(
@@ -379,9 +383,41 @@ Future<bool> deleteClipboardItem(
   return true;
 }
 
+Future<String> _ensureFileExtension(ClipboardItem item) async {
+  final path = item.localPath!;
+  final newPath = localPathWithMissingExtension(item);
+  if (newPath == null || item.id == null) return path;
+
+  // Ensure the file has the correct extension before opening it.
+  // This is a patch for older version where files are cached extension less.
+  try {
+    final local = sl<ClipboardSource>(instanceName: 'local');
+    final stored = await local.get(id: item.id);
+    if (stored == null) return path;
+
+    await File(path).rename(newPath);
+    try {
+      await local.update(stored.copyWith(localPath: newPath));
+    } catch (_) {
+      await File(newPath).rename(path);
+      rethrow;
+    }
+    sl<SyncEventBus>().emit<ClipboardItem>((
+      CrossSyncEventType.update,
+      item.copyWith(localPath: newPath),
+    ));
+    return newPath;
+  } catch (e) {
+    logger.e(() => "Failed to add extension to cached file: $e");
+    return path;
+  }
+}
+
 Future<void> openFile(ClipboardItem item) async {
   if (item.localPath != null) {
-    final result = await OpenFilex.open(item.localPath!);
+    final filePath = await _ensureFileExtension(item);
+    print(filePath);
+    final result = await OpenFilex.open(filePath);
 
     switch (result.type) {
       case ResultType.error:

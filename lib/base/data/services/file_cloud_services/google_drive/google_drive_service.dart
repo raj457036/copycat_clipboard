@@ -11,7 +11,6 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis/oauth2/v2.dart' as oauth2;
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as p;
 
 @lazySingleton
@@ -81,14 +80,17 @@ class GoogleDriveService implements DriveService {
               as Media;
 
       final rootDir = await getPersistedRootDirPath(item.rootDir!);
-      final ext =
-          item.fileExtension ?? ".${mime.extensionFromMime(media.contentType)}";
-      final fileName = "${getId()}_${item.fileName}$ext";
+      final fileName = '${getId()}_${resolveFileName(
+        item.fileName ?? 'file',
+        extension: item.fileExtension,
+        mimeType: item.fileMimeType ?? media.contentType,
+      )}';
       final filePath = p.join(rootDir, fileName);
 
       final file = io.File(filePath).openWrite();
 
       await file.addStream(media.stream);
+      await file.close();
       return Right(item.copyWith(localPath: filePath));
     } catch (e) {
       logger.e(e, error: e);

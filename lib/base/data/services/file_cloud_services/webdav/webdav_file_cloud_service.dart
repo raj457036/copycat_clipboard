@@ -291,9 +291,11 @@ class WebDavFileCloudService implements FileCloudService {
 
       if (statusCode >= 200 && statusCode < 300) {
         final rootDir = await getPersistedRootDirPath(item.rootDir);
-        final ext = item.fileExtension ??
-            (item.fileName != null ? p.extension(item.fileName!) : '');
-        final fileName = '${getId()}_${item.fileName ?? 'file'}$ext';
+        final fileName = '${getId()}_${resolveFileName(
+          item.fileName ?? 'file',
+          extension: item.fileExtension,
+          mimeType: item.fileMimeType,
+        )}';
         final localFilePath = p.join(rootDir, fileName);
 
         final targetFile = File(localFilePath);
