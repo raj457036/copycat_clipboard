@@ -101,13 +101,14 @@ class Utils {
             return !ignoring
         }
 
-        fun requestUnrestrictedBatteryAccess(context: Context, activity: Activity?) {
+        fun requestUnrestrictedBatteryAccess(context: Context, activity: Activity?, requestCode: Int? = null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
 
             val packageName = context.packageName
             val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
 
             if (pm.isIgnoringBatteryOptimizations(packageName)) {
+                openBatteryOptimizationSetting(context, activity, requestCode)
                 return
             }
 
@@ -117,20 +118,28 @@ class Utils {
             )
 
             if (activity != null) {
-                activity.startActivity(intent)
+                if (requestCode != null) {
+                    activity.startActivityForResult(intent, requestCode)
+                } else {
+                    activity.startActivity(intent)
+                }
             } else {
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             }
         }
 
-        fun openBatteryOptimizationSetting(context: Context, activity: Activity?) {
+        fun openBatteryOptimizationSetting(context: Context, activity: Activity?, requestCode: Int? = null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
 
             val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
 
             if (activity != null) {
-                activity.startActivity(intent)
+                if (requestCode != null) {
+                    activity.startActivityForResult(intent, requestCode)
+                } else {
+                    activity.startActivity(intent)
+                }
             } else {
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)

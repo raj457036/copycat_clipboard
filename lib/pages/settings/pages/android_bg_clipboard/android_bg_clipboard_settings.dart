@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:android_background_clipboard/android_background_clipboard.dart';
 import 'package:clipboard/base/bloc/app_config_cubit/app_config_cubit.dart';
@@ -54,6 +55,8 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
   // required permissions
   bool notification = false;
   bool batteryOptimization = false;
+  int _statusCheckVersion = 0;
+  Timer? _batteryStatusTimer;
   bool accessibility = false;
   bool enable = false;
   StreamSubscription<Map<String, String>>? _detectionStatusSubscription;
@@ -111,6 +114,7 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
 
   @override
   void dispose() {
+    _batteryStatusTimer?.cancel();
     _detectionStatusSubscription?.cancel();
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
@@ -125,38 +129,56 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
     }
   }
 
+  @override
+  void didChangeViewFocus(ui.ViewFocusEvent event) {
+    if (event.state == ui.ViewFocusState.focused &&
+        event.viewId == View.of(context).viewId) {
+      checkStatus();
+    }
+  }
+
   Future<void> checkStatus() async {
+    if (!mounted) return;
+    final version = ++_statusCheckVersion;
     setState(() {
       loading = true;
     });
 
-    notification = await widget.bgService.isNotificationPermissionGranted();
-    accessibility = await _readAccessibilityStatus();
-    isRunning = await widget.bgService.isServiceRunning();
-
-    await wait(800);
-    batteryOptimization = !await widget.bgService
+    final notificationGranted = await widget.bgService
+        .isNotificationPermissionGranted();
+    final accessibilityGranted = await _readAccessibilityStatus();
+    final serviceRunning = await widget.bgService.isServiceRunning();
+    final unrestrictedBattery = !await widget.bgService
         .isBatteryOptimizationEnabled();
 
-    if (!accessibility) {
+    if (!mounted || version != _statusCheckVersion) return;
+
+    String selectedMode;
+    if (!accessibilityGranted) {
       // Accessibility is off — reset mode to inactive so user picks fresh when they enable it.
-      _selectedMode = 'inactive';
+      selectedMode = 'inactive';
       await widget.bgService.setDetectionMode('inactive');
     } else {
       final storedMode = await widget.bgService.readShared<String>(
         'detectionMode',
       );
-      _selectedMode = _normalizeDetectionMode(storedMode);
+      if (!mounted || version != _statusCheckVersion) return;
+      selectedMode = _normalizeDetectionMode(storedMode);
       if (storedMode != null &&
           storedMode.isNotEmpty &&
-          storedMode != _selectedMode) {
-        await widget.bgService.setDetectionMode(_selectedMode);
+          storedMode != selectedMode) {
+        await widget.bgService.setDetectionMode(selectedMode);
       }
     }
 
-    if (!mounted) return;
+    if (!mounted || version != _statusCheckVersion) return;
 
     setState(() {
+      notification = notificationGranted;
+      accessibility = accessibilityGranted;
+      isRunning = serviceRunning;
+      batteryOptimization = unrestrictedBattery;
+      _selectedMode = selectedMode;
       if (!accessibility || _selectedMode == 'inactive') {
         _detectionStatusState = 'inactive';
         _detectionStatusOutcome = 'none';
@@ -236,16 +258,59 @@ class _AndroidBgClipboardSettingsState extends State<AndroidBgClipboardSettings>
   }
 
   Future<void> openBatteryOptimizationSetting() async {
-    if (batteryOptimization) {
+    _batteryStatusTimer?.cancel();
+    final displayedAsGranted = batteryOptimization;
+    final optimizationEnabled = await widget.bgService
+        .isBatteryOptimizationEnabled();
+    if (!mounted) return;
+
+    if (!optimizationEnabled) {
+      if (!displayedAsGranted) {
+        await checkStatus();
+        return;
+      }
       await widget.bgService.openBatteryOptimizationSetting();
-      return;
+    } else {
+      await widget.bgService.requestUnrestrictedBatteryAccess();
     }
 
-    await widget.bgService.requestUnrestrictedBatteryAccess();
+    await checkStatus();
+    if (mounted) {
+      _watchBatteryStatusChange(optimizationEnabled);
+    }
+  }
 
-    batteryOptimization = !await widget.bgService
-        .isBatteryOptimizationEnabled();
-    setState(() {});
+  void _watchBatteryStatusChange(bool previousOptimizationEnabled) {
+    if (batteryOptimization == previousOptimizationEnabled) return;
+    var reading = false;
+    _batteryStatusTimer = Timer.periodic(const Duration(milliseconds: 250), (
+      timer,
+    ) async {
+      if (timer.tick >= 20) timer.cancel();
+      if (!mounted || reading) return;
+      reading = true;
+      try {
+        final enabled = await widget.bgService.isBatteryOptimizationEnabled();
+        if (!mounted || _batteryStatusTimer != timer) return;
+        if (enabled != previousOptimizationEnabled) {
+          timer.cancel();
+          _statusCheckVersion++;
+          setState(() {
+            batteryOptimization = !enabled;
+            loading = false;
+          });
+        }
+      } catch (e, st) {
+        timer.cancel();
+        logger.w(
+          'Failed to refresh battery optimization status',
+          error: e,
+          stackTrace: st,
+        );
+      } finally {
+        reading = false;
+      }
+    });
   }
 
   Future<void> openAccessibilitySetting() async {

@@ -3,6 +3,7 @@ package com.entilitystudio.android_background_clipboard
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -11,6 +12,9 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -22,6 +26,7 @@ import java.io.FileOutputStream
 
 /** AndroidBackgroundClipboardPlugin */
 class AndroidBackgroundClipboardPlugin : FlutterPlugin, MethodCallHandler,
+    ActivityAware, PluginRegistry.ActivityResultListener,
     Application.ActivityLifecycleCallbacks,
     EventChannel.StreamHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
@@ -41,6 +46,64 @@ class AndroidBackgroundClipboardPlugin : FlutterPlugin, MethodCallHandler,
     private var lanPeersStreamHandler: LanPeersStreamHandler? = null
     private var lanClipReceivedStreamHandler: LanClipReceivedStreamHandler? = null
     private var isEngineAttached: Boolean = false
+    private var activityBinding: ActivityPluginBinding? = null
+    private var batterySettingsResult: Result? = null
+    private val batterySettingsRequestCode = 57241
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        activityBinding = binding
+        binding.addActivityResultListener(this)
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        activityBinding?.removeActivityResultListener(this)
+        activityBinding = null
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        onAttachedToActivity(binding)
+    }
+
+    override fun onDetachedFromActivity() {
+        onDetachedFromActivityForConfigChanges()
+        batterySettingsResult?.error("activity-detached", "Battery settings activity detached.", null)
+        batterySettingsResult = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if (requestCode != batterySettingsRequestCode) return false
+        val pending = batterySettingsResult ?: return false
+        batterySettingsResult = null
+        pending.success(null)
+        return true
+    }
+
+    private fun openBatterySettings(requestPermission: Boolean, result: Result) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            result.success(null)
+            return
+        }
+        val activity = activityBinding?.activity
+        if (activity == null) {
+            result.error("no-activity", "Battery settings require an attached activity.", null)
+            return
+        }
+        if (batterySettingsResult != null) {
+            result.error("battery-settings-open", "Battery settings are already open.", null)
+            return
+        }
+        batterySettingsResult = result
+        try {
+            if (requestPermission) {
+                Utils.requestUnrestrictedBatteryAccess(applicationContext, activity, batterySettingsRequestCode)
+            } else {
+                Utils.openBatteryOptimizationSetting(applicationContext, activity, batterySettingsRequestCode)
+            }
+        } catch (error: Exception) {
+            batterySettingsResult = null
+            result.error("battery-settings-failed", error.message, null)
+        }
+    }
 
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -175,13 +238,11 @@ class AndroidBackgroundClipboardPlugin : FlutterPlugin, MethodCallHandler,
             }
 
             "requestUnrestrictedBatteryAccess" -> {
-                Utils.requestUnrestrictedBatteryAccess(applicationContext, applicationActivity)
-                result.success(null)
+                openBatterySettings(true, result)
             }
 
             "openBatteryOptimizationSetting" -> {
-                Utils.openBatteryOptimizationSetting(applicationContext, applicationActivity)
-                result.success(null)
+                openBatterySettings(false, result)
             }
 
             "isNotificationPermissionGranted" -> {
