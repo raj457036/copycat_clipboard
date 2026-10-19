@@ -47,12 +47,13 @@ class PostSyncDecryptionService {
         try {
           return await item.decrypt();
         } catch (e, st) {
-          _logger.e(
-            () => 'Decrypt failed for id=${item.serverId}: $e',
+          _logger.w(
+            () =>
+                'Decrypt failed for id=${item.serverId}; keeping content and clearing encrypted flag: $e',
             error: e,
             stackTrace: st,
           );
-          return item;
+          return item.copyWith(encrypted: false);
         }
       }),
     );
@@ -100,8 +101,12 @@ class PostSyncDecryptionService {
       if (toUpdate.isNotEmpty) {
         try {
           await _localSource.updateAll(toUpdate);
-        } catch (e) {
-          _logger.e(() => 'Batch save failed during decryptAll: $e');
+        } catch (e, st) {
+          _logger.w(
+            () => 'Batch save failed during decryptAll: $e',
+            error: e,
+            stackTrace: st,
+          );
         }
       }
 
