@@ -413,14 +413,23 @@ class EncryptionWorker {
     _useNonce = value;
   }
 
-  Future<void> start(String secret) async {
+  /// [secret] may be a future so the worker counts as starting while the key
+  /// is still being read; [waitUntilReady] covers that window too.
+  Future<void> start(FutureOr<String?> secret) async {
     if (_completer != null || _isRunning || _isStarting) return;
 
     _completer = Completer<void>();
     _isStarting = true;
-    this.secret = secret;
 
     try {
+      final key = await secret;
+      if (key == null) {
+        _completer?.complete();
+        dispose();
+        return;
+      }
+      this.secret = key;
+
       _subscription?.cancel();
       _encryptor?.dispose();
       _encryptor =
@@ -431,7 +440,7 @@ class EncryptionWorker {
             Entrypoint<MessageWithID<EncryptionPayload>>(
               _encryptorWorkerEntryPoint,
               onInit: _initializeWorkerSecret,
-              initData: secret,
+              initData: key,
             ),
             workerName: "E2EE Worker",
           );
@@ -460,6 +469,16 @@ class EncryptionWorker {
     final completer = _completer;
     if (completer == null || completer.isCompleted) return;
     await completer.future;
+  }
+
+  /// Encryption is on but the worker isn't running, so content can't be
+  /// encrypted and must not leave the device.
+  Future<bool> isEncryptionUnavailable() async {
+    if (!_encryption) return false;
+    try {
+      await waitUntilReady();
+    } catch (_) {}
+    return !_isRunning;
   }
 
   Future<TransferableTypedData> submit(

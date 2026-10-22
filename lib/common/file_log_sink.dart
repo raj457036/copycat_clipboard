@@ -21,7 +21,7 @@ class FileLogSink {
   Timer? _flushTimer;
   bool _initialized = false;
   final _queue = Queue<String>();
-  bool _draining = false;
+  bool _flushing = false;
 
   bool get isInitialized => _initialized;
 
@@ -80,30 +80,35 @@ class FileLogSink {
   }
 
   void _drain() {
+    if (_flushing || _queue.isEmpty || _sink == null) return;
     try {
-      if (_draining || _queue.isEmpty || _sink == null) return;
-      _draining = true;
-
       while (_queue.isNotEmpty) {
-        _sink!.write(_queue.removeFirst());
+        _sink!.write(_queue.first);
+        _queue.removeFirst();
       }
-      _draining = false;
     } catch (e) {
-      debugPrint("FilelogSink - $e");
-      _draining = false;
+      debugPrint("FileLogSink - $e");
     }
   }
 
   void _flush() {
     _drain();
-    _sink?.flush();
+    final sink = _sink;
+    if (_flushing || sink == null) return;
+    _flushing = true;
+    sink
+        .flush()
+        .catchError((Object e) {
+          debugPrint("FileLogSink flush failed - $e");
+        })
+        .whenComplete(() {
+          _flushing = false;
+          if (_queue.isNotEmpty) _flush();
+        });
   }
 
   /// Forces an immediate flush — call for error-level logs.
-  void flushNow() {
-    _drain();
-    _sink?.flush();
-  }
+  void flushNow() => _flush();
 
   static String _formatTimestamp(DateTime time) {
     final y = time.year.toString();

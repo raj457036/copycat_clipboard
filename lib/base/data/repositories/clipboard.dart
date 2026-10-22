@@ -1,3 +1,4 @@
+import 'package:clipboard/base/background/encryption_worker.dart';
 import 'package:clipboard/base/domain/model/clipboard_item/clipboard_item.dart';
 import 'package:clipboard/base/domain/repositories/clipboard.dart';
 import 'package:clipboard/base/domain/repositories/sync_outbox.dart';
@@ -18,11 +19,19 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
 
   ClipboardRepositoryCloudImpl(@Named("remote") this.remote);
 
+  Future<ClipboardItem> _encryptForUpload(ClipboardItem item) async {
+    if (!item.encrypted &&
+        await EncryptionWorker.instance.isEncryptionUnavailable()) {
+      throw encryptionUnavailableFailure;
+    }
+    return item.encrypt();
+  }
+
   @override
   FailureOr<ClipboardItem> create(ClipboardItem item) async {
     try {
       item = item.copyWith(modified: systemTime());
-      final encrypted = await item.encrypt();
+      final encrypted = await _encryptForUpload(item);
       final result = await remote.create(encrypted);
       final clip = item.copyWith(
         serverId: result.serverId,
@@ -78,7 +87,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   @override
   FailureOr<ClipboardItem> update(ClipboardItem item) async {
     try {
-      final encrypted = await item.encrypt();
+      final encrypted = await _encryptForUpload(item);
       await remote.update(encrypted);
       final clip = item.copyWith(lastSynced: systemTime());
       return Right(clip);
@@ -164,7 +173,7 @@ class ClipboardRepositoryCloudImpl implements ClipboardRepository {
   @override
   FailureOr<List<ClipboardItem>> updateAll(List<ClipboardItem> items) async {
     try {
-      final encryptedUpdates = await Future.wait(items.map((e) => e.encrypt()));
+      final encryptedUpdates = await Future.wait(items.map(_encryptForUpload));
 
       final result = await remote.updateAll(encryptedUpdates);
       return Right(result);

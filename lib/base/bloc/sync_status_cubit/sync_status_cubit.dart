@@ -48,7 +48,7 @@ class SyncProgressInitParams {
 
 @lazySingleton
 class SyncStatusCubit extends Cubit<SyncStatusState> {
-  static const _notificationDedupeWindow = Duration(seconds: 3);
+  static const _notificationDedupeWindow = Duration(seconds: 1);
   static const _completionIdleDelay = Duration(milliseconds: 400);
 
   final MonetizationCubit monetizationCubit;

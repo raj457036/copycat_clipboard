@@ -46,6 +46,12 @@ const driveFailure = Failure(
   code: 'gdrive_not_available',
 );
 
+const encryptionUnavailableFailure = Failure(
+  message:
+      'Encryption is enabled but not ready, so clips were not synced. Please check your encryption setup.',
+  code: 'encryption-unavailable',
+);
+
 Failure frequentSyncing(int seconds) {
   return Failure(
     message: 'Too frequent request. Try after $seconds seconds',

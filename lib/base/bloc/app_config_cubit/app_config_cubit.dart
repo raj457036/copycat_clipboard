@@ -139,6 +139,7 @@ class AppConfigCubit extends Cubit<AppConfigState> with AppConfigE2EEMixin {
       enc2: null,
       exclusionRules: defaultExclusionRules,
     );
+    EncryptionWorker.instance.setEncryption(config.autoEncrypt);
     emit(AppConfigState.loaded(config: config));
     await repo.update(config);
   }
@@ -198,6 +199,7 @@ class AppConfigCubit extends Cubit<AppConfigState> with AppConfigE2EEMixin {
       },
     );
     initializeExclusionChecker();
+    EncryptionWorker.instance.setEncryption(next.config.autoEncrypt);
     await _migrateLegacyEnc2ToSecureStorage(next.config);
     await _refreshE2EEKeyPresence();
     if (Platform.isAndroid) {
@@ -470,6 +472,7 @@ class AppConfigCubit extends Cubit<AppConfigState> with AppConfigE2EEMixin {
   }
 
   Future<void> toggleAutoEncrypt(bool value) async {
+    EncryptionWorker.instance.setEncryption(value);
     final newConfig = state.config.copyWith(autoEncrypt: value);
     emit(state.copyWith(config: newConfig));
     await repo.update(newConfig);

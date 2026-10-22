@@ -29,9 +29,9 @@ class E2EESetupListTile extends StatelessWidget {
   }
 
   Future<void> toggleAutoEncrypt(BuildContext context, bool value) async {
-    context.read<AppConfigCubit>().toggleAutoEncrypt(value);
+    final appConfigCubit = context.read<AppConfigCubit>();
     if (value) await _startEncryptionWorker();
-    EncryptionWorker.instance.setEncryption(value);
+    await appConfigCubit.toggleAutoEncrypt(value);
   }
 
   void toggleUseEncryptionNonce(BuildContext context, bool value) {

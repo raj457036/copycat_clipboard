@@ -71,16 +71,12 @@ class _AuthListenerState extends State<AuthListener> {
   Future<void> initEncryptionWorker(AuthenticatedAuthState authState) async {
     final appConfigCubit = sl<AppConfigCubit>();
     final encryptionWorker = EncryptionWorker.instance;
-    await encryptionWorker.waitUntilReady();
+    await encryptionWorker.start(
+      appConfigCubit.decryptEnc2(authState.user.enc1),
+    );
 
-    final enc1 = authState.user.enc1;
-    final enc1Decrypt = await appConfigCubit.decryptEnc2(enc1);
-
-    if (enc1Decrypt == null) return;
-    await encryptionWorker.start(enc1Decrypt);
+    if (!encryptionWorker.isRunning) return;
     await wait(Durations.medium4.inMilliseconds);
-    final config = appConfigCubit.state.config;
-    encryptionWorker.setEncryption(config.autoEncrypt);
     encryptionWorker.setDecryption(true);
   }
 

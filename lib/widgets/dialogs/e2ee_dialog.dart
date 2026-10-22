@@ -140,7 +140,6 @@ class _E2EESettingDialogState extends State<E2EESettingDialog> {
 
     EncryptionWorker.instance.dispose();
     await EncryptionWorker.instance.start(enc1Decrypt);
-    EncryptionWorker.instance.setEncryption(true);
     await appConfigCubit.toggleAutoEncrypt(true);
     if (mounted) {
       setState(() => invalidImportedKey = false);
