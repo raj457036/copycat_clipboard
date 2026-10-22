@@ -416,7 +416,6 @@ Future<String> _ensureFileExtension(ClipboardItem item) async {
 Future<void> openFile(ClipboardItem item) async {
   if (item.localPath != null) {
     final filePath = await _ensureFileExtension(item);
-    print(filePath);
     final result = await OpenFilex.open(filePath);
 
     switch (result.type) {

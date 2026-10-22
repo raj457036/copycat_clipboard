@@ -139,10 +139,13 @@ class GoogleDriveService implements DriveService {
       final result = await drive.files.create(
         gfile,
         uploadMedia: media,
-        uploadOptions: ResumableUploadOptions(
-          // chunkSize: $10MB,
-          numberOfAttempts: 8,
-        ),
+        // Resumable uploads reject empty files; multipart handles them.
+        uploadOptions: length == 0
+            ? UploadOptions.defaultOptions
+            : ResumableUploadOptions(
+                // chunkSize: $10MB,
+                numberOfAttempts: 8,
+              ),
       );
 
       item = item.copyWith(driveFileId: result.id);

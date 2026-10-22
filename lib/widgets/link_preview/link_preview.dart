@@ -247,7 +247,7 @@ class _LinkPreviewState extends State<LinkPreview> {
   Future<void> _fetchPreview() async {
     final String url = _url;
     if (url.isEmpty || !_isValidUrl(url)) {
-      logger.w('Invalid URL for link preview: $url');
+      logger.d(() => 'Invalid URL for link preview: $url');
       return;
     }
 

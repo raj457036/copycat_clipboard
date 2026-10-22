@@ -317,7 +317,7 @@ class WebDavFileCloudService implements FileCloudService {
         return Right(item.copyWith(localPath: localFilePath));
       } else if (statusCode == 404) {
         await resp.drain();
-        _logger.w('WebDAV file not found (404) at $fileUri');
+        _logger.w('WebDAV file not found (404)');
         return const Left(
           Failure(
             message:

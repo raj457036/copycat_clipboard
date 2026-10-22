@@ -199,6 +199,24 @@ String? localPathWithMissingExtension(ClipboardItem item) {
   return ext.isEmpty ? null : '$path$ext';
 }
 
+/// Reduces a browser URL captured from the active window to scheme, host,
+/// port and path. Credentials, query and fragment can carry personal data
+/// (tokens, emails, session ids), so they are dropped. Non-web URLs are
+/// discarded.
+String? sanitizeSourceUrl(String? url) {
+  final trimmed = url?.trim();
+  if (trimmed == null || trimmed.isEmpty) return null;
+  final uri = Uri.tryParse(trimmed);
+  if (uri == null || uri.host.isEmpty) return null;
+  if (uri.scheme != 'http' && uri.scheme != 'https') return null;
+  return Uri(
+    scheme: uri.scheme,
+    host: uri.host,
+    port: uri.hasPort ? uri.port : null,
+    path: uri.path,
+  ).toString();
+}
+
 Future<void> clearPersistedRootDirPath([String? root]) async {
   final dirPath = await getPersistedRootDirPath(root);
   final dir = Directory(dirPath);

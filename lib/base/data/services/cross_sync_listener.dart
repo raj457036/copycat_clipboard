@@ -60,11 +60,9 @@ mixin SBCrossSyncListenerStatusChangeMixin<T> {
           if (item != null) {
             _changesStream.add((CrossSyncEventType.update, item));
           }
-        case PostgresChangeEvent.delete:
-          final item = await castToType(payload.oldRecord);
-          if (item != null) {
-            _changesStream.add((CrossSyncEventType.delete, item));
-          }
+        // Deletes are intentionally not subscribed: clients only soft-delete
+        // (an UPDATE with deletedAt), and hard deletes come from server-side
+        // retention cleanup whose payload carries only the primary key.
         default:
       }
     } catch (e, stack) {
@@ -107,7 +105,13 @@ class SBClipCrossSyncListener
     _channel
         ?.onPostgresChanges(
           schema: 'public',
-          event: PostgresChangeEvent.all,
+          event: PostgresChangeEvent.insert,
+          table: clipItemTable,
+          callback: _onChange,
+        )
+        .onPostgresChanges(
+          schema: 'public',
+          event: PostgresChangeEvent.update,
           table: clipItemTable,
           callback: _onChange,
         )
@@ -184,7 +188,13 @@ class SBCollectionCrossSyncListener
     _channel
         ?.onPostgresChanges(
           schema: 'public',
-          event: PostgresChangeEvent.all,
+          event: PostgresChangeEvent.insert,
+          table: clipCollectionTable,
+          callback: _onChange,
+        )
+        .onPostgresChanges(
+          schema: 'public',
+          event: PostgresChangeEvent.update,
           table: clipCollectionTable,
           callback: _onChange,
         )

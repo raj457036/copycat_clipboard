@@ -2076,10 +2076,10 @@ packages:
     dependency: "direct main"
     description:
       name: supabase_auth_ui
-      sha256: f3d227d8bc9a1d66480cacda1302dd4fdf2c267663935ffd14cff43a36047b00
+      sha256: d77f0b207d793c6c1d88628ea30fd87624560f889ee1fc284fd96e5fab4331c2
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.2"
   supabase_common:
     dependency: transitive
     description:

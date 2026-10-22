@@ -7,7 +7,7 @@ import 'package:clipboard/base/domain/repositories/webdav_credential.dart';
 import 'package:clipboard/common/failure.dart';
 import 'package:clipboard/common/logging.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:clipboard/common/secure_store.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_io/io.dart';
@@ -17,7 +17,7 @@ class WebDavCredentialRepositoryImpl implements WebDavCredentialRepository {
   static const String _storageKey = 'copycat.webdav_config';
   static const _logger = AppLogger.scoped('WebDavCredentialRepo');
 
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final SecureStore _secureStorage = const SecureStore();
   final SupabaseClient _supabase;
 
   WebDavCredentialRepositoryImpl(this._supabase);

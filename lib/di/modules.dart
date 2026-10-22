@@ -2,6 +2,7 @@ import "package:android_background_clipboard/android_background_clipboard.dart";
 import "package:clipboard/base/constants/strings/strings.dart";
 import "package:clipboard/base/data/isar/isar_database.dart";
 import "package:clipboard/base/data/isar/isar_database_service.dart";
+import "package:clipboard/base/data/services/supabase_http_client.dart";
 import "package:clipboard/base/domain/services/database_service.dart";
 import 'package:device_info_plus/device_info_plus.dart';
 import "package:flutter/foundation.dart";
@@ -50,6 +51,7 @@ abstract class RegisterModule {
       publishableKey: key,
       debug: kDebugMode,
       headers: {"user-agent": userAgent},
+      httpClient: SupabaseHttpClient(),
     );
     return Supabase.instance.client;
   }

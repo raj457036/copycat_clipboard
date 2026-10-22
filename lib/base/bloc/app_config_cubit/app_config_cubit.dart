@@ -25,7 +25,7 @@ import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:no_screenshot/no_screenshot.dart';
 import 'package:ntp/ntp.dart';
 import 'package:retry/retry.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:clipboard/common/secure_store.dart';
 import 'package:universal_io/io.dart';
 import 'package:android_background_clipboard/android_background_clipboard.dart';
 import 'package:clipboard/base/bloc/auth_cubit/auth_cubit.dart';
@@ -131,6 +131,7 @@ class AppConfigCubit extends Cubit<AppConfigState> with AppConfigE2EEMixin {
     await _secureStorage.deleteAll();
     await _clearStoredE2EEKey();
     _hasStoredE2EEKey = false;
+    _keychainReadFailed = false;
     final config = AppConfig(
       id: 1,
       onBoardComplete: false,
@@ -571,7 +572,7 @@ class AppConfigCubit extends Cubit<AppConfigState> with AppConfigE2EEMixin {
       final activity = await focusWindow.getActivity().timeout(
         const Duration(seconds: 5),
       );
-      logger.w(activity);
+      logger.d(() => activity);
       lastActivity = activity;
       final result =
           exclusionChecker?.checkActivity(activity) ??

@@ -191,6 +191,12 @@ class ClipboardFormatProcessor {
           await for (final chunk in file.getStream()) {
             chunks.add(chunk);
           }
+          // Providers can hand back empty data (e.g. right after screen
+          // unlock); treat that as unreadable instead of an empty file clip.
+          if (chunks.every((c) => c.isEmpty)) {
+            c.complete();
+            return;
+          }
           final resolvedHash = sha256
               .convert(chunks.expand((c) => c).toList())
               .toString();
@@ -497,7 +503,7 @@ class ClipboardFormatProcessor {
     }
 
     if (!await file.exists()) {
-      logger.w("Couldn't find file at $uri");
+      logger.w("Couldn't find copied file");
       return null;
     }
 

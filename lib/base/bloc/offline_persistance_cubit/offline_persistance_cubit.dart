@@ -318,9 +318,7 @@ class OfflinePersistenceCubit extends Cubit<OfflinePersistanceState>
     final sourceApp = (activity?.app ?? "").trim().isEmpty
         ? null
         : activity!.app;
-    final sourceUrl = (activity?.url ?? "").trim().isEmpty
-        ? null
-        : activity!.url;
+    final sourceUrl = sanitizeSourceUrl(activity?.url);
 
     switch (clip.type) {
       case ClipItemType.text:

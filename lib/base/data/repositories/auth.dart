@@ -17,9 +17,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Stream<AuthSessionChange> get authStateChanges =>
       client.auth.onAuthStateChange.map((authState) {
-        return authState.event == sb.AuthChangeEvent.signedOut
-            ? AuthSessionChange.signedOut
-            : AuthSessionChange.updated;
+        if (authState.event != sb.AuthChangeEvent.signedOut) {
+          return AuthSessionChange.updated;
+        }
+        logger.w(
+          "Supabase signedOut "
+          "(reason: ${authState.signOutReason?.name ?? 'unknown'}).",
+        );
+        return AuthSessionChange.signedOut;
       });
 
   @override

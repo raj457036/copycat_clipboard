@@ -42,6 +42,31 @@ class AuthListener extends StatefulWidget {
 
 class _AuthListenerState extends State<AuthListener> {
   bool _isCompletingAuthentication = false;
+  late final AppLifecycleListener _lifecycleListener;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycleListener = AppLifecycleListener(
+      onResume: () => unawaited(_startEncryptionIfKeychainWasLocked()),
+    );
+  }
+
+  @override
+  void dispose() {
+    _lifecycleListener.dispose();
+    super.dispose();
+  }
+
+  /// The keychain can be locked at launch (login/wake). The user can only
+  /// bring the app to the foreground once it's unlocked, so retry then.
+  Future<void> _startEncryptionIfKeychainWasLocked() async {
+    final authState = sl<AuthCubit>().state;
+    if (authState is! AuthenticatedAuthState) return;
+    if (!await sl<AppConfigCubit>().retryE2EEKeyReadIfFailed()) return;
+    logger.i("E2EE key readable after keychain unlock, starting encryption.");
+    await initEncryptionWorker(authState);
+  }
 
   Future<void> initEncryptionWorker(AuthenticatedAuthState authState) async {
     final appConfigCubit = sl<AppConfigCubit>();
