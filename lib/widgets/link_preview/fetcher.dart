@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'dart:typed_data';
 
+import 'package:clipboard/utils/semaphore.dart';
 import 'package:clipboard/widgets/link_preview/type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart' show Document, Element;
 import 'package:html/parser.dart' as parser show parse;
-import 'package:http/http.dart' as http
-    show Request, Client, StreamedResponse;
+import 'package:http/http.dart' as http show Request, Client, StreamedResponse;
 import 'package:punycode/punycode.dart' as puny;
 
 String _calculateUrl(String baseUrl, String? proxy) {
@@ -152,8 +153,9 @@ Future<http.StreamedResponse?> _getRedirectedStreamedResponse(
       request.headers.addAll(headers);
     }
 
-    final http.StreamedResponse streamedResponse =
-        await httpClient.send(request).timeout(timeout);
+    final http.StreamedResponse streamedResponse = await httpClient
+        .send(request)
+        .timeout(timeout);
 
     if (streamedResponse.isRedirect &&
         streamedResponse.headers.containsKey('location')) {
@@ -170,11 +172,41 @@ Future<http.StreamedResponse?> _getRedirectedStreamedResponse(
   return null;
 }
 
+const int _maxHeadBytes = 1024 * 1024;
+
+/// Streams `</head` / `<body` detection byte by byte so a match split across
+/// chunks is still found, without decoding or copying chunks into strings.
+class _HeadEndMatcher {
+  static final List<int> _headClose = ascii.encode('</head');
+  static final List<int> _bodyOpen = ascii.encode('<body');
+
+  int _headState = 0;
+  int _bodyState = 0;
+
+  static int _advance(List<int> pattern, int state, int byte) {
+    if (byte == pattern[state]) return state + 1;
+    return byte == pattern[0] ? 1 : 0;
+  }
+
+  bool feed(List<int> chunk) {
+    for (int i = 0; i < chunk.length; i++) {
+      int byte = chunk[i];
+      if (byte >= 0x41 && byte <= 0x5A) byte |= 0x20;
+      _headState = _advance(_headClose, _headState, byte);
+      _bodyState = _advance(_bodyOpen, _bodyState, byte);
+      if (_headState == _headClose.length || _bodyState == _bodyOpen.length) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
 Future<Uint8List> _readHeadBytes(http.StreamedResponse response) async {
   final BytesBuilder builder = BytesBuilder(copy: false);
   final Completer<void> completer = Completer<void>();
+  final _HeadEndMatcher matcher = _HeadEndMatcher();
   late final StreamSubscription<List<int>> subscription;
-  List<int> overlap = const <int>[];
   bool isDone = false;
 
   void finish() {
@@ -191,23 +223,7 @@ Future<Uint8List> _readHeadBytes(http.StreamedResponse response) async {
     (List<int> chunk) {
       if (isDone) return;
       builder.add(chunk);
-
-      final List<int> toCheck = overlap.isEmpty
-          ? chunk
-          : <int>[...overlap, ...chunk];
-      final String text =
-          latin1.decode(toCheck, allowInvalid: true).toLowerCase();
-
-      if (text.contains('</head>') || text.contains('<body')) {
-        finish();
-        return;
-      }
-
-      overlap = chunk.length > 16
-          ? chunk.sublist(chunk.length - 16)
-          : chunk;
-
-      if (builder.length >= 1024 * 1024) {
+      if (matcher.feed(chunk) || builder.length >= _maxHeadBytes) {
         finish();
       }
     },
@@ -302,7 +318,8 @@ Future<LinkPreviewFetchResult> _fetchAndParseInIsolate(
       );
     }
 
-    final bool isHtml = contentType.contains('text/html') ||
+    final bool isHtml =
+        contentType.contains('text/html') ||
         contentType.contains('application/xhtml') ||
         contentType.isEmpty;
 
@@ -323,8 +340,10 @@ Future<LinkPreviewFetchResult> _fetchAndParseInIsolate(
 
     Encoding encoding = utf8;
     if (contentType.contains('charset=')) {
-      final String charset =
-          contentType.split('charset=')[1].split(';')[0].trim();
+      final String charset = contentType
+          .split('charset=')[1]
+          .split(';')[0]
+          .trim();
       encoding = Encoding.getByName(charset) ?? utf8;
     }
 
@@ -345,7 +364,8 @@ Future<LinkPreviewFetchResult> _fetchAndParseInIsolate(
       previewDataImageUrl = _calculateUrl(imageUrls.first, request.proxy);
     }
 
-    final bool hasMetadata = (title != null && title.isNotEmpty) ||
+    final bool hasMetadata =
+        (title != null && title.isNotEmpty) ||
         (description != null && description.isNotEmpty) ||
         (previewDataImageUrl != null && previewDataImageUrl.isNotEmpty);
 
@@ -373,9 +393,14 @@ Future<LinkPreviewFetchResult> _fetchAndParseInIsolate(
   }
 }
 
+final Semaphore _fetchSemaphore = Semaphore(
+  (Platform.numberOfProcessors ~/ 2).clamp(2, 8),
+);
+
 Future<LinkPreviewFetchResult> getLinkPreviewData(
   LinkPreviewFetchRequest request,
 ) async {
+  await _fetchSemaphore.acquire();
   try {
     final LinkPreviewFetchResult? result = await compute(
       _fetchAndParseInIsolate,
@@ -391,5 +416,7 @@ Future<LinkPreviewFetchResult> getLinkPreviewData(
       link: request.url,
       status: LinkPreviewFetchStatus.transientError,
     );
+  } finally {
+    _fetchSemaphore.release();
   }
 }
